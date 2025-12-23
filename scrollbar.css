@@ -1,0 +1,120 @@
+/* ========================================
+   🌈 UNIVERSAL RAINBOW SCROLLBAR
+   Podpora: Chrome, Edge, Brave, Opera, Opera GX, Safari, Firefox
+   ======================================== */
+
+/* ============================================
+   WEBKIT PROHLÍŽEČE (Chrome, Edge, Brave, Opera, Opera GX, Safari)
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a0033;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    transition: background 0.5s ease;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ff00ff;
+    border-radius: 8px;
+    border: 3px solid #0a0a0a;
+    box-shadow: 
+        inset 0 0 10px rgba(255, 255, 255, 0.3),
+        0 0 15px rgba(255, 0, 255, 0.6);
+    transition: all 0.5s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    box-shadow: 
+        inset 0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 25px rgba(255, 255, 255, 0.8);
+}
+
+::-webkit-scrollbar-thumb:active {
+    box-shadow: 
+        inset 0 0 25px rgba(255, 255, 255, 0.9),
+        0 0 35px rgba(255, 255, 255, 1);
+}
+
+/* Tlačítka scrollbaru (Chrome, Edge, Opera) */
+::-webkit-scrollbar-button {
+    background: #330033;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: 16px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-button:hover {
+    background: #ff00ff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+}
+
+/* Rohový kousek (když jsou oba scrollbary) */
+::-webkit-scrollbar-corner {
+    background: #1a0033;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   FIREFOX
+   ============================================ */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #ff00ff #1a0033;
+}
+
+/* Firefox - experimentální podpora (Firefox 64+) */
+html {
+    scrollbar-color: #ff00ff #1a0033;
+    scrollbar-width: thin;
+}
+
+body {
+    scrollbar-color: #ff00ff #1a0033;
+    scrollbar-width: thin;
+}
+
+/* ============================================
+   STARŠÍ INTERNET EXPLORER / EDGE LEGACY (fallback)
+   ============================================ */
+
+body {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scrollbar-face-color: #ff00ff;
+    scrollbar-track-color: #1a0033;
+    scrollbar-arrow-color: #ff00ff;
+    scrollbar-shadow-color: #000000;
+}
+
+/* ============================================
+   MOBILNÍ ZAŘÍZENÍ (iOS Safari, Chrome Mobile)
+   ============================================ */
+
+@media (max-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        border: 2px solid #0a0a0a;
+    }
+    
+    * {
+        scrollbar-width: auto; /* Firefox mobil */
+    }
+}
+
+/* iOS Safari specifické */
+@supports (-webkit-touch-callout: none) {
+    ::-webkit-scrollbar {
+        width: 14px;
+        height: 14px;
+    }
+}

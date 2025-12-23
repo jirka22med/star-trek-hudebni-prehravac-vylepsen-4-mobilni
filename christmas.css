@@ -1,0 +1,75 @@
+/* 🎄 VÁNOČNÍ PROTOKOL STAR TREK 🎄 */
+/* Tento styl přepíše barvy na sváteční mod */
+
+:root {
+    /* Vánoční paleta */
+    --primary-color: #D42426;       /* Vánoční červená */
+    --secondary-color: #2F9E44;     /* Stromečková zelená */
+    --accent-color: #FFD700;        /* Zlatá hvězda */
+    
+    /* Atmosférické pozadí */
+    --background-dark: #1a0505;     /* Velmi tmavá červená (místo modré) */
+    --background-light: #2d0a0a;    
+    
+    /* Sváteční záře */
+    --glow-effect: 0 0 15px rgba(212, 36, 38, 0.6);
+}
+
+/* Úprava nadpisu - Zlatá a Červená */
+.header-title {
+    background: linear-gradient(45deg, #FFD700, #D42426, #2F9E44);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Sváteční tlačítka */
+button, .control-button {
+    border-color: #2F9E44;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+button:hover, .control-button:hover {
+    background: #D42426; /* Červená při najetí */
+    color: white;
+    box-shadow: 0 0 15px #D42426;
+}
+
+/* Aktivní tlačítka svítí zlatě */
+#play-button.active, #pause-button.active {
+    background-color: #FFD700;
+    color: #000;
+    box-shadow: 0 0 20px #FFD700;
+}
+
+/* Posuvník jako cukrová hůlka */
+#progress-bar::-webkit-slider-thumb {
+    background: repeating-linear-gradient(
+        45deg,
+        #D42426,
+        #D42426 3px,
+        #ffffff 3px,
+        #ffffff 6px
+    );
+    border: 1px solid #FFD700;
+    transform: scale(1.2);
+}
+
+/* 3D Tlačítko (Specialita) */
+#spatial-audio-toggle.active {
+    background-color: #2F9E44 !important; /* Vánoční zelená pro 3D */
+    color: white !important;
+    box-shadow: 0 0 15px #2F9E44 !important;
+}
+
+/* Efekt sněžení na pozadí playlistu */
+.playlist {
+    border-color: #D42426;
+    background: linear-gradient(to bottom, #2d0a0a, #1a0505);
+}
+
+.playlist-item.active {
+    background: linear-gradient(90deg, #D42426, #2F9E44) !important;
+    border-left: 4px solid #FFD700 !important;
+    color: white !important;
+}

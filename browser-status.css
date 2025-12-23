@@ -1,0 +1,29 @@
+/* --- Desktop verze (Scroluje se stránkou) --- */
+.ukazatel {
+    position: absolute;      /* ZMĚNA: Teď se bude hýbat se stránkou */
+    top: 15px;               
+    left: 15px; 
+    background: linear-gradient(135deg, rgba(0,20,40,0.95), rgba(10,0,30,0.95));
+    color: #00ffff; 
+    padding: 12px 20px; 
+    border-radius: 10px; 
+    z-index: 9999;
+    border: 2px solid #00ffff; 
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4), inset 0 0 15px rgba(0, 255, 255, 0.1);
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* --- Mobilní úprava --- */
+@media screen and (max-width: 768px) {
+    .ukazatel {
+        position: absolute;      /* ZMĚNA: Teď se bude hýbat se stránkou */
+        top: 10px;      
+        left: 2px;      
+        padding: 10px 8px;
+        font-size: 8px;
+        border-width: 1px;
+         
+    }
+}
