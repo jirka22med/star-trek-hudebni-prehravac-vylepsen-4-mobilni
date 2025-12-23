@@ -100,7 +100,7 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'Zobrazí oblíbené skladby'
     },
-    'open-playlist-manager': {
+    'playlist-manager-button': {
         name: '🎛️ Správa playlistu',
         category: 'Pokročilé',
         essential: false,
@@ -450,8 +450,12 @@ const BUTTON_CONFIG = {
         description: 'zapíná a vipíná logování'
         },
     
-     
-      
+     'uprava-barev-moldar-system': {
+      name: 'uprava barev UI',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'pokročilí moldar systém pro přebarvení UI track title'
+        },
 };
 
 // --- Defaultní viditelnost tlačítek ---
@@ -470,7 +474,7 @@ const DEFAULT_VISIBILITY = {
     'reload-button': false,
     'timer-button': true,
     'favorites-button': true,
-    'open-playlist-manager': true,
+    'playlist-manager-button': true,
     'playlist-settings-button': true,
     'auto-fade-button': true,
     'timer-start': true,
@@ -533,6 +537,8 @@ const DEFAULT_VISIBILITY = {
     'debug-manager-button': false,
     
     'bluetooth-monitor-toggle': false,
+    
+    'uprava-barev-moldar-system': false,
 };
  
 
