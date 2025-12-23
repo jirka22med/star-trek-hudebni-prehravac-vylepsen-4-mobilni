@@ -1,5 +1,5 @@
 /**
- * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE
+ * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE   
  * Více admirál Jiřík & Admirál Claude.AI
  * ✅ OPRAVENO: Nekonečná rekurze ve funkci initializeButtonVisibilityManager
  * Verze: 1.2 (DebugManager Integration)
@@ -1666,3 +1666,4 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
