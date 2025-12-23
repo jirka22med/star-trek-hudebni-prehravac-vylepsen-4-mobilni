@@ -7,7 +7,7 @@
     'use strict';
 
     // 🔥 HLAVNÍ PŘEPÍNAČ DIAGNOSTIKY - ZAPNUTO
-    const DEBUG_COLOUDE_FIRESTORE = true; 
+    const DEBUG_COLOUDE_FIRESTORE = false; 
 
     // --- 1. KONFIGURACE (SECURE LINK) ---
     const firebaseConfig = {
@@ -359,5 +359,6 @@ window.savePlaylistToFirestore = async function(tracks) {
     }
 
     console.log("%c🖖 audioFirebaseFunctions (V3.1 DIAGNOSTIC): Logování zapnuto. Sleduj konzoli!", "color: yellow; font-size: 14px; background: #000; padding: 10px; border: 2px solid yellow;");
+
 
 })();
