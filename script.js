@@ -988,48 +988,58 @@ document.addEventListener('click', e => {
     }
 });
 
-// --- Device Detection a UI Adjustments ---
+// --- Device Detection a UI Adjustments (VERZE BEZ LOCALSTORAGE) ---
 function detectDeviceType() {
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
     const userAgent = navigator.userAgent.toLowerCase();
+    
+    // Senzory pracují v reálném čase bez ukládání do paměti lodi
     const deviceInfo = {
         isInfinixNote30: (screenWidth <= 420 && screenHeight >= 800 && (userAgent.includes('infinix') || userAgent.includes('note30') || userAgent.includes('android'))),
+        // Detekce tvého Lenova (1920px > 1600px)
         isLargeMonitor: screenWidth > 1600,
         isMobile: screenWidth <= 768,
         orientation: window.matchMedia("(orientation: landscape)").matches ? 'landscape' : 'portrait'
     };
-    localStorage.setItem('device_isLargeMonitor', deviceInfo.isLargeMonitor.toString());
-    localStorage.setItem('device_isInfinixNote30', deviceInfo.isInfinixNote30.toString());
-    localStorage.setItem('device_isMobile', deviceInfo.isMobile.toString());
-    localStorage.setItem('device_orientation', deviceInfo.orientation);
+
     return deviceInfo;
 }
 
 function adjustPlaylistHeight(isFullscreen = false) {
     if (!DOM.playlist) return;
+    
+    // Pokaždé provedeme čerstvý sken zařízení
     const deviceInfo = detectDeviceType();
-    localStorage.setItem('playlist_isFullscreen', isFullscreen.toString());
+    
     let newHeight = '245px';
+    
     if (deviceInfo.isInfinixNote30) {
-        newHeight = deviceInfo.orientation === 'landscape' ? '240px' : '240px';
+        newHeight = '240px';
     } else if (isFullscreen) {
-        newHeight = deviceInfo.isLargeMonitor ? '427px' : '360px';
+        // 🚀 TVÉ LENOVO: Pokud detekujeme Fullscreen a velký monitor, aplikujeme 900px
+        newHeight = deviceInfo.isLargeMonitor ? '900px' : '360px';
     } else {
+        // Běžný režim na tvém notebooku
         newHeight = deviceInfo.isLargeMonitor ? '360px' : '245px';
     }
+    
+    // Okamžitá aplikace na trup lodi
     DOM.playlist.style.maxHeight = newHeight;
-    localStorage.setItem('playlist_lastHeight', newHeight);
+    
+    // Volitelné: Logování pro tvůj DebugManager, aby admirál viděl, že se výška změnila
+    window.DebugManager?.log('main', `📏 Výška playlistu nastavena na: ${newHeight} (Režim: ${isFullscreen ? 'Fullscreen' : 'Normal'})`);
 }
 
 function restorePreviousSettings() {
     if (!DOM.playlist) return;
-    const lastHeight = localStorage.getItem('playlist_lastHeight');
-    if (lastHeight) {
-        DOM.playlist.style.maxHeight = lastHeight;
-    } else {
-        adjustPlaylistHeight(localStorage.getItem('playlist_isFullscreen') === 'true');
-    }
+
+    // 🛠️ ÚPLNÉ ODSTRANĚNÍ LOCALSTORAGE:
+    // Namísto načítání starých dat prostě zjistíme aktuální stav Fullscreenu
+    const isCurrentlyFullscreen = document.fullscreenElement !== null;
+    
+    // A hned nastavíme správnou výšku podle aktuální situace
+    adjustPlaylistHeight(isCurrentlyFullscreen);
 }
 
 function setBackgroundForDevice() {
@@ -1200,6 +1210,7 @@ window.populatePlaylist = populatePlaylist;
 // 🔥 A PRO JISTOTU I TENTO (pro barvičky a scroll) 🔥
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
 window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyní přístupné pro hlasové ovládání.");
+
 
 
 
