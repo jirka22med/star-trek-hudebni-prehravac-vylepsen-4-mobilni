@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="browser-status.css">   
   <link rel="stylesheet" href="scrollbar.css"> 
   <link rel="stylesheet" href="christmas.css"> 
-
+  <link rel="stylesheet" href="zobrazit-panel-hlasitosti.css">
 <!-- Šťastné a veselé Vánoce v sektoru 001, admirále! Ať ti to hraje! 🎄🚀🖖 -->   
 </head>
 <body>
@@ -103,7 +103,7 @@
  <button id="debug-manager-button">🛠️ DIAGNOSTIKA</button>  
  <button id="bluetooth-monitor-toggle">🛠️ </button>           
  <button id="uprava-barev-moldar-system" title="zobrazit moldar">🎨 UI</button>           
-             
+ <button id="zobrazit-panel-hlasitosti" title="panel-hlasitost">🔊📋</button>            
         </div>
        
           
@@ -137,8 +137,8 @@
   
       </div>
     </div> 
-    <div class="hlavni-kontejner-pro-cas-a-casovac" id="digitalni-hodini-datum" >
-  <div class="time-calendar-wrapper" >
+ <div class="hlavni-kontejner-pro-cas-a-casovac" id="digitalni-hodini-datum">
+  <div class="time-calendar-wrapper">
     <div class="time">
       <div class="time-colon"><div class="time-text"><span class="num hours">00</span><span class="text">H</span></div></div>
       <span class="colon">:</span>
@@ -151,54 +151,25 @@
 
   <div class="timer-container" id="timer-container">
     <div class="timer-display">
-      <span id="timer-minutes">15</span>:<span id="timer-seconds">00</span>
+      <span id="timer-minutes">00</span>:<span id="timer-seconds">00</span>
     </div>
     
     <div class="timer-controls">
-      <!-- Start/Stop tlačítka -->
+      <!-- Vstupní pole pro minuty -->
+      <input 
+        type="number" 
+        id="timer-input" 
+        placeholder="Zadej minuty" 
+        min="1"
+        value="15"
+      />
+      
+      <!-- Ovládací tlačítka -->
       <button id="timer-start">▶️ Start</button>
       <button id="timer-stop">⏹️ Stop</button>
-      
-      <!-- Časovač 1-10 minut -->
-      <button id="timer-1">1️⃣ 1 min</button>
-      <button id="timer-2">2️⃣ 2 min</button>
-      <button id="timer-3">3️⃣ 3 min</button>
-      <button id="timer-4">4️⃣ 4 min</button>
-      <button id="timer-5">5️⃣ 5 min</button>
-      <button id="timer-6">6️⃣ 6 min</button>
-      <button id="timer-7">7️⃣ 7 min</button>
-      <button id="timer-8">8️⃣ 8 min</button>
-      <button id="timer-9">9️⃣ 9 min</button>
-      <button id="timer-10">🔟 10 min</button>
-      
-      <!-- Časovač 11-20 minut -->
-      <button id="timer-11">1️⃣1️⃣ 11 min</button>
-      <button id="timer-12">1️⃣2️⃣ 12 min</button>
-      <button id="timer-13">1️⃣3️⃣ 13 min</button>
-      <button id="timer-14">1️⃣4️⃣ 14 min</button>
-      <button id="timer-15">1️⃣5️⃣ 15 min</button>
-      <button id="timer-16">1️⃣6️⃣ 16 min</button>
-      <button id="timer-17">1️⃣7️⃣ 17 min</button>
-      <button id="timer-18">1️⃣8️⃣ 18 min</button>
-      <button id="timer-19">1️⃣9️⃣ 19 min</button>
-      <button id="timer-20">2️⃣0️⃣ 20 min</button>
-      
-      <!-- Časovač 21-30 minut -->
-      <button id="timer-21">2️⃣1️⃣ 21 min</button>
-      <button id="timer-22">2️⃣2️⃣ 22 min</button>
-      <button id="timer-23">2️⃣3️⃣ 23 min</button>
-      <button id="timer-24">2️⃣4️⃣ 24 min</button>
-      <button id="timer-25">2️⃣5️⃣ 25 min</button>
-      <button id="timer-26">2️⃣6️⃣ 26 min</button>
-      <button id="timer-27">2️⃣7️⃣ 27 min</button>
-      <button id="timer-28">2️⃣8️⃣ 28 min</button>
-      <button id="timer-29">2️⃣9️⃣ 29 min</button>
-      <button id="timer-30">3️⃣0️⃣ 30 min</button>
-      
-      <!-- Bonusové časovače (pokud chceš) -->
-      <button id="timer-60">6️⃣0️⃣ 60 min</button>
+      <button id="timer-reset">🔄 Reset</button>
     </div>
-</div>
+  </div>
 </div>
         <!-- Mám nastaveno v buttonVisibilityManager.js >> pouze jen id popisky to mi skrývá celý tento blok až po <canvas id="waveform-canvas"></canvas> -->
        <div class="keyboard-container">
@@ -336,10 +307,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
 
     
- <script src="audioFirebaseFunctions.js"></script>    
+     
 <!-- Hlavní přehrávač - inicializuje globální proměnné (window.tracks, window.favorites) -->
  
-    
+  <script src="audioFirebaseFunctions.js"></script>   
 <script src="DebugManager.js"></script>
 <!-- Data playlistu - naplňuje window.tracks -->
  <script src="script.js"></script>
@@ -357,7 +328,7 @@
   <script src="universalni-perfomens-monitor.js" defer></script>
 
 <!-- Debug wrapper -->
-    <script src="jirkuv-hlidac.js" defer></script>   
+<!--   <script src="jirkuv-hlidac.js" defer></script>  -->
 
 <!-- Audio vizualizace / Tone Meter -->
    <script src="audiou-vizuace.js" defer></script>  
@@ -400,7 +371,7 @@
     <script src="prednacitani-pisnicek.js" defer></script>  
    <script src="scrollbar.js" defer></script>  
     <script src="colorManager.js"></script>  
-     
+   <script src="timer-module.js"></script>   
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('browser-info').textContent = detectBrowser();
@@ -413,14 +384,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
 });
 </script>    
-    
-    
 </body>
 </html>
-
-
-
-
-
-
-
