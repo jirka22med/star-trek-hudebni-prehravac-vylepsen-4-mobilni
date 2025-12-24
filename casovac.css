@@ -84,6 +84,88 @@
     }
 }
 
+/* ============================================ */
+/* 🆕 VSTUPNÍ POLE PRO ZADÁNÍ ČASU */
+/* ============================================ */
+
+#timer-input {
+    /* Rozměry */
+    width: 100%;
+    max-width: 200px;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+    
+    /* Typography */
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    color: #ff6b35;
+    text-align: center;
+    letter-spacing: 2px;
+    
+    /* LCARS pozadí */
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 30, 48, 0.9));
+    
+    /* Border & Radius */
+    border: 2px solid #ff6b35;
+    border-radius: 10px;
+    
+    /* Shadows */
+    box-shadow: 
+        inset 0 0 10px rgba(255, 107, 53, 0.3),
+        0 0 15px rgba(255, 107, 53, 0.4);
+    
+    /* Přechody */
+    transition: all 0.3s ease;
+    
+    /* Odstranění šipek u number inputu */
+    -moz-appearance: textfield;
+}
+
+/* Odstranění šipek v Chrome, Safari, Edge */
+#timer-input::-webkit-outer-spin-button,
+#timer-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hover stav vstupního pole */
+#timer-input:hover {
+    border-color: #ffcc00;
+    box-shadow: 
+        inset 0 0 15px rgba(255, 204, 0, 0.3),
+        0 0 20px rgba(255, 204, 0, 0.5);
+}
+
+/* Focus stav vstupního pole */
+#timer-input:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 
+        inset 0 0 15px rgba(40, 167, 69, 0.4),
+        0 0 25px rgba(40, 167, 69, 0.6);
+    transform: scale(1.02);
+}
+
+/* Placeholder text */
+#timer-input::placeholder {
+    color: rgba(255, 107, 53, 0.5);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* Disabled stav */
+#timer-input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #666;
+    box-shadow: none;
+}
+
+/* ============================================ */
+/* KONEC VSTUPNÍHO POLE */
+/* ============================================ */
+
 /* --- Grid tlačítek časovače --- */
 .timer-controls {
     display: grid;
@@ -95,7 +177,7 @@
     justify-items: center;
 }
 
-/* Responzivní breakpointy */
+/*Responzivní breakpointy */
 @media (max-width: 768px) {
     .timer-controls {
         grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
@@ -140,6 +222,9 @@
     
     /* Text shadow pro lepší čitelnost */
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    
+    /* Opacity pro neaktivní stav */
+    position: relative;
 }
 
 /* --- Hover efekt --- */
@@ -170,6 +255,96 @@
     box-shadow: none !important;
 }
 
+/* ============================================ */
+/* 🆕 AKTIVNÍ A NEAKTIVNÍ STAVY TLAČÍTEK */
+/* ============================================ */
+
+/* NEAKTIVNÍ stav (výchozí) */
+.timer-controls button:not(.active) {
+    opacity: 0.8;
+}
+
+.timer-controls button:not(.active):hover {
+    opacity: 1;
+}
+
+/* AKTIVNÍ stav START tlačítka (když časovač běží) */
+#timer-start.active {
+    background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%) !important;
+    border-color: #ffcc00 !important;
+    box-shadow: 
+        0 0 25px rgba(255, 204, 0, 0.8),
+        inset 0 0 15px rgba(255, 255, 255, 0.4) !important;
+    animation: activeStartGlow 1.5s ease-in-out infinite;
+    opacity: 1 !important;
+}
+
+@keyframes activeStartGlow {
+    0%, 100% {
+        box-shadow: 
+            0 0 25px rgba(255, 204, 0, 0.8),
+            inset 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        box-shadow: 
+            0 0 35px rgba(255, 204, 0, 1),
+            inset 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* NEAKTIVNÍ stav START tlačítka (když časovač neběží) */
+#timer-start:not(.active) {
+    opacity: 0.9;
+}
+
+/* AKTIVNÍ stav STOP tlačítka (když časovač běží) */
+#timer-stop.active {
+    background: linear-gradient(135deg, #ff1744 0%, #d50000 100%) !important;
+    border-color: #ff1744 !important;
+    box-shadow: 
+        0 0 25px rgba(255, 23, 68, 0.8),
+        inset 0 0 15px rgba(255, 255, 255, 0.3) !important;
+    animation: activeStopPulse 1s ease-in-out infinite;
+    opacity: 1 !important;
+}
+
+@keyframes activeStopPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 25px rgba(255, 23, 68, 0.8),
+            inset 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 
+            0 0 35px rgba(255, 23, 68, 1),
+            inset 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+}
+
+/* NEAKTIVNÍ stav STOP tlačítka (když časovač neběží) */
+#timer-stop:not(.active) {
+    opacity: 0.6;
+}
+
+/* AKTIVNÍ stav RESET tlačítka (když časovač běží) */
+#timer-reset.active {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%) !important;
+    border-color: #2196f3 !important;
+    box-shadow: 
+        0 0 20px rgba(33, 150, 243, 0.6),
+        inset 0 0 10px rgba(255, 255, 255, 0.3) !important;
+    opacity: 1 !important;
+}
+
+/* NEAKTIVNÍ stav RESET tlačítka (když časovač neběží) */
+#timer-reset:not(.active) {
+    opacity: 0.7;
+}
+
+/* ============================================ */
+/* KONEC AKTIVNÍCH/NEAKTIVNÍCH STAVŮ */
+/* ============================================ */
+
 /* --- START tlačítko (zelené) --- */
 #timer-start {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -194,6 +369,19 @@
     background: linear-gradient(135deg, #fc5565 0%, #e84353 100%);
     box-shadow: 0 6px 20px rgba(220, 53, 69, 0.5);
     border-color: #dc3545;
+}
+
+/* --- RESET tlačítko (modré) --- */
+#timer-reset {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    border-color: rgba(33, 150, 243, 0.5);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+#timer-reset:hover {
+    background: linear-gradient(135deg, #42a6f3 0%, #3986e2 100%);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+    border-color: #2196f3;
 }
 
 /* --- Aktivní časovač tlačítko --- */
@@ -247,6 +435,12 @@
     
     .timer-container {
         padding: 15px;
+    }
+    
+    #timer-input {
+        max-width: 150px;
+        font-size: 1rem;
+        padding: 10px 15px;
     }
 }
 
