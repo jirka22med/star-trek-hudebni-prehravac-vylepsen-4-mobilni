@@ -241,33 +241,36 @@ class MediaSessionManager {
     }
 }
 
-// --- Quick Volume Controls Manager ---
+// --- Quick Volume Controls Manager (Opravená kalibrace) ---
+// --- Quick Volume Controls Manager (Toggle Edition) ---
 class QuickVolumeManager {
     constructor() {
-        this.presets = [0, 30, 50, 70, 100];
+        // Presety odpovídající pozici slideru
+        this.presets = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
         this.container = null;
         this.buttons = [];
+        this.isVisible = false; // Stav viditelnosti
     }
 
-    /**
-     * Vytvoření UI pro rychlé přepínače hlasitosti
-     */
     createUI() {
-        // Vytvoření containeru
+        // 1. Vytvoření kontejneru
         this.container = document.createElement('div');
         this.container.id = 'quick-volume-controls';
         this.container.className = 'quick-volume-container';
+        
+        // 🕵️ VÝCHOZÍ STAV: SKRYTO (Maskování zapnuto)
+        this.container.style.display = 'none'; 
 
         const buttonsContainer = document.createElement('div');
         buttonsContainer.className = 'quick-volume-buttons';
 
-        // Vytvoření tlačítek pro každou úroveň
+        // 2. Vytvoření tlačítek presetů
         this.presets.forEach(percent => {
             const button = document.createElement('button');
             button.className = 'quick-volume-button';
             button.dataset.volume = percent;
-            button.textContent = `${percent}%`;
-            button.title = `Nastavit hlasitost na ${percent}%`;
+            button.textContent = `${percent}`;
+            button.title = `Nastavit posuvník na ${percent}%`;
             
             button.addEventListener('click', () => this.setVolume(percent));
             
@@ -277,82 +280,95 @@ class QuickVolumeManager {
 
         this.container.appendChild(buttonsContainer);
 
-        // Přidání do control panelu (hledáme volume slider nebo jeho rodičovský kontejner)
+        // 3. Vložení do DOMu (vedle slideru nebo do panelu)
         const volumeSlider = document.getElementById('volume-slider');
         const controlPanel = document.getElementById('control-panel');
         
         if (volumeSlider && volumeSlider.parentElement) {
-            // Vložíme za element obsahující volume slider
             volumeSlider.parentElement.parentElement.insertBefore(
                 this.container, 
                 volumeSlider.parentElement.nextSibling
             );
-            window.DebugManager?.log('interface', 'QuickVolumeManager: UI vytvořeno vedle volume slideru');
         } else if (controlPanel) {
-            // Záložní varianta - přidáme na konec control panelu
             controlPanel.appendChild(this.container);
-            window.DebugManager?.log('interface', 'QuickVolumeManager: UI vytvořeno v control panelu');
+        }
+
+        // 4. 🔗 NAPOJENÍ NA TVÉ TLAČÍTKO (zobrazit-panel-hlasitosti)
+        const toggleButton = document.getElementById('zobrazit-panel-hlasitosti');
+        if (toggleButton) {
+            window.DebugManager?.log('interface', 'QuickVolume: Tlačítko pro zobrazení nalezeno a připojeno.');
+            
+            toggleButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleVisibility();
+                // Vizuální efekt aktivního tlačítka
+                toggleButton.classList.toggle('active', this.isVisible);
+            });
         } else {
-            console.error('QuickVolumeManager: Nelze najít vhodné místo pro umístění UI');
+            console.warn('QuickVolumeManager: Tlačítko #zobrazit-panel-hlasitosti nenalezeno!');
         }
     }
 
     /**
-     * Nastavení hlasitosti
+     * Přepínání viditelnosti panelu (Maskování ON/OFF)
      */
+    toggleVisibility() {
+        this.isVisible = !this.isVisible;
+        this.container.style.display = this.isVisible ? 'block' : 'none';
+        
+        if (this.isVisible) {
+            // Animace příletu (pokud máš CSS transition)
+            this.container.style.animation = 'fadeIn 0.3s ease-out';
+        }
+        
+        window.DebugManager?.log('interface', `QuickVolume: Panel ${this.isVisible ? 'ODMASKOVÁN' : 'ZAMASKOVÁN'}`);
+    }
+
     setVolume(percent) {
         const audioPlayer = document.getElementById('audioPlayer');
         const volumeSlider = document.getElementById('volume-slider');
         
-        if (!audioPlayer || !volumeSlider) {
-            console.error('QuickVolumeManager: Audio player nebo slider nenalezen');
-            return;
-        }
+        if (!audioPlayer || !volumeSlider) return;
 
-        const volumeValue = percent / 100;
-        const sliderValue = Math.pow(volumeValue, 1/3); // Inverzní logaritmická křivka
+        // Výpočet: Procenta -> Slider -> Hlasitost^3
+        const sliderValue = percent / 100;
+        const volumeValue = Math.pow(sliderValue, 3);
         
         volumeSlider.value = sliderValue;
         audioPlayer.volume = volumeValue;
         audioPlayer.muted = false;
 
-        // Aktualizace vizuálního stavu
         this.updateActiveButton(percent);
-        
-        // Trigger update zobrazení
         volumeSlider.dispatchEvent(new Event('input'));
         
         if (window.showNotification) {
-            window.showNotification(`Hlasitost: ${percent}%`, 'info', 1000);
+            window.showNotification(`Posuvník: ${percent}%`, 'info', 1000);
         }
-        
-        window.DebugManager?.log('interface', `QuickVolumeManager: Hlasitost nastavena na ${percent}%`);
     }
 
-    /**
-     * Aktualizace aktivního tlačítka
-     */
     updateActiveButton(currentPercent) {
         this.buttons.forEach(button => {
             const buttonPercent = parseInt(button.dataset.volume);
-            button.classList.toggle('active', buttonPercent === currentPercent);
+            const isActive = Math.abs(buttonPercent - currentPercent) <= 1;
+            button.classList.toggle('active', isActive);
         });
     }
 
-    /**
-     * Synchronizace s volume sliderem
-     */
     syncWithSlider(audioPlayer) {
         const volumeSlider = document.getElementById('volume-slider');
         if (!volumeSlider) return;
 
         const updateFromSlider = () => {
-            const currentVolume = Math.round(audioPlayer.volume * 100);
-            this.updateActiveButton(currentVolume);
+            const currentSliderPercent = Math.round(volumeSlider.value * 100);
+            this.updateActiveButton(currentSliderPercent);
         };
 
         volumeSlider.addEventListener('input', updateFromSlider);
-        audioPlayer.addEventListener('volumechange', updateFromSlider);
+        audioPlayer.addEventListener('volumechange', () => {
+             const sliderValFromVol = Math.pow(audioPlayer.volume, 1/3) * 100;
+             this.updateActiveButton(Math.round(sliderValFromVol));
+        });
     }
 }
 
@@ -464,8 +480,8 @@ class InterfaceManager {
         this.mediaSession.initialize(this.audioPlayer);
 
         // Quick Volume UI - deaktivováno na žádost více admirála
-        // this.quickVolume.createUI();
-        // this.quickVolume.syncWithSlider(this.audioPlayer);
+          this.quickVolume.createUI(); //
+          this.quickVolume.syncWithSlider(this.audioPlayer); //
 
         // Inicializace Enhanced Progress
         this.progressManager = new EnhancedProgressManager(this.audioPlayer);
