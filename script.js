@@ -1010,7 +1010,7 @@ function adjustPlaylistHeight(isFullscreen = false) {
     // 📱 PRIORITA #2: INFINIX NOTE 30
     // ═══════════════════════════════════════════════════════
     else if (device.isInfinixNote30) {
-        newHeight = '260px';  // 4 skladby //260px
+        newHeight = '100px';  // 4 skladby //260px
         expectedTracks = 4;
         deviceName = '📱 Infinix Note 30';
     }
@@ -1313,4 +1313,5 @@ window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyn�
 
 
 })(); // KONEC IIFE - Vše je izolované
+
 
