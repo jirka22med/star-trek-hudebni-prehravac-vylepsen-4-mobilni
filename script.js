@@ -35,21 +35,7 @@ const DOM = {
     },
     currentDate: document.getElementById('currentDate'),
     syncStatus: document.querySelector('.sync-status-container'),
-    timer: {
-        button: document.getElementById('timer-button'),
-        container: document.getElementById('timer-container'),
-        minutes: document.getElementById('timer-minutes'),
-        seconds: document.getElementById('timer-seconds'),
-        start: document.getElementById('timer-start'),
-        stop: document.getElementById('timer-stop'),
-        presets: {
-'timer-1': 1, 'timer-2': 2, 'timer-3': 3, 'timer-4': 4,'timer-5': 5, 'timer-6': 6, 'timer-7': 7, 'timer-8': 8,
-'timer-9': 9, 'timer-10': 10,
-'timer-11': 11, 'timer-12': 12, 'timer-13': 13, 'timer-14': 14, 'timer-15': 15, 'timer-16': 16, 'timer-17': 17,
-'timer-18': 18, 'timer-19': 19, 'timer-20': 20, 'timer-21': 21, 'timer-22': 22, 'timer-23': 23, 'timer-24': 24,
-'timer-25': 25, 'timer-26': 26, 'timer-27': 27, 'timer-28': 28, 'timer-29': 29, 'timer-30': 30, 'timer-60': 60,
-        }
-    },
+     
     favoritesButton: document.createElement('button'),
     favoritesMenu: document.createElement('div')
 };
@@ -843,73 +829,7 @@ function addEventListeners() {
     });
 }
 
-// --- Časovač ---
-function updateTimerDisplay() {
-    if (!DOM.timer.minutes || !DOM.timer.seconds) return;
-    const minutes = Math.floor(timerValueInSeconds / 60);
-    const seconds = timerValueInSeconds % 60;
-    DOM.timer.minutes.textContent = String(minutes).padStart(2, '0');
-    DOM.timer.seconds.textContent = String(seconds).padStart(2, '0');
-}
-
-function countdown() {
-    if (timerValueInSeconds > 0) {
-        timerValueInSeconds--;
-        updateTimerDisplay();
-    } else {
-        clearInterval(timerInterval);
-        isTimerRunning = false;
-        DOM.timer.button?.classList.remove('active');
-        if (DOM.audioPlayer) DOM.audioPlayer.pause();
-        updateButtonActiveStates(false);
-        const alertSound = new Audio('https://www.dropbox.com/scl/fi/l1oliluc949s1sviouuo0/odpocet-10-sekund.mp3?rlkey=yp6fc9llz7em9a7p4bjtsq6aw&st=5z2v667o&dl=1');
-        alertSound.play().catch(e => {
-            if (window.DebugManager?.isEnabled('main')) {
-                console.error('Chyba přehrání zvuku časovače:', e);
-            }
-        });
-        window.showNotification('🖖 Časovač vypršel! Přehrávání zastaveno.', 'info', 5000);
-    }
-}
-
-function setTimerValue(minutes) {
-    timerValueInSeconds = minutes * 60;
-    updateTimerDisplay();
-}
-
-DOM.timer.button?.addEventListener('click', () => {
-    DOM.timer.container.style.display = DOM.timer.container.style.display === 'none' ? 'flex' : 'none';
-    DOM.timer.button.classList.toggle('active', DOM.timer.container.style.display === 'flex');
-});
-
-DOM.timer.start?.addEventListener('click', () => {
-    if (!isTimerRunning && timerValueInSeconds > 0) {
-        clearInterval(timerInterval);
-        timerInterval = setInterval(countdown, 1000);
-        isTimerRunning = true;
-        DOM.timer.button?.classList.add('active');
-    } else if (isTimerRunning) {
-        window.showNotification("Časovač již běží.", 'warn');
-    } else {
-        window.showNotification("Časovač je na nule, nastavte novou hodnotu.", 'warn');
-    }
-});
-
-DOM.timer.stop?.addEventListener('click', () => {
-    clearInterval(timerInterval);
-    isTimerRunning = false;
-    window.showNotification("Časovač zastaven.", 'info');
-});
-
-Object.entries(DOM.timer.presets).forEach(([id, minutes]) => {
-    const btn = document.getElementById(id);
-    btn?.addEventListener('click', () => {
-        setTimerValue(minutes);
-        if (!isTimerRunning) {
-            window.showNotification(`Časovač nastaven na ${minutes} minut. Klikněte na Start!`, 'info');
-        }
-    });
-});
+ 
 
 // --- Menu Oblíbených ---
 DOM.favoritesButton.id = 'favorites-button';
@@ -988,7 +908,6 @@ document.addEventListener('click', e => {
     }
 });
 
-// --- Device Detection a UI Adjustments (VERZE BEZ LOCALSTORAGE) ---
 // --- Device Detection a UI Adjustments ---
 // ═══════════════════════════════════════════════════════════
 // 🚀 ADAPTIVNÍ VÝŠKA PLAYLISTU - FINÁLNÍ VERZE 🚀
@@ -1305,7 +1224,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateActiveTrackVisuals();
     restorePreviousSettings();
     restorePreviousBackground();
-    updateTimerDisplay();
+    //updateTimerDisplay();
     addEventListeners();
     setTimeout(() => {
         if (DOM.playlist) {
@@ -1393,6 +1312,4 @@ window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyn�
 
 
 
-
 })(); // KONEC IIFE - Vše je izolované
-
