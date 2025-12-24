@@ -1,8 +1,8 @@
 /**
- * 🖖 CENTRÁLNÍ DEBUG KONZOLE V4.0 - STAR TREK LCARS
+ * 🖖 CENTRÁLNÍ DEBUG KONZOLE V4.1 - STAR TREK LCARS
  * Autor: Admirál Claude.AI pro více admirála Jiříka
- * Verze: 4.0 (Robustní - přímé Firebase API)
- * Popis: Funguje i když window.db neexistuje!
+ * Verze: 4.1 (Oprava persistence checkboxů)
+ * Fix: Fajfky se nyní ukládají a načítají správně z Cloudu
  */
 
 (function() {
@@ -39,7 +39,7 @@
 
     // --- INICIALIZACE (ROBUSTNÍ PŘÍSTUP) ---
     async function initialize() {
-        console.log("%c🖖 DebugManager V4.0: Startuji...", "color: #FF9900; font-size: 14px; font-weight: bold");
+        console.log("%c🖖 DebugManager V4.1: Startuji...", "color: #FF9900; font-size: 14px; font-weight: bold");
         
         // Nejdřív načteme výchozí hodnoty
         resetToDefaults();
@@ -48,7 +48,7 @@
         // Pak zkusíme připojit cloud (na pozadí)
         await attemptCloudConnection();
         
-        console.log("%c🖖 DebugManager V4.0 připraven! ✅", "color: #00FF00; font-weight: bold; font-size: 14px");
+        console.log("%c🖖 DebugManager V4.1 připraven! ✅", "color: #00FF00; font-weight: bold; font-size: 14px");
         console.log("%c   Klávesa: Ctrl+Shift+D | Tlačítko: #debug-manager-button", "color: #FFCC00; font-size: 12px");
     }
 
@@ -119,8 +119,12 @@
                 const cloudData = doc.data();
                 console.log("%c🖖 Cloud: ✅ Konfigurace načtena", "color: #00FF00", cloudData);
                 applyConfig(cloudData);
-                // Po načtení z cloudu aktualizujeme checkboxy (pokud je UI otevřené)
-                updateCheckboxes();
+                
+                // 🔥 OPRAVA: Checkboxy se aktualizují JEN pokud je UI otevřené
+                // Pokud UI ještě neexistuje, aktualizace proběhne při jeho otevření
+                if (document.getElementById('debug-manager-overlay')) {
+                    updateCheckboxes();
+                }
             } else {
                 console.log("%c🖖 Cloud: ℹ️ Dokument neexistuje, vytvářím nový", "color: #FFCC00");
                 await saveToCloud(true);
@@ -170,7 +174,7 @@
         Object.keys(MODULES_CONFIG).forEach(key => {
             debugState[key] = loadedConfig[key] !== undefined ? loadedConfig[key] : MODULES_CONFIG[key].default;
         });
-        updateCheckboxes();
+        // 🔥 ODSTRANIT: updateCheckboxes() se nevolá tady, ale až při otevření UI
     }
 
     function resetToDefaults() {
@@ -205,19 +209,22 @@
             isOverlayVisible = !isOverlayVisible;
             existingOverlay.style.display = isOverlayVisible ? 'flex' : 'none';
             if (isOverlayVisible) {
+                // 🔥 KLÍČOVÁ OPRAVA: Checkboxy se aktualizují PŘI KAŽDÉM OTEVŘENÍ UI
                 updateCheckboxes();
                 updateConnectionStatus(isCloudReady, isCloudReady ? "Online" : "Offline");
             }
         } else {
             createOverlay();
             isOverlayVisible = true;
+            // 🔥 NOVÉ: Po vytvoření UI hned aktualizujeme checkboxy
+            updateCheckboxes();
         }
     }
 
     function updateConnectionStatus(connected, text) {
         const statusEl = document.getElementById('dm-cloud-status');
         if (statusEl) {
-            const icon = connected ? '☁️' : (text === 'Offline' ? '📴' : '⚠️');
+            const icon = connected ? '☁️' : (text === 'Offline' ? '🔴' : '⚠️');
             statusEl.innerHTML = `${icon} ${text}`;
             statusEl.style.color = connected ? '#00FF00' : '#FF6600';
             statusEl.title = connected ? "Cloud synchronizace aktivní" : "Pracuji offline";
@@ -255,7 +262,7 @@
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <h2 style="margin: 0; color: #FF9900; text-shadow: 0 0 10px rgba(255, 153, 0, 0.5);">🛠️ DIAGNOSTIKA</h2>
                     <span id="dm-cloud-status" style="font-size: 12px; color: #666; background: #222; padding: 4px 8px; border-radius: 4px;">⏳ Init...</span>
-                    <span style="font-size: 10px; color: #666;">V4.0</span>
+                    <span style="font-size: 10px; color: #666;">V4.1</span>
                 </div>
                 <button id="dm-close" style="background: none; border: none; color: #FF9900; font-size: 28px; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#FFCC00'" onmouseout="this.style.color='#FF9900'">✖</button>
             </div>
@@ -339,7 +346,7 @@
         
         const cloudInfo = isCloudReady 
             ? '<span style="color: #00FF00; font-size: 11px;">☁️ Cloud Firestore</span>' 
-            : '<span style="color: #FF6600; font-size: 11px;">📴 Pouze runtime (bez persistence)</span>';
+            : '<span style="color: #FF6600; font-size: 11px;">🔴 Pouze runtime (bez persistence)</span>';
         
         footer.innerHTML = `
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -401,10 +408,20 @@
     }
 
     function updateCheckboxes() {
+        // 🔥 PŘIDANÁ KONTROLA: Pokud UI neexistuje, neděláme nic
+        if (!document.getElementById('debug-manager-overlay')) {
+            console.log("%c🖖 DebugManager: UI neexistuje, checkboxy se aktualizují při otevření", "color: #FFCC00");
+            return;
+        }
+        
         Object.keys(MODULES_CONFIG).forEach(key => {
             const cb = document.getElementById(`dm-check-${key}`);
-            if (cb) cb.checked = !!debugState[key];
+            if (cb) {
+                cb.checked = !!debugState[key];
+            }
         });
+        
+        console.log("%c🖖 DebugManager: ✅ Checkboxy aktualizovány", "color: #00FF00");
     }
 
     function updateState(key, value) {
