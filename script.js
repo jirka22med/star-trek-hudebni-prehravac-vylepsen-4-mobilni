@@ -997,7 +997,7 @@ function adjustPlaylistHeight(isFullscreen = false) {
     // ═══════════════════════════════════════════════════════
     if (device.isLenovoNotebook) {
         if (isFullscreen) {
-            newHeight = '390px';  // 7 skladeb × 65px
+            newHeight = '366px';  // 7 skladeb × 65px
             expectedTracks = 8;
         } else {
             newHeight = '240px';  // 5 skladeb × 65px
@@ -1010,7 +1010,7 @@ function adjustPlaylistHeight(isFullscreen = false) {
     // 📱 PRIORITA #2: INFINIX NOTE 30
     // ═══════════════════════════════════════════════════════
     else if (device.isInfinixNote30) {
-        newHeight = '100px';  // 4 skladby //260px
+        newHeight = '50px';  // 4 skladby
         expectedTracks = 4;
         deviceName = '📱 Infinix Note 30';
     }
@@ -1020,10 +1020,10 @@ function adjustPlaylistHeight(isFullscreen = false) {
     // ═══════════════════════════════════════════════════════
     else if (device.isMobile) {
         if (isFullscreen) {
-            newHeight = '200px';  // 6 skladeb
+            newHeight = '280px';  // 6 skladeb
             expectedTracks = 6;
         } else {
-            newHeight = '110px';  // 4 skladby //260px
+            newHeight = '184px';  // 4 skladby
             expectedTracks = 4;
         }
         deviceName = '📱 Mobilní zařízení';
@@ -1139,6 +1139,9 @@ if (document.readyState === 'loading') {
 } else {
     restorePreviousSettings();
 }
+// ═══════════════════════════════════════════════════════════
+// 🚀 TADY KONČÍ NASTAVENÍ PLALISTU
+// ═══════════════════════════════════════════════════════════
 
 function setBackgroundForDevice() {
     const deviceInfo = detectDeviceType();
@@ -1313,5 +1316,6 @@ window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyn�
 
 
 })(); // KONEC IIFE - Vše je izolované
+
 
 
