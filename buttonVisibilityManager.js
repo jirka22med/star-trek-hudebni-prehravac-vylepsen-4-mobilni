@@ -1,5 +1,5 @@
 /**
- * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE   
+ * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE
  * Více admirál Jiřík & Admirál Claude.AI
  * ✅ OPRAVENO: Nekonečná rekurze ve funkci initializeButtonVisibilityManager
  * Verze: 1.2 (DebugManager Integration)
@@ -456,6 +456,13 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'pokročilí moldar systém pro přebarvení UI track title'
         },
+    
+    'zobrazit-panel-hlasitosti': {
+    name: 'zobrazit-panel-hlasitosti',
+        category: 'Zobrazení',
+        essential: false,
+        description: 'pokročilí moldar systém pro přebarvení UI track title'
+        },    
 };
 
 // --- Defaultní viditelnost tlačítek ---
@@ -539,6 +546,8 @@ const DEFAULT_VISIBILITY = {
     'bluetooth-monitor-toggle': false,
     
     'uprava-barev-moldar-system': false,
+    
+    'zobrazit-panel-hlasitosti': false,
 };
  
 
@@ -1666,4 +1675,3 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
-
