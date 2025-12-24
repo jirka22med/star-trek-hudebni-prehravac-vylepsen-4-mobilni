@@ -1012,7 +1012,7 @@ function adjustPlaylistHeight(isFullscreen = false) {
     else if (device.isInfinixNote30) {
         newHeight = '50px';  // 4 skladby
         expectedTracks = 4;
-        deviceName = '📱 Infinix Note 30';
+        deviceName = '📱 Mobilní zařízení'; //📱 Infinix Note 30
     }
     
     // ═══════════════════════════════════════════════════════
@@ -1020,13 +1020,13 @@ function adjustPlaylistHeight(isFullscreen = false) {
     // ═══════════════════════════════════════════════════════
     else if (device.isMobile) {
         if (isFullscreen) {
-            newHeight = '280px';  // 6 skladeb
+            newHeight = '296px';  // 6 skladeb
             expectedTracks = 6;
         } else {
             newHeight = '184px';  // 4 skladby
-            expectedTracks = 4;
+            expectedTracks = 5;
         }
-        deviceName = '📱 Mobilní zařízení';
+        deviceName = '📱 Infinix Note 30'; //📱 Mobilní zařízení
     }
     
     // ═══════════════════════════════════════════════════════
@@ -1316,6 +1316,7 @@ window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyn�
 
 
 })(); // KONEC IIFE - Vše je izolované
+
 
 
 
