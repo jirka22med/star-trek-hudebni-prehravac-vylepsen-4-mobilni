@@ -1,6 +1,6 @@
 // 🖖 OCHRANA PLAYLISTU - Zabraňuje přepsání Firestorem
- //window.PLAYLIST_SOURCE = 'myPlaylist.js';
-// window.PLAYLIST_VERSION = new Date().toISOString(); 
+  window.PLAYLIST_SOURCE = 'myPlaylist.js';
+  window.PLAYLIST_VERSION = new Date().toISOString(); 
 // Timestamp změny - generuje se při každém načtení, což je ok pro runtime identifikaci
 
 // 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager
@@ -164,8 +164,11 @@ window.playlistSections = [
   // --- OSTATNÍ SÉRIE ---
   { name: '♾️ Hvězdná Flotila Navždy', start: 221, end: 228 },
   { name: '👶 Děti Hvězd', start: 229, end: 238 },
-  { name: '🎻 Louisiana Sobotní Noc', start: 239, end: 257 },
-  
+  { name: '🎻 Louisiana sobotní noc 1 až 9', start: 239, end: 247 },
+  { name: '🎻 Louisiana sobotní noc 1 až 9', start: 248, end: 257 },
+   //Louisiana sobotní noc 1 až 9
+//Louisiana-sobotni-noc 10 až 19 
+    
   // --- JIRKA SÉRIE ---
   { name: '🎤 Písničky o Jirkovi (Klasická Série 1)', start: 258, end: 261 },
   { name: '🦸 Písničky o Jirkovi (Klasická Série 2)', start: 262, end: 265 },
@@ -198,8 +201,8 @@ window.playlistSections = [
   { name: '✨ Stíny z Utahy (Remastered)', start: 334, end: 335 },
   
   // --- POSLEDNÍ MIXY ---
-  { name: '👬 Jirka a Ondra', start: 336, end: 344 },
-  { name: '🦁 Mohambi', start: 345, end: 352 },
+  { name: '👬 Jirka a Ondra', start: 336, end: 345 },
+  { name: '🦁 Mohambi', start: 346, end: 352 },
   { name: '✨ Mohombi Remastered', start: 353, end: 354 },
   { name: '🏍️ Bumpy Rider Mohombi', start: 355, end: 359 },
   { name: '🐓 Kohout / Mix-Kohout', start: 360, end: 371 },
@@ -566,7 +569,9 @@ window.tracks = [
     
     
     
- //////////////   
+// ═══════════════════════════════════════════════════════════
+// 🎧 HVEZDNA-FLOTILA-NAVZDY
+// ═══════════════════════════════════════════════════════════ 
 { src: 'https://www.dropbox.com/scl/fi/nylusttacfmovfq1n2osf/HVEZDNA-FLOTILA-NAVZDY-v.1.mp3?rlkey=7iw38b8c3wf3apnmknm1rowbn&st=5sbgl2x8&dl=1 ', title: 'HVĚZDNÁ FLOTILA NAVŽDY v.1' },
  { src: 'https://www.dropbox.com/scl/fi/ppbw1dkaxmbyfxicvukl4/HVEZDNA-FLOTILA-NAVZDY-v.2.mp3?rlkey=p26uskhn5l46ugnzml1pcdxrc&st=x6l62vex&dl=1 ', title: 'HVĚZDNÁ FLOTILA NAVŽDY v.2' },
  { src: 'https://www.dropbox.com/scl/fi/6dht2iy7sin5u3f1yzcqe/HVEZDNA-FLOTILA-NAVZDY-v.3.mp3?rlkey=0cb0a43smj0oi6ksobgyo1d2o&st=8x14klct&dl=1 ', title: 'HVĚZDNÁ FLOTILA NAVŽDY v.3' },
@@ -577,7 +582,9 @@ window.tracks = [
  { src: 'https://www.dropbox.com/scl/fi/7bngpfjtk9wmn6212n06r/HVEZDNA-FLOTILA-NAVZDY-v.8.mp3?rlkey=sq1da27fx83ef4dv9mcuslolt&st=oto5ihq7&dl=1 ', title: 'HVĚZDNÁ FLOTILA NAVŽDY v.8' },    
     
     
-  
+ // ═══════════════════════════════════════════════════════════
+// 🎧 Děti hvězd
+// ═══════════════════════════════════════════════════════════  
   { src: 'https://www.dropbox.com/scl/fi/rsq897k3k4syn5e9a207u/nova-pisnicka-1.mp3?rlkey=irtnu8vj5g8lvwti3hb5q5rtx&st=gwe4nd0j&dl=1', title: 'Děti hvězd v.1' },
  { src: 'https://www.dropbox.com/scl/fi/7c0466nxjj2uewu6pldhi/nova-pisnicka-2.mp3?rlkey=q7wbsdwyqj7da4vt3niu6jshx&st=1p0q92sk&dl=1', title: 'Děti hvězd v.2' },
  { src: 'https://www.dropbox.com/scl/fi/g6z44d5wv4njzvrlajp0m/nova-pisnicka-3.mp3?rlkey=43v6iybctgiu8l10l19xxb5sx&st=j02dy0gf&dl=1', title: 'Děti hvězd v.3' },
@@ -589,7 +596,10 @@ window.tracks = [
  { src: 'https://www.dropbox.com/scl/fi/x2g34bc4ytby31s41kv2f/nova-pisnicka-9.mp3?rlkey=zo3h814apvj2xc91rw3t5wedm&st=5nhvjwmw&dl=1', title: 'Děti hvězd v.9' },
  { src: 'https://www.dropbox.com/scl/fi/70hd4e5zeugeo9hnnd1yy/nova-pisnicka-10.mp3?rlkey=ldceoekkji1r9qvky8psvdcn0&st=3l9x5s4g&dl=1', title: 'Děti hvězd v.10' },  
     
-    
+ 
+ // ═══════════════════════════════════════════════════════════
+// 🎧 Louisiana sobotní noc 1 až 9
+// ═══════════════════════════════════════════════════════════    
  { src: 'https://www.dropbox.com/scl/fi/8iyu23gtnh1i3npqfvi6l/Louisiana-sobotni-noc-v.1.mp3?rlkey=a0pirp6pb2mppckyf3t7ceep8&st=ejl11phh&dl=1', title: 'Louisiana sobotní noc v.01' },  
  { src: 'https://www.dropbox.com/scl/fi/q9nrhhs1opwerkp1yvy6k/Louisiana-sobotni-noc-v.2.mp3?rlkey=zxn97h5tuc3yml66ihsvj6a6y&st=2f7wkbrt&dl=1', title: 'Louisiana sobotní noc v.02' },
  { src: 'https://www.dropbox.com/scl/fi/jch31uy83ueqxz4lwslcs/Louisiana-sobotni-noc-v.3.mp3?rlkey=2c9u8hbchlozwve8m296kqxja&st=km89xlx1&dl=1', title: 'Louisiana sobotní noc v.03' },
@@ -600,6 +610,11 @@ window.tracks = [
  { src: 'https://www.dropbox.com/scl/fi/1relupal07hd5ghixpbgs/Louisiana-sobotni-noc-v.8.mp3?rlkey=tity8gk9847dzj7usznzn16kw&st=04whidfi&dl=1', title: 'Louisiana sobotní noc v.08' },
  { src: 'https://www.dropbox.com/scl/fi/g1vxmp59d0wlktikrlvqc/Louisiana-sobotni-noc-v.9.mp3?rlkey=vb93d18aztmpzf5rf2qzeicb4&st=mp58sh85&dl=1', title: 'Louisiana sobotní noc v.09' }, 
  
+  
+    
+ // ═══════════════════════════════════════════════════════════
+// 🎧 Louisiana-sobotni-noc 10 až 19
+// ═══════════════════════════════════════════════════════════
     
  { src: 'https://www.dropbox.com/scl/fi/gsk0nlbcx53cmj6q238cl/Louisiana-sobotni-noc-v.10-top.1.mp3?rlkey=8vzmypdg7exorp63xdr2p3p8g&st=khzck1hz&dl=1', title: 'Louisiana sobotní noc v.10-top.01' },
  { src: 'https://www.dropbox.com/scl/fi/k7b5ai9du4kg7j1pcy4ui/Louisiana-sobotni-noc-v.11-top.2.mp3?rlkey=f7pc0ll4zm7aupuuw8zexnqwz&st=d8zpgxp1&dl=1', title: 'Louisiana sobotní noc v.11-top.02' },
@@ -774,12 +789,13 @@ duration: '03:37' },
 { src: "https://www.dropbox.com/scl/fi/oo8fjj7jte1et8turk8hv/v-let-v-Praze-Ondra-a-Jirka-v.5.mp3?rlkey=ueuy8n3xwc1doc142bl5kqtdd&st=6mlikti6&dl=1", title: "Výlet Do Prahy Ondra A Jirka v.3", 
 duration: '03:43' },            
             
-{ src: "https://www.dropbox.com/scl/fi/j1ua4fykiw6ozka8t7iv4/p-sn-o-bratrsk-m-p-telstv-4-opr.mp3?rlkey=xuyk9u3ir8fe8zq7g259ea377&st=udj6qujw&dl=1", title: "písně o bratrském přátelství v.4 Top-1/2", 
-duration: '03:54' },             
-
-{ src: 'https://www.dropbox.com/scl/fi/7n6shcvyrg74pznu3xg25/_p-sn-o-bratrsk-m-p-telstv-v.1.mp3?rlkey=ihnpara0plr4t67kc1hlbfem5&st=46zrxeg3&dl=1', title: 'písně o bratrském přátelství v.1' },
+              
+ { src: 'https://www.dropbox.com/scl/fi/7n6shcvyrg74pznu3xg25/_p-sn-o-bratrsk-m-p-telstv-v.1.mp3?rlkey=ihnpara0plr4t67kc1hlbfem5&st=46zrxeg3&dl=1', title: 'písně o bratrském přátelství v.1' },
 { src: 'https://www.dropbox.com/scl/fi/mq082nf1r9zy0zdhz1ppn/_p-sn-o-bratrsk-m-p-telstv-v.2.mp3?rlkey=msck9y0wobdipuqoo8a39y228&st=kbr50r3x&dl=1', title: 'písně o bratrském přátelství v.2' },    
-    
+{ src: "https://www.dropbox.com/scl/fi/j1ua4fykiw6ozka8t7iv4/p-sn-o-bratrsk-m-p-telstv-4-opr.mp3?rlkey=xuyk9u3ir8fe8zq7g259ea377&st=udj6qujw&dl=1", title: "písně o bratrském přátelství v.3 Top-1/2", 
+duration: '03:54' },
+{ src: "https://www.dropbox.com/scl/fi/9s00fkxs53tzp9kv60n3r/pisen-o-prateskem-pratelstvi-v.5-Top-4.wav?rlkey=403d3o7kj3041x3qcv3x7znqu&st=gexyhmn6&dl=1", title: "písně o bratrském přátelství v.5-Top-4", //tuto sem přidal
+duration: '08:57' },     
 { src: 'https://www.dropbox.com/scl/fi/mwc2ikve37981adfj2sot/Ondra-p-ijel-do-ejova-Remastered-v.1.mp3?rlkey=apdsayt3xnwufp8r4nrkm5tn1&st=krf55lii&dl=1', title: 'Ondra přijel do Čejova, (Rema) v.1' },
   { src: 'https://www.dropbox.com/scl/fi/ke36lt3ibr9qzwjg0zo4u/Ondra-p-ijel-do-ejova-Remastered-v.2.mp3?rlkey=w6we3yklzax8fyjwq0t7zzyp8&st=cg075i9m&dl=1', title: 'Ondra přijel do Čejova, (Rema) v.2' },    
     
@@ -982,9 +998,3 @@ duration: '03:54' },
 // Logování přes DebugManager
  window.DebugManager?.log('playlist', `🖖 myPlaylist.js načten: ${window.tracks.length} skladeb (verze: ${window.PLAYLIST_VERSION})`);
  
-
-
-
-
-
-
