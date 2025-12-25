@@ -1,6 +1,6 @@
 // 🖖 OCHRANA PLAYLISTU - Zabraňuje přepsání Firestorem
- //window.PLAYLIST_SOURCE = 'myPlaylist.js';
-// window.PLAYLIST_VERSION = new Date().toISOString(); 
+ /window.PLAYLIST_SOURCE = 'myPlaylist.js';
+  window.PLAYLIST_VERSION = new Date().toISOString(); 
 // Timestamp změny - generuje se při každém načtení, což je ok pro runtime identifikaci
 
 // 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager
@@ -559,7 +559,10 @@ duration: '03:54' },
   { src: 'https://www.dropbox.com/scl/fi/9esgur99r5cu31kmsiyhw/Jardova-cesta-s-prateli-v.3.mp3?rlkey=c3i8vfd3hm5keyg9dsjftttk5&st=iobdq9lc&dl=1', title: 'Jardova-cesta-s-prateli-v.3' },
   { src: 'https://www.dropbox.com/scl/fi/5mb4ypu4zdcolj2p28vz2/Jardova-cesta-s-prateli-v.4.mp3?rlkey=wwklrfryzzuc4xcs4vs2n7lgg&st=7h4ukj4b&dl=1', title: 'Jardova-cesta-s-prateli-v.4' },
   { src: 'https://www.dropbox.com/scl/fi/217u0otcntjh44dnkka00/Jardova-cesta-s-prateli-v.5-Top-1.mp3?rlkey=8ba618idnur6vulc462kpohw0&st=dkrdrn6d&dl=1', title: 'Jardova-cesta-s-prateli-v.5-Top-1' },
-  { src: 'https://www.dropbox.com/scl/fi/ufegyq7l4ctmighojm7cd/Jardova-cesta-s-prateli-v.5-Top-1-audacity.wav?rlkey=8aux1ne0feoq99m7xzunmt2x9&st=ljmwvfzn&dl=1', title: 'Jardova-cesta-s-prateli-v.6-Top-2' }, ];   
+  { src: 'https://www.dropbox.com/scl/fi/ufegyq7l4ctmighojm7cd/Jardova-cesta-s-prateli-v.5-Top-1-audacity.wav?rlkey=8aux1ne0feoq99m7xzunmt2x9&st=ljmwvfzn&dl=1', title: 'Jardova-cesta-s-prateli-v.6-Top-2' }, 
+  { src: ' https://www.dropbox.com/scl/fi/9s00fkxs53tzp9kv60n3r/pisen-o-prateskem-pratelstvi-v.5-Top-4.wav?rlkey=403d3o7kj3041x3qcv3x7znqu&st=uh2c3a1g&dl=1', title: 'pisen-o-prateskem-pratelstvi-v.5-Top-3' },              
+   
+   ];   
 
 // 🖖 Protokol pro navázání spojení: Kapitán <-> Správce
 /*window.CaptainToSyncBridge = {
@@ -586,6 +589,7 @@ duration: '03:54' },
 // Logování přes DebugManager
 //window.DebugManager?.log('playlist', `🖖 myPlaylist.js načten: ${window.tracks.length} skladeb (verze: ${window.PLAYLIST_VERSION})`);
  
+
 
 
 
