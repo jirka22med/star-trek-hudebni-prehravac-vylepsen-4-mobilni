@@ -413,11 +413,44 @@ function populatePlaylist(listToDisplay) {
         const fragment = document.createDocumentFragment();
         
         listToDisplay.forEach((track, index) => {
+            // 1. Získání indexu (z globální proměnné originalTracks - řádek 46 tvého scriptu)
+            const originalIndex = originalTracks.findIndex(ot => ot.title === track.title && ot.src === track.src);
+
+            // =================================================================
+            // 🎯 NOVÁ SEKCE: VLOŽENÍ NADPISU KAPITOLY
+            // =================================================================
+            if (window.playlistSections && originalIndex !== -1) {
+                const section = window.playlistSections.find(s => s.start === originalIndex);
+                
+                if (section) {
+                    const header = document.createElement('div');
+                    header.className = 'playlist-section-header';
+                    header.textContent = section.name;
+                    header.style.cssText = `
+                        padding: 12px 15px;
+                        background: linear-gradient(135deg, rgba(0, 120, 215, 0.4), rgba(0, 212, 255, 0.2));
+                        color: #00d4ff;
+                        font-weight: bold;
+                        font-size: 1.1em;
+                        text-align: center;
+                        margin: 8px 0;
+                        border-radius: 8px;
+                        border-left: 4px solid #00d4ff;
+                        cursor: default;
+                        user-select: none;
+                        text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                    `;
+                    fragment.appendChild(header);
+                }
+            }
+            // =================================================================
+
+            // 2. Vytvoření položky skladby (Originální kód)
             const item = document.createElement('div');
             item.className = 'playlist-item';
             item.dataset.originalSrc = track.src;
             
-            const originalIndex = originalTracks.findIndex(ot => ot.title === track.title && ot.src === track.src);
             if (originalIndex === currentTrackIndex && DOM.audioPlayer && !DOM.audioPlayer.paused) {
                 item.classList.add('active');
             }
@@ -461,9 +494,10 @@ function populatePlaylist(listToDisplay) {
         DOM.playlist.appendChild(fragment);
     }
     
+    // UI aktualizace (původní logika)
     updateActiveTrackVisuals();
 
-    // 🚀 KAPITÁNSKÝ ROZKAZ: Barevná synchronizace po vykreslení playlistu
+    // 🚀 KAPITÁNSKÝ ROZKAZ: Barevná synchronizace
     if (window.applyEverything) {
         window.applyEverything();
     }
@@ -1143,6 +1177,7 @@ if (document.readyState === 'loading') {
 // 🚀 TADY KONČÍ NASTAVENÍ PLALISTU
 // ═══════════════════════════════════════════════════════════
 
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // ═ Dynamické nastavení pro obrázky.                                            ═
 // ═ Autor původního kódu: Více admirál Jiřík.                                   ═
@@ -1384,8 +1419,3 @@ window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyn�
 
 
 })(); // KONEC IIFE - Vše je izolované
-
-
-
-
-
