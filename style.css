@@ -38,7 +38,7 @@ body, html {
     overflow: hidden;
 }
  
-/* Pozadí s obrázkem */
+/* Pozadí s obrázkem - OCHRANNÝ REŽIM AKTIVOVÁN */
 .background-image-container {
     position: fixed;
     top: 0;
@@ -46,20 +46,50 @@ body, html {
     width: 100%;
     height: 100%;
     z-index: -1;
+    
+    /* Zákaz výběru textu/obrázků */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    
+    /* Zákaz drag & drop */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    
+    /* Ochrana na dotykových zařízeních */
+    -webkit-touch-callout: none;
+    pointer-events: none;
 }
+
 .background-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     opacity: 1.0;
-     
-    /*toto dektivuje označování obrázku */
-    user-select: none; /* Deaktivuje označování pro všechny prohlížeče */
-    -webkit-user-select: none; /* Pro Safari a Chrome */
-    -moz-user-select: none; /* Pro Firefox */
-    -ms-user-select: none; /* Pro starší verze Internet Exploreru */
+    
+    /* Zákaz výběru */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    
+    /* Zákaz přetahování */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    
+    /* Zákaz kontextového menu na mobilu */
+    -webkit-touch-callout: none;
+    
+    /* Ochrana před "ghost image" při tažení */
+    pointer-events: none;
 }
-
 /* Hlavní wrapper přehrávače */
 .player-content-wrapper {
     position: fixed;
@@ -1110,3 +1140,4 @@ footer a:hover {
     font-weight: bold;
     font-size: 15px;
 }
+
