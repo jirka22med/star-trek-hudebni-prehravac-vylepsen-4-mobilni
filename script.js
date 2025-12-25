@@ -1143,6 +1143,14 @@ if (document.readyState === 'loading') {
 // 🚀 TADY KONČÍ NASTAVENÍ PLALISTU
 // ═══════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// ═ Dynamické nastavení pro obrázky.                                            ═
+// ═ Autor původního kódu: Více admirál Jiřík.                                   ═
+// ═ Autor úprav: Admirál Claude.AI.                                             ═
+// ═ Datum úpravy: 25.12.2025.                                                   ═
+// ═ Podpis: Claude.AI 🖖.                                                       ═
+// ═══════════════════════════════════════════════════════════════════════════════
+
 function setBackgroundForDevice() {
     const deviceInfo = detectDeviceType();
     const backgrounds = {
@@ -1151,7 +1159,12 @@ function setBackgroundForDevice() {
     };
     let backgroundUrl = deviceInfo.isInfinixNote30 ? backgrounds.infinix : backgrounds.desktop;
     const bgContainer = document.querySelector('.background-image-container img');
-    if (bgContainer) bgContainer.src = backgroundUrl;
+    if (bgContainer) {
+        bgContainer.src = backgroundUrl;
+        
+        // 🛡️ OCHRANNÝ PROTOKOL - AKTIVOVÁN
+        applyImageProtection(bgContainer);
+    }
     localStorage.setItem('background_url', backgroundUrl);
 }
 
@@ -1161,9 +1174,59 @@ function restorePreviousBackground() {
     if (!bgContainerImg) return;
     if (savedBackgroundUrl) {
         bgContainerImg.src = savedBackgroundUrl;
+        
+        // 🛡️ OCHRANNÝ PROTOKOL - AKTIVOVÁN
+        applyImageProtection(bgContainerImg);
     } else {
         setBackgroundForDevice();
     }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 🛡️ OCHRANNÁ FUNKCE - BLOKUJE KOPÍROVÁNÍ A PŘESOUVÁNÍ OBRÁZKŮ
+// ══════════════════════════════════════════════════════════════════════════════
+function applyImageProtection(imgElement) {
+    if (!imgElement) return;
+    
+    // Zákaz kontextového menu (pravé tlačítko)
+    imgElement.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Zákaz drag & drop
+    imgElement.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Zákaz selectování
+    imgElement.addEventListener('selectstart', (e) => {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Ochrana na dotykových zařízeních (dlouhé podržení)
+    imgElement.addEventListener('touchstart', (e) => {
+        // Povolíme touchstart pro scroll, ale zabráníme výběru
+        imgElement.style.webkitUserSelect = 'none';
+        imgElement.style.userSelect = 'none';
+    }, { passive: true });
+    
+    // Zákaz copy události
+    imgElement.addEventListener('copy', (e) => {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Nastavení CSS vlastností přímo v JS (záložní ochrana)
+    imgElement.style.userSelect = 'none';
+    imgElement.style.webkitUserSelect = 'none';
+    imgElement.style.mozUserSelect = 'none';
+    imgElement.style.msUserSelect = 'none';
+    imgElement.style.webkitUserDrag = 'none';
+    imgElement.style.webkitTouchCallout = 'none';
+    imgElement.style.pointerEvents = 'none';
 }
 
 window.addEventListener('orientationchange', () => setTimeout(() => {
@@ -1178,6 +1241,11 @@ window.addEventListener('resize', () => {
         setBackgroundForDevice();
     }, 250);
 });
+
+// ═══════════════════════════════════════════════════════════
+// 🚀 TADY KONČÍ NASTAVENÍ pro obrázek 
+// ═══════════════════════════════════════════════════════════
+
 
 // --- Skrytí sync status ---
 if (DOM.syncStatus) {
@@ -1316,6 +1384,7 @@ window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyn�
 
 
 })(); // KONEC IIFE - Vše je izolované
+
 
 
 
