@@ -764,42 +764,261 @@ function addEventListeners() {
         await debounceSaveAudioData();
     });
 
-    if (DOM.audioPlayer) {
-        DOM.audioPlayer.addEventListener('volumechange', updateVolumeDisplayAndIcon);
-        DOM.audioPlayer.addEventListener('timeupdate', updateTrackTimeDisplay);
-        DOM.audioPlayer.addEventListener('loadedmetadata', updateTrackTimeDisplay);
+    // ═══════════════════════════════════════════════════════════════════
+// 🚀 KOMPLETNÍ AUDIO LISTENER SEKCE - READY TO PASTE
+// Autor opravy: Admirál Claude.AI
+// Architekt projektu: Více admirál Jiřík
+// Verze: 2.0 - Auto-Recovery Edition
+// ═══════════════════════════════════════════════════════════════════
+// ⚠️ INSTRUKCE:
+// 1. Najdi v script.js tento blok (cca řádek 790):
+//    DOM.audioPlayer.addEventListener('play', () => ...
+//    ...až po závěrečnou })
+// 2. SMAŽ celou tu sekci (včetně if (DOM.audioPlayer) { ... })
+// 3. Zkopíruj VŠECHNO odtud dolů a vlož na to místo
+// ═══════════════════════════════════════════════════════════════════
+
+// 🔧 Globální proměnné pro retry mechanismus (musí být PŘED if blokem!)
+let audioErrorCount = 0;
+let lastErrorTime = 0;
+let currentRetryAttempt = 0;
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY = 2000;
+
+// ═══════════════════════════════════════════════════════════════════
+// 🎧 HLAVNÍ BLOK AUDIO LISTENERŮ
+// ═══════════════════════════════════════════════════════════════════
+
+if (DOM.audioPlayer) {
+    // ═══════════════════════════════════════════════════════════════
+    // 📢 VOLUME CHANGE LISTENER (původní)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('volumechange', updateVolumeDisplayAndIcon);
+    
+    // ═══════════════════════════════════════════════════════════════
+    // ⏱️ TIME UPDATE LISTENERS (původní)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('timeupdate', updateTrackTimeDisplay);
+    DOM.audioPlayer.addEventListener('loadedmetadata', updateTrackTimeDisplay);
+    
+    // ═══════════════════════════════════════════════════════════════
+    // ⏹️ ENDED LISTENER (původní)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('ended', async () => {
+        updateButtonActiveStates(false);
         
-        DOM.audioPlayer.addEventListener('ended', async () => {
-            updateButtonActiveStates(false);
+        if (!DOM.audioPlayer.loop) {
+            playNextTrack();
             
-            if (!DOM.audioPlayer.loop) {
-                playNextTrack();
+            // 🚀 PRELOADER - Přednahraj při konci skladby
+            if (window.audioPreloader) {
+                setTimeout(() => {
+                    window.preloadTracks(
+                        originalTracks, 
+                        currentTrackIndex, 
+                        isShuffled, 
+                        shuffledIndices
+                    ).catch(err => console.warn('⚠️ Preload error:', err));
+                }, 500);
+            }
+        }
+        
+        await debounceSaveAudioData();
+    });
+    
+    // ═══════════════════════════════════════════════════════════════
+    // ▶️ PLAY LISTENER (původní)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('play', () => updateButtonActiveStates(true));
+    
+    // ═══════════════════════════════════════════════════════════════
+    // ⏸️ PAUSE LISTENER (původní)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('pause', () => updateButtonActiveStates(false));
+    
+    // ═══════════════════════════════════════════════════════════════
+    // 🔴 ERROR LISTENER (NOVÝ - VYLEPŠENÝ)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('error', async (e) => {
+        const audio = e.target;
+        const error = audio.error;
+        const currentTime = Date.now();
+        
+        // 📊 Detekce typu chyby
+        let errorType = "UNKNOWN";
+        let errorMessage = "Neznámá chyba";
+        let canRetry = false;
+        
+        if (error) {
+            switch(error.code) {
+                case MediaError.MEDIA_ERR_ABORTED:
+                    errorType = "ABORTED";
+                    errorMessage = "Přehrávání přerušeno";
+                    canRetry = false;
+                    break;
+                    
+                case MediaError.MEDIA_ERR_NETWORK:
+                    errorType = "NETWORK";
+                    errorMessage = "Ztráta síťového spojení";
+                    canRetry = true;
+                    break;
+                    
+                case MediaError.MEDIA_ERR_DECODE:
+                    errorType = "DECODE";
+                    errorMessage = "Poškozený audio soubor";
+                    canRetry = true;
+                    break;
+                    
+                case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                    errorType = "NOT_SUPPORTED";
+                    errorMessage = "Nepodporovaný formát nebo chybí soubor";
+                    canRetry = false;
+                    break;
+            }
+        }
+        
+        // 📍 Info o aktuální skladbě
+        const currentTrack = originalTracks[currentTrackIndex];
+        const trackInfo = currentTrack ? currentTrack.title : 'neznámá skladba';
+        const trackUrl = DOM.audioSource?.src || 'neznámá URL';
+        
+        // 🔍 Detailní log
+        window.DebugManager?.log('main', `
+╔═══════════════════════════════════════════════════════════════
+║ 🔴 AUDIO CHYBA DETEKOVÁNA
+╠═══════════════════════════════════════════════════════════════
+║ 🎵 Skladba: ${trackInfo}
+║ 🔢 Index: ${currentTrackIndex + 1}/${originalTracks.length}
+║ ⚠️  Typ: ${errorType} (kod: ${error?.code || 'N/A'})
+║ 💬 Zpráva: ${errorMessage}
+║ 🔗 URL: ${trackUrl.substring(0, 80)}...
+║ 🔄 Pokus: ${currentRetryAttempt + 1}/${MAX_RETRY_ATTEMPTS}
+║ 🕐 Čas: ${new Date().toLocaleTimeString('cs-CZ')}
+╚═══════════════════════════════════════════════════════════════
+        `);
+        
+        // 🛡️ ANTI-SPAM OCHRANA
+        if (currentTime - lastErrorTime < 1000) {
+            audioErrorCount++;
+            if (audioErrorCount > 5) {
+                window.DebugManager?.log('main', '⛔ KRITICKÁ CHYBA: Příliš mnoho chyb za sebou!');
+                window.showNotification('⛔ Kritická chyba přehrávače. Zkuste reload stránky.', 'error', 8000);
+                if (DOM.audioPlayer) DOM.audioPlayer.pause();
+                updateButtonActiveStates(false);
+                return;
+            }
+        } else {
+            audioErrorCount = 0;
+        }
+        lastErrorTime = currentTime;
+        
+        // 🔄 RETRY MECHANISMUS
+        if (canRetry && currentRetryAttempt < MAX_RETRY_ATTEMPTS) {
+            currentRetryAttempt++;
+            
+            window.showNotification(
+                `⏳ Obnova spojení... (pokus ${currentRetryAttempt}/${MAX_RETRY_ATTEMPTS})`,
+                'warn',
+                RETRY_DELAY
+            );
+            
+            window.DebugManager?.log('main', `🔄 Zkouším znovu načíst skladbu za ${RETRY_DELAY/1000}s...`);
+            
+            setTimeout(() => {
+                if (!DOM.audioPlayer || !DOM.audioSource) return;
                 
-                // 🚀 PRELOADER - Přednahraj při konci skladby
-                if (window.audioPreloader) {
-                    setTimeout(() => {
-                        window.preloadTracks(
-                            originalTracks, 
-                            currentTrackIndex, 
-                            isShuffled, 
-                            shuffledIndices
-                        ).catch(err => console.warn('⚠️ Preload error:', err));
-                    }, 500);
-                }
+                window.DebugManager?.log('main', `🔄 Reload skladby od začátku`);
+                
+                DOM.audioSource.src = trackUrl;
+                DOM.audioPlayer.load();
+                
+                DOM.audioPlayer.play()
+                    .then(() => {
+                        window.DebugManager?.log('main', '✅ Přehrávání úspěšně obnoveno!');
+                        window.showNotification('✅ Spojení obnoveno!', 'info', 2000);
+                        currentRetryAttempt = 0;
+                        audioErrorCount = 0;
+                        updateButtonActiveStates(true);
+                    })
+                    .catch(retryError => {
+                        window.DebugManager?.log('main', `❌ Retry selhal: ${retryError.message}`);
+                    });
+                    
+            }, RETRY_DELAY);
+            
+        } else {
+            if (currentRetryAttempt >= MAX_RETRY_ATTEMPTS) {
+                window.showNotification(
+                    `⏭️ Skladba "${trackInfo}" nedostupná. Přeskakuji...`,
+                    'error',
+                    3000
+                );
+                window.DebugManager?.log('main', '⏭️ Retry vyčerpány, přeskakuji na další skladbu...');
+            } else {
+                window.showNotification(
+                    `❌ ${errorMessage}: "${trackInfo}"`,
+                    'error',
+                    3000
+                );
             }
             
-            await debounceSaveAudioData();
-        });
-        
-        DOM.audioPlayer.addEventListener('play', () => updateButtonActiveStates(true));
-        DOM.audioPlayer.addEventListener('pause', () => updateButtonActiveStates(false));
-        DOM.audioPlayer.addEventListener('error', e => {
-            if (window.DebugManager?.isEnabled('main')) {
-                console.error("Audio player error:", e);
-            }
-            window.showNotification("Chyba přehrávače: " + e.message, 'error');
-        });
+            currentRetryAttempt = 0;
+            audioErrorCount = 0;
+            
+            setTimeout(() => {
+                window.DebugManager?.log('main', '▶️ Přehrávám další skladbu...');
+                if (typeof playNextTrack === 'function') {
+                    playNextTrack();
+                }
+            }, 2000);
+        }
+    });
+    
+    // ═══════════════════════════════════════════════════════════════
+    // ✅ CANPLAY LISTENER (NOVÝ - pro retry monitoring)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('canplay', () => {
+        if (currentRetryAttempt > 0) {
+            window.DebugManager?.log('main', '✅ Skladba úspěšně načtena po retry!');
+            currentRetryAttempt = 0;
+            audioErrorCount = 0;
+        }
+    });
+    
+    // ═══════════════════════════════════════════════════════════════
+    // 🎵 LOADSTART LISTENER (NOVÝ - reset retry counteru)
+    // ═══════════════════════════════════════════════════════════════
+    DOM.audioPlayer.addEventListener('loadstart', () => {
+        currentRetryAttempt = 0;
+        window.DebugManager?.log('main', '🎵 Nová skladba - retry counter resetován');
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// 📡 MONITORING SÍŤOVÉHO STAVU (MIMO if blok!)
+// ═══════════════════════════════════════════════════════════════════
+
+window.addEventListener('online', () => {
+    window.DebugManager?.log('main', '🌐 Internetové spojení obnoveno!');
+    window.showNotification('🌐 Internetové spojení obnoveno', 'info', 2000);
+    
+    if (DOM.audioPlayer?.paused && DOM.audioSource?.src) {
+        setTimeout(() => {
+            DOM.audioPlayer.play().catch(e => {
+                window.DebugManager?.log('main', `⚠️ Auto-play po reconnect selhal: ${e.message}`);
+            });
+        }, 500);
     }
+});
+
+window.addEventListener('offline', () => {
+    window.DebugManager?.log('main', '⚠️ Ztráta internetového spojení!');
+    window.showNotification('⚠️ Ztráta internetového spojení', 'warn', 3000);
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// 🖖 KONEC AUDIO LISTENER SEKCE
+// ═══════════════════════════════════════════════════════════════════
 
     document.addEventListener('keydown', async e => {
         if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
