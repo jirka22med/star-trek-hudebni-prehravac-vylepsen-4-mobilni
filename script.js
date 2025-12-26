@@ -431,9 +431,9 @@ function populatePlaylist(listToDisplay) {
                         background: linear-gradient(135deg, rgba(0, 120, 215, 0.4), rgba(0, 212, 255, 0.2));
                         color: #00d4ff;
                         font-weight: bold;
-                        font-size: 1.1em;
+                        font-size: 12px;
                         text-align: center;
-                        margin: 8px 0;
+                        margin: 5px 0;
                         border-radius: 8px;
                         border-left: 4px solid #00d4ff;
                         cursor: default;
@@ -1267,10 +1267,10 @@ function adjustPlaylistHeight(isFullscreen = false) {
     // ═══════════════════════════════════════════════════════
     if (device.isLenovoNotebook) {
         if (isFullscreen) {
-            newHeight = '366px';  // 7 skladeb × 65px
+            newHeight = '320px';  // 7 skladeb × 65px
             expectedTracks = 8;
         } else {
-            newHeight = '240px';  // 5 skladeb × 65px
+            newHeight = '200px';  // 5 skladeb × 65px
             expectedTracks = 5;
         }
         deviceName = '💻 Lenovo Notebook';
