@@ -10,7 +10,7 @@
     --text-secondary: #778DA9; /* Sekundární text pro méně důležité prvky */
     --spacing-sm: 8px;
     --spacing-md: 16px;
-    --spacing-lg: 5px;
+    --spacing-lg: -5px;
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --font-main: 'Orbitron', 'Segoe UI', system-ui, sans-serif; /* Orbitron pro sci-fi styl */
     --font-text: 'Roboto', sans-serif; /* Moderní font pro delší texty */
@@ -1124,3 +1124,4 @@ footer a:hover {
     font-weight: bold;
     font-size: 15px;
 }
+
