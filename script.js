@@ -592,6 +592,7 @@ function playNextTrack() {
         nextIndex = (currentTrackIndex + 1) % originalTracks.length;
     }
     playTrack(nextIndex);
+    window.showNotification('Další skladba', 'info', 5000);
 }
 
 function playPrevTrack() {
@@ -610,6 +611,7 @@ function playPrevTrack() {
         prevIndex = (currentTrackIndex - 1 + originalTracks.length) % originalTracks.length;
     }
     playTrack(prevIndex);
+    window.showNotification('Předchozí skladba', 'info', 5000);
 }
 
 function generateShuffledIndices() {
@@ -644,11 +646,19 @@ function updateButtonActiveStates(isPlaying) {
 
 window.toggleFavorite = async function(trackTitle) {
     const indexInFavorites = favorites.indexOf(trackTitle);
+    let message = '';
+
     if (indexInFavorites === -1) {
         favorites.push(trackTitle);
+        message = 'Přidáno do oblíbených ⭐';
     } else {
         favorites.splice(indexInFavorites, 1);
+        message = 'Odebráno z oblíbených 🗑️';
     }
+    
+    // --- NOTIFIKACE (5 sekund) ---
+    window.showNotification(message, 'info', 5000); 
+    
     await debounceSaveAudioData();
     populatePlaylist(currentPlaylist);
     updateFavoritesMenu();
@@ -657,6 +667,7 @@ window.toggleFavorite = async function(trackTitle) {
 // --- Event Listenery ---
 function addEventListeners() {
     DOM.playButton?.addEventListener('click', () => {
+     window.showNotification('Přehravání', 'info', 5000);
         if (DOM.audioPlayer && DOM.audioSource.src && DOM.audioSource.src !== window.location.href) {
             DOM.audioPlayer.play().then(() => updateButtonActiveStates(true)).catch(e => {
                 if (window.DebugManager?.isEnabled('main')) {
@@ -665,6 +676,7 @@ function addEventListeners() {
             });
         } else if (originalTracks.length > 0) {
             playTrack(currentTrackIndex);
+             
         } else {
             window.showNotification("Nelze přehrát, playlist je prázdný.", 'warn');
         }
@@ -672,6 +684,7 @@ function addEventListeners() {
 
     DOM.pauseButton?.addEventListener('click', () => {
         if (DOM.audioPlayer) DOM.audioPlayer.pause();
+        window.showNotification('Pauza', 'info', 5000);
         updateButtonActiveStates(false);
     });
 
@@ -679,16 +692,24 @@ function addEventListeners() {
     DOM.nextButton?.addEventListener('click', playNextTrack);
 
     DOM.loopButton?.addEventListener('click', async () => {
-        if (DOM.audioPlayer) DOM.audioPlayer.loop = !DOM.audioPlayer.loop;
-        DOM.loopButton.classList.toggle('active', DOM.audioPlayer?.loop);
-        DOM.loopButton.title = DOM.audioPlayer?.loop ? "Opakování zapnuto" : "Opakování vypnuto";
-        await debounceSaveAudioData();
-    });
+    if (DOM.audioPlayer) DOM.audioPlayer.loop = !DOM.audioPlayer.loop;
+    const isLooping = DOM.audioPlayer?.loop;
+    DOM.loopButton.classList.toggle('active', isLooping);
+    DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
+    const notificationMessage = isLooping ? 'Opakování zapnuto' : 'Opakování vypnuto';
+    window.showNotification(notificationMessage, 'info', 5000);
+    await debounceSaveAudioData();
+});
 
     DOM.shuffleButton?.addEventListener('click', async () => {
         isShuffled = !isShuffled;
         DOM.shuffleButton.classList.toggle('active', isShuffled);
         DOM.shuffleButton.title = isShuffled ? "Náhodné přehrávání zapnuto" : "Náhodné přehrávání vypnuto";
+        
+        // --- NOTIFIKACE (5 sekund) ---
+        const msg = isShuffled ? 'Náhodné přehrávání zapnuto 🔀' : 'Náhodné přehrávání vypnuto ➡️';
+        window.showNotification(msg, 'info', 5000);
+        
         if (isShuffled) generateShuffledIndices();
         await debounceSaveAudioData();
     });
@@ -701,6 +722,8 @@ function addEventListeners() {
                     console.error("Play error on reset:", e);
                 }
             });
+            // --- NOTIFIKACE (5 sekund) ---
+            window.showNotification('Skladba vrácena na začátek ⏮️', 'info', 5000);
         }
         await debounceSaveAudioData();
     });
@@ -712,8 +735,12 @@ function addEventListeners() {
                     console.error("Fullscreen error:", err);
                 }
             });
+             // --- NOTIFIKACE (5 sekund) ---
+             window.showNotification('Režim celé obrazovky 📺', 'info', 5000);
         } else if (document.exitFullscreen) {
             document.exitFullscreen();
+             // --- NOTIFIKACE (5 sekund) ---
+             window.showNotification('Ukončit celou obrazovku ❌', 'info', 5000);
         }
     });
 
@@ -734,6 +761,12 @@ function addEventListeners() {
         DOM.playlist.style.display = playlistVisible ? 'block' : 'none';
         DOM.togglePlaylist.classList.toggle('active', playlistVisible);
         DOM.togglePlaylist.title = playlistVisible ? "Skrýt playlist" : "Zobrazit playlist";
+        
+        // --- NOVÁ NOTIFIKACE (5 sekund) ---
+        const msg = playlistVisible ? 'Playlist zobrazen 📂' : 'Playlist skryt 📁';
+        window.showNotification(msg, 'info', 5000);
+        // ----------------------------------
+
         if (playlistVisible) updateActiveTrackVisuals();
     });
 
@@ -752,6 +785,7 @@ function addEventListeners() {
     DOM.muteButton?.addEventListener('click', async () => {
         if (!DOM.audioPlayer || !DOM.volumeSlider) return;
         DOM.audioPlayer.muted = !DOM.audioPlayer.muted;
+        
         if (DOM.audioPlayer.muted) {
             DOM.muteButton.dataset.previousVolume = DOM.volumeSlider.value;
             DOM.volumeSlider.value = 0;
@@ -761,6 +795,11 @@ function addEventListeners() {
             DOM.audioPlayer.volume = logarithmicVolume(prevSliderVol);
         }
         updateVolumeDisplayAndIcon();
+        
+        // --- NOTIFIKACE (5 sekund) ---
+        const msg = DOM.audioPlayer.muted ? 'Zvuk ztlumen 🔇' : 'Zvuk zapnut 🔊';
+        window.showNotification(msg, 'info', 5000);
+        
         await debounceSaveAudioData();
     });
 
