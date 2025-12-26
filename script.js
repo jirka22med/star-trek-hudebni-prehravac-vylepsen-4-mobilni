@@ -1076,6 +1076,23 @@ window.addEventListener('offline', () => {
                 }
                 break;
             
+               case 'KeyZ': // Fyzická klávesa vlevo dole (u tebe "y")
+    if (window.audioPreloader) {
+        // Tady je to kouzlo: obrátíme aktuální stav isEnabled
+        const novyStav = !window.audioPreloader.isEnabled;
+        
+        // Zavoláme metodu, která v preloaderu už existuje
+        window.audioPreloader.setEnabled(novyStav);
+        
+        window.showNotification(
+            `Preloader ${novyStav ? '✅ ZAPNUT' : '⏸️ VYPNUT'}`,
+            'info',
+            2000
+        );
+    }
+    break;
+
+                  
             default: preventDefault = false;
         }
         if (preventDefault) e.preventDefault();
