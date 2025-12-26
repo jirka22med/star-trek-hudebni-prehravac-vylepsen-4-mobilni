@@ -10,7 +10,7 @@
     --text-secondary: #778DA9; /* Sekundární text pro méně důležité prvky */
     --spacing-sm: 8px;
     --spacing-md: 16px;
-    --spacing-lg: 24px;
+    --spacing-lg: 5px;
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --font-main: 'Orbitron', 'Segoe UI', system-ui, sans-serif; /* Orbitron pro sci-fi styl */
     --font-text: 'Roboto', sans-serif; /* Moderní font pro delší texty */
@@ -71,25 +71,9 @@ body, html {
     object-fit: cover;
     opacity: 1.0;
     
-    /* Zákaz výběru */
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    
-    /* Zákaz přetahování */
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-    
-    /* Zákaz kontextového menu na mobilu */
-    -webkit-touch-callout: none;
-    
-    /* Ochrana před "ghost image" při tažení */
-    pointer-events: none;
+     
 }
+
 /* Hlavní wrapper přehrávače */
 .player-content-wrapper {
     position: fixed;
@@ -598,7 +582,7 @@ footer {
     font-size: 0.9rem;
     border-radius: 10px 10px 0 0;
     width: auto;
-    max-width: 95%;
+    max-width: 100%;
 }
 
 footer a {
@@ -1140,4 +1124,3 @@ footer a:hover {
     font-weight: bold;
     font-size: 15px;
 }
-
