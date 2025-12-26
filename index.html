@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Star Trek: Hudební Přehravač</title>
+      
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="miniPlayer.css">  
   <link rel="stylesheet" href="loadingScreen.css">  
@@ -131,7 +132,8 @@
 
       <div class="playlist" id="playlist" style="display: block; "> 
           
-           
+    <div id="notification"></div>
+      <div class="fade-indicator">       
    
 
   
@@ -151,7 +153,7 @@
 
   <div class="timer-container" id="timer-container">
     <div class="timer-display">
-      <span id="timer-minutes">00</span>:<span id="timer-seconds">00</span>
+      <span id="timer-minutes">00</span>:<span id="timer-seconds">00</span> 
     </div>
     
     <div class="timer-controls">
@@ -172,131 +174,18 @@
   </div>
 </div>
         <!-- Mám nastaveno v buttonVisibilityManager.js >> pouze jen id popisky to mi skrývá celý tento blok až po <canvas id="waveform-canvas"></canvas> -->
-       <div class="keyboard-container">
+     <div class="keyboard-container">
         <div id="popisky"> 
-         <div class="tone-meter-container" style="display:inline-block;padding:2px;background:#000;border:2px solid #C00000;color:#fff;margin:0;">
         
-        <div class="tone-meter-title">
-            🎵 TONE.METER ENHANCED 🎵
-        </div>
-        
-        <div class="tone-meter-status inactive" id="statusIndicator">
-            ⏹️ PŘIPRAVEN K TESTOVÁNÍ
-        </div>
-        
-        <!-- KALIBRACE A4 -->
-        <div class="tone-meter-calibration">
-            <h3>🎼 KALIBRACE A4 FREKVENCE</h3>
-            
-            <div class="tone-meter-a4-control">
-                <span style="color: #ccc;">A4 =</span>
-                <input type="number" min="400" max="2500" value="440" class="tone-meter-a4-input" id="a4FreqInput">
-                <span style="color: #ccc;">Hz</span>
-                <button class="tone-meter-a4-reset" id="resetA4Btn">Reset</button>
-            </div>
-            
-            <div class="tone-meter-calibration-info">
-                Standardní A4 = 440 Hz | Barokní A4 = 415 Hz | Moderní A4 = 442-444 Hz
-            </div>
-        </div>
-        
-        <!-- SEKCE PRO OVLÁDÁNÍ MIKROFONU -->
-        <div class="tone-meter-mic-controls">
-            <h3>🎚️ NASTAVENÍ MIKROFONU</h3>
-            
-            <div class="tone-meter-slider-group">
-                <div class="tone-meter-slider-label">
-                    <span>HLASITOST VSTUPU</span>
-                    <span id="inputVolumeValue">100%</span>
-                </div>
-                <input type="range" min="0" max="10000" value="100" class="tone-meter-slider" id="inputVolumeSlider">
-                <div style="font-size: 10px; color: #888; text-align: center; margin-top: 2px;">0% - 10000% (Extrémní zesílení)</div>
-            </div>
-            
-            <div class="tone-meter-slider-group">
-                <div class="tone-meter-slider-label">
-                    <span>BOOST MIKROFONU</span>
-                    <span id="micBoostValue">1.0x</span>
-                </div>
-                <input type="range" min="10" max="10000" value="100" class="tone-meter-slider" id="micBoostSlider">
-                <div style="font-size: 10px; color: #888; text-align: center; margin-top: 2px;">0.1x - 1000.0x (Pro slabé signály)</div>
-            </div>
-            
-            <div class="tone-meter-calibration-info" id="micCalibrationInfo">
-                Automatická kalibrace citlivosti se spustí po startu měření
-            </div>
-        </div>
-        
-        <!-- NOVÝ: VIZUÁLNÍ TUNER -->
-        <div class="tone-meter-tuner">
-            
-            
-            <div class="tone-meter-tuner-display">
-                <div class="tone-meter-current-note" id="tunerNote">---</div>
-                
-                <div class="tone-meter-tuner-needle-container">
-                    <div class="tone-meter-tuner-scale">
-                        <!-- Stupnice -50 až +50 centů -->
-                        <div class="tone-meter-scale-mark" style="left: 10%;"></div>
-                        <div class="tone-meter-scale-mark" style="left: 20%;"></div>
-                        <div class="tone-meter-scale-mark" style="left: 30%;"></div>
-                        <div class="tone-meter-scale-mark" style="left: 40%;"></div>
-                        <div class="tone-meter-scale-mark major center" style="left: 50%;"></div>
-                        <div class="tone-meter-scale-mark" style="left: 60%;"></div>
-                        <div class="tone-meter-scale-mark" style="left: 70%;"></div>
-                        <div class="tone-meter-scale-mark" style="left: 80%;"></div>
-                        <div class="tone-meter-scale-mark" style="left: 90%;"></div>
-                    </div>
-                    <div class="tone-meter-tuner-needle" id="tunerNeedle"></div>
-                </div>
-                
-                <div class="tone-meter-cent-display">
-                    <span style="color: #6666ff;">♭ FLAT</span>
-                    <div class="tone-meter-cent-value" id="centValue">0¢</div>
-                    <span style="color: #ff6666;">SHARP ♯</span>
-                </div>
-                
-                <div class="tone-meter-frequency-diff" id="frequencyDiff">
-                    Cílová frekvence: --- Hz
-                </div>
-            </div>
-        </div>
-        
-        <div class="tone-meter-controls">
-            <button class="tone-meter-btn" id="startBtn">🎤 START</button>
-            <button class="tone-meter-btn" id="stopBtn" disabled>⏹️ STOP</button>
-            <button class="tone-meter-btn calibrate" id="calibrateBtn" disabled>🔧 KALIBRACE</button>
-        </div>
-        
-        <div class="tone-meter-display">
-            <div class="tone-meter-info">
-                <div class="tone-meter-label">HLASITOST</div>
-                <div class="tone-meter-value" id="volumeValue">0%</div>
-            </div>
-            <div class="tone-meter-info">
-                <div class="tone-meter-label">FREKVENCE</div>
-                <div class="tone-meter-value" id="frequencyValue">0 Hz</div>
-            </div>
-            <div class="tone-meter-info">
-                <div class="tone-meter-label">NOTA</div>
-                <div class="tone-meter-value" id="noteValue">---</div>
-            </div>
-        </div>
-        
-        <canvas class="tone-meter-visualizer" id="visualizerCanvas"></canvas>
-    </div>
-<div id="waveform-container">
-    <canvas id="waveform-canvas"></canvas>
-</div>
+</div> 
       
-      <div id="notification"></div>
-      <div class="fade-indicator">  
+         
        </div>
     <footer>
       &copy; <span id="currentYear"  ></span> Star Trek: Hudební Přehravač | Vytvořeno s láskou ke Star Treku
     </footer>
           
-  </div> </div> </div> 
+  </div>  
     <!-- ============================================ -->
 <!-- KRITICKÉ SKRIPTY - NESMÍ MÍT DEFER! -->
 <!-- Musí se načíst SYNCHRONNĚ v tomto pořadí -->
@@ -328,10 +217,10 @@
   <script src="universalni-perfomens-monitor.js" defer></script>
 
 <!-- Debug wrapper -->
-    <script src="jirkuv-hlidac.js" defer></script>   
+   <script src="jirkuv-hlidac.js" defer></script>  
 
-<!-- Audio vizualizace / Tone Meter -->
-   <script src="audiou-vizuace.js" defer></script>  
+ 
+    
 
 <!-- Notifikační systém -->
 <script src="notificationFix.js" defer></script>
@@ -340,7 +229,7 @@
    <script src="autoFade.js" defer></script>   
 
 <!-- Hlasové ovládání -->
- <script src="voiceControl.js" defer></script>  
+  <script src="voiceControl.js" defer></script>  
 
   <script src="pocitac.js" defer></script>  
     
@@ -354,7 +243,7 @@
 <script src="pokrocila-sprava-playlistu.js" defer></script>
 
 <!-- Detekce odpojení Bluetooth a kabelových sluchátek/reproduktorů -->
-<!--  <script src="bluetoothDisconnectMonitor.js" defer></script>  -->
+   <script src="bluetoothDisconnectMonitor.js" defer></script>   
 
 <!-- Správa viditelnosti tlačítek -->
 <script src="buttonVisibilityManager.js" defer></script>
@@ -367,7 +256,7 @@
     
     <!-- Plovoucí okno mini Přehravače -->
      <script src="miniPlayer.js" defer></script>
-   <!-- <script src="loadingScreen.js" defer></script> -->
+     <script src="loadingScreen.js" defer></script>  
     <script src="prednacitani-pisnicek.js" defer></script>  
    <script src="scrollbar.js" defer></script>  
     <script src="colorManager.js"></script>  
@@ -384,7 +273,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
 });
 </script>    
+    
+    
 </body>
 </html>
+
+
+
+
 
 
