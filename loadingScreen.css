@@ -1,23 +1,53 @@
 /* ============================================
-   LOADING SCREEN - ECO VARIANTA A (FADE-IN)
-   Minimální efekty, maximální čitelnost
+   🖖 ENTERPRISE LCARS LOADING SCREEN 🖖
+   Futuristická konzole podle Star Trek TNG
+   Autor: Admirál Claude.AI
+   Architekt: Více admirál Jiřík
    ============================================ */
 
-/* Hlavní kontejner loading screenu */
+/* ═══════════════════════════════════════════
+   🚀 HLAVNÍ KONTEJNER - Hvězdný štít
+   ═══════════════════════════════════════════ */
 #loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    background: 
+        radial-gradient(ellipse at top, rgba(0, 120, 215, 0.15), transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(255, 7, 58, 0.1), transparent 50%),
+        linear-gradient(135deg, #000000 0%, #0a0e27 50%, #000814 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 99999;
     opacity: 1;
-    transition: opacity 0.5s ease-out;
-   margin-top: -30px;
+    transition: opacity 0.6s ease-out;
+    overflow: hidden;
+}
+
+/* Hvězdné pozadí (animované hvězdy) */
+#loading-screen::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(2px 2px at 90% 60%, white, transparent),
+        radial-gradient(1px 1px at 33% 85%, white, transparent);
+    background-size: 200px 200px, 300px 300px, 250px 250px, 400px 400px, 350px 350px, 280px 280px;
+    animation: starsMove 120s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes starsMove {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-50%, -50%); }
 }
 
 /* Skrytí loading screenu */
@@ -26,142 +56,355 @@
     pointer-events: none;
 }
 
+/* ═══════════════════════════════════════════
+   🖥️ LCARS HLAVNÍ PANEL (Container)
+   ═══════════════════════════════════════════ */
+.loading-template {
+    position: relative;
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.85) 0%, 
+        rgba(10, 14, 39, 0.9) 50%, 
+        rgba(0, 0, 0, 0.85) 100%);
+    border: 3px solid #0088ff;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 650px;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 
+        0 0 40px rgba(0, 136, 255, 0.4),
+        inset 0 0 30px rgba(0, 136, 255, 0.1),
+        0 10px 50px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    animation: panelGlow 3s ease-in-out infinite alternate;
+    z-index: 1;
+}
 
+@keyframes panelGlow {
+    0% { 
+        box-shadow: 
+            0 0 40px rgba(0, 136, 255, 0.4),
+            inset 0 0 30px rgba(0, 136, 255, 0.1),
+            0 10px 50px rgba(0, 0, 0, 0.8);
+    }
+    100% { 
+        box-shadow: 
+            0 0 60px rgba(0, 136, 255, 0.6),
+            inset 0 0 40px rgba(0, 136, 255, 0.15),
+            0 10px 70px rgba(0, 0, 0, 0.9);
+    }
+}
 
-/* Vítací sekce (červený rámeček) */
+/* LCARS rohové indikátory */
+.loading-template::before,
+.loading-template::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 4px solid #FF073A;
+    opacity: 0.7;
+    animation: cornerPulse 2s ease-in-out infinite;
+}
+
+.loading-template::before {
+    top: -10px;
+    left: -10px;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 20px 0 0 0;
+}
+
+.loading-template::after {
+    bottom: -10px;
+    right: -10px;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 20px 0;
+}
+
+@keyframes cornerPulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+/* ═══════════════════════════════════════════
+   🎯 VÍTACÍ SEKCE - Červený alert
+   ═══════════════════════════════════════════ */
 .loading-welcome {
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, 
+        rgba(255, 7, 58, 0.15) 0%, 
+        rgba(255, 7, 58, 0.05) 100%);
     border: 3px solid #FF073A;
     border-radius: 15px;
-    padding: 30px;
-    margin-bottom: 30px;
+    padding: 25px;
+    margin-bottom: 25px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 0 20px rgba(255, 7, 58, 0.3),
+        inset 0 0 20px rgba(255, 7, 58, 0.1);
+}
+
+/* Animovaný scanning efekt */
+.loading-welcome::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 7, 58, 0.3), 
+        transparent);
+    animation: scanEffect 3s linear infinite;
+}
+
+@keyframes scanEffect {
+    0% { left: -100%; }
+    100% { left: 100%; }
 }
 
 .loading-welcome h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    font-weight: 600;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
     color: #FF073A;
-    margin: 0 0 15px 0;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 7, 58, 0.5);
+    margin: 0 0 10px 0;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 
+        0 0 10px rgba(255, 7, 58, 0.8),
+        0 0 20px rgba(255, 7, 58, 0.5),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    animation: textPulse 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
 }
 
 .loading-welcome h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.2rem;
-    font-weight: 700;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
     color: #E0E1DD;
     margin: 0;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(224, 225, 221, 0.3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 
+        0 0 15px rgba(224, 225, 221, 0.6),
+        0 0 30px rgba(0, 136, 255, 0.4),
+        2px 2px 6px rgba(0, 0, 0, 0.9);
+    animation: titleGlow 3s ease-in-out infinite alternate;
+    position: relative;
+    z-index: 1;
 }
 
-/* Info sekce (modrý rámeček) - VĚTŠÍ TEXT */
+@keyframes textPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes titleGlow {
+    0% { 
+        text-shadow: 
+            0 0 15px rgba(224, 225, 221, 0.6),
+            0 0 30px rgba(0, 136, 255, 0.4),
+            2px 2px 6px rgba(0, 0, 0, 0.9);
+    }
+    100% { 
+        text-shadow: 
+            0 0 25px rgba(224, 225, 221, 0.9),
+            0 0 50px rgba(0, 136, 255, 0.6),
+            2px 2px 8px rgba(0, 0, 0, 0.9);
+    }
+}
+
+/* ═══════════════════════════════════════════
+   📊 INFO SEKCE - Modrý datový stream
+   ═══════════════════════════════════════════ */
 .loading-info {
-    background: rgba(0, 136, 255, 0.1);
+    background: linear-gradient(135deg, 
+        rgba(0, 136, 255, 0.15) 0%, 
+        rgba(0, 136, 255, 0.05) 100%);
     border: 3px solid #0088ff;
     border-radius: 15px;
-    padding: 30px;
-    margin-bottom: 30px;
+    padding: 25px;
+    margin-bottom: 25px;
     text-align: center;
-    min-height: 220px;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 0 20px rgba(0, 136, 255, 0.3),
+        inset 0 0 20px rgba(0, 136, 255, 0.1);
+}
+
+/* LCARS datové čáry (horní a dolní) */
+.loading-info::before,
+.loading-info::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        #0088ff 20%, 
+        #0088ff 80%, 
+        transparent);
+    animation: dataFlow 2s linear infinite;
+}
+
+.loading-info::before {
+    top: 10px;
+}
+
+.loading-info::after {
+    bottom: 10px;
+    animation-delay: 1s;
+}
+
+@keyframes dataFlow {
+    0% { opacity: 0.3; transform: translateX(-100%); }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; transform: translateX(100%); }
 }
 
 .loading-info p {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.8rem;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 15px;
     font-weight: 600;
     color: #0088ff;
-    margin: 12px 0;
+    margin: 10px 0;
     line-height: 1.6;
     opacity: 0;
     animation: fadeInLine 0.8s ease-out forwards;
-    text-shadow: 0 0 8px rgba(0, 136, 255, 0.4);
+    text-shadow: 
+        0 0 10px rgba(0, 136, 255, 0.6),
+        0 0 20px rgba(0, 136, 255, 0.3),
+        1px 1px 3px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 1;
 }
 
 /* Delay pro jednotlivé řádky */
-.loading-info p:nth-child(1) {
-    animation-delay: 0.5s;
-}
-
-.loading-info p:nth-child(2) {
-    animation-delay: 1.2s;
-}
-
-.loading-info p:nth-child(3) {
-    animation-delay: 1.9s;
-}
-
-.loading-info p:nth-child(4) {
-    animation-delay: 2.6s;
-}
-
-.loading-info p:nth-child(5) {
-    animation-delay: 3.3s;
-}
+.loading-info p:nth-child(1) { animation-delay: 0.5s; }
+.loading-info p:nth-child(2) { animation-delay: 1.2s; }
+.loading-info p:nth-child(3) { animation-delay: 1.9s; }
+.loading-info p:nth-child(4) { animation-delay: 2.6s; }
+.loading-info p:nth-child(5) { animation-delay: 3.3s; }
 
 .loading-info .highlight {
-    font-weight: 700;
-    font-size: 2.2rem;
+    font-weight: 900;
+    font-size: 17px;
     color: #39FF14;
-    text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+    text-shadow: 
+        0 0 15px rgba(57, 255, 20, 0.8),
+        0 0 30px rgba(57, 255, 20, 0.4),
+        2px 2px 4px rgba(0, 0, 0, 0.9);
+    animation: highlightPulse 1.5s ease-in-out infinite;
 }
 
-/* Fade-in animace pro řádky */
 @keyframes fadeInLine {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(15px) scale(0.95);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-/* Progress bar sekce (zelený rámeček) */
+@keyframes highlightPulse {
+    0%, 100% { 
+        text-shadow: 
+            0 0 15px rgba(57, 255, 20, 0.8),
+            0 0 30px rgba(57, 255, 20, 0.4),
+            2px 2px 4px rgba(0, 0, 0, 0.9);
+    }
+    50% { 
+        text-shadow: 
+            0 0 25px rgba(57, 255, 20, 1),
+            0 0 50px rgba(57, 255, 20, 0.6),
+            2px 2px 6px rgba(0, 0, 0, 0.9);
+    }
+}
+
+/* ═══════════════════════════════════════════
+   ⚡ PROGRESS BAR SEKCE - Zelený warp core
+   ═══════════════════════════════════════════ */
 .loading-progress-section {
-    background: rgba(57, 255, 20, 0.05);
+    background: linear-gradient(135deg, 
+        rgba(57, 255, 20, 0.1) 0%, 
+        rgba(57, 255, 20, 0.05) 100%);
     border: 3px solid #39FF14;
     border-radius: 15px;
-    padding: 20px;
+    padding: 25px;
+    position: relative;
+    box-shadow: 
+        0 0 20px rgba(57, 255, 20, 0.3),
+        inset 0 0 20px rgba(57, 255, 20, 0.1);
 }
 
 .loading-progress-label {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
     color: #39FF14;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+    text-transform: uppercase;
+    text-shadow: 
+        0 0 10px rgba(57, 255, 20, 0.8),
+        0 0 20px rgba(57, 255, 20, 0.4),
+        1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 /* Progress bar container */
 .loading-progress-container {
     width: 100%;
     height: 35px;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 
+        inset 0 3px 10px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(57, 255, 20, 0.2);
+    border: 2px solid rgba(57, 255, 20, 0.3);
 }
 
 /* Progress bar fill */
 .loading-progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #39FF14 0%, #00B7EB 50%, #0088ff 100%);
-    border-radius: 15px;
+    background: linear-gradient(90deg, 
+        #39FF14 0%, 
+        #00ff88 25%,
+        #00d4ff 50%, 
+        #0088ff 75%,
+        #39FF14 100%);
+    background-size: 200% 100%;
+    border-radius: 20px;
     transition: width 0.3s ease;
     position: relative;
+    animation: warpCore 2s linear infinite;
+    box-shadow: 
+        0 0 20px rgba(57, 255, 20, 0.6),
+        inset 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* Lehký glow efekt (minimální) */
+@keyframes warpCore {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Energetické pulzy v progress baru */
 .loading-progress-fill::after {
     content: '';
     position: absolute;
@@ -169,61 +412,235 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent);
+    animation: energyPulse 1.5s ease-in-out infinite;
 }
 
-/* Procenta text - VĚTŠÍ */
+@keyframes energyPulse {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+}
+
+/* Procenta text */
 .loading-progress-text {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-family: 'Courier New', monospace;
-    font-size: 1.3rem;
-    font-weight: 700;
+    font-family: 'Orbitron', monospace, 'Courier New';
+    font-size: 18px;
+    font-weight: 900;
     color: #fff;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
-    z-index: 1;
+    text-shadow: 
+        0 0 10px rgba(0, 0, 0, 1),
+        0 0 20px rgba(57, 255, 20, 0.5),
+        1px 1px 2px rgba(0, 0, 0, 0.9);
+    z-index: 2;
+    letter-spacing: 1px;
 }
 
-/* Responsivita pro mobilní zařízení */
-@media (max-width: 768px) {
+/* ═══════════════════════════════════════════
+   📱 MEDIA QUERIES - Adaptivní systémy
+   ═══════════════════════════════════════════ */
+
+/* 🖥️ Velké desktopy (1920px+) */
+@media (min-width: 1920px) {
+    .loading-template {
+        max-width: 800px;
+        padding: 50px;
+    }
+    
+    .loading-welcome h2 {
+        font-size: 20px;
+    }
+    
+    .loading-welcome h3 {
+        font-size: 22px;
+    }
+    
+    .loading-info p {
+        font-size: 16px;
+    }
+    
+    .loading-info .highlight {
+        font-size: 18px;
+    }
+    
+    .loading-progress-label {
+        font-size: 17px;
+    }
+    
+    .loading-progress-container {
+        height: 38px;
+    }
+    
+    .loading-progress-text {
+        font-size: 19px;
+    }
+}
+
+/* 💻 Standardní desktop (1366px - 1919px) */
+@media (min-width: 1366px) and (max-width: 1919px) {
+    .loading-template {
+        max-height: 900px;
+        max-width: 2500px;
+        padding: 40px;
+    }
+    
+    .loading-welcome h2 {
+        font-size: 18px;
+    }
+    
+    .loading-welcome h3 {
+        font-size: 20px;
+    }
+    
+    .loading-info p {
+        font-size: 15px;
+    }
+    
+    .loading-info .highlight {
+        font-size: 17px;
+    }
+}
+
+/* 💻 Notebook (1024px - 1365px) */
+@media (min-width: 1024px) and (max-width: 1365px) {
+    .loading-template {
+        max-width: 600px;
+        padding: 35px;
+    }
+    
+    .loading-welcome h2 {
+        font-size: 1.9rem;
+    }
+    
+    .loading-welcome h3 {
+        font-size: 2.2rem;
+    }
+    
+    .loading-info p {
+        font-size: 1.7rem;
+    }
+    
+    .loading-info .highlight {
+        font-size: 2.1rem;
+    }
+    
+    .loading-progress-container {
+        height: 38px;
+    }
+    
+    .loading-progress-text {
+        font-size: 1.35rem;
+    }
+}
+
+/* 📱 Tablety na šířku (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .loading-template {
+        padding: 30px;
+        max-width: 90%;
+    }
+    
+    .loading-welcome {
+        padding: 25px;
+    }
+    
+    .loading-welcome h2 {
+        font-size: 1.7rem;
+        letter-spacing: 3px;
+    }
+    
+    .loading-welcome h3 {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+    
+    .loading-info {
+        padding: 25px;
+        min-height: 200px;
+    }
+    
+    .loading-info p {
+        font-size: 1.6rem;
+        margin: 10px 0;
+    }
+    
+    .loading-info .highlight {
+        font-size: 1.9rem;
+    }
+    
+    .loading-progress-label {
+        font-size: 1.3rem;
+    }
+    
+    .loading-progress-container {
+        height: 35px;
+    }
+    
+    .loading-progress-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* 📱 Tablety na výšku (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
     .loading-template {
         padding: 25px;
         max-width: 95%;
     }
     
+    .loading-template::before,
+    .loading-template::after {
+        width: 60px;
+        height: 60px;
+    }
+    
     .loading-welcome {
-        padding: 25px;
+        padding: 20px;
+        margin-bottom: 20px;
     }
     
     .loading-welcome h2 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
     }
     
     .loading-welcome h3 {
         font-size: 1.8rem;
+        letter-spacing: 1.5px;
     }
     
     .loading-info {
-        padding: 25px;
+        padding: 20px;
+        margin-bottom: 20px;
+        min-height: 180px;
     }
     
     .loading-info p {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        margin: 8px 0;
     }
     
     .loading-info .highlight {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
+    }
+    
+    .loading-progress-section {
+        padding: 20px;
     }
     
     .loading-progress-label {
         font-size: 1.2rem;
+        margin-bottom: 12px;
     }
     
     .loading-progress-container {
-        height: 30px;
+        height: 32px;
     }
     
     .loading-progress-text {
@@ -231,53 +648,243 @@
     }
 }
 
-@media (max-width: 480px) {
+/* 📱 Velké mobily (421px - 480px) */
+@media (min-width: 421px) and (max-width: 480px) {
     .loading-template {
         padding: 20px;
+        max-width: 95%;
+        border-radius: 15px;
+    }
+    
+    .loading-template::before,
+    .loading-template::after {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
     }
     
     .loading-welcome {
-        padding: 20px;
+        padding: 18px;
+        margin-bottom: 18px;
+        border-radius: 12px;
     }
     
     .loading-welcome h2 {
         font-size: 1.4rem;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
     }
     
     .loading-welcome h3 {
-        font-size: 1.6rem;
+        font-size: 1.7rem;
+        letter-spacing: 1px;
     }
     
     .loading-info {
-        padding: 20px;
+        padding: 18px;
+        margin-bottom: 18px;
+        min-height: 160px;
+        border-radius: 12px;
     }
     
     .loading-info p {
         font-size: 1.3rem;
+        margin: 8px 0;
+        line-height: 1.5;
     }
     
     .loading-info .highlight {
         font-size: 1.6rem;
     }
     
+    .loading-progress-section {
+        padding: 18px;
+        border-radius: 12px;
+    }
+    
     .loading-progress-label {
-        font-size: 1.1rem;
+        font-size: 1.15rem;
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+    }
+    
+    .loading-progress-container {
+        height: 30px;
+        border-radius: 15px;
+    }
+    
+    .loading-progress-text {
+        font-size: 1.05rem;
+        letter-spacing: 1.5px;
     }
 }
 
-/* Infinix Note 30 optimalizace */
-@media (max-width: 420px) and (min-height: 800px) {
+/* 📱 Infinix Note 30 a podobné (max 420px) */
+@media (max-width: 420px) {
+    #loading-screen {
+        padding: 10px;
+    }
+    
     .loading-template {
         padding: 18px;
-        max-width: 92%;
+        max-width: 96%;
+        border-radius: 12px;
+        border-width: 2px;
+    }
+    
+    .loading-template::before,
+    .loading-template::after {
+        width: 40px;
+        height: 40px;
+        border-width: 2px;
+    }
+    
+    .loading-welcome {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border-width: 2px;
+    }
+    
+    .loading-welcome h2 {
+        font-size: 1.3rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+    }
+    
+    .loading-welcome h3 {
+        font-size: 1.6rem;
+        letter-spacing: 1px;
+    }
+    
+    .loading-info {
+        padding: 15px;
+        margin-bottom: 15px;
+        min-height: 140px;
+        border-radius: 10px;
+        border-width: 2px;
+    }
+    
+    .loading-info p {
+        font-size: 1.2rem;
+        margin: 7px 0;
+        line-height: 1.4;
+    }
+    
+    .loading-info .highlight {
+        font-size: 1.5rem;
+    }
+    
+    .loading-progress-section {
+        padding: 15px;
+        border-radius: 10px;
+        border-width: 2px;
+    }
+    
+    .loading-progress-label {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        letter-spacing: 1.5px;
     }
     
     .loading-progress-container {
         height: 28px;
+        border-radius: 14px;
+        border-width: 1.5px;
     }
     
     .loading-progress-text {
         font-size: 1rem;
+        letter-spacing: 1px;
     }
 }
 
+/* 📱 Extra malé mobily (max 360px) */
+@media (max-width: 360px) {
+    .loading-template {
+        padding: 15px;
+    }
+    
+    .loading-welcome {
+        padding: 12px;
+    }
+    
+    .loading-welcome h2 {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+    
+    .loading-welcome h3 {
+        font-size: 1.5rem;
+    }
+    
+    .loading-info {
+        padding: 12px;
+        min-height: 120px;
+    }
+    
+    .loading-info p {
+        font-size: 1.1rem;
+        margin: 6px 0;
+    }
+    
+    .loading-info .highlight {
+        font-size: 1.4rem;
+    }
+    
+    .loading-progress-section {
+        padding: 12px;
+    }
+    
+    .loading-progress-label {
+        font-size: 1rem;
+    }
+    
+    .loading-progress-container {
+        height: 26px;
+    }
+    
+    .loading-progress-text {
+        font-size: 0.95rem;
+    }
+}
+
+/* 🌐 Landscape orientace pro mobily */
+@media (max-height: 500px) and (orientation: landscape) {
+    .loading-template {
+        padding: 15px;
+        max-width: 85%;
+    }
+    
+    .loading-welcome {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .loading-welcome h2 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+    
+    .loading-welcome h3 {
+        font-size: 1.4rem;
+    }
+    
+    .loading-info {
+        padding: 12px;
+        margin-bottom: 12px;
+        min-height: 100px;
+    }
+    
+    .loading-info p {
+        font-size: 1.1rem;
+        margin: 5px 0;
+    }
+    
+    .loading-info .highlight {
+        font-size: 1.3rem;
+    }
+    
+    .loading-progress-section {
+        padding: 12px;
+    }
