@@ -309,7 +309,10 @@ class QuickVolumeManager {
             console.warn('QuickVolumeManager: Tlačítko #zobrazit-panel-hlasitosti nenalezeno!');
         }
     }
-
+//////////////////////////
+    /**
+     * Přepínání viditelnosti panelu (Maskování ON/OFF)
+     */
     /**
      * Přepínání viditelnosti panelu (Maskování ON/OFF)
      */
@@ -318,13 +321,22 @@ class QuickVolumeManager {
         this.container.style.display = this.isVisible ? 'block' : 'none';
         
         if (this.isVisible) {
-            // Animace příletu (pokud máš CSS transition)
+            // Animace příletu
             this.container.style.animation = 'fadeIn 0.3s ease-out';
         }
         
-        window.DebugManager?.log('interface', `QuickVolume: Panel ${this.isVisible ? 'ODMASKOVÁN' : 'ZAMASKOVÁN'}`);
-    }
+        // 1. Nastavení textu notifikace (stručně a jasně)
+        const msgText = this.isVisible 
+            ? 'Panel hlasitosti zobrazen' 
+            : 'Panel hlasitosti skryt';
 
+        // 2. Zobrazení notifikace na 3 sekundy
+        window.showNotification?.(msgText, 'info', 3000);
+        
+        // Log pro kontrolu
+        window.DebugManager?.log('interface', `QuickVolume: Panel ${this.isVisible ? 'SHOWN' : 'HIDDEN'}`);
+    }
+//////////////////////////
     setVolume(percent) {
         const audioPlayer = document.getElementById('audioPlayer');
         const volumeSlider = document.getElementById('volume-slider');
@@ -495,7 +507,7 @@ class InterfaceManager {
         window.DebugManager?.log('interface', 'InterfaceManager: Kompletní inicializace dokončena');
         
         if (window.showNotification) {
-            window.showNotification('🚀 Rozšířené rozhraní aktivováno!', 'info', 2000);
+            window.showNotification('nazev funke doplnit podle kodu??', 'info', 2000);
         }
 
         return true;
