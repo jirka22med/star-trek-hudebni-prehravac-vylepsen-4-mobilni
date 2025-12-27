@@ -137,6 +137,16 @@ function enhancedShowNotification(message, type = 'info', duration = 3000) {
             borderColor = 'rgba(255, 255, 255, 0.3)';
             notificationElement.style.color = '#ffffff';
             break;
+        case 'play':
+    case 'music':
+        // 🎵 NOVÁ BARVA PRO HUDBU: Fialovo-Růžový gradient (Cyberpunk/Magic styl)
+        backgroundColor = 'linear-gradient(135deg, #b92b27, #1565C0)'; // Nebo zkus: #8E2DE2 -> #4A00E0
+        // Můj favorit pro tvůj design (Sytá magická fialová):
+        backgroundColor = 'linear-gradient(135deg, #da22ff, #9733ee)'; 
+        borderColor = 'rgba(218, 34, 255, 0.5)';
+        break;
+
+    case 'info':
     }
     
     // Aplikovat styly
