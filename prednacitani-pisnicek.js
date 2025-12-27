@@ -1,38 +1,36 @@
 /**
- * 🖖 STAR TREK AUDIO SMART PRELOADER V4.1 🚀
+ * 🖖 STAR TREK AUDIO SMART PRELOADER V5.0 🚀
  * ═══════════════════════════════════════════════════════════════
- * 💪 NETWORK-AWARE EDITION - Inteligentní přizpůsobení síti!
+ * 💪 CONFLICT-FREE EDITION - Neblokuje hlavní audio requesty!
  * ═══════════════════════════════════════════════════════════════
+ * ✅ Čeká 15 sekund před spuštěním
+ * ✅ Detekuje kolize s hlavním načítáním
+ * ✅ Okamžitě se zastaví při přepnutí skladby
+ * ✅ Monitoruje AI aktivitu (Claude, Gemini)
+ * ✅ Event-driven komunikace se script.js
  * ✅ Retry mechanismus s exponenciálním backoffem
- * ✅ Timeout protection (30s limit)
- * ✅ Network error detection (ERR_CONNECTION_RESET, atd.)
- * ✅ Rate limiting detection (429 Too Many Requests)
- * ✅ Memory leak prevention
+ * ✅ Automatické čištění paměti
  * ✅ Graceful degradation při výpadku sítě
- * ✅ Automatic cleanup po chybách
- * ✅ Enhanced debugging & statistics
- * 🆕 Detekce síťové zátěže (odkládá preload při přetížení)
- * 🆕 Detekce AI aktivity (odkládá preload při konverzaci s AI)
- * 🆕 Klávesová zkratka Ctrl+P pro toggle (+ event pro script.js)
  * ═══════════════════════════════════════════════════════════════
- * Autor vylepšení: Admirál Claude.AI
+ * Autor: Admirál Claude.AI
  * Architekt projektu: Více admirál Jiřík
- * Verze: 4.1 (27.12.2025)
+ * Verze: 5.0 (27.12.2025)
  * ═══════════════════════════════════════════════════════════════
  */
 
-class SmartAudioPreloader {
+class SmartAudioPreloaderV5 {
     constructor() {
-        // 📦 Úložiště přednahraných skladeb
-        this.preloadedElements = new Map(); // Map<src, Audio>
+        // 📦 Cache přednahraných skladeb
+        this.cache = new Map(); // Map<src, Audio>
         
         // 🔄 Stav preloaderu
-        this.isPreloading = false;
+        this.state = 'STANDBY'; // STANDBY | WAITING | ACTIVE | PAUSED | STOPPED
         this.isEnabled = true;
-        this.currentPreloadSrc = null;
         
-        // ⏱️ Timeouty pro každý preload
-        this.preloadTimeouts = new Map(); // Map<src, timeoutId>
+        // ⏱️ Timeouty a intervaly
+        this.waitTimeout = null;
+        this.preloadTimeout = null;
+        this.cleanupInterval = null;
         
         // 🔄 Retry tracking
         this.retryAttempts = new Map(); // Map<src, attemptCount>
@@ -42,37 +40,38 @@ class SmartAudioPreloader {
             totalAttempts: 0,
             successful: 0,
             failed: 0,
-            retries: 0,
-            timeouts: 0,
-            networkErrors: 0,
-            delayedByNetwork: 0,      // 🆕 Odloženo kvůli síti
-            delayedByAI: 0            // 🆕 Odloženo kvůli AI
+            blocked: 0,
+            interrupted: 0,
+            retries: 0
         };
         
         // ⚙️ Konfigurace
         this.config = {
+            WAIT_BEFORE_PRELOAD: 15000,  // 15 sekund čekání
             MAX_RETRY_ATTEMPTS: 3,
-            TIMEOUT_MS: 30000,           // 30 sekund
-            RETRY_DELAY_BASE: 2000,      // 2 sekundy pro první retry
-            RETRY_DELAY_MAX: 10000,      // Max 10 sekund mezi pokusy
-            CLEANUP_INTERVAL: 60000,     // Cleanup každou minutu
-            NETWORK_LOAD_THRESHOLD: 10,  // 🆕 Max aktivních requestů
-            AI_DELAY_MS: 5000            // 🆕 Delay při AI aktivitě
+            TIMEOUT_MS: 30000,
+            RETRY_DELAY_BASE: 2000,
+            RETRY_DELAY_MAX: 10000,
+            CLEANUP_INTERVAL: 60000
         };
         
-        // 🧹 Automatické čištění každou minutu
-        this.cleanupInterval = setInterval(() => {
-            this._autoCleanup();
-        }, this.config.CLEANUP_INTERVAL);
-        
-        // 🌐 Síťový status monitoring
+        // 🌐 Síťový status
         this.isOnline = navigator.onLine;
+        
+        // 🎯 Aktuálně přednahrávaná skladba
+        this.currentPreloadSrc = null;
+        
+        // 🚀 Inicializace
+        this._init();
+    }
+
+    /**
+     * 🚀 Inicializace preloaderu
+     */
+    _init() {
         this._setupNetworkMonitoring();
-        
-        // ⌨️ Klávesová zkratka Ctrl+P
-        this._setupKeyboardShortcut();
-        
-        // 📢 Úvodní banner
+        this._setupEventListeners();
+        this._startCleanupRoutine();
         this._logBanner();
     }
 
@@ -84,194 +83,213 @@ class SmartAudioPreloader {
         
         window.DebugManager.log('preloader', '');
         window.DebugManager.log('preloader', '🖖════════════════════════════════════════════════');
-        window.DebugManager.log('preloader', '🚀 Smart Audio Preloader V4.1 - NETWORK-AWARE');
+        window.DebugManager.log('preloader', '🚀 Smart Audio Preloader V5.0 - CONFLICT FREE');
         window.DebugManager.log('preloader', '════════════════════════════════════════════════');
-        window.DebugManager.log('preloader', '✅ Retry mechanismus aktivní');
-        window.DebugManager.log('preloader', '✅ Timeout protection (30s)');
-        window.DebugManager.log('preloader', '✅ Network error recovery');
-        window.DebugManager.log('preloader', '✅ Rate limiting detection');
-        window.DebugManager.log('preloader', '✅ Memory leak prevention');
-        window.DebugManager.log('preloader', '✅ Auto-cleanup každou minutu');
-        window.DebugManager.log('preloader', '🆕 Detekce síťové zátěže');
-        window.DebugManager.log('preloader', '🆕 Detekce AI konverzace (Claude/Gemini)');
-        window.DebugManager.log('preloader', '🆕 Klávesová zkratka: Ctrl+P (toggle)');
+        window.DebugManager.log('preloader', '✅ Čeká 15s před spuštěním');
+        window.DebugManager.log('preloader', '✅ Detekuje kolize s hlavním načítáním');
+        window.DebugManager.log('preloader', '✅ Okamžitě se zastaví při změně skladby');
+        window.DebugManager.log('preloader', '✅ Monitoruje AI aktivitu');
+        window.DebugManager.log('preloader', '✅ Event-driven komunikace');
         window.DebugManager.log('preloader', '🖖════════════════════════════════════════════════');
         window.DebugManager.log('preloader', '');
     }
 
     /**
-     * ⌨️ Setup klávesové zkratky Ctrl+P
-     */
-    _setupKeyboardShortcut() {
-        // Event listener jen pro zachycení, skutečnou logiku si přidáš do script.js
-        window.addEventListener('preloader-toggle-request', () => {
-            this.toggle();
-        });
-        
-        window.DebugManager?.log('preloader', '⌨️  Zkratka Ctrl+P připravena (čeká na script.js integration)');
-    }
-
-    /**
-     * 🔄 Toggle preloaderu (pro klávesovou zkratku)
-     */
-    toggle() {
-        this.setEnabled(!this.isEnabled);
-        
-        // Dispatch event pro notifikaci (pokud chceš zobrazit hlášku)
-        window.dispatchEvent(new CustomEvent('preloader-toggled', {
-            detail: { enabled: this.isEnabled }
-        }));
-        
-        window.DebugManager?.log('preloader', 
-            `🔄 Preloader ${this.isEnabled ? '✅ ZAPNUT' : '⏸️ VYPNUT'} (zkratkou)`
-        );
-    }
-
-    /**
-     * 🌐 Setup pro monitoring síťového stavu
+     * 🌐 Monitoring síťového stavu
      */
     _setupNetworkMonitoring() {
         window.addEventListener('online', () => {
             this.isOnline = true;
-            window.DebugManager?.log('preloader', '🌐 Internet ONLINE - preloading obnoven!');
-            
-            if (this.preloadedElements.size === 0 && this.retryAttempts.size > 0) {
-                window.DebugManager?.log('preloader', '🔄 Obnovuji přerušené preloady...');
-            }
+            window.DebugManager?.log('preloader', '🌐 Internet ONLINE');
         });
         
         window.addEventListener('offline', () => {
             this.isOnline = false;
-            window.DebugManager?.log('preloader', '⚠️ Internet OFFLINE - preloading pozastaven!');
+            this.stopPreloading('Network offline');
+            window.DebugManager?.log('preloader', '⚠️ Internet OFFLINE - preloading zastaveno');
         });
     }
 
     /**
-     * 🌐 Kontrola síťové zátěže před preloadem
+     * 🎧 Event listenery pro komunikaci se script.js
      */
-    _checkNetworkLoad() {
-        try {
-            // Získáme všechny resource requesty
-            const activeRequests = performance.getEntriesByType('resource')
-                .filter(r => r.duration === 0); // Běžící requesty (duration 0 = ještě neskončily)
-            
-            if (activeRequests.length > this.config.NETWORK_LOAD_THRESHOLD) {
-                window.DebugManager?.log('preloader', 
-                    `⚠️ Vysoká síťová zátěž (${activeRequests.length} requestů), odkládám preload...`
-                );
-                this.stats.delayedByNetwork++;
-                return false;
-            }
-            
-            return true;
-        } catch (error) {
-            // Fallback: pokud performance API nefunguje, povol preload
-            window.DebugManager?.log('preloader', 
-                '⚠️ Performance API nedostupné, pokračuji bez kontroly zátěže'
-            );
-            return true;
-        }
+    _setupEventListeners() {
+        // 🚨 KRITICKÁ UDÁLOST: Začíná se načítat aktuální skladba
+        window.addEventListener('track-loading-start', () => {
+            window.DebugManager?.log('preloader', '🚨 DETEKOVÁNO: Načítání aktuální skladby - ZASTAVUJI preload');
+            this.stopPreloading('Main track loading');
+        });
+        
+        // ✅ Aktuální skladba byla úspěšně načtena
+        window.addEventListener('track-loaded-success', (e) => {
+            window.DebugManager?.log('preloader', '✅ Aktuální skladba načtena - čekám 15s před preloadem');
+        });
+        
+        // 🔄 Změna skladby (Play, Next, Prev)
+        window.addEventListener('track-changed', (e) => {
+            window.DebugManager?.log('preloader', '🔄 Změna skladby - RESETUJI preloader');
+            this.stopPreloading('Track changed');
+        });
+        
+        // ⏸️ Pauza
+        window.addEventListener('player-paused', () => {
+            window.DebugManager?.log('preloader', '⏸️ Pauza - POZASTAVUJI preload');
+            this.pausePreloading();
+        });
+        
+        // ▶️ Pokračování v přehrávání
+        window.addEventListener('player-resumed', () => {
+            window.DebugManager?.log('preloader', '▶️ Pokračování - OBNOVUJI preload');
+            this.resumePreloading();
+        });
     }
 
     /**
-     * 🤖 Detekce AI aktivity (Claude.ai / Gemini.ai)
+     * 🧹 Automatické čištění paměti
      */
-    _detectAIActivity() {
-        try {
-            // Detekce Claude.ai aktivity
-            const isClaudeActive = !!(
-                document.querySelector('.claude-message-pending') ||
-                document.querySelector('[data-test-id="loading-message"]') ||
-                document.querySelector('.animate-spin') // Loading spinner
-            );
-            
-            // Detekce Gemini.ai aktivity
-            const isGeminiActive = !!(
-                document.querySelector('[data-gemini-loading]') ||
-                document.querySelector('.gemini-loading') ||
-                document.querySelector('[aria-label*="loading"]')
-            );
-            
-            return isClaudeActive || isGeminiActive;
-        } catch (error) {
-            // Fallback: pokud selektory nefungují, předpokládej žádnou AI aktivitu
-            return false;
-        }
+    _startCleanupRoutine() {
+        this.cleanupInterval = setInterval(() => {
+            this._autoCleanup();
+        }, this.config.CLEANUP_INTERVAL);
     }
 
     /**
-     * 🎯 HLAVNÍ METODA: Přednahraje další skladbu
+     * 🎯 HLAVNÍ METODA: Požadavek na přednahrání
      */
     async preloadAroundCurrent(tracks, currentIndex, isShuffled = false, shuffledIndices = []) {
-        if (!this.isEnabled || !tracks?.length) return;
-        
-        // Kontrola připojení
+        // 🛡️ Základní kontroly
+        if (!this.isEnabled) {
+            window.DebugManager?.log('preloader', '⏸️ Preloader je vypnutý');
+            return;
+        }
+
         if (!this.isOnline) {
-            window.DebugManager?.log('preloader', '⚠️ Offline režim - preload přeskočen');
+            window.DebugManager?.log('preloader', '⚠️ Offline režim - preload odložen');
             return;
         }
-        
-        // 🆕 KONTROLA SÍŤOVÉ ZÁTĚŽE
-        if (!this._checkNetworkLoad()) {
-            // Zkusíme to znovu za 3 sekundy
-            setTimeout(() => {
-                this.preloadAroundCurrent(tracks, currentIndex, isShuffled, shuffledIndices);
-            }, 3000);
+
+        if (!tracks?.length) {
+            window.DebugManager?.log('preloader', '⚠️ Prázdný playlist');
             return;
         }
-        
-        // 🆕 KONTROLA AI AKTIVITY
+
+        // 🚨 KRITICKÁ KONTROLA: Běží načítání aktuální skladby?
+        if (window.audioState?.isLoadingTrack === true) {
+            window.DebugManager?.log('preloader', '🚨 BLOKOVÁNO: Právě se načítá aktuální skladba!');
+            this.stats.blocked++;
+            return;
+        }
+
+        // 🤖 Detekce AI aktivity
         if (this._detectAIActivity()) {
-            window.DebugManager?.log('preloader', 
-                '🤖 AI konverzace aktivní, odkládám preload o 5s...'
-            );
-            this.stats.delayedByAI++;
-            
+            window.DebugManager?.log('preloader', '🤖 AI konverzace aktivní - odklad preloadu');
             setTimeout(() => {
                 this.preloadAroundCurrent(tracks, currentIndex, isShuffled, shuffledIndices);
-            }, this.config.AI_DELAY_MS);
+            }, 5000);
             return;
         }
-        
-        if (this.isPreloading) {
+
+        // 🔄 Už běží preload?
+        if (this.state === 'WAITING' || this.state === 'ACTIVE') {
             window.DebugManager?.log('preloader', '⏸️ Preload již běží, přeskakuji...');
             return;
         }
+
+        // 🚀 Spustíme proces
+        this._startPreloadProcess(tracks, currentIndex, isShuffled, shuffledIndices);
+    }
+
+    /**
+     * 🚀 Spuštění procesu přednahrávání
+     */
+    async _startPreloadProcess(tracks, currentIndex, isShuffled, shuffledIndices) {
+        this.state = 'WAITING';
         
-        this.isPreloading = true;
-        
+        window.DebugManager?.log('preloader', '');
+        window.DebugManager?.log('preloader', '🎯 ═══════════════════════════════════════');
+        window.DebugManager?.log('preloader', '🎯 ZAHAJUJI PRELOAD PROCES');
+        window.DebugManager?.log('preloader', '🎯 ═══════════════════════════════════════');
+        window.DebugManager?.log('preloader', `⏰ Čekám 15 sekund před spuštěním...`);
+
         try {
-            // Určíme další skladbu
+            // ⏰ Čekání 15 sekund (lze přerušit)
+            await this._waitSafely(this.config.WAIT_BEFORE_PRELOAD);
+
+            // 🔍 ZNOVU zkontroluj před preloadem
+            if (window.audioState?.isLoadingTrack === true) {
+                throw new Error('Main track started loading during wait');
+            }
+
+            if (this.state === 'STOPPED') {
+                throw new Error('Preload was stopped during wait');
+            }
+
+            // ✅ Vše OK, můžeme přednahrávat
+            this.state = 'ACTIVE';
+            window.DebugManager?.log('preloader', '✅ Čekání dokončeno - SPOUŠTÍM preload');
+
+            // 🎯 Určíme další skladbu
             const nextIndex = this._getNextIndex(currentIndex, tracks.length, isShuffled, shuffledIndices);
             const nextTrack = tracks[nextIndex];
-            
+
             if (!nextTrack?.src) {
-                window.DebugManager?.log('preloader', '⚠️ Další skladba nemá platné URL');
-                return;
+                throw new Error('Next track has no valid source');
             }
-            
-            window.DebugManager?.log('preloader', '\n🎯 Přednahrávám další skladbu:');
-            window.DebugManager?.log('preloader', `   📍 Index: ${nextIndex}`);
-            window.DebugManager?.log('preloader', `   🎵 Název: "${nextTrack.title}"`);
-            
-            // Už je přednahraná?
+
+            window.DebugManager?.log('preloader', `🎵 Přednahrávám: "${nextTrack.title}"`);
+            window.DebugManager?.log('preloader', `📍 Index: ${nextIndex}`);
+
+            // 🔍 Už je v cache?
             if (this._isAlreadyPreloaded(nextTrack.src)) {
-                window.DebugManager?.log('preloader', '   ✅ Již přednahráno');
+                window.DebugManager?.log('preloader', '✅ Již v cache');
+                this.state = 'STANDBY';
                 return;
             }
-            
-            // Vyčistíme staré preloady
+
+            // 🧹 Vyčistíme staré preloady
             this._cleanupOldPreloads(tracks[currentIndex]?.src, nextTrack.src);
-            
-            // Spustíme preload s retry logikou
+
+            // 🚀 Spustíme preload s retry
             await this._startPreloadWithRetry(nextTrack, nextIndex);
-            
+
+            this.state = 'STANDBY';
+            window.DebugManager?.log('preloader', '🎯 Preload dokončen - návrat do STANDBY');
+
         } catch (error) {
-            window.DebugManager?.log('preloader', `💥 Kritická chyba při preloadingu: ${error.message}`);
-            this.stats.failed++;
-        } finally {
-            this.isPreloading = false;
+            this.state = 'STANDBY';
+            
+            if (error.message === 'INTERRUPTED') {
+                window.DebugManager?.log('preloader', '⚠️ Preload PŘERUŠEN (byla spuštěna nová skladba)');
+                this.stats.interrupted++;
+            } else {
+                window.DebugManager?.log('preloader', `❌ Preload selhal: ${error.message}`);
+                this.stats.failed++;
+            }
         }
+    }
+
+    /**
+     * ⏰ Bezpečné čekání s možností přerušení
+     */
+    _waitSafely(ms) {
+        return new Promise((resolve, reject) => {
+            this.waitTimeout = setTimeout(() => {
+                this.waitTimeout = null;
+                resolve();
+            }, ms);
+
+            // Listener pro přerušení
+            const interruptListener = () => {
+                if (this.waitTimeout) {
+                    clearTimeout(this.waitTimeout);
+                    this.waitTimeout = null;
+                }
+                reject(new Error('INTERRUPTED'));
+            };
+
+            window.addEventListener('track-loading-start', interruptListener, { once: true });
+            window.addEventListener('track-changed', interruptListener, { once: true });
+        });
     }
 
     /**
@@ -288,146 +306,119 @@ class SmartAudioPreloader {
      * ✅ Zkontroluje, zda je skladba již přednahraná
      */
     _isAlreadyPreloaded(src) {
-        const audio = this.preloadedElements.get(src);
+        const audio = this.cache.get(src);
         if (!audio) return false;
         
         const isReady = audio.readyState >= 3;
         
-        if (isReady) {
-            return true;
-        } else {
-            window.DebugManager?.log('preloader', '   ⚠️ Neúplný preload nalezen, ruším...');
+        if (!isReady) {
             this._cancelPreload(src);
             return false;
         }
+        
+        return true;
     }
 
     /**
-     * 🚀 Spustí preload s retry mechanikou
+     * 🚀 Preload s retry mechanikou
      */
     async _startPreloadWithRetry(track, index, retryCount = 0) {
         this.stats.totalAttempts++;
         
         if (retryCount > 0) {
             this.stats.retries++;
-            window.DebugManager?.log('preloader', `   🔄 RETRY pokus ${retryCount}/${this.config.MAX_RETRY_ATTEMPTS}`);
+            window.DebugManager?.log('preloader', `🔄 RETRY pokus ${retryCount}/${this.config.MAX_RETRY_ATTEMPTS}`);
         }
-        
+
         return new Promise((resolve, reject) => {
             const audio = new Audio();
             let hasResolved = false;
-            
+
             // ⏱️ Timeout protection
-            const timeoutId = setTimeout(() => {
+            this.preloadTimeout = setTimeout(() => {
                 if (hasResolved) return;
                 hasResolved = true;
-                
-                this.stats.timeouts++;
-                window.DebugManager?.log('preloader', `   ⏱️ TIMEOUT (${this.config.TIMEOUT_MS/1000}s) - ruším preload`);
-                
+
+                window.DebugManager?.log('preloader', `⏱️ TIMEOUT (${this.config.TIMEOUT_MS/1000}s)`);
                 this._cancelPreload(track.src);
-                
+
                 if (retryCount < this.config.MAX_RETRY_ATTEMPTS) {
                     const delay = this._getRetryDelay(retryCount);
-                    window.DebugManager?.log('preloader', `   ⏳ Další pokus za ${delay/1000}s...`);
-                    
                     setTimeout(() => {
                         this._startPreloadWithRetry(track, index, retryCount + 1)
                             .then(resolve)
                             .catch(reject);
                     }, delay);
                 } else {
-                    window.DebugManager?.log('preloader', '   ❌ Retry vyčerpány pro timeout');
                     this.stats.failed++;
                     reject(new Error('Timeout'));
                 }
             }, this.config.TIMEOUT_MS);
-            
-            this.preloadTimeouts.set(track.src, timeoutId);
-            
-            // ✅ SUCCESS handler
+
+            // ✅ SUCCESS
             audio.addEventListener('canplaythrough', () => {
                 if (hasResolved) return;
                 hasResolved = true;
-                
-                clearTimeout(timeoutId);
-                this.preloadTimeouts.delete(track.src);
+
+                clearTimeout(this.preloadTimeout);
+                this.preloadTimeout = null;
                 this.retryAttempts.delete(track.src);
                 this.stats.successful++;
-                
-                window.DebugManager?.log('preloader', '   ✅ Skladba připravena k přehrání!');
-                window.DebugManager?.log('preloader', '   💾 Uloženo v browser cache');
-                
-                window.dispatchEvent(new CustomEvent('track-preloaded', { 
-                    detail: { 
-                        src: track.src, 
-                        title: track.title, 
-                        index: index 
-                    } 
+
+                window.DebugManager?.log('preloader', '✅ Skladba připravena!');
+                window.DebugManager?.log('preloader', '💾 Uloženo v browser cache');
+
+                window.dispatchEvent(new CustomEvent('track-preloaded', {
+                    detail: { src: track.src, title: track.title, index: index }
                 }));
-                
+
                 resolve();
             }, { once: true });
-            
-            // ❌ ERROR handler
+
+            // ❌ ERROR
             audio.addEventListener('error', (e) => {
                 if (hasResolved) return;
                 hasResolved = true;
-                
-                clearTimeout(timeoutId);
-                this.preloadTimeouts.delete(track.src);
-                
+
+                clearTimeout(this.preloadTimeout);
+                this.preloadTimeout = null;
+
                 const errorType = this._detectErrorType(e, audio);
-                this.stats.networkErrors++;
-                
-                window.DebugManager?.log('preloader', `   ❌ Chyba preloadu: ${errorType}`);
-                window.DebugManager?.log('preloader', `   🔗 URL: ${track.src.substring(0, 60)}...`);
-                
+                window.DebugManager?.log('preloader', `❌ Chyba: ${errorType}`);
+
                 const shouldRetry = this._shouldRetryError(errorType, retryCount);
-                
+
                 if (shouldRetry && retryCount < this.config.MAX_RETRY_ATTEMPTS) {
                     const delay = this._getRetryDelay(retryCount);
-                    window.DebugManager?.log('preloader', `   🔄 Další pokus za ${delay/1000}s...`);
-                    
                     setTimeout(() => {
                         this._startPreloadWithRetry(track, index, retryCount + 1)
                             .then(resolve)
                             .catch(reject);
                     }, delay);
                 } else {
-                    window.DebugManager?.log('preloader', '   ❌ Preload selhal definitivně');
-                    window.DebugManager?.log('preloader', '   💡 Skladba bude přehrána přímo (bez cache)');
-                    this.preloadedElements.delete(track.src);
+                    this.cache.delete(track.src);
                     this.stats.failed++;
                     reject(new Error(errorType));
                 }
             }, { once: true });
-            
-            // 📊 PROGRESS handler
-            let lastLoggedPercent = 0;
-            audio.addEventListener('progress', () => {
-                if (audio.buffered.length > 0) {
-                    const buffered = audio.buffered.end(0);
-                    const duration = audio.duration || 1;
-                    const percent = Math.round((buffered / duration) * 100);
-                    
-                    if (percent >= lastLoggedPercent + 25 && percent > 0) {
-                        window.DebugManager?.log('preloader', `   ⏳ Nahrávání: ${percent}%`);
-                        lastLoggedPercent = percent;
-                    }
-                }
-            });
-            
-            // 🚀 Spustíme preload
+
+            // 🚀 Spustíme
             audio.preload = 'auto';
             audio.src = track.src;
-            
-            this.preloadedElements.set(track.src, audio);
+
+            this.cache.set(track.src, audio);
             this.currentPreloadSrc = track.src;
             this.retryAttempts.set(track.src, retryCount);
-            
-            window.DebugManager?.log('preloader', '   📡 Požadavek odeslán browseru');
         });
+    }
+
+    /**
+     * 🤖 Detekce AI aktivity
+     */
+    _detectAIActivity() {
+        const isClaudeActive = document.querySelector('.claude-message-pending');
+        const isGeminiActive = document.querySelector('[data-gemini-loading]');
+        return !!(isClaudeActive || isGeminiActive);
     }
 
     /**
@@ -435,55 +426,30 @@ class SmartAudioPreloader {
      */
     _detectErrorType(errorEvent, audioElement) {
         const error = audioElement?.error;
-        
         if (!error) return 'UNKNOWN_ERROR';
-        
+
         switch(error.code) {
-            case MediaError.MEDIA_ERR_ABORTED:
-                return 'ABORTED';
-            case MediaError.MEDIA_ERR_NETWORK:
-                return 'NETWORK_ERROR';
-            case MediaError.MEDIA_ERR_DECODE:
-                return 'DECODE_ERROR';
-            case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                return 'FORMAT_NOT_SUPPORTED';
-            default:
-                const msg = error.message?.toLowerCase() || '';
-                if (msg.includes('connection')) return 'CONNECTION_ERROR';
-                if (msg.includes('timeout')) return 'TIMEOUT';
-                if (msg.includes('429')) return 'RATE_LIMIT';
-                if (msg.includes('403')) return 'FORBIDDEN';
-                if (msg.includes('404')) return 'NOT_FOUND';
-                return 'UNKNOWN_ERROR';
+            case MediaError.MEDIA_ERR_ABORTED: return 'ABORTED';
+            case MediaError.MEDIA_ERR_NETWORK: return 'NETWORK_ERROR';
+            case MediaError.MEDIA_ERR_DECODE: return 'DECODE_ERROR';
+            case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED: return 'FORMAT_NOT_SUPPORTED';
+            default: return 'UNKNOWN_ERROR';
         }
     }
 
     /**
-     * 🤔 Rozhodnutí, zda retry má smysl
+     * 🤔 Rozhodnutí o retry
      */
     _shouldRetryError(errorType, currentRetryCount) {
-        const noRetryErrors = [
-            'ABORTED',
-            'FORMAT_NOT_SUPPORTED',
-            'NOT_FOUND',
-            'FORBIDDEN'
-        ];
-        
+        const noRetryErrors = ['ABORTED', 'FORMAT_NOT_SUPPORTED', 'NOT_FOUND', 'FORBIDDEN'];
         if (noRetryErrors.includes(errorType)) return false;
-        
-        const alwaysRetryErrors = [
-            'NETWORK_ERROR',
-            'CONNECTION_ERROR',
-            'TIMEOUT',
-            'RATE_LIMIT',
-            'DECODE_ERROR'
-        ];
-        
+
+        const alwaysRetryErrors = ['NETWORK_ERROR', 'CONNECTION_ERROR', 'TIMEOUT', 'DECODE_ERROR'];
         return alwaysRetryErrors.includes(errorType) || errorType === 'UNKNOWN_ERROR';
     }
 
     /**
-     * ⏱️ Exponenciální backoff pro retry
+     * ⏱️ Exponenciální backoff
      */
     _getRetryDelay(retryCount) {
         const delay = this.config.RETRY_DELAY_BASE * Math.pow(2, retryCount);
@@ -494,19 +460,12 @@ class SmartAudioPreloader {
      * 🗑️ Zruší konkrétní preload
      */
     _cancelPreload(src) {
-        const timeoutId = this.preloadTimeouts.get(src);
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-            this.preloadTimeouts.delete(src);
-        }
-        
-        const audio = this.preloadedElements.get(src);
+        const audio = this.cache.get(src);
         if (audio) {
             audio.src = '';
             audio.load();
-            this.preloadedElements.delete(src);
+            this.cache.delete(src);
         }
-        
         this.retryAttempts.delete(src);
     }
 
@@ -516,25 +475,25 @@ class SmartAudioPreloader {
     _cleanupOldPreloads(currentSrc, nextSrc) {
         const toDelete = [];
         
-        for (const [src, audio] of this.preloadedElements.entries()) {
+        for (const [src] of this.cache.entries()) {
             if (src !== currentSrc && src !== nextSrc && src !== this.currentPreloadSrc) {
                 toDelete.push(src);
             }
         }
         
         if (toDelete.length > 0) {
-            window.DebugManager?.log('preloader', `   🧹 Čistím ${toDelete.length} starých preloadů...`);
+            window.DebugManager?.log('preloader', `🧹 Čistím ${toDelete.length} starých preloadů`);
             toDelete.forEach(src => this._cancelPreload(src));
         }
     }
 
     /**
-     * 🤖 Automatické čištění (každou minutu)
+     * 🤖 Automatické čištění
      */
     _autoCleanup() {
         const toDelete = [];
         
-        for (const [src, audio] of this.preloadedElements.entries()) {
+        for (const [src, audio] of this.cache.entries()) {
             if (audio.readyState < 3) {
                 const retryCount = this.retryAttempts.get(src) || 0;
                 if (retryCount >= this.config.MAX_RETRY_ATTEMPTS) {
@@ -544,33 +503,83 @@ class SmartAudioPreloader {
         }
         
         if (toDelete.length > 0) {
-            window.DebugManager?.log('preloader', `🗑️ Auto-cleanup: Odstraňuji ${toDelete.length} neúspěšných preloadů`);
+            window.DebugManager?.log('preloader', `🗑️ Auto-cleanup: ${toDelete.length} neúspěšných`);
             toDelete.forEach(src => this._cancelPreload(src));
         }
     }
 
     /**
-     * ✅ Zkontroluje, zda je skladba v cache
+     * 🛑 Zastavení preloadingu
+     */
+    stopPreloading(reason = 'Manual stop') {
+        window.DebugManager?.log('preloader', `🛑 STOP: ${reason}`);
+        
+        // Vyčisti timeouty
+        if (this.waitTimeout) {
+            clearTimeout(this.waitTimeout);
+            this.waitTimeout = null;
+        }
+        
+        if (this.preloadTimeout) {
+            clearTimeout(this.preloadTimeout);
+            this.preloadTimeout = null;
+        }
+
+        this.state = 'STOPPED';
+        
+        // Pošli událost o zastavení
+        window.dispatchEvent(new CustomEvent('preloader-stopped', { detail: { reason } }));
+        
+        // Za 1 sekundu se vrať do STANDBY (aby se mohl znovu spustit)
+        setTimeout(() => {
+            if (this.state === 'STOPPED') {
+                this.state = 'STANDBY';
+                window.DebugManager?.log('preloader', '🔄 Návrat do STANDBY režimu');
+            }
+        }, 1000);
+    }
+
+    /**
+     * ⏸️ Pozastavení
+     */
+    pausePreloading() {
+        if (this.state === 'ACTIVE') {
+            this.state = 'PAUSED';
+            window.DebugManager?.log('preloader', '⏸️ Preload POZASTAVEN');
+        }
+    }
+
+    /**
+     * ▶️ Pokračování
+     */
+    resumePreloading() {
+        if (this.state === 'PAUSED') {
+            this.state = 'ACTIVE';
+            window.DebugManager?.log('preloader', '▶️ Preload OBNOVEN');
+        }
+    }
+
+    /**
+     * ✅ Je v cache?
      */
     isCached(src) {
-        const audio = this.preloadedElements.get(src);
-        if (!audio) return false;
-        return audio.readyState >= 3;
+        const audio = this.cache.get(src);
+        return audio ? audio.readyState >= 3 : false;
     }
 
     /**
-     * 📦 Získá přednahraný audio element
+     * 📦 Získej z cache
      */
     getPreloaded(src) {
-        return this.preloadedElements.get(src) || null;
+        return this.cache.get(src) || null;
     }
 
     /**
-     * 🔧 Vypne/zapne preloading
+     * 🔧 Zapni/vypni
      */
     setEnabled(enabled) {
         this.isEnabled = enabled;
-        window.DebugManager?.log('preloader', `🔧 Smart Preloading ${enabled ? '✅ ZAPNUT' : '⏸️ VYPNUT'}`);
+        window.DebugManager?.log('preloader', `🔧 Preloader ${enabled ? '✅ ZAPNUT' : '⏸️ VYPNUT'}`);
         
         if (!enabled) {
             this.clearAll();
@@ -578,48 +587,45 @@ class SmartAudioPreloader {
     }
 
     /**
-     * 🗑️ Vyčistí všechny preloady
+     * 🗑️ Vyčisti vše
      */
     clearAll() {
-        window.DebugManager?.log('preloader', '🗑️ Čistím všechny přednahrané skladby...');
+        window.DebugManager?.log('preloader', '🗑️ Čistím všechny přednahrané skladby');
         
-        for (const timeoutId of this.preloadTimeouts.values()) {
-            clearTimeout(timeoutId);
-        }
-        this.preloadTimeouts.clear();
+        if (this.waitTimeout) clearTimeout(this.waitTimeout);
+        if (this.preloadTimeout) clearTimeout(this.preloadTimeout);
         
-        for (const audio of this.preloadedElements.values()) {
+        for (const audio of this.cache.values()) {
             audio.src = '';
             audio.load();
         }
-        this.preloadedElements.clear();
         
+        this.cache.clear();
         this.currentPreloadSrc = null;
         this.retryAttempts.clear();
+        this.state = 'STANDBY';
         
-        window.DebugManager?.log('preloader', '   ✅ Vyčištěno!');
+        window.DebugManager?.log('preloader', '✅ Vyčištěno!');
     }
 
     /**
-     * 📊 Získá statistiky
+     * 📊 Statistiky
      */
     getStats() {
         let readyCount = 0;
         let loadingCount = 0;
         
-        for (const audio of this.preloadedElements.values()) {
-            if (audio.readyState >= 3) {
-                readyCount++;
-            } else {
-                loadingCount++;
-            }
+        for (const audio of this.cache.values()) {
+            if (audio.readyState >= 3) readyCount++;
+            else loadingCount++;
         }
         
         return {
             ...this.stats,
-            total: this.preloadedElements.size,
+            total: this.cache.size,
             ready: readyCount,
             loading: loadingCount,
+            state: this.state,
             enabled: this.isEnabled,
             online: this.isOnline,
             successRate: this.stats.totalAttempts > 0 
@@ -629,89 +635,41 @@ class SmartAudioPreloader {
     }
 
     /**
-     * 📊 Zobraz statistiky v konzoli
+     * 📊 Zobraz statistiky
      */
     logStats() {
         const stats = this.getStats();
         
-        window.DebugManager?.log('preloader', '\n📊 ===== SMART PRELOADER STATISTIKY =====');
-        window.DebugManager?.log('preloader', `🔧 Stav: ${stats.enabled ? 'ZAPNUTO ✅' : 'VYPNUTO ⏸️'}`);
+        window.DebugManager?.log('preloader', '\n📊 ═══════ PRELOADER V5 STATISTIKY ═══════');
+        window.DebugManager?.log('preloader', `🔧 Stav: ${stats.state} | ${stats.enabled ? 'ZAPNUTO ✅' : 'VYPNUTO ⏸️'}`);
         window.DebugManager?.log('preloader', `🌐 Síť: ${stats.online ? 'ONLINE ✅' : 'OFFLINE ⚠️'}`);
         window.DebugManager?.log('preloader', '');
-        window.DebugManager?.log('preloader', '📈 CELKOVÉ STATISTIKY:');
-        window.DebugManager?.log('preloader', `   🎯 Celkem pokusů: ${stats.totalAttempts}`);
+        window.DebugManager?.log('preloader', '📈 VÝSLEDKY:');
+        window.DebugManager?.log('preloader', `   Celkem pokusů: ${stats.totalAttempts}`);
         window.DebugManager?.log('preloader', `   ✅ Úspěšných: ${stats.successful}`);
         window.DebugManager?.log('preloader', `   ❌ Selhání: ${stats.failed}`);
-        window.DebugManager?.log('preloader', `   🔄 Retry pokusů: ${stats.retries}`);
-        window.DebugManager?.log('preloader', `   ⏱️ Timeoutů: ${stats.timeouts}`);
-        window.DebugManager?.log('preloader', `   🌐 Síťových chyb: ${stats.networkErrors}`);
+        window.DebugManager?.log('preloader', `   🚫 Blokováno: ${stats.blocked}`);
+        window.DebugManager?.log('preloader', `   ⚠️ Přerušeno: ${stats.interrupted}`);
+        window.DebugManager?.log('preloader', `   🔄 Retry: ${stats.retries}`);
         window.DebugManager?.log('preloader', `   📊 Úspěšnost: ${stats.successRate}%`);
-        window.DebugManager?.log('preloader', `   ⚠️ Odloženo (síť): ${stats.delayedByNetwork}`);
-        window.DebugManager?.log('preloader', `   🤖 Odloženo (AI): ${stats.delayedByAI}`);
         window.DebugManager?.log('preloader', '');
-        window.DebugManager?.log('preloader', '💾 AKTUÁLNÍ CACHE:');
+        window.DebugManager?.log('preloader', '💾 CACHE:');
         window.DebugManager?.log('preloader', `   📦 Celkem: ${stats.total}`);
         window.DebugManager?.log('preloader', `   ✅ Připraveno: ${stats.ready}`);
-        window.DebugManager?.log('preloader', `   ⏳ Nahrává se: ${stats.loading}`);
-        
-        if (this.preloadedElements.size > 0) {
-            window.DebugManager?.log('preloader', '');
-            window.DebugManager?.log('preloader', '📋 Seznam přednahraných:');
-            let i = 1;
-            for (const [src, audio] of this.preloadedElements.entries()) {
-                const readyStates = ['HAVE_NOTHING', 'HAVE_METADATA', 'HAVE_CURRENT_DATA', 'HAVE_FUTURE_DATA', 'HAVE_ENOUGH_DATA'];
-                const readyState = readyStates[audio.readyState] || 'UNKNOWN';
-                const retryCount = this.retryAttempts.get(src) || 0;
-                
-                window.DebugManager?.log('preloader', `   ${i// ═══════════════════════════════════════════════════════════════
-// 🖖 PRELOADER V4.1 - CHYBĚJÍCÍ KONCOVKA
-// ═══════════════════════════════════════════════════════════════
-// ⚠️ INSTRUKCE: Toto NAVAZUJE na řádek:
-//    window.DebugManager?.log('preloader', `   ${i
-// 
-// Zkopíruj toto a vlož HNED ZA ten řádek!
-// ═══════════════════════════════════════════════════════════════
-
-                }. ${src.substring(0, 50)}...`);
-                window.DebugManager?.log('preloader', `      📊 Stav: ${readyState} (${audio.readyState})`);
-                
-                if (retryCount > 0) {
-                    window.DebugManager?.log('preloader', `      🔄 Retry: ${retryCount}/${this.config.MAX_RETRY_ATTEMPTS}`);
-                }
-                
-                if (audio.buffered.length > 0 && audio.duration > 0) {
-                    const buffered = audio.buffered.end(0);
-                    const percent = Math.round((buffered / audio.duration) * 100);
-                    window.DebugManager?.log('preloader', `      📥 Nahráno: ${percent}%`);
-                }
-                i++;
-            }
-        }
-        
-        window.DebugManager?.log('preloader', '=========================================\n');
+        window.DebugManager?.log('preloader', `   ⏳ Načítá se: ${stats.loading}`);
+        window.DebugManager?.log('preloader', '═════════════════════════════════════════\n');
     }
 
     /**
-     * 🔧 Nastaví konfiguraci
-     */
-    setConfig(newConfig) {
-        this.config = { ...this.config, ...newConfig };
-        window.DebugManager?.log('preloader', '⚙️ Konfigurace aktualizována:', this.config);
-    }
-
-    /**
-     * 🧨 Destructor (pro cleanup při unload)
+     * 🧨 Destructor
      */
     destroy() {
-        window.DebugManager?.log('preloader', '🧨 Destruktor: Uvolňuji všechny zdroje...');
+        window.DebugManager?.log('preloader', '🧨 Destruktor: Uvolňuji zdroje');
         
-        if (this.cleanupInterval) {
-            clearInterval(this.cleanupInterval);
-        }
-        
+        if (this.cleanupInterval) clearInterval(this.cleanupInterval);
         this.clearAll();
         
-        window.DebugManager?.log('preloader', '✅ Preloader ukončen');
+        window.DebugManager?.log('preloader', '✅ Preloader V5 ukončen');
     }
 }
 
@@ -719,49 +677,38 @@ class SmartAudioPreloader {
 // 🚀 INICIALIZACE & EXPORT
 // ═══════════════════════════════════════════════════════════════
 
-window.audioPreloader = new SmartAudioPreloader();
+window.audioPreloader = new SmartAudioPreloaderV5();
 
+// Helper pro zpětnou kompatibilitu
 window.preloadTracks = async (tracks, currentIndex, isShuffled, shuffledIndices) => {
     if (window.audioPreloader) {
         await window.audioPreloader.preloadAroundCurrent(tracks, currentIndex, isShuffled, shuffledIndices);
     }
 };
 
-// Dummy metody pro kompatibilitu se starým kódem
+// Dummy metody pro kompatibilitu
 window.audioPreloader.createObjectURL = () => null;
-window.audioPreloader.setDelay = () => window.DebugManager?.log('preloader', '💡 Smart Preloader V4.1 nepouŞívá delay (má retry mechanismus)');
+window.audioPreloader.setDelay = () => {};
 window.audioPreloader.clearCache = () => window.audioPreloader.clearAll();
 
-// Cleanup při zavření stránky
+// Cleanup při zavření
 window.addEventListener('beforeunload', () => {
-    if (window.audioPreloader) {
-        window.audioPreloader.destroy();
-    }
+    window.audioPreloader?.destroy();
 });
 
 // ═══════════════════════════════════════════════════════════════
 // 📢 ZÁVĚREČNÉ HLÁŠENÍ
 // ═══════════════════════════════════════════════════════════════
 
-window.DebugManager?.log('preloader', '🖖 Smart Audio Preloader V4.1 nahrán a připraven!');
+window.DebugManager?.log('preloader', '🖖 Smart Audio Preloader V5.0 nahrán a připraven!');
 window.DebugManager?.log('preloader', '');
 window.DebugManager?.log('preloader', '💡 PŘÍKAZY:');
 window.DebugManager?.log('preloader', '   window.audioPreloader.logStats()        - zobraz statistiky');
 window.DebugManager?.log('preloader', '   window.audioPreloader.setEnabled(false) - vypni preloading');
-window.DebugManager?.log('preloader', '   window.audioPreloader.clearAll()        - vymaž všechny přednahrané');
-window.DebugManager?.log('preloader', '   window.audioPreloader.setConfig({...})  - změň konfiguraci');
-window.DebugManager?.log('preloader', '   window.audioPreloader.toggle()          - přepni zapnuto/vypnuto');
+window.DebugManager?.log('preloader', '   window.audioPreloader.clearAll()        - vymaž cache');
+window.DebugManager?.log('preloader', '   window.audioPreloader.state             - aktuální stav');
 window.DebugManager?.log('preloader', '');
-window.DebugManager?.log('preloader', '⌨️  KLÁVESOVÁ ZKRATKA:');
-window.DebugManager?.log('preloader', '   Ctrl+P - toggle preloaderu (po integraci do script.js)');
-window.DebugManager?.log('preloader', '');
-window.DebugManager?.log('preloader', '⚡ Inteligentní přizpůsobení síti & AI aktivitě!');
+window.DebugManager?.log('preloader', '⚡ Čeká 15s před spuštěním, neblokuje hlavní audio!');
+window.DebugManager?.log('preloader', '🛡️ Event-driven komunikace se script.js!');
 window.DebugManager?.log('preloader', '🖖 Live long and prosper!');
 window.DebugManager?.log('preloader', '');
-
-
-
-
-// ═══════════════════════════════════════════════════════════════
-// 🖖 KONEC SOUBORU prednacitani-pisnicek.js
-// ═══════════════════════════════════════════════════════════════
