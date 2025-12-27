@@ -1,6 +1,15 @@
 (function() {
     'use strict';
+// ═══════════════════════════════════════════════════════════════
+// 🚀 KOMUNIKAČNÍ PROTOKOL PRO PRELOADER V5
+// ═══════════════════════════════════════════════════════════════
 
+// Globální stav audio playeru
+window.audioState = {
+    isLoadingTrack: false,  // TRUE = právě se načítá skladba
+    isPlaying: false,       // TRUE = hraje skladba
+    canPreload: false       // TRUE = preloader může běžet
+};
 // 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager (klíč 'main')
 // const DEBUG_MODE = false; 
 
@@ -39,7 +48,9 @@ const DOM = {
     favoritesButton: document.createElement('button'),
     favoritesMenu: document.createElement('div')
 };
+ 
 
+// ═══════════════════════════════════════════════════════════════
 // --- Globální proměnné ---
 let currentTrackIndex = 0;
 let isShuffled = false;
@@ -191,18 +202,32 @@ async function loadAudioData() {
         }
         
         const loadedSettings = await window.loadPlayerSettingsFromFirestore?.();
-        if (loadedSettings) {
-            isShuffled = loadedSettings.isShuffled ?? isShuffled;
-            if (DOM.audioPlayer) {
-                DOM.audioPlayer.loop = loadedSettings.loop ?? DOM.audioPlayer.loop;
-                DOM.audioPlayer.volume = loadedSettings.volume ?? DOM.audioPlayer.volume;
-                DOM.audioPlayer.muted = loadedSettings.muted ?? DOM.audioPlayer.muted;
-                if (DOM.volumeSlider) DOM.volumeSlider.value = DOM.audioPlayer.volume;
-                if (DOM.volumeValue) DOM.volumeValue.textContent = Math.round(DOM.audioPlayer.volume * 100) + '%';
-            }
-            currentTrackIndex = loadedSettings.currentTrackIndex ?? currentTrackIndex;
-            firestoreLoaded.settings = true;
+if (loadedSettings) {
+    isShuffled = loadedSettings.isShuffled ?? isShuffled;
+    if (DOM.audioPlayer) {
+        DOM.audioPlayer.loop = loadedSettings.loop ?? DOM.audioPlayer.loop;
+        
+        // 🔥 NOVÝ KÓD - Obnova vizuálního stavu loop buttonu
+        if (DOM.loopButton) {
+            const isLooping = DOM.audioPlayer.loop;
+            DOM.loopButton.classList.toggle('active', isLooping);
+            DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
+            window.DebugManager?.log('main', `🔁 Loop button obnoven: ${isLooping ? '✅ ZAPNUTO' : '⭕ VYPNUTO'}`);
         }
+        // 🔀🔥 PŘIDEJ TADY TĚCHTO 5 ŘÁDKŮ: 🔥
+        if (DOM.shuffleButton) {
+            DOM.shuffleButton.classList.toggle('active', isShuffled);
+            DOM.shuffleButton.title = isShuffled ? "Náhodné přehrávání zapnuto" : "Náhodné přehrávání vypnuto";
+            window.DebugManager?.log('main', `🔀 Shuffle obnoven: ${isShuffled ? 'ZAPNUTO' : 'VYPNUTO'}`);
+        }
+        DOM.audioPlayer.volume = loadedSettings.volume ?? DOM.audioPlayer.volume;
+        DOM.audioPlayer.muted = loadedSettings.muted ?? DOM.audioPlayer.muted;
+        if (DOM.volumeSlider) DOM.volumeSlider.value = DOM.audioPlayer.volume;
+        if (DOM.volumeValue) DOM.volumeValue.textContent = Math.round(DOM.audioPlayer.volume * 100) + '%';
+    }
+    currentTrackIndex = loadedSettings.currentTrackIndex ?? currentTrackIndex;
+    firestoreLoaded.settings = true;
+}
         
     } catch (error) {
         window.DebugManager?.log('main', "🔧 Chyba cloudu, jedu na lokál.");
@@ -234,9 +259,9 @@ async function loadAudioData() {
     window.DebugManager?.log('main', `🎵 HOTOVO: ${window.tracks.length} skladeb.`);
     
     if (typeof populatePlaylist === 'function') populatePlaylist(window.tracks);
-    if (typeof updateActiveTrackVisuals === 'function') updateActiveTrackVisuals();
-    if (typeof updateShuffleButtonVisual === 'function') updateShuffleButtonVisual();
-    if (typeof updateLoopButtonVisual === 'function') updateLoopButtonVisual();
+     if (typeof updateActiveTrackVisuals === 'function') updateActiveTrackVisuals();
+   // if (typeof updateShuffleButtonVisual === 'function') updateShuffleButtonVisual();
+   // if (typeof updateLoopButtonVisual === 'function') updateLoopButtonVisual();
     if (typeof updateTimerDisplay === 'function') updateTimerDisplay();
 
     // 6. SYNC A NOTIFY
@@ -509,6 +534,10 @@ function populatePlaylist(listToDisplay) {
 }
 
 function playTrack(originalIndex) {
+ // 🚨 SIGNALIZUJ PRELOADERU: Začínáme načítat!
+    window.audioState.isLoadingTrack = true;
+    window.dispatchEvent(new Event('track-loading-start'));
+            // ... původní kód pokračuje ...
     if (!originalTracks || originalIndex < 0 || originalIndex >= originalTracks.length) {
         if (window.DebugManager?.isEnabled('main')) {
             console.error("playTrack: Neplatný index nebo prázdný playlist.", originalIndex);
@@ -538,29 +567,44 @@ function playTrack(originalIndex) {
     DOM.trackTitle.textContent = track.title;
     DOM.audioPlayer.load();
     
-    DOM.audioPlayer.play().then(async () => {
-        window.DebugManager?.log('main', "playTrack: Přehrávání:", track.title);
-        updateButtonActiveStates(true);
-        updateActiveTrackVisuals();
-        
-        // 🚀 PRELOADER - Přednahraj další skladby
-        if (window.audioPreloader) {
-            window.preloadTracks(
-                originalTracks, 
-                currentTrackIndex, 
-                isShuffled, 
-                shuffledIndices
-            ).catch(err => console.warn('⚠️ Preload error:', err));
-        }
-        
-        await debounceSaveAudioData();
-    }).catch(error => {
-        if (window.DebugManager?.isEnabled('main')) {
-            console.error('playTrack: Chyba při přehrávání:', error);
-        }
-        window.showNotification(`Chyba při přehrávání: ${track.title}.`, 'error');
-        updateButtonActiveStates(false);
-    });
+DOM.audioPlayer.play().then(async () => {
+    // ✅ 🔥 NOVÝ KÓD - SIGNALIZACE PRELOADERU 🔥
+    window.audioState.isLoadingTrack = false;
+    window.audioState.isPlaying = true;
+    window.audioState.canPreload = true;
+    
+    window.dispatchEvent(new CustomEvent('track-loaded-success', {
+        detail: { src: track.src, title: track.title }
+    }));
+    // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
+    
+    window.DebugManager?.log('main', "playTrack: Přehrávání:", track.title);
+    updateButtonActiveStates(true);
+    updateActiveTrackVisuals();
+    
+    // 🚀 PRELOADER - Nyní může přednahrávat (počká 15s)
+    if (window.audioPreloader) {
+        window.preloadTracks(
+            originalTracks, 
+            currentTrackIndex, 
+            isShuffled, 
+            shuffledIndices
+        ).catch(err => console.warn('⚠️ Preload error:', err));
+    }
+    
+    await debounceSaveAudioData();
+}).catch(error => {
+    // ✅ 🔥 NOVÝ KÓD - RESET STAVU PŘI CHYBĚ 🔥
+    window.audioState.isLoadingTrack = false;
+    window.audioState.canPreload = false;
+    // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
+    
+    if (window.DebugManager?.isEnabled('main')) {
+        console.error('playTrack: Chyba při přehrávání:', error);
+    }
+    window.showNotification(`Chyba při přehrávání: ${track.title}.`, 'error');
+    updateButtonActiveStates(false);
+});
 }
 
 function updateActiveTrackVisuals() {
@@ -667,16 +711,23 @@ window.toggleFavorite = async function(trackTitle) {
 // --- Event Listenery ---
 function addEventListeners() {
     DOM.playButton?.addEventListener('click', () => {
-     window.showNotification('Přehravání', 'info', 5000);
+        window.showNotification('Přehravání', 'info', 5000);
+        
         if (DOM.audioPlayer && DOM.audioSource.src && DOM.audioSource.src !== window.location.href) {
-            DOM.audioPlayer.play().then(() => updateButtonActiveStates(true)).catch(e => {
+            DOM.audioPlayer.play().then(() => {
+                // ✅ 🔥 NOVÝ KÓD - SIGNALIZACE POKRAČOVÁNÍ 🔥
+                window.audioState.isPlaying = true;
+                window.dispatchEvent(new Event('player-resumed'));
+                // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
+                
+                updateButtonActiveStates(true);
+            }).catch(e => {
                 if (window.DebugManager?.isEnabled('main')) {
                     console.error("Play error:", e);
                 }
             });
         } else if (originalTracks.length > 0) {
             playTrack(currentTrackIndex);
-             
         } else {
             window.showNotification("Nelze přehrát, playlist je prázdný.", 'warn');
         }
@@ -684,22 +735,41 @@ function addEventListeners() {
 
     DOM.pauseButton?.addEventListener('click', () => {
         if (DOM.audioPlayer) DOM.audioPlayer.pause();
+        
+        // ✅ 🔥 NOVÝ KÓD - SIGNALIZACE PAUZY 🔥
+        window.audioState.isPlaying = false;
+        window.dispatchEvent(new Event('player-paused'));
+        // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
+        
         window.showNotification('Pauza', 'info', 5000);
         updateButtonActiveStates(false);
     });
 
-    DOM.prevButton?.addEventListener('click', playPrevTrack);
-    DOM.nextButton?.addEventListener('click', playNextTrack);
+    DOM.prevButton?.addEventListener('click', () => {
+        // ✅ 🔥 NOVÝ KÓD - SIGNALIZACE ZMĚNY SKLADBY 🔥
+        window.dispatchEvent(new Event('track-changed'));
+        // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
+        
+        playPrevTrack();
+    });
+    
+    DOM.nextButton?.addEventListener('click', () => {
+        // ✅ 🔥 NOVÝ KÓD - SIGNALIZACE ZMĚNY SKLADBY 🔥
+        window.dispatchEvent(new Event('track-changed'));
+        // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
+        
+        playNextTrack();
+    });
 
     DOM.loopButton?.addEventListener('click', async () => {
-    if (DOM.audioPlayer) DOM.audioPlayer.loop = !DOM.audioPlayer.loop;
-    const isLooping = DOM.audioPlayer?.loop;
-    DOM.loopButton.classList.toggle('active', isLooping);
-    DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
-    const notificationMessage = isLooping ? 'Opakování zapnuto' : 'Opakování vypnuto';
-    window.showNotification(notificationMessage, 'info', 5000);
-    await debounceSaveAudioData();
-});
+        if (DOM.audioPlayer) DOM.audioPlayer.loop = !DOM.audioPlayer.loop;
+        const isLooping = DOM.audioPlayer?.loop;
+        DOM.loopButton.classList.toggle('active', isLooping);
+        DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
+        const notificationMessage = isLooping ? 'Opakování zapnuto' : 'Opakování vypnuto';
+        window.showNotification(notificationMessage, 'info', 5000);
+        await debounceSaveAudioData();
+    });
 
     DOM.shuffleButton?.addEventListener('click', async () => {
         isShuffled = !isShuffled;
@@ -1453,108 +1523,7 @@ if (document.readyState === 'loading') {
 // ═══════════════════════════════════════════════════════════
 
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// ═ Dynamické nastavení pro obrázky.                                            ═
-// ═ Autor původního kódu: Více admirál Jiřík.                                   ═
-// ═ Autor úprav: Admirál Claude.AI.                                             ═
-// ═ Datum úpravy: 25.12.2025.                                                   ═
-// ═ Podpis: Claude.AI 🖖.                                                       ═
-// ═══════════════════════════════════════════════════════════════════════════════
 
-function setBackgroundForDevice() {
-    const deviceInfo = detectDeviceType();
-    const backgrounds = {
-        desktop: 'https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_1920x1080_2.jpg?ver=0',
-        infinix: 'https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_1024x1792.jpg?ver=0'
-    };
-    let backgroundUrl = deviceInfo.isInfinixNote30 ? backgrounds.infinix : backgrounds.desktop;
-    const bgContainer = document.querySelector('.background-image-container img');
-    if (bgContainer) {
-        bgContainer.src = backgroundUrl;
-        
-        // 🛡️ OCHRANNÝ PROTOKOL - AKTIVOVÁN
-        applyImageProtection(bgContainer);
-    }
-    localStorage.setItem('background_url', backgroundUrl);
-}
-
-function restorePreviousBackground() {
-    const savedBackgroundUrl = localStorage.getItem('background_url');
-    const bgContainerImg = document.querySelector('.background-image-container img');
-    if (!bgContainerImg) return;
-    if (savedBackgroundUrl) {
-        bgContainerImg.src = savedBackgroundUrl;
-        
-        // 🛡️ OCHRANNÝ PROTOKOL - AKTIVOVÁN
-        applyImageProtection(bgContainerImg);
-    } else {
-        setBackgroundForDevice();
-    }
-}
-
-// ══════════════════════════════════════════════════════════════════════════════
-// 🛡️ OCHRANNÁ FUNKCE - BLOKUJE KOPÍROVÁNÍ A PŘESOUVÁNÍ OBRÁZKŮ
-// ══════════════════════════════════════════════════════════════════════════════
-function applyImageProtection(imgElement) {
-    if (!imgElement) return;
-    
-    // Zákaz kontextového menu (pravé tlačítko)
-    imgElement.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        return false;
-    });
-    
-    // Zákaz drag & drop
-    imgElement.addEventListener('dragstart', (e) => {
-        e.preventDefault();
-        return false;
-    });
-    
-    // Zákaz selectování
-    imgElement.addEventListener('selectstart', (e) => {
-        e.preventDefault();
-        return false;
-    });
-    
-    // Ochrana na dotykových zařízeních (dlouhé podržení)
-    imgElement.addEventListener('touchstart', (e) => {
-        // Povolíme touchstart pro scroll, ale zabráníme výběru
-        imgElement.style.webkitUserSelect = 'none';
-        imgElement.style.userSelect = 'none';
-    }, { passive: true });
-    
-    // Zákaz copy události
-    imgElement.addEventListener('copy', (e) => {
-        e.preventDefault();
-        return false;
-    });
-    
-    // Nastavení CSS vlastností přímo v JS (záložní ochrana)
-    imgElement.style.userSelect = 'none';
-    imgElement.style.webkitUserSelect = 'none';
-    imgElement.style.mozUserSelect = 'none';
-    imgElement.style.msUserSelect = 'none';
-    imgElement.style.webkitUserDrag = 'none';
-    imgElement.style.webkitTouchCallout = 'none';
-    imgElement.style.pointerEvents = 'none';
-}
-
-window.addEventListener('orientationchange', () => setTimeout(() => {
-    adjustPlaylistHeight(!!document.fullscreenElement);
-    setBackgroundForDevice();
-}, 300));
-
-window.addEventListener('resize', () => {
-    if (window.resizeTimer) clearTimeout(window.resizeTimer);
-    window.resizeTimer = setTimeout(() => {
-        adjustPlaylistHeight(!!document.fullscreenElement);
-        setBackgroundForDevice();
-    }, 250);
-});
-
-// ═══════════════════════════════════════════════════════════
-// 🚀 TADY KONČÍ NASTAVENÍ pro obrázek 
-// ═══════════════════════════════════════════════════════════
 
 
 // --- Skrytí sync status ---
@@ -1573,7 +1542,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         window.showNotification("Kritická chyba: Nelze se připojit k databázi.", 'error');
     }
-    
+    await window.BackgroundManager.init();
     await loadAudioData();
     
     // 🚀 PRELOADER - První přednahrání skladeb
@@ -1604,7 +1573,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     updateActiveTrackVisuals();
     restorePreviousSettings();
-    restorePreviousBackground();
+     
     //updateTimerDisplay();
     addEventListeners();
     setTimeout(() => {
