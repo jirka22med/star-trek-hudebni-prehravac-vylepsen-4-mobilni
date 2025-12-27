@@ -1,14 +1,14 @@
 // audioFirebaseFunctions.js
-// 🖖 STAR TREK AUDIO CORE - DIAGNOSTIC EDITION (V3.1)
-// Verze: 3.1 (Full Logging & Telemetry)
-// Tento soubor obsahuje kompletní logiku s MAXIMÁLNÍM logováním pro kontrolu funkčnosti.
+// 🖖 STAR TREK AUDIO CORE - DEBUGMANAGER EDITION (V3.3)
+// Verze: 3.3 (DebugManager Integration)
+// Tento soubor nyní respektuje centrální DebugManager
 
 (function() {
     'use strict';
 
-    // 🔥 HLAVNÍ PŘEPÍNAČ DIAGNOSTIKY - ZAPNUTO
-    const DEBUG_COLOUDE_FIRESTORE = false; 
-
+    // 🔥 NOVÉ: Dynamické logování přes DebugManager
+    // Místo konstanty DEBUG_COLOUDE_FIRESTORE používáme DebugManager.isEnabled('firebase')
+    
     // --- 1. KONFIGURACE (SECURE LINK) ---
     const firebaseConfig = {
         apiKey: "AIzaSyCxO2BdPLkvRW9q3tZTW5J39pjjAoR-9Sk", 
@@ -21,17 +21,30 @@
 
     let db; // Globální instance databáze
 
-    // 📡 LOGOVACÍ POMOCNÍK
+    // 🔥 NOVÝ LOGOVACÍ SYSTÉM - Napojený na DebugManager
     function log(component, message, data = null, type = 'info') {
-        if (!DEBUG_COLOUDE_FIRESTORE) return;
+        // Kontrola, zda je DebugManager připraven a modul 'firebase' je zapnutý
+        if (!window.DebugManager?.isEnabled('firebase')) return;
+        
         const style = type === 'error' ? 'background: #550000; color: #ffaaaa' : 
                       type === 'success' ? 'background: #003300; color: #00ff00' : 
                       'background: #000033; color: #00ffff';
         
         console.groupCollapsed(`%c[${component}] ${message}`, `padding: 2px 5px; border-radius: 3px; font-weight: bold; ${style}`);
         if (data) console.log("📦 Data:", data);
-        console.trace("📍 Stack Trace");
+        
+        // Stack trace jen při errorech (optimalizace)
+        if (type === 'error') {
+            console.trace("🔍 Stack Trace (Error)");
+        }
+        
         console.groupEnd();
+    }
+
+    // 🔥 NOVÝ: Pomocná funkce pro API logy (kratší formát)
+    function apiLog(action, details = '') {
+        if (!window.DebugManager?.isEnabled('firebase')) return;
+        console.log(`%c[Firebase API] ${action}`, 'color: #00CCFF; font-weight: bold;', details);
     }
 
     // --- 2. POMOCNÉ FUNKCE PRO STABILITU ---
@@ -48,7 +61,11 @@
 
     async function waitForDatabaseConnection() {
         let attempts = 0;
-        if (DEBUG_COLOUDE_FIRESTORE) console.log("⏳ [DB Check] Ověřuji spojení s warp jádrem (Firestore)...");
+        
+        // 🔥 ZMĚNA: Logujeme jen pokud je firebase logging zapnutý
+        if (window.DebugManager?.isEnabled('firebase')) {
+            console.log("⏳ [DB Check] Ověřuji spojení s warp jádrem (Firestore)...");
+        }
         
         while (!getFirestoreDB() && attempts < 50) { 
             await new Promise(resolve => setTimeout(resolve, 100));
@@ -56,8 +73,11 @@
         }
         
         const isReady = !!getFirestoreDB();
+        
         if (isReady) {
-            if (DEBUG_COLOUDE_FIRESTORE) console.log("✅ [DB Check] Spojení NAVÁZÁNO.");
+            if (window.DebugManager?.isEnabled('firebase')) {
+                console.log("✅ [DB Check] Spojení NAVÁZÁNO.");
+            }
         } else {
             console.error("❌ [DB Check] Spojení SELHALO po 5 sekundách.");
         }
@@ -86,59 +106,66 @@
         });
     };
 
-    // 🔧 OPRAVA FUNKCE savePlaylistToFirestore
-// Najdi tuto funkci v audioFirebaseFunctions.js (řádek cca 90)
+    // ============================================================================
+    // 🎵 HLAVNÍ PLAYLIST (CORE FUNCTIONS)
+    // ============================================================================
 
-window.savePlaylistToFirestore = async function(tracks) {
-    log("SAVE Playlist", "🚀 Požadavek na uložení playlistu přijat.");
+    window.savePlaylistToFirestore = async function(tracks) {
+        log("SAVE Playlist", "🚀 Požadavek na uložení playlistu přijat.");
 
-    const isReady = await waitForDatabaseConnection();
-    const database = getFirestoreDB();
+        const isReady = await waitForDatabaseConnection();
+        const database = getFirestoreDB();
 
-    if (!isReady || !database) {
-        log("SAVE Playlist", "Databáze nedostupná!", null, 'error');
-        if (window.showNotification) window.showNotification("Chyba: Cloud nedostupný!", "error");
-        return false;
-    }
+        if (!isReady || !database) {
+            log("SAVE Playlist", "Databáze nedostupná!", null, 'error');
+            if (window.showNotification) window.showNotification("Chyba: Cloud nedostupný!", "error");
+            return false;
+        }
 
-    const tracksToSave = tracks || window.tracks;
-    if (!tracksToSave || !Array.isArray(tracksToSave)) {
-        log("SAVE Playlist", "Žádná data k uložení (tracks je prázdné/null).", tracksToSave, 'error');
-        return false;
-    }
+        const tracksToSave = tracks || window.tracks;
+        if (!tracksToSave || !Array.isArray(tracksToSave)) {
+            log("SAVE Playlist", "Žádná data k uložení (tracks je prázdné/null).", tracksToSave, 'error');
+            return false;
+        }
 
-    try {
-        // Očištění dat + DIAGNOSTIKA DAT
-        const cleanTracks = tracksToSave.map(track => ({
-            title: track.title || "Neznámá skladba", 
-            src: track.src || "",
-            originalTitle: track.originalTitle || track.title, 
-            duration: track.duration || "", 
-            addedAt: track.addedAt || Date.now(),
-            // 🔥 NOVÉ: Zachováme vlajku ručních úprav!
-            manuallyEdited: track.manuallyEdited || false,
-            lastEditedAt: track.lastEditedAt || null
-        }));
+        try {
+            // Očištění dat + DIAGNOSTIKA DAT
+            const cleanTracks = tracksToSave.map(track => ({
+                title: track.title || "Neznámá skladba", 
+                src: track.src || "",
+                originalTitle: track.originalTitle || track.title, 
+                duration: track.duration || "", 
+                addedAt: track.addedAt || Date.now(),
+                // 🔥 Ochrana ručních úprav
+                manuallyEdited: track.manuallyEdited || false,
+                lastEditedAt: track.lastEditedAt || null
+            }));
 
-        log("SAVE Playlist", `Připravuji ${cleanTracks.length} skladeb k teleportaci do 'app_data/main_playlist'.`, cleanTracks);
+            // 🔥 ZMĚNA: Zkrácený log - zobrazí jen základní info
+            apiLog(`💾 Ukládám ${cleanTracks.length} skladeb do 'app_data/main_playlist'`);
+            
+            // 🔥 VOLITELNÉ: Detailní log jen při zapnutém firebase debuggingu
+            if (window.DebugManager?.isEnabled('firebase')) {
+                log("SAVE Playlist", `Připravuji ${cleanTracks.length} skladeb k teleportaci.`, cleanTracks);
+            }
 
-        await database.collection("app_data").doc("main_playlist").set({
-            tracks: cleanTracks,
-            lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-            totalTracks: cleanTracks.length,
-            version: "3.2-ManualEditProtection" // <--- Nová verze!
-        });
+            await database.collection("app_data").doc("main_playlist").set({
+                tracks: cleanTracks,
+                lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+                totalTracks: cleanTracks.length,
+                version: "3.3-DebugManager-Integration"
+            });
 
-        log("SAVE Playlist", "✅ ZÁPIS ÚSPĚŠNÝ! Data jsou v cloudu.", null, 'success');
-        if (window.showNotification) window.showNotification("Playlist uložen do Cloudu!", "success");
-        return true;
-    } catch (error) {
-        console.error("❌ CRITICAL SAVE ERROR:", error);
-        log("SAVE Playlist", "KRITICKÁ CHYBA PŘI ZÁPISU", error, 'error');
-        if (window.showNotification) window.showNotification("Chyba při ukládání!", "error");
-        throw error;
-    }
-};
+            log("SAVE Playlist", "✅ ZÁPIS ÚSPĚŠNÝ! Data jsou v cloudu.", null, 'success');
+            if (window.showNotification) //window.showNotification("Playlist uložen do Cloudu!", "success");
+            return true;
+        } catch (error) {
+            console.error("❌ CRITICAL SAVE ERROR:", error);
+            log("SAVE Playlist", "KRITICKÁ CHYBA PŘI ZÁPISU", error, 'error');
+            if (window.showNotification) window.showNotification("Chyba při ukládání!", "error");
+            throw error;
+        }
+    };
 
     window.loadPlaylistFromFirestore = async function() {
         log("LOAD Playlist", "📥 Požadavek na stažení playlistu.");
@@ -153,7 +180,15 @@ window.savePlaylistToFirestore = async function(tracks) {
             
             if (doc.exists) {
                 const data = doc.data();
-                log("LOAD Playlist", `✅ Dokument nalezen. Obsahuje ${data.tracks?.length || 0} skladeb.`, data, 'success');
+                
+                // 🔥 ZMĚNA: Zkrácený log
+                apiLog(`📥 Načteno ${data.tracks?.length || 0} skladeb z Cloudu`);
+                
+                // 🔥 VOLITELNÉ: Detailní log
+                if (window.DebugManager?.isEnabled('firebase')) {
+                    log("LOAD Playlist", `✅ Dokument nalezen. Obsahuje ${data.tracks?.length || 0} skladeb.`, data, 'success');
+                }
+                
                 return data.tracks || [];
             } else {
                 log("LOAD Playlist", "ℹ️ Dokument 'main_playlist' v kolekci 'app_data' neexistuje (první spuštění?).", null, 'info');
@@ -170,7 +205,7 @@ window.savePlaylistToFirestore = async function(tracks) {
     // ============================================================================
 
     window.saveFavoritesToFirestore = async function(favoritesArray) {
-        log("SAVE Favorites", "Ukládám oblíbené...", favoritesArray);
+        apiLog("💾 Ukládám oblíbené...");
         if (!await waitForDatabaseConnection()) return;
         try {
             await getFirestoreDB().collection('audioPlayerSettings').doc('favorites')
@@ -180,18 +215,18 @@ window.savePlaylistToFirestore = async function(tracks) {
     };
 
     window.loadFavoritesFromFirestore = async function() {
-        log("LOAD Favorites", "Načítám oblíbené...");
+        apiLog("📥 Načítám oblíbené...");
         if (!await waitForDatabaseConnection()) return null;
         try {
             const doc = await getFirestoreDB().collection('audioPlayerSettings').doc('favorites').get();
             const data = doc.exists ? doc.data().titles : null;
-            log("LOAD Favorites", "Výsledek načtení:", data);
+            if (data) apiLog(`✅ Načteno ${data.length} oblíbených skladeb`);
             return data;
         } catch (e) { return null; }
     };
 
     window.savePlayerSettingsToFirestore = async function(settings) {
-        log("SAVE Settings", "Ukládám nastavení přehrávače...", settings);
+        apiLog("💾 Ukládám nastavení přehrávače...");
         if (!await waitForDatabaseConnection()) return;
         try {
             await getFirestoreDB().collection('audioPlayerSettings').doc('mainSettings')
@@ -212,7 +247,7 @@ window.savePlaylistToFirestore = async function(tracks) {
     // ============================================================================
 
     window.savePlaylistSettingsToFirestore = async function(settings) {
-        log("SAVE PlaylistStyle", "Ukládám vizuální nastavení...", settings);
+        apiLog("💾 Ukládám vizuální nastavení playlistu...");
         if (!await waitForDatabaseConnection()) return;
         try {
             await getFirestoreDB().collection('audioPlayerSettings').doc('playlistSettings')
@@ -222,7 +257,7 @@ window.savePlaylistToFirestore = async function(tracks) {
     };
 
     window.loadPlaylistSettingsFromFirestore = async function() {
-        log("LOAD PlaylistStyle", "Hledám vizuální nastavení...");
+        apiLog("📥 Hledám vizuální nastavení...");
         if (!await waitForDatabaseConnection()) return null;
         try {
             const doc = await getFirestoreDB().collection('audioPlayerSettings').doc('playlistSettings').get();
@@ -240,7 +275,7 @@ window.savePlaylistToFirestore = async function(tracks) {
     // ============================================================================
 
     window.saveButtonVisibilityToFirestore = async function(config) {
-        log("SAVE Visibility", "Ukládám konfiguraci tlačítek...", config);
+        apiLog("💾 Ukládám konfiguraci tlačítek...");
         if (!await waitForDatabaseConnection()) return;
         try {
             await getFirestoreDB().collection('audioPlayerSettings').doc('buttonVisibilityConfig')
@@ -261,7 +296,7 @@ window.savePlaylistToFirestore = async function(tracks) {
     };
 
     window.syncButtonVisibilityWithFirestore = async function(localConfig = null) {
-        log("SYNC Visibility", "Zahajuji synchronizaci tlačítek...");
+        apiLog("🔄 Zahajuji synchronizaci tlačítek...");
         if (!await waitForDatabaseConnection()) return { success: false };
         
         const cloudConfig = await window.loadButtonVisibilityFromFirestore();
@@ -301,11 +336,7 @@ window.savePlaylistToFirestore = async function(tracks) {
     };
 
     // ============================================================================
-    // 🧹 ÚDRŽBA
-    // ============================================================================
-
-    // ============================================================================
-    // 🧹 ÚDRŽBA - FUNKČNÍ ATOMOVKA (Opraveno pro Admirála)
+    // 🧹 ÚDRŽBA - FUNKČNÍ ATOMOVKA
     // ============================================================================
 
     window.clearAllAudioFirestoreData = async function() {
@@ -324,7 +355,7 @@ window.savePlaylistToFirestore = async function(tracks) {
             await database.collection("app_data").doc("main_playlist").delete();
             log("DANGER", "🔥 Dokument 'main_playlist' smazán.", null, 'success');
 
-            // 2. Smazání všech nastavení (tlačítka, oblíbené, styl)
+            // 2. Smazání všech nastavení
             const settingsDocs = ['favorites', 'mainSettings', 'playlistSettings', 'buttonVisibilityConfig'];
             for (const docId of settingsDocs) {
                 await database.collection('audioPlayerSettings').doc(docId).delete();
@@ -333,7 +364,7 @@ window.savePlaylistToFirestore = async function(tracks) {
 
             log("DANGER", "✅ CLOUD JE ČISTÝ (Tabula Rasa).", null, 'success');
 
-            // 3. Totální čistka lokální paměti (proti duchům)
+            // 3. Totální čistka lokální paměti
             localStorage.clear();
             sessionStorage.clear();
             log("DANGER", "🧹 Lokální mezipaměť vymazána.", null, 'success');
@@ -358,7 +389,23 @@ window.savePlaylistToFirestore = async function(tracks) {
         setTimeout(() => window.autoSyncButtonVisibilityOnLoad(), 2000);
     }
 
-    console.log("%c🖖 audioFirebaseFunctions (V3.1 DIAGNOSTIC): Logování zapnuto. Sleduj konzoli!", "color: yellow; font-size: 14px; background: #000; padding: 10px; border: 2px solid yellow;");
+    // 🔥 ZÁVĚREČNÁ ZPRÁVA - Zobrazí se vždy
+    console.log(
+        "%c🖖 audioFirebaseFunctions V3.3", 
+        "color: #00FF00; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00FF00;"
+    );
+    console.log(
+        "%c   📡 Napojeno na DebugManager | Modul: 'firebase'", 
+        "color: #FFCC00; font-size: 12px;"
+    );
+    console.log(
+        "%c   Zapni logging: Ctrl+Shift+D → Firebase modul", 
+        "color: #00CCFF; font-size: 11px;"
+    );
 
 
-})();
+//ŠTĚNICE PRO TESTOVACÍ SOUBOR PRO test-vypadku-cloude-firestore.js \\
+
+
+
+})(); 
