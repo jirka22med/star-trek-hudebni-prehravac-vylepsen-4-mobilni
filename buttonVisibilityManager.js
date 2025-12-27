@@ -361,9 +361,9 @@ function saveButtonVisibility() {
             .then(() => {
                 window.DebugManager?.log('buttons', "ButtonVisibility: Firebase sync dokončena.");
                 if (window.showNotification) {
-                    window.showNotification('Konfigurace synchronizována s cloudem!', 'success', 2000);
-                }
-            })
+                 //   window.showNotification('Konfigurace synchronizována s cloudem!', 'success', 2000);
+               }
+           })
             .catch(error => {
                 console.error("ButtonVisibility: Firebase chyba:", error);
                 if (window.showNotification) {
