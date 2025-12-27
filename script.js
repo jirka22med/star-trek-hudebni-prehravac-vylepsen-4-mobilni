@@ -356,7 +356,7 @@ window.clearAllAudioPlayerData = async function() {
         DOM.trackTitle.textContent = "Playlist je prázdný";
     }
     updateActiveTrackVisuals();
-    window.showNotification('Všechna data přehrávače smazána!', 'info', 3000);
+    window.showNotification('Všechna data přehrávače smazána!', 'info', 2035);
 };
 
 // --- Pomocné funkce ---
@@ -565,6 +565,11 @@ function playTrack(originalIndex) {
     
     DOM.audioSource.src = audioUrl;
     DOM.trackTitle.textContent = track.title;
+// Použiješ nový typ 'play'
+setTimeout(() => {
+    window.showNotification(`▶️ Hraje: ${track.title}`, 'play', 2034);
+}, 2500);
+
     DOM.audioPlayer.load();
     
 DOM.audioPlayer.play().then(async () => {
@@ -576,8 +581,8 @@ DOM.audioPlayer.play().then(async () => {
     window.dispatchEvent(new CustomEvent('track-loaded-success', {
         detail: { src: track.src, title: track.title }
     }));
-    // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
-    
+   
+
     window.DebugManager?.log('main', "playTrack: Přehrávání:", track.title);
     updateButtonActiveStates(true);
     updateActiveTrackVisuals();
@@ -636,7 +641,7 @@ function playNextTrack() {
         nextIndex = (currentTrackIndex + 1) % originalTracks.length;
     }
     playTrack(nextIndex);
-    window.showNotification('Další skladba', 'info', 5000);
+    window.showNotification('Další skladba', 'info', 2033);
 }
 
 function playPrevTrack() {
@@ -655,7 +660,7 @@ function playPrevTrack() {
         prevIndex = (currentTrackIndex - 1 + originalTracks.length) % originalTracks.length;
     }
     playTrack(prevIndex);
-    window.showNotification('Předchozí skladba', 'info', 5000);
+    window.showNotification('Předchozí skladba', 'info', 2032);
 }
 
 function generateShuffledIndices() {
@@ -701,7 +706,7 @@ window.toggleFavorite = async function(trackTitle) {
     }
     
     // --- NOTIFIKACE (5 sekund) ---
-    window.showNotification(message, 'info', 5000); 
+    window.showNotification(message, 'info', 2031); 
     
     await debounceSaveAudioData();
     populatePlaylist(currentPlaylist);
@@ -711,7 +716,7 @@ window.toggleFavorite = async function(trackTitle) {
 // --- Event Listenery ---
 function addEventListeners() {
     DOM.playButton?.addEventListener('click', () => {
-        window.showNotification('Přehravání', 'info', 5000);
+        window.showNotification('Přehravání', 'info', 2030);
         
         if (DOM.audioPlayer && DOM.audioSource.src && DOM.audioSource.src !== window.location.href) {
             DOM.audioPlayer.play().then(() => {
@@ -741,7 +746,7 @@ function addEventListeners() {
         window.dispatchEvent(new Event('player-paused'));
         // ✅ 🔥 KONEC NOVÉHO KÓDU 🔥
         
-        window.showNotification('Pauza', 'info', 5000);
+        window.showNotification('Pauza', 'info', 2029);
         updateButtonActiveStates(false);
     });
 
@@ -767,7 +772,7 @@ function addEventListeners() {
         DOM.loopButton.classList.toggle('active', isLooping);
         DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
         const notificationMessage = isLooping ? 'Opakování zapnuto' : 'Opakování vypnuto';
-        window.showNotification(notificationMessage, 'info', 5000);
+        window.showNotification(notificationMessage, 'info', 2028);
         await debounceSaveAudioData();
     });
 
@@ -778,7 +783,7 @@ function addEventListeners() {
         
         // --- NOTIFIKACE (5 sekund) ---
         const msg = isShuffled ? 'Náhodné přehrávání zapnuto 🔀' : 'Náhodné přehrávání vypnuto ➡️';
-        window.showNotification(msg, 'info', 5000);
+        window.showNotification(msg, 'info', 2027);
         
         if (isShuffled) generateShuffledIndices();
         await debounceSaveAudioData();
@@ -793,7 +798,7 @@ function addEventListeners() {
                 }
             });
             // --- NOTIFIKACE (5 sekund) ---
-            window.showNotification('Skladba vrácena na začátek ⏮️', 'info', 5000);
+            window.showNotification('Skladba vrácena na začátek ⏮️', 'info', 2001); //v tento rok se //narodil Více admirál jiřík
         }
         await debounceSaveAudioData();
     });
@@ -806,11 +811,11 @@ function addEventListeners() {
                 }
             });
              // --- NOTIFIKACE (5 sekund) ---
-             window.showNotification('Režim celé obrazovky 📺', 'info', 5000);
+             window.showNotification('Režim celé obrazovky 📺', 'info', 2026);
         } else if (document.exitFullscreen) {
             document.exitFullscreen();
              // --- NOTIFIKACE (5 sekund) ---
-             window.showNotification('Ukončit celou obrazovku ❌', 'info', 5000);
+             window.showNotification('Ukončit celou obrazovku ❌', 'info', 2025);
         }
     });
 
@@ -834,7 +839,7 @@ function addEventListeners() {
         
         // --- NOVÁ NOTIFIKACE (5 sekund) ---
         const msg = playlistVisible ? 'Playlist zobrazen 📂' : 'Playlist skryt 📁';
-        window.showNotification(msg, 'info', 5000);
+        window.showNotification(msg, 'info', 1963);//tento rok se Více admirálovi Jiříkovy narodila //Mamka
         // ----------------------------------
 
         if (playlistVisible) updateActiveTrackVisuals();
@@ -868,7 +873,7 @@ function addEventListeners() {
         
         // --- NOTIFIKACE (5 sekund) ---
         const msg = DOM.audioPlayer.muted ? 'Zvuk ztlumen 🔇' : 'Zvuk zapnut 🔊';
-        window.showNotification(msg, 'info', 5000);
+        window.showNotification(msg, 'info', 1958); //v tento rok se  Vice admirálovi Jiříkovi //narodil Otec
         
         await debounceSaveAudioData();
     });
