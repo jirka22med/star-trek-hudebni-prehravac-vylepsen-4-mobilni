@@ -130,186 +130,7 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'Zastaví časovač'
     },
-    'timer-1': {
-    name: '1️⃣ 1 minuta',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 1 minutu'
-},
-'timer-2': {
-    name: '2️⃣ 2 minuty',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 2 minuty'
-},
-'timer-3': {
-    name: '3️⃣ 3 minuty',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 3 minuty'
-},
-'timer-4': {
-    name: '4️⃣ 4 minuty',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 4 minuty'
-},
-'timer-5': {
-    name: '5️⃣ 5 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 5 minut'
-},
-'timer-6': {
-    name: '6️⃣ 6 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 6 minut'
-},
-'timer-7': {
-    name: '7️⃣ 7 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 7 minut'
-},
-'timer-8': {
-    name: '8️⃣ 8 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 8 minut'
-},
-'timer-9': {
-    name: '9️⃣ 9 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 9 minut'
-},
-'timer-10': {
-    name: '1️⃣0️⃣ 10 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 10 minut'
-},
-'timer-11': {
-    name: '1️⃣1️⃣ 11 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 11 minut'
-},
-'timer-12': {
-    name: '1️⃣2️⃣ 12 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 12 minut'
-},
-'timer-13': {
-    name: '1️⃣3️⃣ 13 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 13 minut'
-},
-'timer-14': {
-    name: '1️⃣4️⃣ 14 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 14 minut'
-},
-'timer-15': {
-    name: '1️⃣5️⃣ 15 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 15 minut'
-},
-'timer-16': {
-    name: '1️⃣6️⃣ 16 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 16 minut'
-},
-'timer-17': {
-    name: '1️⃣7️⃣ 17 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 17 minut'
-},
-'timer-18': {
-    name: '1️⃣8️⃣ 18 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 18 minut'
-},
-'timer-19': {
-    name: '1️⃣9️⃣ 19 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 19 minut'
-},
-'timer-20': {
-    name: '2️⃣0️⃣ 20 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 20 minut'
-},
-'timer-21': {
-    name: '2️⃣1️⃣ 21 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 21 minut'
-},
-'timer-22': {
-    name: '2️⃣2️⃣ 22 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 22 minut'
-},
-'timer-23': {
-    name: '2️⃣3️⃣ 23 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 23 minut'
-},
-'timer-24': {
-    name: '2️⃣4️⃣ 24 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 24 minut'
-},
-'timer-25': {
-    name: '2️⃣5️⃣ 25 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 25 minut'
-},
-'timer-26': {
-    name: '2️⃣6️⃣ 26 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 26 minut'
-},
-'timer-27': {
-    name: '2️⃣7️⃣ 27 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 27 minut'
-},
-'timer-28': {
-    name: '2️⃣8️⃣ 28 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 28 minut'
-},
-'timer-29': {
-    name: '2️⃣9️⃣ 29 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 29 minut'
-},
-'timer-30': {
-    name: '3️⃣0️⃣ 30 minut',
-    category: 'Časovač',
-    essential: false,
-    description: 'Nastaví časovač na 30 minut'
-},
+    
 
      
     'jirik-manual-opener-btn': {
@@ -486,36 +307,7 @@ const DEFAULT_VISIBILITY = {
     'auto-fade-button': true,
     'timer-start': true,
     'timer-stop': true,
-    'timer-1': true,
-'timer-2': true,
-'timer-3': true,
-'timer-4': true,
-'timer-5': true,
-'timer-6': true,
-'timer-7': true,
-'timer-8': true,
-'timer-9': true,
-'timer-10': true,
-'timer-11': true,
-'timer-12': true,
-'timer-13': true,
-'timer-14': true,
-'timer-15': true,
-'timer-16': true,
-'timer-17': true,
-'timer-18': true,
-'timer-19': true,
-'timer-20': true,
-'timer-21': true,
-'timer-22': true,
-'timer-23': true,
-'timer-24': true,
-'timer-25': true,
-'timer-26': true,
-'timer-27': true,
-'timer-28': true,
-'timer-29': true,
-'timer-30': true,
+    
 
     'jirik-manual-opener-btn': true,
     'perf-monitor-btn': true,
@@ -624,9 +416,9 @@ async function loadButtonVisibility() {
     
     buttonVisibility = { ...DEFAULT_VISIBILITY, ...loadedConfig };
     
-    if (window.showNotification && source === 'firebase') {
-        window.showNotification('Konfigurace načtena z cloudu!', 'info', 2000);
-    }
+    //if (window.showNotification && source === 'firebase') {
+     //   window.showNotification('Konfigurace načtena z cloudu!', 'info', 2000);
+   // }
     
     return { config: buttonVisibility, source };
 }
@@ -1617,9 +1409,7 @@ function initializeButtonVisibilityManager() {
                 
                 window.DebugManager?.log('buttons', "🖖 ButtonVisibility: Inicializace dokončena úspěšně!");
                 
-                if (window.showNotification) {
-                    window.showNotification('🖖 Správa viditelnosti tlačítek aktivována! (Ctrl+V)', 'info', 4000);
-                }
+                
             } catch (error) {
                 console.error("ButtonVisibility: Chyba při načítání konfigurace:", error);
             }
