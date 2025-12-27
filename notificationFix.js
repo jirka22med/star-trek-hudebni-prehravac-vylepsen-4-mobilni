@@ -205,12 +205,24 @@ function injectNotificationStyles() {
         /* Responzivní design */
         @media (max-width: 768px) {
             #notification {
+                /* 1. Umístění: Vpravo nahoře */
                 top: 10px !important;
                 right: 10px !important;
-                left: 10px !important;
-                max-width: none !important;
+                left: auto !important; /* Už ne přes celou šířku */
+                
+                /* 2. Omezení šířky (Tady nastavujeme, kdy se objeví tečky) */
+                max-width: 170px !important; /* ⬅️ Změň toto číslo pro více/méně textu */
+                
+                /* 3. Magie pro tři tečky (...) */
+                white-space: nowrap !important;      /* Vše na jeden řádek */
+                overflow: hidden !important;         /* Co přečuhuje, to schovej */
+                text-overflow: ellipsis !important;  /* Místo schovaného textu dej "..." */
+                
+                /* 4. Vzhled */
+                width: auto !important;
                 font-size: 13px !important;
                 padding: 10px 16px !important;
+                border-radius: 8px !important;
             }
         }
         
