@@ -284,6 +284,14 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'pokročilí moldar systém pro přebarvení UI track title'
         },    
+'install-app-button': {
+    name: 'Instalace',
+        category: 'Systém',
+        essential: false,
+        description: 'Instalování PWA aplikace'
+        },   
+
+   
 };
 
 // --- Defaultní viditelnost tlačítek ---
@@ -340,6 +348,8 @@ const DEFAULT_VISIBILITY = {
     'uprava-barev-moldar-system': false,
     
     'zobrazit-panel-hlasitosti': false,
+
+    'install-app-button': false,
 };
  
 
@@ -1465,3 +1475,4 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
