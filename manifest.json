@@ -1,0 +1,16 @@
+{
+  "name": "Star Trek Hudební Přehrávač",
+  "short_name": "ST Přehrávač",
+  "description": "Modulární audio systém Admirála Jiříka",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00d4ff",
+  "icons": [
+    {
+      "src": "https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_82x82.jpg?ver=1",
+      "sizes": "82x82",
+      "type": "image/jpeg"
+    }
+  ]
+}
