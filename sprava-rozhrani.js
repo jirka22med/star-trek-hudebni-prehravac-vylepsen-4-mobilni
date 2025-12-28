@@ -355,7 +355,7 @@ class QuickVolumeManager {
         volumeSlider.dispatchEvent(new Event('input'));
         
         if (window.showNotification) {
-            window.showNotification(`Posuvník: ${percent}%`, 'info', 1000);
+            window.showNotification(`Posuvník: ${percent}%`, 'info', 2100);
         }
     }
 
@@ -744,3 +744,4 @@ if (document.readyState === 'loading') {
 }
 
 window.DebugManager?.log('interface', '🚀 Modul sprava-rozhrani.js načten - Verze 1.1 - Více admirál Jiřík');
+
