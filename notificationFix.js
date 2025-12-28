@@ -147,6 +147,11 @@ function enhancedShowNotification(message, type = 'info', duration = 3000) {
         break;
 
     case 'info':
+case 'pwa':
+    backgroundColor = 'linear-gradient(135deg, #00d4ff, #0099cc)';
+    borderColor = 'rgba(0, 212, 255, 0.5)';
+    break;
+            
     }
     
     // Aplikovat styly
@@ -317,3 +322,4 @@ window.checkNotificationSystem = function() {
 // 🖖 Konec Notification System Fix
 // Nyní by všechny notifikace měly fungovat bez chyb!
 // =============================================================================
+
