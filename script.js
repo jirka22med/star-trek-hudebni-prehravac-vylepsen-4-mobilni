@@ -1664,7 +1664,54 @@ window.populatePlaylist = populatePlaylist;
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
 window.DebugManager?.log('main', "🚀 script.js: Funkce přehrávače jsou nyní přístupné pro hlasové ovládání.");
 
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('browser-info').textContent = detectBrowser();
+    
+    // Animace při načtení
+    const status = document.getElementById('browser-status');
+    status.style.transform = 'translateX(-300px)';
+    setTimeout(() => {
+        status.style.transform = 'translateX(0)';
+    }, 100);
+});
 
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('🚀 SW: Štíty aktivovány (Offline mód připraven)'))
+      .catch(err => console.error('⚠️ SW: Selhání aktivace:', err));
+  }
+
+   // ═══════════════════════════════════════════════════════════════
+// 🚀 PWA INSTALL LOGIC - ARCHITEKTURA JIŘÍK
+// ═══════════════════════════════════════════════════════════════
+let deferredPrompt;
+const installBtn = document.getElementById('install-app-button');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Zabráníme automatickému zobrazení výzvy prohlížečem
+    e.preventDefault();
+    // Uložíme událost
+    deferredPrompt = e;
+    
+    // Zde už neovlivňuji style.display, nechávám to na buttonVisibilityManager.js
+    window.DebugManager?.log('main', "🚀 PWA: Systém připraven. buttonVisibilityManager může aktivovat UI.");
+});
+
+installBtn?.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    window.DebugManager?.log('main', `🎬 PWA: Výsledek instalace: ${outcome}`);
+    deferredPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+    window.DebugManager?.log('main', "✅ PWA: Aplikace úspěšně zakotvena v systému.");
+    window.showNotification('Aplikace nainstalována! 🖖', 'info', 5000);
+});
 
 
 })(); // KONEC IIFE - Vše je izolované
+
