@@ -1,7 +1,7 @@
 /**
  * 🖖 STAR TREK PWA INSTALLER CONTROL
  * Propojuje UI tlačítko se Service Workerem
- * VERZE: 2.0 - Vylepšený UX a diagnostika
+ * VERZE: 2.1 - Vylepšený UX a diagnostika + Anti-kolizní timeouty
  */
 
 let deferredPrompt;
@@ -36,7 +36,9 @@ function initPWA() {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                 console.log('🔄 SW: Nová verze dostupná!');
                 if (window.showNotification) {
-                  window.showNotification('Nová verze aplikace je připravena k instalaci!', 'info', 5000);
+                  setTimeout(() => {
+                    window.showNotification('Nová verze aplikace je připravena k instalaci!', 'info', 5000);
+                  }, 2600);
                 }
               }
             });
@@ -85,7 +87,9 @@ function initPWA() {
         const msg = 'Instalace zatím není připravena nebo je již hotova.';
         console.warn('⚠️ PWA:', msg);
         if (window.showNotification) {
-          window.showNotification(msg, 'warn', 3000);
+          setTimeout(() => {
+            window.showNotification(msg, 'warn', 3000);
+          }, 2600);
         }
         return;
       }
@@ -104,11 +108,18 @@ function initPWA() {
         console.log('✅ PWA: Uživatel akceptoval instalaci');
         updateButtonState('installing', 'Instalace probíhá...');
         if (window.showNotification) {
-          window.showNotification('Aplikace se instaluje...', 'info', 3000);
+          setTimeout(() => {
+            window.showNotification('Aplikace se instaluje...', 'info', 3000);
+          }, 2600);
         }
       } else {
         console.log('❌ PWA: Uživatel odmítl instalaci');
         updateButtonState('ready', 'Instalace odmítnuta');
+        if (window.showNotification) {
+          setTimeout(() => {
+            window.showNotification('Instalace byla zrušena', 'warn', 3000);
+          }, 2600);
+        }
       }
       
       // Debug log
@@ -129,7 +140,9 @@ function initPWA() {
     updateButtonState('installed', 'Instalováno! 🖖');
     
     if (window.showNotification) {
-      window.showNotification('Aplikace Star Trek přidána na plochu! 🖖', 'success', 5000);
+      setTimeout(() => {
+        window.showNotification('Aplikace Star Trek přidána na plochu! 🖖', 'success', 5000);
+      }, 2600);
     }
     
     if (window.DebugManager) {
@@ -189,4 +202,4 @@ window.PWAInstaller = {
   }
 };
 
-console.log('🖖 PWA Installer V2.0: Modul načten a připraven!');
+console.log('🖖 PWA Installer V2.1: Modul načten a připraven!');
