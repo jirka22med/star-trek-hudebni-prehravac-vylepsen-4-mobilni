@@ -37,7 +37,7 @@ function initPWA() {
                 console.log('🔄 SW: Nová verze dostupná!');
                 if (window.showNotification) {
                   setTimeout(() => {
-                    window.showNotification('Nová verze aplikace je připravena k instalaci!', 'info', 5000);
+                    window.showNotification('Nová verze aplikace je připravena k instalaci!', 'pwa', 5000);
                   }, 2600);
                 }
               }
@@ -109,7 +109,7 @@ function initPWA() {
         updateButtonState('installing', 'Instalace probíhá...');
         if (window.showNotification) {
           setTimeout(() => {
-            window.showNotification('Aplikace se instaluje...', 'info', 3000);
+            window.showNotification('Aplikace se instaluje...', 'pwa', 3000);
           }, 2600);
         }
       } else {
