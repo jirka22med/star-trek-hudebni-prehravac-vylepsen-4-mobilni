@@ -1,4 +1,4 @@
-const CACHE_NAME = 'st-player-v5.2';
+const CACHE_NAME = 'st-player-v5.3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -45,7 +45,7 @@ const ASSETS_TO_CACHE = [
 
 // Instalace - cachování assetů
 self.addEventListener('install', (event) => {
-  console.log('🖖 SW V5.2: Spouštím instalaci...');
+  console.log('🖖 SW V5.3: Spouštím instalaci...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log('📦 SW: Otevřen cache storage:', CACHE_NAME);
@@ -62,7 +62,7 @@ self.addEventListener('install', (event) => {
         if (failed.length > 0) {
           console.warn(`⚠️ SW: ${failed.length} souborů se nepodařilo cachovat`);
         }
-        console.log('✅ SW V5.2: Instalace dokončena!');
+        console.log('✅ SW V5.3: Instalace dokončena!');
       });
     })
   );
@@ -72,7 +72,7 @@ self.addEventListener('install', (event) => {
 
 // Aktivace - vyčištění starých cache
 self.addEventListener('activate', (event) => {
-  console.log('🔄 SW V5.2: Aktivuji novou verzi...');
+  console.log('🔄 SW V5.3: Aktivuji novou verzi...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -84,7 +84,7 @@ self.addEventListener('activate', (event) => {
         })
       );
     }).then(() => {
-      console.log('✅ SW V5.2: Aktivace dokončena!');
+      console.log('✅ SW V5.3: Aktivace dokončena!');
       return self.clients.claim();
     })
   );
@@ -92,8 +92,24 @@ self.addEventListener('activate', (event) => {
 
 // Fetch - strategie Cache First s Network Fallback
 self.addEventListener('fetch', (event) => {
-  // Ignorujeme chrome-extension a jiné non-http requesty
-  if (!event.request.url.startsWith('http')) {
+  const url = event.request.url;
+  
+  // KRITICKÁ OPRAVA: Ignorujeme non-http requesty
+  if (!url.startsWith('http')) {
+    return;
+  }
+  
+  // KRITICKÁ OPRAVA: Ignorujeme POST/PUT/DELETE requesty (Firebase API)
+  if (event.request.method !== 'GET') {
+    console.log('🚫 SW: Ignoruji non-GET request:', event.request.method, url);
+    return;
+  }
+  
+  // KRITICKÁ OPRAVA: Ignorujeme Firebase Firestore API volání
+  if (url.includes('firestore.googleapis.com') || 
+      url.includes('identitytoolkit.googleapis.com') ||
+      url.includes('securetoken.googleapis.com')) {
+    console.log('🔥 SW: Ignoruji Firebase API:', url);
     return;
   }
 
@@ -106,16 +122,24 @@ self.addEventListener('fetch', (event) => {
       
       // Jinak stáhneme ze sítě
       return fetch(event.request).then((networkResponse) => {
-        // Pokud je odpověď OK, uložíme do cache
-        if (networkResponse && networkResponse.status === 200) {
+        // Pokud je odpověď OK a je to GET request, uložíme do cache
+        if (networkResponse && 
+            networkResponse.status === 200 && 
+            event.request.method === 'GET') {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
+            // Další pojistka - cachujeme pouze naše assety
+            if (url.startsWith(self.location.origin) || 
+                url.includes('gstatic.com')) {
+              cache.put(event.request, responseToCache).catch(err => {
+                console.warn('⚠️ SW: Cache put selhal:', err);
+              });
+            }
           });
         }
         return networkResponse;
       }).catch((error) => {
-        console.error('❌ SW: Fetch selhal pro', event.request.url, error);
+        console.error('❌ SW: Fetch selhal pro', url, error);
         // Fallback pro offline stav
         if (event.request.destination === 'document') {
           return caches.match('./index.html');
@@ -143,4 +167,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log('🖖 SW V5.2: Service Worker načten a připraven k akci!');
+console.log('🖖 SW V5.3: Service Worker načten a připraven k akci!');
