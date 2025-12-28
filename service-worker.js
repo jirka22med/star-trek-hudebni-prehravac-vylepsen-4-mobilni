@@ -35,7 +35,7 @@ const ASSETS_TO_CACHE = [
   './scrollbar.js',
   './colorManager.js',
   './timer-module.js',
-  './audio-upravovac.js',
+   
   './pwa-installer.js',
   './manifest.json',
   // --- FIREBASE SDK (absolutní URL) ---
