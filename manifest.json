@@ -1,26 +1,56 @@
 {
   "name": "Star Trek Hudební Přehrávač",
   "short_name": "ST Přehrávač",
-  "description": "Modulární audio systém - Architekt Jiřík",
-  "start_url": ".",
+  "description": "Modulární audio systém inspirovaný Star Trekem - Architekt Jiřík",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#000000",
   "theme_color": "#00d4ff",
+  "categories": ["music", "entertainment", "multimedia"],
+  "lang": "cs",
+  "dir": "ltr",
   "icons": [
     {
       "src": "https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_82x82.jpg?ver=1",
       "sizes": "82x82",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any"
     },
     {
       "src": "https://img40.rajce.idnes.cz/d4003/19/19517/19517492_984d6887838eae80a8eb677199393188/images/image_192x192.jpg?ver=0",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     },
     {
       "src": "https://img40.rajce.idnes.cz/d4003/19/19517/19517492_984d6887838eae80a8eb677199393188/images/image_512x512_2.jpg?ver=0",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Přehrát hudbu",
+      "short_name": "Play",
+      "description": "Spustit přehrávání",
+      "url": "./?action=play",
+      "icons": []
+    }
+  ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "prefer_related_applications": false,
+  "related_applications": []
 }
