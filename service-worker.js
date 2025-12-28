@@ -25,7 +25,7 @@ const ASSETS_TO_CACHE = [
   
   // --- FEATURE JS MODULY (POUZE AKTIVNÍ) ---
   './universalni-perfomens-monitor.js',
-  './jirkuv-hlidac.js',
+//  './jirkuv-hlidac.js',
   './notificationFix.js',
   './autoFade.js',
   './playlistSettings.js',
