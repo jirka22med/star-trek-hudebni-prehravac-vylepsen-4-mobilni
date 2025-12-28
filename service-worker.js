@@ -1,4 +1,8 @@
-const CACHE_NAME = 'st-player-v6.4';
+// Na začátek service-worker.js
+importScripts('./fleet-registry.js'); 
+
+// Místo ručního vypisování seznamu použijeme registr
+const CACHE_NAME = `st-player-v${FLEET_CONFIG.version}`;
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -22,7 +26,7 @@ const ASSETS_TO_CACHE = [
   './backgroundManager.js',
   './myPlaylist.js',
   './pwa-installer.js',
-  
+  './fleet-registry.js',  //toto v cach
   // --- FEATURE JS MODULY (POUZE AKTIVNÍ) ---
   './universalni-perfomens-monitor.js',
 //  './jirkuv-hlidac.js',
