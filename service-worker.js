@@ -1,4 +1,4 @@
-const CACHE_NAME = 'st-player-v5.4';
+const CACHE_NAME = 'st-player-v6.4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
