@@ -37,6 +37,7 @@ const DOM = {
     volumeSlider: document.getElementById('volume-slider'),
     volumeValue: document.getElementById('volume-value'),
     muteButton: document.getElementById('mute-button'),
+    timer: { button: document.getElementById('timer-button') },
     clock: {
         hours: document.querySelector('.time .hours'),
         minutes: document.querySelector('.time .minutes'),
@@ -1170,7 +1171,14 @@ window.addEventListener('offline', () => {
                 }
                 break;
             case 'KeyB': DOM.favoritesButton?.click(); break;
-            case 'KeyT': DOM.timer.button?.click(); break;
+           // Najdi v switch(e.code) tento řádek a uprav ho takto:
+case 'KeyT': 
+    if (window.TimerModule) {
+        window.TimerModule.toggle(); 
+    } else {
+        DOM.timer.button?.click(); 
+    }
+    break;
             case 'ArrowUp': DOM.playlist.scrollTop -= 50; break;
             case 'ArrowDown': DOM.playlist.scrollTop += 50; break;
             
@@ -1679,6 +1687,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 })(); // KONEC IIFE - Vše je izolované
+
 
 
 
