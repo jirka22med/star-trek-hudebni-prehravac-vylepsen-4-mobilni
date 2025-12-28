@@ -1,6 +1,6 @@
-const CACHE_NAME = 'st-player-v5-final';
+const CACHE_NAME = 'st-player-v5.1';
 const ASSETS_TO_CACHE = [
-  'index.html',
+  './index.html',
   // --- CSS MODULY ---
   'style.css',
   'miniPlayer.css',
@@ -35,7 +35,7 @@ const ASSETS_TO_CACHE = [
   'colorManager.js',
   'timer-module.js',
   'audio-upravovac.js',
-  // --- EXTERNNÍ SDK ---
+  // --- FIREBASE SDK ---
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js'
 ];
@@ -43,8 +43,10 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('🖖 SW: Archivuji skutečnou flotilu modulů...');
-      return cache.addAll(ASSETS_TO_CACHE);
+      // Použijeme robustnější metodu, aby se SW nezasekl na jedné chybě
+      return Promise.allSettled(
+        ASSETS_TO_CACHE.map(url => cache.add(url))
+      ).then(() => console.log('🖖 SW V5.1: Flotila modulů archivována.'));
     })
   );
 });
