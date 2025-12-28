@@ -278,10 +278,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
 });
 </script>    
-    
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('🚀 SW: Štíty aktivovány (Offline mód připraven)'))
+      .catch(err => console.error('⚠️ SW: Selhání aktivace:', err));
+  }
+</script>  
     
 </body>
 </html>
+
 
 
 
