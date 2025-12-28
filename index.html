@@ -107,7 +107,8 @@
  <button id="debug-manager-button">🛠️ DIAGNOSTIKA</button>  
  <button id="bluetooth-monitor-toggle">🛠️ </button>           
  <button id="uprava-barev-moldar-system" title="zobrazit moldar">🎨 UI</button>           
- <button id="zobrazit-panel-hlasitosti" title="panel-hlasitost">🔊📋</button>            
+ <button id="zobrazit-panel-hlasitosti" title="panel-hlasitost">🔊📋</button>      
+         <button id="install-app-button" class="control-button" title="Instalovat aplikaci do systému">📥 INSTALOVAT</button>
         </div>
        
           
@@ -266,28 +267,9 @@
    <script src="timer-module.js"></script>   
 <!--    <script src="audio-upravovac.js"  -->
 ></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('browser-info').textContent = detectBrowser();
-    
-    // Animace při načtení
-    const status = document.getElementById('browser-status');
-    status.style.transform = 'translateX(-300px)';
-    setTimeout(() => {
-        status.style.transform = 'translateX(0)';
-    }, 100);
-});
-</script>    
-  <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('🚀 SW: Štíty aktivovány (Offline mód připraven)'))
-      .catch(err => console.error('⚠️ SW: Selhání aktivace:', err));
-  }
-</script>  
-    
 </body>
 </html>
+
 
 
 
