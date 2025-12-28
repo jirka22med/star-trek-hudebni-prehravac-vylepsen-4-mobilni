@@ -194,6 +194,7 @@
         start: startTimer,
         stop: stopTimer,
         reset: resetTimer,
+        toggle: toggleTimerDisplay, // <--- Toto propojí tvoji klávesu "T" s UI!
         setTime: setTimerValue,
         getTimeRemaining: () => timerValueInSeconds,
         isRunning: () => isTimerRunning
@@ -210,4 +211,5 @@
 
 // ============================================
 // 🖖 Konec Timer Module
+
 // ============================================
