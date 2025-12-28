@@ -1,3 +1,5 @@
+const VERSION_BVIS = "1.3.0"; // Verze správy tlačítek
+
 /**
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE
  * Více admirál Jiřík & Admirál Claude.AI
@@ -360,20 +362,29 @@ let buttonVisibility = JSON.parse(localStorage.getItem('buttonVisibility') || JS
 
 // Základní funkce pro ukládání
 function saveButtonVisibility() {
-   // localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility));
-   // localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString());
+    // localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility));
+    // localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString());
     
-    window.DebugManager?.log('buttons', "ButtonVisibility: Konfigurace uložena:", buttonVisibility);
+    // Logování uložení s tvojí verzí
+    window.DebugManager?.log('buttons', `ButtonVisibility v${VERSION_BVIS}: Konfigurace uložena:`, buttonVisibility);
     
     // Async Firebase save (pokud je dostupné)
     if (window.saveButtonVisibilityToFirestore && typeof window.saveButtonVisibilityToFirestore === 'function') {
-        window.saveButtonVisibilityToFirestore(buttonVisibility)
+        
+        // Příprava dat pro Cloud Firestore včetně verze a metadat
+        const dataToSync = {
+            config: buttonVisibility,
+            version: VERSION_BVIS,
+            lastModified: new Date().toISOString()
+        };
+
+        window.saveButtonVisibilityToFirestore(dataToSync)
             .then(() => {
-                window.DebugManager?.log('buttons', "ButtonVisibility: Firebase sync dokončena.");
+                window.DebugManager?.log('buttons', `ButtonVisibility v${VERSION_BVIS}: Firebase sync dokončena.`);
                 if (window.showNotification) {
-                 //   window.showNotification('Konfigurace synchronizována s cloudem!', 'success', 2000);
-               }
-           })
+                    // window.showNotification('Konfigurace synchronizována s cloudem!', 'success', 2000);
+                }
+            })
             .catch(error => {
                 console.error("ButtonVisibility: Firebase chyba:", error);
                 if (window.showNotification) {
@@ -385,17 +396,35 @@ function saveButtonVisibility() {
 
 // Základní funkce pro načítání
 async function loadButtonVisibility() {
-    window.DebugManager?.log('buttons', "ButtonVisibility: Načítám konfiguraci...");
+    window.DebugManager?.log('buttons', `🖖 ButtonVisibility v${VERSION_BVIS}: Načítám konfiguraci...`);
     
-    let loadedConfig = null;
+    let loadedData = null;
     let source = 'default';
     
     // Zkus Firebase
     try {
         if (window.loadButtonVisibilityFromFirestore && typeof window.loadButtonVisibilityFromFirestore === 'function') {
-            loadedConfig = await window.loadButtonVisibilityFromFirestore();
-            if (loadedConfig) {
+            loadedData = await window.loadButtonVisibilityFromFirestore();
+            
+            if (loadedData) {
                 source = 'firebase';
+                
+                // Kontrola, zda data z Firebase obsahují verzi a metadata
+                if (loadedData.version) {
+                    window.DebugManager?.log('buttons', `ButtonVisibility: Načtena verze v${loadedData.version} z cloudu.`);
+                    
+                    if (loadedData.version !== VERSION_BVIS) {
+                        window.DebugManager?.log('buttons', `⚠️ Varování: Cloudová verze (v${loadedData.version}) se liší od lokální (v${VERSION_BVIS})!`);
+                    }
+                    
+                    // Extraktujeme pouze konfiguraci tlačítek
+                    buttonVisibility = { ...DEFAULT_VISIBILITY, ...loadedData.config };
+                } else {
+                    // Fallback pro starý formát dat bez verze
+                    window.DebugManager?.log('buttons', "ButtonVisibility: Načtena starší struktura dat (bez verze).");
+                    buttonVisibility = { ...DEFAULT_VISIBILITY, ...loadedData };
+                }
+                
                 window.DebugManager?.log('buttons', "ButtonVisibility: Načteno z Firebase.");
             }
         }
@@ -403,12 +432,14 @@ async function loadButtonVisibility() {
         console.error("ButtonVisibility: Firebase nedostupný:", error);
     }
     
-    // Fallback localStorage
-    if (!loadedConfig) {
+    // Fallback localStorage (i když ho nepoužíváš, ponechávám tvou logiku pro případ nouze)
+    if (!loadedData) {
         const stored = localStorage.getItem('buttonVisibility');
         if (stored) {
             try {
-                loadedConfig = JSON.parse(stored);
+                const parsed = JSON.parse(stored);
+                // Kontrola verze i v localStorage, pokud existuje
+                buttonVisibility = { ...DEFAULT_VISIBILITY, ...(parsed.config || parsed) };
                 source = 'localStorage';
                 window.DebugManager?.log('buttons', "ButtonVisibility: Načteno z localStorage.");
             } catch (parseError) {
@@ -418,13 +449,10 @@ async function loadButtonVisibility() {
     }
     
     // Poslední fallback
-    if (!loadedConfig) {
-        loadedConfig = { ...DEFAULT_VISIBILITY };
-        source = 'default';
-        window.DebugManager?.log('buttons', "ButtonVisibility: Výchozí konfigurace.");
+    if (!loadedData && source === 'default') {
+        buttonVisibility = { ...DEFAULT_VISIBILITY };
+        window.DebugManager?.log('buttons', "ButtonVisibility: Použita výchozí konfigurace.");
     }
-    
-    buttonVisibility = { ...DEFAULT_VISIBILITY, ...loadedConfig };
     
     //if (window.showNotification && source === 'firebase') {
      //   window.showNotification('Konfigurace načtena z cloudu!', 'info', 2000);
@@ -1389,7 +1417,7 @@ function initializeButtonVisibilityManager() {
         return;
     }
     
-    window.DebugManager?.log('buttons', "🖖 ButtonVisibility: Spouštím inicializaci...");
+    window.DebugManager?.log('buttons', `🖖 ButtonVisibility v${VERSION_BVIS}: Spouštím inicializaci...`);
     
     // Čekáme na DOM
     if (document.readyState === 'loading') {
@@ -1475,4 +1503,5 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
 
