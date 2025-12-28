@@ -1,8 +1,10 @@
-const CACHE_NAME = 'st-player-v5.3';
+const CACHE_NAME = 'st-player-v5.4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  // --- CSS MODULY ---
+  './manifest.json',
+  
+  // --- CSS MODULY (POUZE AKTIVNÍ) ---
   './style.css',
   './miniPlayer.css',
   './loadingScreen.css',
@@ -12,13 +14,16 @@ const ASSETS_TO_CACHE = [
   './scrollbar.css',
   './christmas.css',
   './zobrazit-panel-hlasitosti.css',
-  // --- KRITICKÉ JS MODULY ---
+  
+  // --- KRITICKÉ JS MODULY (VŽDY AKTIVNÍ) ---
   './audioFirebaseFunctions.js',
   './DebugManager.js',
   './script.js',
   './backgroundManager.js',
   './myPlaylist.js',
-  // --- FEATURE JS MODULY ---
+  './pwa-installer.js',
+  
+  // --- FEATURE JS MODULY (POUZE AKTIVNÍ) ---
   './universalni-perfomens-monitor.js',
   './jirkuv-hlidac.js',
   './notificationFix.js',
@@ -35,17 +40,23 @@ const ASSETS_TO_CACHE = [
   './scrollbar.js',
   './colorManager.js',
   './timer-module.js',
-   
-  './pwa-installer.js',
-  './manifest.json',
+  // './audio-upravovac.js', // ❌ DEAKTIVOVÁN V HTML
+  
   // --- FIREBASE SDK (absolutní URL) ---
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js'
+  
+  // ❌ TYTO MODULY JSOU DEAKTIVOVÁNY V index.html:
+  // - voiceControl.js
+  // - pocitac.js
+  // - pomocnik-hlasoveho-ovladani-pro-mobil.js
+  // - loadingScreen.js
+  // - audio-upravovac.js
 ];
 
 // Instalace - cachování assetů
 self.addEventListener('install', (event) => {
-  console.log('🖖 SW V5.3: Spouštím instalaci...');
+  console.log('🖖 SW V5.4: Spouštím instalaci (pouze aktivní moduly)...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log('📦 SW: Otevřen cache storage:', CACHE_NAME);
@@ -59,10 +70,15 @@ self.addEventListener('install', (event) => {
         })
       ).then((results) => {
         const failed = results.filter(r => r.status === 'rejected');
+        const success = results.filter(r => r.status === 'fulfilled');
+        
+        console.log(`✅ SW: Úspěšně cachováno: ${success.length}/${ASSETS_TO_CACHE.length} souborů`);
+        
         if (failed.length > 0) {
           console.warn(`⚠️ SW: ${failed.length} souborů se nepodařilo cachovat`);
         }
-        console.log('✅ SW V5.3: Instalace dokončena!');
+        
+        console.log('✅ SW V5.4: Instalace dokončena!');
       });
     })
   );
@@ -72,7 +88,7 @@ self.addEventListener('install', (event) => {
 
 // Aktivace - vyčištění starých cache
 self.addEventListener('activate', (event) => {
-  console.log('🔄 SW V5.3: Aktivuji novou verzi...');
+  console.log('🔄 SW V5.4: Aktivuji novou verzi...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -84,7 +100,7 @@ self.addEventListener('activate', (event) => {
         })
       );
     }).then(() => {
-      console.log('✅ SW V5.3: Aktivace dokončena!');
+      console.log('✅ SW V5.4: Aktivace dokončena!');
       return self.clients.claim();
     })
   );
@@ -101,7 +117,7 @@ self.addEventListener('fetch', (event) => {
   
   // KRITICKÁ OPRAVA: Ignorujeme POST/PUT/DELETE requesty (Firebase API)
   if (event.request.method !== 'GET') {
-    console.log('🚫 SW: Ignoruji non-GET request:', event.request.method, url);
+    // Tiché ignorování - bez zbytečného logování
     return;
   }
   
@@ -109,7 +125,7 @@ self.addEventListener('fetch', (event) => {
   if (url.includes('firestore.googleapis.com') || 
       url.includes('identitytoolkit.googleapis.com') ||
       url.includes('securetoken.googleapis.com')) {
-    console.log('🔥 SW: Ignoruji Firebase API:', url);
+    // Tiché ignorování Firebase API
     return;
   }
 
@@ -132,14 +148,16 @@ self.addEventListener('fetch', (event) => {
             if (url.startsWith(self.location.origin) || 
                 url.includes('gstatic.com')) {
               cache.put(event.request, responseToCache).catch(err => {
-                console.warn('⚠️ SW: Cache put selhal:', err);
+                // Tiché selhání - POST requesty ignorujeme
+                if (event.request.method === 'POST') return;
+                console.warn('⚠️ SW: Cache put selhal:', err.message);
               });
             }
           });
         }
         return networkResponse;
       }).catch((error) => {
-        console.error('❌ SW: Fetch selhal pro', url, error);
+        console.error('❌ SW: Fetch selhal pro', url, error.message);
         // Fallback pro offline stav
         if (event.request.destination === 'document') {
           return caches.match('./index.html');
@@ -167,4 +185,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log('🖖 SW V5.3: Service Worker načten a připraven k akci!');
+console.log('🖖 SW V5.4: Service Worker načten a připraven k akci!');
