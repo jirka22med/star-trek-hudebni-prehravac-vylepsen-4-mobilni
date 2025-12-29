@@ -37,7 +37,6 @@ const DOM = {
     volumeSlider: document.getElementById('volume-slider'),
     volumeValue: document.getElementById('volume-value'),
     muteButton: document.getElementById('mute-button'),
-    timer: { button: document.getElementById('timer-button') },
     clock: {
         hours: document.querySelector('.time .hours'),
         minutes: document.querySelector('.time .minutes'),
@@ -827,8 +826,22 @@ function addEventListeners() {
     });
 
     DOM.toggleInfo?.addEventListener('click', () => {
-        if (DOM.popisky) DOM.popisky.style.display = DOM.popisky.style.display === 'none' ? 'block' : 'none';
-    });
+    if (DOM.popisky) {
+        // --- ADMIRÁLSKÝ PŘÍDAVEK ---
+        // Pokud tam verze ještě není, vložíme ji tam hned na začátek
+        if (!DOM.popisky.innerHTML.includes('SYSTÉM:')) {
+            DOM.popisky.innerHTML = `
+                <div style="color: #00E61B; border-bottom: 2px solid #00E61B; margin-bottom: 10px; padding: 5px; font-family: monospace;">
+                    🛰️ SYSTÉM: ${FLEET_CONFIG.version} | ${FLEET_CONFIG.codename}
+                </div>
+            ` + DOM.popisky.innerHTML;
+        }
+        // --- KONEC PŘÍDAVKU ---
+
+        // Tvoje původní funkční logika (přepínání viditelnosti)
+        DOM.popisky.style.display = DOM.popisky.style.display === 'none' ? 'block' : 'none';
+    }
+});
 
     DOM.reloadButton?.addEventListener('click', () => window.location.reload());
 
@@ -898,7 +911,7 @@ let audioErrorCount = 0;
 let lastErrorTime = 0;
 let currentRetryAttempt = 0;
 const MAX_RETRY_ATTEMPTS = 3;
-const RETRY_DELAY = 2000;
+const RETRY_DELAY = false; //tady bilo 2000
 
 // ═══════════════════════════════════════════════════════════════════
 // 🎧 HLAVNÍ BLOK AUDIO LISTENERŮ
@@ -1171,14 +1184,7 @@ window.addEventListener('offline', () => {
                 }
                 break;
             case 'KeyB': DOM.favoritesButton?.click(); break;
-           // Najdi v switch(e.code) tento řádek a uprav ho takto:
-case 'KeyT': 
-    if (window.TimerModule) {
-        window.TimerModule.toggle(); 
-    } else {
-        DOM.timer.button?.click(); 
-    }
-    break;
+            case 'KeyT': DOM.timer.button?.click(); break;
             case 'ArrowUp': DOM.playlist.scrollTop -= 50; break;
             case 'ArrowDown': DOM.playlist.scrollTop += 50; break;
             
@@ -1687,7 +1693,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 })(); // KONEC IIFE - Vše je izolované
-
 
 
 
