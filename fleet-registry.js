@@ -40,7 +40,7 @@ const FLEET_CONFIG = {
   './vyhledavac-skladeb.js',
   './sprava-rozhrani.js',
   './miniPlayer.js',
-  './prednacitani-pisnicek.js',
+  
   './scrollbar.js',
   './colorManager.js',
   './timer-module.js',
