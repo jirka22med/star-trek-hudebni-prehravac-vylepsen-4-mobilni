@@ -911,7 +911,7 @@ let audioErrorCount = 0;
 let lastErrorTime = 0;
 let currentRetryAttempt = 0;
 const MAX_RETRY_ATTEMPTS = 3;
-const RETRY_DELAY = false; //tady bilo 2000
+const RETRY_DELAY = 999999999; //tady bilo 2000
 
 // ═══════════════════════════════════════════════════════════════════
 // 🎧 HLAVNÍ BLOK AUDIO LISTENERŮ
@@ -1693,6 +1693,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 })(); // KONEC IIFE - Vše je izolované
+
 
 
 
