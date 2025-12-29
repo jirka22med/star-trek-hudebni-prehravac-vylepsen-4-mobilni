@@ -1,122 +1,8 @@
 // 🖖 OCHRANA PLAYLISTU - Zabraňuje přepsání Firestorem
-  window.PLAYLIST_SOURCE = 'myPlaylist.js';
-  window.PLAYLIST_VERSION = new Date().toISOString(); 
-// Timestamp změny - generuje se při každém načtení, což je ok pro runtime identifikaci
+window.PLAYLIST_SOURCE = 'myPlaylist.js';
+window.PLAYLIST_VERSION = new Date().toISOString(); 
 
-// 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager
-// const DEBUG_PLAYLIST = false;
-// 🎯 DEFINICE SEKCÍ
-
-// ═══════════════════════════════════════════════════════════
-// 🎧 záloha pro případ nouze
-// ═══════════════════════════════════════════════════════════
-
-
-/*window.playlistSections = [
-  // --- STAR TREK HLAVNÍ ---
-  { name: '🖖 Star Trek - Hlavní témata & Posádky', start: 0, end: 12 },
-  { name: '🎬 Star Trek - Intra & Znělky', start: 13, end: 17 },
-  { name: '🌌 Star Trek - Epické Outro (Série)', start: 18, end: 24 },
-  { name: '🎵 Star Trek - Písnička Posádek (Originál & Klingoni)', start: 25, end: 38 },
-  
-  // --- HVĚZDNÉ PLAMENY ---
-  { name: '🔥 Hvězdné Plameny & Hvězdy a Plameny', start: 39, end: 44},
-  { name: '💃 Hvězdné Plameny - Disco Verze', start: 45, end: 51 },
-  { name: '✨ Hvězdné Plameny - Remastered', start: 53, end: 55 },
-  { name: '🚀 Hvězdné Plameny - Star Trek Verze', start: 56, end: 58 },
-  { name: '🆕 Hvězdné Plameny - Nová Série', start: 58, end: 65 },
-  
-  // --- DS9 & SPECIÁLY ---
-  { name: '🎆 Velké Oslavy DS9', start: 66, end: 73 },
-  { name: '🦅 Speciál: Černý Havran & Enterprise', start: 74, end: 75 },
-  { name: '🕺 Star Trek Písnička Posádek (Disco Verze)', start: 75, end: 88 },
-  { name: '🎤 Star Trek Soutěž (Enterprise & DS9)', start: 89, end: 94 },
-  { name: '🪐 Star Trek Soutěž na Deep Space Nine', start: 95, end: 108 },
-  { name: '🤖 Více Admirál Jiřík & Admirál Chatbot Claude.AI', start: 109, end: 111 },
-  { name: '🎄 Vánoční Hvězdná Flotila', start: 112, end: 122 },
-  
-  // --- DO NEZNÁMA ---
-  { name: '🌌 Star Trek - Do Neznáma (Série)', start: 123, end: 127 },
-  { name: '🔄 Star Trek - Do Neznáma (Remake)', start: 128, end: 130 }, 
-  { name: '📜 Star Trek - Do Neznáma (Starší verze)', start: 131, end: 133 },
-  { name: '🆕 Star Trek - Do Neznáma (Nová Série)', start: 134, end: 138 },
-  
-  // --- MIXY & PROJEKTY ---
-  { name: '🎧 Mix & Speciální Projekty', start: 139, end: 145 },
-  { name: '🤝 Týmová Práce', start: 146, end: 150 },
-  { name: '📔 Admirálský Deník', start: 151, end: 156 },
-  { name: '🔔 Vánoční Hudba na palubě', start: 157, end: 161 },
-  { name: '✨ Remastered Bonusy', start: 162, end: 165 },
-  { name: '🚀 Vesmírná Odysea (Komplet)', start: 166, end: 0 },
-  { name: '🎁 Další Projekty & Bonusy', start: 0, end: 0 },
-  { name: '🤝 Více Admirál & Claude.AI', start: 0, end: 0 },
-  { name: '♾️ Na Cestě k Věčnosti', start: 0, end: 0 },
-  { name: '💖 Srdce mezi Hvězdami', start: 0, end: 0 },
-  { name: '🤲 Srdce na Dlani', start: 0, end: 0 },
-  { name: '✨ Ostatní Remastered', start: 0, end: 0 },
-  { name: '🛰️ Stanice Hluboký Vesmír 9 (Série)', start: 0, end: 0 },
-  
-  // --- OSTATNÍ SÉRIE ---
-  { name: '♾️ Hvězdná Flotila Navždy', start: 0, end: 0 },
-  { name: '👶 Děti Hvězd', start: 0, end: 0 },
-  { name: '🎻 Louisiana Sobotní Noc', start: 0, end: 0 },
-  
-  // --- JIRKA SÉRIE ---
-  { name: '🎤 Písničky o Jirkovi (Klasická Série 1)', start: 0, end: 0 },
-  { name: '🦸 Písničky o Jirkovi (Klasická Série 2)', start: 0, end: 0 },
-  { name: '✨ Písničky o Jirkovi (Remastered Verze 1)', start: 0, end: 0 },
-  { name: '✨ Písničky o Jirkovi (Remastered Verze 2)', start: 0, end: 0 },
-  { name: '🧠 Jirkův Futuristický Kvíz', start: 0, end: 0 },
-  { name: '➕ Jirkův Dodatek', start: 0, end: 0 },
-  
-  // --- ŽIŽKOV ---
-  { name: '🏙️ Journey Through Žižkov (Originál)', start: 0, end: 0 },
-  { name: '🔄 Journey Through Žižkov (Jirka Remake)', start: 0, end: 0 },
-  { name: '✨ Journey Through Žižkov (Remastered)', start: 0, end: 0 },
-  
-  // --- FEDERÁLNÍ ÚSTAV ---
-  { name: '🏢 Federální Ústav (Remastered)', start: 0, end: 0 },
-  { name: '🏛️ Federální Ústav (Originál)', start: 0, end: 0 },
-  { name: '🔄 Federální Ústav (Remake)', start: 0, end: 0 },
-  { name: '2️⃣ Federální Ústav (Série 2)', start: 0, end: 0 },
-  { name: '3️⃣ Federální Ústav (Série 3)', start: 0, end: 0 },
-  { name: '4️⃣ Federální Ústav (Série 4)', start: 0, end: 0 },
-  
-  // --- RŮZNÉ ---
-  { name: '🍻 Krčma v Dětenicích', start: 0, end: 0 },
-  { name: '🛣️ Cesta Kryštof', start: 0, end: 0 },
-  { name: '🎷 Instrumentální Disko', start: 0, end: 0 },
-  
-  // --- EPICKÉ PŘÍBĚHY ---
-  { name: '🤠 Útah a jeho Bratr', start: 0, end: 0 },
-  { name: '🌑 Noční Stíny & Bod Zlomu', start: 0, end: 0 },
-  { name: '✨ Stíny z Utahy (Remastered)', start: 0, end: 0 },
-  
-  // --- POSLEDNÍ MIXY ---
-  { name: '👬 Jirka a Ondra', start: 0, end: 0 },
-  { name: '🦁 Mohambi', start: 0, end: 0 },
-  { name: '✨ Mohombi Remastered', start: 0, end: 0 },
-  { name: '🏍️ Bumpy Rider Mohombi', start: 0, end: 0 },
-  { name: '🐓 Kohout / Mix-Kohout', start: 0, end: 0 },
-  { name: '🏔️ Hora Matterhorn', start: 0, end: 0 },
-  { name: '🎸 Nebude to ľahké', start: 0, end: 0 },
-  
-  // --- FINÁLNÍ SMĚS ---
-  { name: '🎵 Různé Hity & Singly', start: 0, end: 0 },
-  { name: '🏰 Série: Na Okoř je Cesta', start: 0, end: 0 },
-  { name: '🛠️ Zábavné & Pracovní Písničky', start: 0, end: 0 },
-  { name: '🎷 Speciální & Instrumentální Sety', start: 0, end: 0 },
-  { name: '🎛️ Mix Písniček (Komplet)', start: 0, end: 0 },
-  { name: '📖 Audio Kapitoly (1-40)', start: 0, end: 0 },
-  { name: '🚶 Jardova cesta s přáteli', start: 0, end: 0 }
-];*/
-
-// ═══════════════════════════════════════════════════════════
-// 🎧 konec zálohy  
-// ═══════════════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════════════
-// 🎯 DEFINICE SEKCÍ (Kompletně dopočítané indexy podle tvého seznamu 0-480)
+// 🎯 DEFINICE SEKCÍ (Aktualizováno na 480 skladeb, indexy 0-479)
 window.playlistSections = [
   // --- STAR TREK HLAVNÍ ---
   { name: '🖖 Star Trek - Hlavní témata & Posádky', start: 0, end: 12 },
@@ -165,15 +51,13 @@ window.playlistSections = [
   { name: '♾️ Hvězdná Flotila Navždy', start: 221, end: 228 },
   { name: '👶 Děti Hvězd', start: 229, end: 238 },
   { name: '🎻 Louisiana sobotní noc 1 až 9', start: 239, end: 247 },
-  { name: '🎻 Louisiana sobotní noc 1 až 9', start: 248, end: 257 },
-   //Louisiana sobotní noc 1 až 9
-//Louisiana-sobotni-noc 10 až 19 
+  { name: '🎻 Louisiana sobotní noc 10 až 19', start: 248, end: 257 },
     
   // --- JIRKA SÉRIE ---
-  { name: '🎤 Písničky o Jirkovi (Klasická Série 1)', start: 258, end: 261 },
-  { name: '🦸 Písničky o Jirkovi (Klasická Série 2)', start: 262, end: 265 },
-  { name: '✨ Písničky o Jirkovi (Remastered Verze 1)', start: 266, end: 269 },
-  { name: '✨ Písničky o Jirkovi (Remastered Verze 2)', start: 270, end: 274 },
+  { name: '🎤 Písničky o Jirkovi (Série 1)', start: 258, end: 261 },
+  { name: '🦸 Písničky o Jirkovi (Série 2)', start: 262, end: 265 },
+  { name: '✨ Písničky o Jirkovi (Remastered 1)', start: 266, end: 269 },
+  { name: '✨ Písničky o Jirkovi (Remastered 2)', start: 270, end: 274 },
   { name: '🧠 Jirkův Futuristický Kvíz', start: 275, end: 279 },
   { name: '➕ Jirkův Dodatek', start: 280, end: 280 },
   
@@ -215,9 +99,13 @@ window.playlistSections = [
   { name: '🛠️ Zábavné & Pracovní Písničky', start: 407, end: 414 },
   { name: '🎷 Speciální & Instrumentální Sety', start: 415, end: 422 },
   { name: '🎛️ Mix Písniček (Komplet)', start: 423, end: 432 },
-  { name: '📖 Audio Kapitoly (1-40)', start: 433, end: 472 }, //opraveno více admirálem jiříkem
-  { name: '🚶 Jardova cesta s přáteli', start: 473, end: 478 } //opraveno více admirálem jiříkem
+  { name: '📖 Audio Kapitoly (1-40)', start: 433, end: 472 },
+  { name: '🚶 Jardova cesta s přáteli', start: 473, end: 479 } // Opraveno: index 479 je 480. skladba
 ];
+
+// ═══════════════════════════════════════════════════════════
+
+  // ... další sekce podle tvého playlistu
 
 // ═══════════════════════════════════════════════════════════
 
@@ -998,3 +886,4 @@ duration: '08:57' },
 // Logování přes DebugManager
  window.DebugManager?.log('playlist', `🖖 myPlaylist.js načten: ${window.tracks.length} skladeb (verze: ${window.PLAYLIST_VERSION})`);
  
+
