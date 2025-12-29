@@ -40,7 +40,7 @@ const ASSETS_TO_CACHE = [
   './vyhledavac-skladeb.js',
   './sprava-rozhrani.js',
   './miniPlayer.js',
-  './prednacitani-pisnicek.js',
+  
   './scrollbar.js',
   './colorManager.js',
   './timer-module.js',
