@@ -1,16 +1,16 @@
+(function() {
+    'use strict';
+
 // =============================================================================
-// 🚀 AUTO-FADE MODUL PRO AUDIO PŘEHRÁVAČ - Admirálův upgrade
+// 🚀 AUTO-FADE MODUL PRO AUDIO PŘEHRÁVAČ - Admirálův upgrade V2.0
 // =============================================================================
 // Autor: Admirál Claude.AI ve spolupráci s více admirálem Jiříkem
-// Verze: 1.1 (DebugManager Integration)
+// Verze: 2.0 (Kompletní rekalibrace pro script.js V8.0)
 // Popis: Modul pro plynulé přechody mezi skladbami s pokročilým fade efektem
+// Změny: Integrace StreamGuard, logaritmická hlasitost, synchronizace stavů
 // =============================================================================
 
-// 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager
-// const DEBUG_AUTOFADE = false; 
-
-// Použití DebugManageru pro úvodní hlášku (pokud je již načten)
-window.DebugManager?.log('autofade', "🖖 Auto-Fade Modul: Inicializace pokročilých přechodů mezi skladbami...");
+window.DebugManager?.log('autofade', "🖖 Auto-Fade Modul V2.0: Inicializace pokročilých přechodů mezi skladbami...");
 
 // --- Globální konfigurace Auto-Fade ---
 const AUTOFADE_CONFIG = {
@@ -18,7 +18,6 @@ const AUTOFADE_CONFIG = {
     enabled: true,                    // Zapnuto/vypnuto
     fadeOutDuration: 3000,           // Doba fade-out v ms (3 sekundy)
     fadeInDuration: 2000,            // Doba fade-in v ms (2 sekundy)
-    crossfadeDuration: 1500,         // Doba překrývání skladeb v ms
     triggerBeforeEnd: 5000,          // Kdy před koncem začít fade (5 sekund)
     
     // Pokročilá nastavení
@@ -26,6 +25,7 @@ const AUTOFADE_CONFIG = {
     preserveVolume: true,            // Zachovat původní hlasitost po fade
     smartTrigger: true,              // Inteligentní spuštění podle délky skladby
     visualFeedback: true,            // Vizuální indikace fade efektu
+    volumeMode: 'logarithmic',       // Použít logaritmickou hlasitost ze script.js
     
     // Debug a statistiky
     debugMode: false,                // Extra detailní debug (každý krok smyčky)
@@ -36,13 +36,70 @@ const AUTOFADE_CONFIG = {
 let autoFadeEnabled = AUTOFADE_CONFIG.enabled;
 let fadeInterval = null;
 let fadeTimeoutId = null;
-let isFading = false;
+let fadeCheckInterval = null; // Nový: interval pro kontrolu času
 let originalVolume = 0.5;
+let originalSliderValue = 0.1; // Nové: pamatujeme slider value
 let fadeStats = {
     totalFades: 0,
     successfulFades: 0,
     averageFadeTime: 0
 };
+
+// Reference na audio player (cachujeme)
+let audioPlayer = null;
+let volumeSlider = null;
+
+// --- Funkce pro práci s logaritmickou hlasitostí ---
+function logarithmicVolume(sliderValue) {
+    // Použít globální funkci ze script.js, nebo fallback
+    if (typeof window.logarithmicVolume === 'function') {
+        return window.logarithmicVolume(sliderValue);
+    }
+    // Fallback: stejná logika jako ve script.js
+    return Math.pow(parseFloat(sliderValue), 3.0);
+}
+
+function setVolumeLogarithmic(sliderValue) {
+    if (!audioPlayer) return;
+    const logVolume = logarithmicVolume(sliderValue);
+    audioPlayer.volume = Math.max(0, Math.min(1, logVolume));
+    
+    if (AUTOFADE_CONFIG.debugMode) {
+        window.DebugManager?.log('autofade', `🔊 Nastavuji hlasitost: slider=${sliderValue.toFixed(3)} → log=${logVolume.toFixed(3)}`);
+    }
+}
+
+// --- Bezpečnostní kontroly před fade ---
+function canStartFade() {
+    // Kontrola globálních stavů ze script.js
+    if (window.audioState) {
+        if (window.audioState.isRecovering) {
+            window.DebugManager?.log('autofade', '⚠️ StreamGuard recovery probíhá - fade odložen');
+            return false;
+        }
+        if (window.audioState.isLoadingTrack) {
+            window.DebugManager?.log('autofade', '⚠️ Načítá se nová skladba - fade odložen');
+            return false;
+        }
+    }
+    
+    // Kontrola vlastních stavů
+    if (!audioPlayer || audioPlayer.paused) {
+        return false;
+    }
+    
+    if (audioPlayer.loop) {
+        // Při loop módu nefadujeme
+        return false;
+    }
+    
+    // Fade už probíhá?
+    if (fadeInterval !== null) {
+        return false;
+    }
+    
+    return true;
+}
 
 // --- Funkce pro uložení/načtení Auto-Fade nastavení ---
 function saveAutoFadeSettings() {
@@ -50,7 +107,6 @@ function saveAutoFadeSettings() {
         enabled: autoFadeEnabled,
         fadeOutDuration: AUTOFADE_CONFIG.fadeOutDuration,
         fadeInDuration: AUTOFADE_CONFIG.fadeInDuration,
-        crossfadeDuration: AUTOFADE_CONFIG.crossfadeDuration,
         triggerBeforeEnd: AUTOFADE_CONFIG.triggerBeforeEnd,
         fadeEasing: AUTOFADE_CONFIG.fadeEasing,
         preserveVolume: AUTOFADE_CONFIG.preserveVolume,
@@ -65,17 +121,16 @@ function saveAutoFadeSettings() {
     if (typeof window.savePlayerSettingsToFirestore === 'function') {
         try {
             window.savePlayerSettingsToFirestore({
-                ...settings,
-                autoFadeModuleVersion: '1.0'
+                autoFadeEnabled,
+                autoFadeModuleVersion: '2.0'
             }).catch(e => console.warn('Auto-Fade: Nepodařilo se uložit do Firebase:', e));
         } catch (e) {
             console.warn('Auto-Fade: Firebase není dostupné pro ukládání:', e);
         }
     }
     
-    // Logování přes DebugManager (pouze pokud je zapnutý detailní režim configu)
     if (AUTOFADE_CONFIG.debugMode) {
-        window.DebugManager?.log('autofade', '🚀 Auto-Fade: Nastavení uložena:', settings);
+        window.DebugManager?.log('autofade', '💾 Auto-Fade: Nastavení uložena:', settings);
     }
 }
 
@@ -89,7 +144,6 @@ function loadAutoFadeSettings() {
             autoFadeEnabled = settings.enabled ?? AUTOFADE_CONFIG.enabled;
             AUTOFADE_CONFIG.fadeOutDuration = settings.fadeOutDuration ?? AUTOFADE_CONFIG.fadeOutDuration;
             AUTOFADE_CONFIG.fadeInDuration = settings.fadeInDuration ?? AUTOFADE_CONFIG.fadeInDuration;
-            AUTOFADE_CONFIG.crossfadeDuration = settings.crossfadeDuration ?? AUTOFADE_CONFIG.crossfadeDuration;
             AUTOFADE_CONFIG.triggerBeforeEnd = settings.triggerBeforeEnd ?? AUTOFADE_CONFIG.triggerBeforeEnd;
             AUTOFADE_CONFIG.fadeEasing = settings.fadeEasing ?? AUTOFADE_CONFIG.fadeEasing;
             AUTOFADE_CONFIG.preserveVolume = settings.preserveVolume ?? AUTOFADE_CONFIG.preserveVolume;
@@ -101,7 +155,7 @@ function loadAutoFadeSettings() {
             }
             
             if (AUTOFADE_CONFIG.debugMode) {
-                window.DebugManager?.log('autofade', '🚀 Auto-Fade: Nastavení načtena:', settings);
+                window.DebugManager?.log('autofade', '📂 Auto-Fade: Nastavení načtena:', settings);
             }
         }
     } catch (e) {
@@ -126,34 +180,42 @@ function getFadeEasing(progress) {
 }
 
 // --- Hlavní fade funkce ---
-function startFadeOut(callback) {
-    if (isFading || !audioPlayer) {
+function startFadeOut() {
+    if (!canStartFade()) {
         if (AUTOFADE_CONFIG.debugMode) {
-            window.DebugManager?.log('autofade', '🚀 Auto-Fade: Fade již probíhá nebo chybí audioPlayer');
+            window.DebugManager?.log('autofade', '🚫 Auto-Fade: Nelze spustit fade (kontroly selhaly)');
         }
         return;
     }
     
-    isFading = true;
-    originalVolume = audioPlayer.volume;
+    // Zastavit monitoring, ať nespustí fade duplicitně
+    stopFadeMonitoring();
+    
     const startTime = Date.now();
-    const startVolume = originalVolume;
+    
+    // Uložit původní hodnoty
+    if (volumeSlider) {
+        originalSliderValue = parseFloat(volumeSlider.value);
+    } else {
+        // Fallback: odhadnout slider value z aktuální hlasitosti
+        originalSliderValue = Math.pow(audioPlayer.volume, 1/3.0);
+    }
+    originalVolume = audioPlayer.volume;
     
     if (AUTOFADE_CONFIG.visualFeedback) {
         showFadeIndicator('out');
     }
     
-    if (AUTOFADE_CONFIG.debugMode) {
-        window.DebugManager?.log('autofade', `🚀 Auto-Fade: Spouštím fade-out z hlasitosti ${startVolume}`);
-    }
+    window.DebugManager?.log('autofade', `🎚️ Auto-Fade: Spouštím fade-out z slider=${originalSliderValue.toFixed(3)} (vol=${originalVolume.toFixed(3)})`);
     
     function fadeStep() {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / AUTOFADE_CONFIG.fadeOutDuration, 1);
         const easedProgress = getFadeEasing(progress);
         
-        const newVolume = startVolume * (1 - easedProgress);
-        audioPlayer.volume = Math.max(0, newVolume);
+        // Počítat novou slider hodnotu a převést logaritmicky
+        const newSliderValue = originalSliderValue * (1 - easedProgress);
+        setVolumeLogarithmic(newSliderValue);
         
         // Aktualizace vizuálního progress baru
         updateFadeProgress(progress, 'out');
@@ -167,17 +229,21 @@ function startFadeOut(callback) {
             const fadeTime = Date.now() - startTime;
             fadeStats.averageFadeTime = (fadeStats.averageFadeTime + fadeTime) / 2;
             
-            if (AUTOFADE_CONFIG.debugMode) {
-                window.DebugManager?.log('autofade', `🚀 Auto-Fade: Fade-out dokončen za ${fadeTime}ms`);
-            }
+            window.DebugManager?.log('autofade', `✅ Auto-Fade: Fade-out dokončen za ${fadeTime}ms`);
             
-            // Spustit callback (přehrání další skladby)
-            if (typeof callback === 'function') {
-                callback();
-            }
+            // Nastavit hlasitost na 0 (aby ended event mohl proběhnout čistě)
+            audioPlayer.volume = 0;
             
-            // Spustit fade-in
-            setTimeout(() => startFadeIn(), 100);
+            // NEBUDEME volat playNextTrack() - necháme to na ended event ze script.js!
+            // Script.js má: audioPlayer.addEventListener('ended', ...) který to vyřeší
+            
+            // Spustit fade-in až po malém zpoždění (dát čas ended eventu)
+            setTimeout(() => {
+                // Fade-in spustíme až když už nová skladba hraje
+                if (audioPlayer && !audioPlayer.paused) {
+                    startFadeIn();
+                }
+            }, 300);
             
         } else {
             // Pokračovat ve fade-out
@@ -192,22 +258,31 @@ function startFadeIn() {
     if (!audioPlayer) return;
     
     const startTime = Date.now();
-    const targetVolume = AUTOFADE_CONFIG.preserveVolume ? originalVolume : 0.5;
+    
+    // Cílová slider hodnota
+    let targetSliderValue;
+    if (AUTOFADE_CONFIG.preserveVolume && volumeSlider) {
+        targetSliderValue = parseFloat(volumeSlider.value);
+    } else if (AUTOFADE_CONFIG.preserveVolume) {
+        targetSliderValue = originalSliderValue;
+    } else {
+        targetSliderValue = 0.1; // Výchozí
+    }
     
     if (AUTOFADE_CONFIG.visualFeedback) {
         showFadeIndicator('in');
     }
     
-    if (AUTOFADE_CONFIG.debugMode) {
-        window.DebugManager?.log('autofade', `🚀 Auto-Fade: Spouštím fade-in na hlasitost ${targetVolume}`);
-    }
+    const targetVolume = logarithmicVolume(targetSliderValue);
+    window.DebugManager?.log('autofade', `🎚️ Auto-Fade: Spouštím fade-in na slider=${targetSliderValue.toFixed(3)} (vol=${targetVolume.toFixed(3)})`);
     
     function fadeStep() {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / AUTOFADE_CONFIG.fadeInDuration, 1);
         const easedProgress = getFadeEasing(progress);
         
-        audioPlayer.volume = targetVolume * easedProgress;
+        const newSliderValue = targetSliderValue * easedProgress;
+        setVolumeLogarithmic(newSliderValue);
         
         // Aktualizace vizuálního progress baru
         updateFadeProgress(progress, 'in');
@@ -216,13 +291,10 @@ function startFadeIn() {
             // Fade-in dokončen
             clearInterval(fadeInterval);
             fadeInterval = null;
-            isFading = false;
             
             fadeStats.successfulFades++;
             
-            if (AUTOFADE_CONFIG.debugMode) {
-                window.DebugManager?.log('autofade', `🚀 Auto-Fade: Fade-in dokončen za ${Date.now() - startTime}ms`);
-            }
+            window.DebugManager?.log('autofade', `✅ Auto-Fade: Fade-in dokončen za ${Date.now() - startTime}ms`);
             
             // Skrýt indikátor s malým zpožděním pro lepší UX
             setTimeout(() => {
@@ -235,6 +307,9 @@ function startFadeIn() {
             if (AUTOFADE_CONFIG.trackFadeStats) {
                 saveAutoFadeSettings();
             }
+            
+            // Restartovat monitoring pro další skladbu
+            startFadeMonitoring();
             
         } else {
             // Pokračovat ve fade-in
@@ -335,13 +410,8 @@ function hideFadeIndicator() {
 
 function updateFadeProgress(progress, type) {
     const progressBar = document.getElementById('fade-progress-bar');
-    if (!progressBar) {
-        // Logování přes DebugManager
-        if (AUTOFADE_CONFIG.debugMode) {
-            window.DebugManager?.log('autofade', '🚀 Auto-Fade: Progress bar nenalezen');
-        }
-        return;
-    }
+    if (!progressBar) return;
+    
     const percentage = Math.min(100, Math.max(0, progress * 100));
     progressBar.style.width = `${percentage}%`;
 
@@ -350,9 +420,12 @@ function updateFadeProgress(progress, type) {
     }
 
     const indicator = document.getElementById('fade-indicator');
-    if (indicator && indicator.querySelector('span:last-child')) {
+    if (indicator) {
         const fadeText = type === 'out' ? 'Fade Out' : 'Fade In';
-        indicator.querySelector('span:last-child').textContent = `${fadeText} (${Math.round(percentage)}%)`;
+        const textSpan = indicator.querySelector('div > span:last-child');
+        if (textSpan) {
+            textSpan.textContent = `${fadeText} (${Math.round(percentage)}%)`;
+        }
     }
 }
 
@@ -376,48 +449,78 @@ function shouldTriggerFade(currentTime, duration) {
     return (duration - currentTime) <= triggerTime;
 }
 
-// --- Integrace s původním přehrávačem ---
-function integrateAutoFadeWithPlayer() {
-    if (!audioPlayer) {
-        console.warn('🚀 Auto-Fade: audioPlayer není dostupný, integrace odložena');
-        return;
-    }
+// --- Nový monitoring systém (místo timeupdate listeneru) ---
+function startFadeMonitoring() {
+    // Zastavit předchozí monitoring pokud existuje
+    stopFadeMonitoring();
     
-    // Backup původní timeupdate listener
-    const originalTimeUpdate = audioPlayer.ontimeupdate;
+    if (!autoFadeEnabled) return;
     
-    // Přidat náš timeupdate listener
-    audioPlayer.addEventListener('timeupdate', function() {
-        if (!autoFadeEnabled || isFading || audioPlayer.loop) return;
+    // Kontrolovat každých 500ms místo na každém timeupdate
+    fadeCheckInterval = setInterval(() => {
+        if (!audioPlayer || audioPlayer.paused || audioPlayer.loop) {
+            return;
+        }
+        
+        if (!canStartFade()) {
+            return;
+        }
         
         const currentTime = audioPlayer.currentTime;
         const duration = audioPlayer.duration;
         
         if (duration && shouldTriggerFade(currentTime, duration)) {
-            if (AUTOFADE_CONFIG.debugMode) {
-                window.DebugManager?.log('autofade', `🚀 Auto-Fade: Triggering fade at ${currentTime}s / ${duration}s`);
-            }
-            
-            // Vymazat timeout pokud existuje
-            if (fadeTimeoutId) {
-                clearTimeout(fadeTimeoutId);
-                fadeTimeoutId = null;
-            }
-            
-            // Spustit fade a přejít na další skladbu
-            startFadeOut(() => {
-                // Zde využijeme původní funkci pro přehrání další skladby
-                if (typeof playNextTrack === 'function') {
-                    playNextTrack();
-                } else {
-                    console.warn('🚀 Auto-Fade: Funkce playNextTrack není dostupná');
-                }
-            });
+            window.DebugManager?.log('autofade', `⏰ Auto-Fade: Triggering fade at ${currentTime.toFixed(1)}s / ${duration.toFixed(1)}s`);
+            startFadeOut();
+        }
+    }, 500); // Kontrola každých 500ms
+    
+    if (AUTOFADE_CONFIG.debugMode) {
+        window.DebugManager?.log('autofade', '👁️ Auto-Fade: Monitoring spuštěn');
+    }
+}
+
+function stopFadeMonitoring() {
+    if (fadeCheckInterval) {
+        clearInterval(fadeCheckInterval);
+        fadeCheckInterval = null;
+        
+        if (AUTOFADE_CONFIG.debugMode) {
+            window.DebugManager?.log('autofade', '👁️ Auto-Fade: Monitoring zastaven');
+        }
+    }
+}
+
+// --- Integrace s původním přehrávačem ---
+function integrateAutoFadeWithPlayer() {
+    audioPlayer = document.getElementById('audioPlayer');
+    volumeSlider = document.getElementById('volume-slider');
+    
+    if (!audioPlayer) {
+        console.warn('🚀 Auto-Fade: audioPlayer není dostupný, integrace odložena');
+        return;
+    }
+    
+    // Naslouchat play eventu pro spuštění monitoringu
+    audioPlayer.addEventListener('play', () => {
+        if (autoFadeEnabled) {
+            startFadeMonitoring();
         }
     });
     
-    // Logování úspěšné integrace přes DebugManager
-    window.DebugManager?.log('autofade', '🚀 Auto-Fade: Integrace s přehrávačem dokončena');
+    // Naslouchat pause eventu pro zastavení monitoringu
+    audioPlayer.addEventListener('pause', () => {
+        stopFadeMonitoring();
+    });
+    
+    // Naslouchat track-loaded-success eventu pro restart monitoringu
+    window.addEventListener('track-loaded-success', () => {
+        if (autoFadeEnabled && audioPlayer && !audioPlayer.paused) {
+            startFadeMonitoring();
+        }
+    });
+    
+    window.DebugManager?.log('autofade', '🔗 Auto-Fade: Integrace s přehrávačem dokončena');
 }
 
 // --- UI pro ovládání Auto-Fade ---
@@ -433,7 +536,7 @@ function createAutoFadeUI() {
     fadeButton.id = 'auto-fade-button';
     fadeButton.className = 'control-button';
     fadeButton.title = 'Auto-fade mezi skladbami (F)';
-    fadeButton.innerHTML = '🔄';
+    fadeButton.innerHTML = '🎵';
     fadeButton.classList.toggle('active', autoFadeEnabled);
     
     // Event listener pro tlačítko
@@ -448,23 +551,29 @@ function createAutoFadeUI() {
         if (typeof window.showNotification === 'function') {
             window.showNotification(
                 `Auto-fade ${autoFadeEnabled ? 'zapnut' : 'vypnut'}! ${autoFadeEnabled ? '🎵✨' : '⏸️'}`, 
-                'info'
+                'info',
+                2000
             );
+        }
+        
+        // Spustit/zastavit monitoring podle stavu
+        if (autoFadeEnabled && audioPlayer && !audioPlayer.paused) {
+            startFadeMonitoring();
+        } else {
+            stopFadeMonitoring();
         }
         
         // Uložit nastavení
         saveAutoFadeSettings();
         
-        if (AUTOFADE_CONFIG.debugMode) {
-            window.DebugManager?.log('autofade', `🚀 Auto-Fade: ${autoFadeEnabled ? 'Zapnuto' : 'Vypnuto'}`);
-        }
+        window.DebugManager?.log('autofade', `🎚️ Auto-Fade: ${autoFadeEnabled ? 'Zapnuto' : 'Vypnuto'}`);
     });
     
     // Přidat tlačítko do control panelu
     const controlsDiv = controlPanel.querySelector('.controls');
     if (controlsDiv) {
         controlsDiv.appendChild(fadeButton);
-        window.DebugManager?.log('autofade', '🚀 Auto-Fade: UI tlačítko vytvořeno a přidáno');
+        window.DebugManager?.log('autofade', '🎛️ Auto-Fade: UI tlačítko vytvořeno a přidáno');
     }
     
     // Přidat klávesovou zkratku 'F' pro auto-fade
@@ -476,7 +585,7 @@ function createAutoFadeUI() {
             fadeButton.click();
             
             if (AUTOFADE_CONFIG.debugMode) {
-                window.DebugManager?.log('autofade', '🚀 Auto-Fade: Aktivováno klávesou F');
+                window.DebugManager?.log('autofade', '⌨️ Auto-Fade: Aktivováno klávesou F');
             }
         }
     });
@@ -500,10 +609,35 @@ window.resetAutoFadeStats = function() {
         averageFadeTime: 0
     };
     saveAutoFadeSettings();
-    window.DebugManager?.log('autofade', '🚀 Auto-Fade: Statistiky resetovány');
+    window.DebugManager?.log('autofade', '🔄 Auto-Fade: Statistiky resetovány');
 };
 
 // --- Manuální ovládání Auto-Fade (pro pokročilé uživatele) ---
+window.triggerManualFade = function() {
+    if (!autoFadeEnabled) {
+        console.warn('🚀 Auto-Fade: Není zapnutý, nelze spustit manuální fade');
+        return false;
+    }
+    
+    if (fadeInterval !== null) {
+        console.warn('🚀 Auto-Fade: Fade již probíhá');
+        return false;
+    }
+    
+    window.DebugManager?.log('autofade', '🎚️ Auto-Fade: Manuální spuštění fade efektu');
+    startFadeOut();
+    
+    return true;
+};
+
+// --- Konfigurace pro pokročilé uživatele ---
+window.configureAutoFade = function(newConfig) {
+    Object.assign(AUTOFADE_CONFIG, newConfig);
+    saveAutoFadeSettings();
+    window.DebugManager?.log('autofade', '⚙️ Auto-Fade: Konfigurace aktualizována:', newConfig);
+};
+
+// --- CSS styly pro vizuální indikátor ---
 function injectFadeIndicatorStyles() {
     const styleId = 'fade-indicator-styles';
     
@@ -570,39 +704,12 @@ function injectFadeIndicatorStyles() {
     `;
     
     document.head.appendChild(style);
-    window.DebugManager?.log('autofade', "🚀 Auto-Fade: CSS styly pro vizuální indikátor byly přidány");
+    window.DebugManager?.log('autofade', "🎨 Auto-Fade: CSS styly pro vizuální indikátor byly přidány");
 }
-window.triggerManualFade = function() {
-    if (!autoFadeEnabled) {
-        console.warn('🚀 Auto-Fade: Není zapnutý, nelze spustit manuální fade');
-        return false;
-    }
-    
-    if (isFading) {
-        console.warn('🚀 Auto-Fade: Fade již probíhá');
-        return false;
-    }
-    
-    window.DebugManager?.log('autofade', '🚀 Auto-Fade: Manuální spuštění fade efektu');
-    startFadeOut(() => {
-        if (typeof playNextTrack === 'function') {
-            playNextTrack();
-        }
-    });
-    
-    return true;
-};
-
-// --- Konfigurace pro pokročilé uživatele ---
-window.configureAutoFade = function(newConfig) {
-    Object.assign(AUTOFADE_CONFIG, newConfig);
-    saveAutoFadeSettings();
-    window.DebugManager?.log('autofade', '🚀 Auto-Fade: Konfigurace aktualizována:', newConfig);
-};
 
 // --- Inicializace modulu ---
 function initAutoFadeModule() {
-    window.DebugManager?.log('autofade', '🚀 Auto-Fade: Spouštím inicializaci modulu...');
+    window.DebugManager?.log('autofade', '🚀 Auto-Fade V2.0: Spouštím inicializaci modulu...');
     
     // Načíst uložená nastavení
     loadAutoFadeSettings();
@@ -616,25 +723,28 @@ function initAutoFadeModule() {
             setTimeout(() => {
                 integrateAutoFadeWithPlayer();
                 createAutoFadeUI();
-                window.DebugManager?.log('autofade', '🚀 Auto-Fade: Modul plně inicializován a připraven k použití!');
+                window.DebugManager?.log('autofade', '✅ Auto-Fade V2.0: Modul plně inicializován a připraven k použití!');
             }, 1000); // Dát čas původnímu přehrávači na inicializaci
         });
     } else {
         setTimeout(() => {
             integrateAutoFadeWithPlayer();
             createAutoFadeUI();
-            window.DebugManager?.log('autofade', '🚀 Auto-Fade: Modul plně inicializován a připraven k použití!');
+            window.DebugManager?.log('autofade', '✅ Auto-Fade V2.0: Modul plně inicializován a připraven k použití!');
         }, 1000);
     }
 }
 
 // --- Vyčištění při ukončení ---
 window.addEventListener('beforeunload', () => {
+    stopFadeMonitoring();
     if (fadeInterval) {
         clearInterval(fadeInterval);
+        fadeInterval = null;
     }
     if (fadeTimeoutId) {
         clearTimeout(fadeTimeoutId);
+        fadeTimeoutId = null;
     }
 });
 
@@ -642,6 +752,9 @@ window.addEventListener('beforeunload', () => {
 initAutoFadeModule();
 
 // =============================================================================
-// 🖖 Konec Auto-Fade modulu
+// 🖖 Konec Auto-Fade modulu V2.0
+// Rekalibrováno pro script.js V8.0 - StreamGuard kompatibilní!
 // Připraven k nasazení ve flotile více admirála Jiříka!
 // =============================================================================
+
+})();
