@@ -217,5 +217,20 @@
 <script src="colorManager.js"></script>  
 <script src="timer-module.js"></script>   
 <script src="pwa-installer.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('browser-info').textContent = detectBrowser();
+    
+    // Animace při načtení
+    const status = document.getElementById('browser-status');
+    status.style.transform = 'translateX(-300px)';
+    setTimeout(() => {
+        status.style.transform = 'translateX(0)';
+    }, 100);
+});
+</script>    
+ 
 </body>
 </html>
+
