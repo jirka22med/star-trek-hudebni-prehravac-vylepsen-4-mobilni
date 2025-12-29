@@ -1099,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Browser Info
     if(document.getElementById('browser-info')) {
-        document.getElementById('browser-info').textContent = "Star Trek OS v8.0";
+        document.getElementById('browser-info').textContent = detectBrowser(); // před Star Trek OS v8.0
     }
     const status = document.getElementById('browser-status');
     if(status) {
@@ -1157,3 +1157,4 @@ window.populatePlaylist = populatePlaylist;
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
 
 })();
+
