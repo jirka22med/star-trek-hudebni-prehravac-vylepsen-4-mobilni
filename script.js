@@ -2,11 +2,11 @@
     'use strict';
 
 // ════════════════════════════════════════════════════════════════════════════════
-// 🛸 STAR TREK AUDIO CORE - ARCHITECT EDITION (V 8.0 - CLOUD STALL FIX)
+// 🛸 STAR TREK AUDIO CORE - ARCHITECT EDITION (V 8.3 - HYBRID ANCHOR)
 // ════════════════════════════════════════════════════════════════════════════════
 // Autor úprav: Admirál Specialista Gemini.AI
 // Architekt systému: Více Admirál Jiřík
-// Protokol: Stabilita toku dat (Anti-Drop)
+// Protokol: Stabilita toku dat & Hybridní Cloud-Local Sync (Hydration)
 // ════════════════════════════════════════════════════════════════════════════════
 
 // 📡 GLOBÁLNÍ STAV AUDIO JEDNOTKY
@@ -69,7 +69,6 @@ const DOM = {
 // 🛡️ STREAM GUARD - PROTOKOL ZÁCHRANY DAT (NEW MODULE)
 // ═══════════════════════════════════════════════════════════════
 // Tento objekt řídí stabilitu přehrávání při výpadcích sítě.
-// Místo okamžitého přeskočení skladby se pokusí 3x o reconnect.
 
 const StreamGuard = {
     retryCount: 0,          // Počítadlo pokusů o záchranu
@@ -89,10 +88,8 @@ const StreamGuard = {
 
     /**
      * Hlavní procedura pro záchranu streamu
-     * Volá se při 'error', 'stalled' nebo dlouhém 'waiting'
      */
     attemptRecovery: function(errorCode = 'UNKNOWN') {
-        // Pokud už překročíme limit pokusů, kapitulujeme
         if (this.retryCount >= this.maxRetries) {
             window.DebugManager?.log('StreamGuard', `🔴 KRITICKÉ SELHÁNÍ. Pokusy vyčerpány (${this.retryCount}/${this.maxRetries}). Skáču dál.`);
             window.showNotification("Spojení ztraceno. Přeskakuji poškozený sektor.", "error", 4000);
@@ -104,7 +101,6 @@ const StreamGuard = {
         this.retryCount++;
         window.audioState.isRecovering = true;
         
-        // Uložíme aktuální čas, abychom navázali tam, kde to spadlo
         if (DOM.audioPlayer.currentTime > 0) {
             window.audioState.lastKnownTime = DOM.audioPlayer.currentTime;
         }
@@ -112,28 +108,22 @@ const StreamGuard = {
         window.DebugManager?.log('StreamGuard', `⚠️ ZTRÁTA STREAMU (Chyba: ${errorCode}). Zahajuji Recovery Protokol ${this.retryCount}/${this.maxRetries}. Čas: ${window.audioState.lastKnownTime.toFixed(2)}s`);
         window.showNotification(`Obnovuji spojení... (${this.retryCount}/${this.maxRetries}) 📡`, "warn", 2000);
 
-        // Měkký restart streamu
         if (this.recoveryTimeout) clearTimeout(this.recoveryTimeout);
         
         this.recoveryTimeout = setTimeout(() => {
             const currentSrc = DOM.audioSource.src;
-            
-            // Trik pro vynucení nového síťového požadavku - znovu načteme src
             DOM.audioSource.src = ""; 
             DOM.audioSource.src = currentSrc;
             DOM.audioPlayer.load();
-            
-            // Nastavíme čas zpět a zkusíme play
             DOM.audioPlayer.currentTime = window.audioState.lastKnownTime;
             
             DOM.audioPlayer.play().then(() => {
                 window.DebugManager?.log('StreamGuard', "✅ Recovery úspěšné. Stream obnoven.");
-                // Neresetujeme counter hned, počkáme, jestli to nespadne znovu za sekundu
             }).catch(e => {
                 window.DebugManager?.log('StreamGuard', "❌ Recovery Play selhal: " + e);
             });
 
-        }, 1500); // Počkáme 1.5 sekundy před pokusem (buffer time)
+        }, 1500); 
     }
 };
 
@@ -145,7 +135,8 @@ let currentTrackIndex = 0;
 let isShuffled = false;
 let shuffledIndices = [];
 window.favorites = [];
-let originalTracks = Array.isArray(window.tracks) ? [...window.tracks] : [];
+// Inicializace globální zálohy - DŮLEŽITÉ: Zde začínáme s kopií dat z myPlaylist.js
+let originalTracks = Array.isArray(window.tracks) ? JSON.parse(JSON.stringify(window.tracks)) : [];
 let currentPlaylist = [...originalTracks];
 let playlistVisible = true;
 
@@ -178,11 +169,10 @@ window.showNotification = function(message, type = 'info', duration = 3000) {
     DOM.notification.textContent = message;
     DOM.notification.style.display = 'block';
     
-    // Barvy podle typu hlášení (Star Trek LCARS styl)
-    if (type === 'error') DOM.notification.style.backgroundColor = '#dc3545'; // Red Alert
-    else if (type === 'warn') DOM.notification.style.backgroundColor = '#ffc107'; // Yellow Alert
-    else if (type === 'play') DOM.notification.style.backgroundColor = '#007bff'; // Blue (Info)
-    else DOM.notification.style.backgroundColor = '#28a745'; // Green (Success)
+    if (type === 'error') DOM.notification.style.backgroundColor = '#dc3545';
+    else if (type === 'warn') DOM.notification.style.backgroundColor = '#ffc107';
+    else if (type === 'play') DOM.notification.style.backgroundColor = '#007bff';
+    else DOM.notification.style.backgroundColor = '#28a745';
 
     setTimeout(() => DOM.notification.style.display = 'none', duration);
 };
@@ -203,52 +193,87 @@ function checkAndFixTracks(trackList) {
 }
 
 // ============================================================================
-// 🛠️ loadAudioData (V8.0 - INTEGRATED)
+// 🛠️ loadAudioData (V8.3 - HYDRATION PROTOCOL)
 // ============================================================================
 async function loadAudioData() {
-    window.DebugManager?.log('main', "loadAudioData: Načítám data přehrávače...");
+    window.DebugManager?.log('main', "loadAudioData: Zahajuji startovací sekvenci...");
     
-    const originalPlaylistFromFile = window.tracks ? [...window.tracks] : [];
+    // 1. Čekání na Firebase (Warp Core)
+    if (typeof window.initializeFirebaseAppAudio === 'function') {
+        window.DebugManager?.log('main', "⏳ Čekám na inicializaci Firebase...");
+        await window.initializeFirebaseAppAudio();
+    } else {
+        window.DebugManager?.log('main', "⚠️ UPOZORNĚNÍ: Funkce initializeFirebaseAppAudio nenalezena!", null, 'error');
+    }
+
+    // 2. TVRDÁ ZÁLOHA LOKÁLNÍCH DAT (Hardware Bank)
+    // Toto je absolutně klíčové. Musíme si uložit to, co je v souboru myPlaylist.js
+    // dříve, než to cokoliv přepíše.
+    // Používáme Deep Clone, aby reference nezůstala viset.
+    const originalPlaylistFromFile = window.tracks ? JSON.parse(JSON.stringify(window.tracks)) : [];
     const originalFileCount = originalPlaylistFromFile.length;
     
-    // Inicializace globálních proměnných
-    originalTracks = originalPlaylistFromFile;
-    currentPlaylist = [...originalTracks];
-    
+    // Uložíme do globálu pro ostatní moduly (např. playlistSync.js)
+    window.originalTracks = [...originalPlaylistFromFile];
+    window.DebugManager?.log('main', `📁 Lokální playlist načten: ${originalFileCount} skladeb.`);
+
     let firestoreLoaded = { playlist: false, favorites: false, settings: false };
 
     try {
-        // Načtení z Cloudu
-        const loadedPlaylist = await window.loadPlaylistFromFirestore?.();
+        // 3. Pokus o načtení z Cloudu (Soft Data)
+        const cloudPlaylist = await window.loadPlaylistFromFirestore?.();
         
-        if (loadedPlaylist?.length > 0) {
-            const cloudCount = loadedPlaylist.length;
+        if (cloudPlaylist && cloudPlaylist.length > 0) {
+            window.DebugManager?.log('main', `☁️ Cloud vrátil ${cloudPlaylist.length} položek. Analýza integrity...`);
+
+            // 4. PROTOKOL HYDRATACE (Cloud + Local Fusion)
+            // Cloud má názvy (a pořadí), Local má SRC (odkazy). Musíme je spojit.
             
-            if (originalFileCount === 0) {
-                window.DebugManager?.log('main', "⬇️ Lokál prázdný -> Beru Cloud.");
-                window.tracks = loadedPlaylist;
-                checkAndFixTracks(window.tracks);
+            const hydratedPlaylist = cloudPlaylist.map(cloudTrack => {
+                // Najdeme odpovídající lokální skladbu podle názvu
+                // Pokud je v cloudu název, který v lokálu není, zkusíme originalTitle
+                const localMatch = originalPlaylistFromFile.find(local => 
+                    local.title === cloudTrack.title || 
+                    local.originalTitle === cloudTrack.title ||
+                    (cloudTrack.originalTitle && local.title === cloudTrack.originalTitle)
+                );
+                
+                if (localMatch) {
+                    // MÁME SHODU: Vezmeme metadata z Cloudu, ale SRC z Lokálu
+                    return {
+                        ...cloudTrack,
+                        src: localMatch.src,
+                        duration: localMatch.duration // Délku taky bereme z lokálu
+                    };
+                } else {
+                    // NEMÁME SHODU: Skladba je v Cloudu, ale ne v souboru
+                    // Vrátíme cloud verzi (bez SRC), ale logujeme to
+                    window.DebugManager?.log('main', `⚠️ VAROVÁNÍ: Skladba '${cloudTrack.title}' z Cloudu nemá lokální SRC!`);
+                    return cloudTrack;
+                }
+            });
+
+            // 5. Validace výsledku - Kolik skladeb má reálně odkaz?
+            const playableTracks = hydratedPlaylist.filter(t => t.src && t.src.length > 5);
+            
+            if (playableTracks.length > 0) {
+                window.DebugManager?.log('main', `✅ Hydratace úspěšná. ${playableTracks.length} skladeb je připraveno k přehrání.`);
+                window.tracks = hydratedPlaylist; // Přepíšeme globální tracks hybridními daty
                 firestoreLoaded.playlist = true;
             } else {
-                // Konflikt resolution logic
-                if (originalFileCount === cloudCount) {
-                    window.DebugManager?.log('main', "👑 Počet sedí -> POUŽÍVÁM CLOUD (zachovávám tvé názvy)");
-                    window.tracks = loadedPlaylist; 
-                    firestoreLoaded.playlist = true;
-                } else {
-                    window.DebugManager?.log('main', "⚠️ Nesedí počet -> Používám LOKÁL (čekám na sync)");
-                    window.tracks = originalPlaylistFromFile;
-                    window.PLAYLIST_NEEDS_SYNC = true;
-                }
-                checkAndFixTracks(window.tracks);
+                 window.DebugManager?.log('main', "❌ Hydratace selhala (žádné SRC). Vracím se k lokálnímu souboru.", null, 'error');
+                 window.tracks = originalPlaylistFromFile;
+                 window.PLAYLIST_NEEDS_SYNC = true;
             }
+
         } else {
-            window.DebugManager?.log('main', "📁 Cloud prázdný -> Používám myPlaylist.js");
+            window.DebugManager?.log('main', "ℹ️ Cloud prázdný. Používám čistý lokál.");
             window.tracks = originalPlaylistFromFile;
-            checkAndFixTracks(window.tracks);
             window.PLAYLIST_NEEDS_SYNC = true;
         }
         
+        checkAndFixTracks(window.tracks);
+
         // Načtení oblíbených a nastavení
         const loadedFavorites = await window.loadFavoritesFromFirestore?.();
         if (loadedFavorites?.length > 0) {
@@ -258,61 +283,36 @@ async function loadAudioData() {
         
         const loadedSettings = await window.loadPlayerSettingsFromFirestore?.();
         if (loadedSettings) {
-            isShuffled = loadedSettings.isShuffled ?? isShuffled;
-            if (DOM.audioPlayer) {
-                DOM.audioPlayer.loop = loadedSettings.loop ?? DOM.audioPlayer.loop;
-                if (DOM.loopButton) {
-                    const isLooping = DOM.audioPlayer.loop;
-                    DOM.loopButton.classList.toggle('active', isLooping);
-                    DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
-                }
-                if (DOM.shuffleButton) {
-                    DOM.shuffleButton.classList.toggle('active', isShuffled);
-                    DOM.shuffleButton.title = isShuffled ? "Náhodné zapnuto" : "Náhodné vypnuto";
-                }
-                DOM.audioPlayer.volume = loadedSettings.volume ?? DOM.audioPlayer.volume;
-                DOM.audioPlayer.muted = loadedSettings.muted ?? DOM.audioPlayer.muted;
-                if (DOM.volumeSlider) DOM.volumeSlider.value = DOM.audioPlayer.volume;
-                if (DOM.volumeValue) DOM.volumeValue.textContent = Math.round(DOM.audioPlayer.volume * 100) + '%';
-            }
-            currentTrackIndex = loadedSettings.currentTrackIndex ?? currentTrackIndex;
+            applySettings(loadedSettings);
             firestoreLoaded.settings = true;
         }
         
     } catch (error) {
-        window.DebugManager?.log('main', "🔧 Chyba cloudu, jedu na lokál.");
+        window.DebugManager?.log('main', "🔧 Chyba při syncu. Jedu na záložní generátory (Lokál).", error);
         window.tracks = originalPlaylistFromFile;
         checkAndFixTracks(window.tracks);
     }
 
-    // Fallbacky
-    if (!firestoreLoaded.playlist && originalFileCount === 0) {
-        const savedPlaylist = JSON.parse(localStorage.getItem('currentPlaylist') || '[]');
-        if (savedPlaylist.length > 0) window.tracks = [...savedPlaylist];
-    }
+    // Fallbacky pro settings
     if (!firestoreLoaded.favorites) {
         const localFav = localStorage.getItem('favorites');
         if (localFav) favorites = JSON.parse(localFav);
     }
     if (!firestoreLoaded.settings) {
         const savedSettings = JSON.parse(localStorage.getItem('playerSettings') || '{}');
-        if (DOM.audioPlayer && savedSettings.volume !== undefined) DOM.audioPlayer.volume = savedSettings.volume;
-        isShuffled = savedSettings.isShuffled ?? isShuffled;
-        currentTrackIndex = savedSettings.currentTrackIndex ?? currentTrackIndex;
+        applySettings(savedSettings);
     }
 
-    // Finalizace
-    originalTracks = window.tracks;
+    // 6. FINALIZACE
+    originalTracks = window.tracks; // Aktualizujeme pracovní kopii
     currentPlaylist = [...originalTracks];
-    window.DebugManager?.log('main', `🎵 HOTOVO: ${window.tracks.length} skladeb.`);
     
     if (typeof populatePlaylist === 'function') populatePlaylist(window.tracks);
     if (typeof updateActiveTrackVisuals === 'function') updateActiveTrackVisuals();
 
-    // Sync a notifikace
+    // Auto-Sync pouze pokud to řídí Sync Manager (zde jen flag)
     if (window.PLAYLIST_NEEDS_SYNC) {
         setTimeout(async () => {
-            if(window.savePlaylistToFirestore) await window.savePlaylistToFirestore(window.tracks);//
              window.PLAYLIST_NEEDS_SYNC = false;
         }, 2000);
     } else if (!firestoreLoaded.playlist) {
@@ -322,10 +322,26 @@ async function loadAudioData() {
     if (window.CaptainNotifyChange) window.CaptainNotifyChange();
 }
 
+// Pomocná funkce pro aplikaci nastavení
+function applySettings(settings) {
+    isShuffled = settings.isShuffled ?? isShuffled;
+    currentTrackIndex = settings.currentTrackIndex ?? currentTrackIndex;
+    
+    if (DOM.audioPlayer) {
+        DOM.audioPlayer.loop = settings.loop ?? DOM.audioPlayer.loop;
+        DOM.audioPlayer.volume = settings.volume ?? DOM.audioPlayer.volume;
+        DOM.audioPlayer.muted = settings.muted ?? DOM.audioPlayer.muted;
+        
+        if (DOM.loopButton) DOM.loopButton.classList.toggle('active', DOM.audioPlayer.loop);
+        if (DOM.shuffleButton) DOM.shuffleButton.classList.toggle('active', isShuffled);
+        if (DOM.volumeSlider) DOM.volumeSlider.value = DOM.audioPlayer.volume;
+        if (DOM.volumeValue) DOM.volumeValue.textContent = Math.round(DOM.audioPlayer.volume * 100) + '%';
+    }
+}
+
 // --- Ukládání dat ---
 async function saveAudioData() {
-    window.DebugManager?.log('main', "saveAudioData: Ukládám data přehrávače.");
-    localStorage.setItem('currentPlaylist', JSON.stringify(window.tracks));
+    window.DebugManager?.log('main', "saveAudioData: Ukládám stav.");
     localStorage.setItem('favorites', JSON.stringify(favorites));
     localStorage.setItem('playerSettings', JSON.stringify({
         currentTrackIndex,
@@ -336,7 +352,6 @@ async function saveAudioData() {
     }));
 
     try {
-    await window.savePlaylistToFirestore?.(window.tracks); //
         await window.saveFavoritesToFirestore?.(favorites);
         await window.savePlayerSettingsToFirestore?.({
             currentTrackIndex,
@@ -355,7 +370,7 @@ window.clearAllAudioPlayerData = async function() {
     if (!confirm('⚠️ OPRAVDU chcete smazat VŠECHNA data přehrávače?')) return;
     if (!confirm('⚠️ JSTE SI ABSOLUTNĚ JISTI? Data budou nenávratně ztracena!')) return;
 
-    localStorage.removeItem('currentPlaylist');
+     localStorage.removeItem('currentPlaylist');
     localStorage.removeItem('favorites');
     localStorage.removeItem('playerSettings');
     
@@ -365,18 +380,7 @@ window.clearAllAudioPlayerData = async function() {
         console.error(error);
     }
 
-    currentTrackIndex = 0;
-    isShuffled = false;
-    shuffledIndices = [];
-    favorites = [];
-    originalTracks = Array.isArray(window.tracks) ? [...window.tracks] : [];
-    currentPlaylist = [...originalTracks];
-
-    populatePlaylist(currentPlaylist);
-    updateVolumeDisplayAndIcon();
-    updateButtonActiveStates(false);
-    updateActiveTrackVisuals();
-    window.showNotification('Všechna data přehrávače smazána!', 'info', 2035);
+    location.reload();
 };
 
 // --- Hodiny ---
@@ -460,7 +464,8 @@ function populatePlaylist(listToDisplay) {
         const fragment = document.createDocumentFragment();
         
         listToDisplay.forEach((track, index) => {
-            const originalIndex = originalTracks.findIndex(ot => ot.title === track.title && ot.src === track.src);
+            // Hledáme v originalTracks, protože ty jsou nyní HYDRATOVANÉ (mají správné SRC)
+            const originalIndex = originalTracks.findIndex(ot => ot.title === track.title);
 
             // Sekce (nadpisy)
             if (window.playlistSections && originalIndex !== -1) {
@@ -552,6 +557,14 @@ function playTrack(originalIndex) {
     const track = originalTracks[currentTrackIndex];
     
     if (!DOM.audioSource || !DOM.trackTitle || !DOM.audioPlayer) return;
+
+    // KONTROLA: Zda má skladba platné SRC
+    if (!track.src || track.src.length < 5) {
+        window.showNotification(`CHYBA: Skladba '${track.title}' nemá platný odkaz!`, 'error', 4000);
+        window.DebugManager?.log('main', `❌ playTrack FAILED: Missing SRC for ${track.title}`);
+        playNextTrack(); // Přeskočit
+        return;
+    }
     
     // Použití cache preloaderu
     let audioUrl = track.src;
@@ -606,11 +619,22 @@ function playTrack(originalIndex) {
 }
 
 function updateActiveTrackVisuals() {
-    if (!DOM.playlist || !originalTracks?.length) return;
+    // 🛡️ UI CRASH SHIELD: Kontrola existence playlistu
+    if (!DOM.playlist) return;
+    if (!originalTracks?.length) return;
+    
     const items = DOM.playlist.getElementsByClassName('playlist-item');
+    // Pokud playlist ještě není vyrenderován, nemá cenu pokračovat
+    if (!items || items.length === 0) return;
+
     const currentTrackData = originalTracks[currentTrackIndex];
+    if (!currentTrackData) return;
+
     Array.from(items).forEach(item => {
-        const isActive = item.dataset.originalSrc === currentTrackData?.src;
+        // Kontrola podle titulku, protože SRC se může lišit (Cloud/Local)
+        const titleSpan = item.querySelector('.track-title');
+        const isActive = titleSpan && titleSpan.textContent === currentTrackData.title;
+        
         item.classList.toggle('active', isActive);
         if (isActive && DOM.playlist.style.display !== 'none' && DOM.playlist.offsetParent !== null) {
             setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' }), 100);
@@ -1053,11 +1077,8 @@ document.addEventListener('resize', () => adjustPlaylistHeight(document.fullscre
 if (DOM.syncStatus) setTimeout(() => DOM.syncStatus.style.display = 'none', 6000);
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Firebase
-    const firebaseInitialized = await window.initializeFirebaseAppAudio?.();
-    if (!firebaseInitialized) {
-        window.showNotification("Kritická chyba: Nelze se připojit k databázi.", 'error');
-    }
+    // 1. Firebase (Oprava pořadí volání je nyní uvnitř loadAudioData, ale pro jistotu i zde)
+    // const firebaseInitialized = await window.initializeFirebaseAppAudio?.(); 
     
     // 2. Background Manager
     if (window.BackgroundManager) await window.BackgroundManager.init();
@@ -1111,6 +1132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Indikátor preloaderu (Blesk)
 window.addEventListener('track-preloaded', (e) => {
     const { src } = e.detail;
+    if (!DOM.playlist) return; // UI Safe check
     const playlistItems = document.querySelectorAll('.playlist-item');
     playlistItems.forEach(item => {
         if (item.dataset.originalSrc === src) {
@@ -1157,7 +1179,3 @@ window.populatePlaylist = populatePlaylist;
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
 
 })();
-
-
-
-
