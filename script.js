@@ -312,7 +312,7 @@ async function loadAudioData() {
     // Sync a notifikace
     if (window.PLAYLIST_NEEDS_SYNC) {
         setTimeout(async () => {
-             if(window.savePlaylistToFirestore) await window.savePlaylistToFirestore(window.tracks);
+            // if(window.savePlaylistToFirestore) await window.savePlaylistToFirestore(window.tracks);\\
              window.PLAYLIST_NEEDS_SYNC = false;
         }, 2000);
     } else if (!firestoreLoaded.playlist) {
@@ -336,7 +336,7 @@ async function saveAudioData() {
     }));
 
     try {
-        await window.savePlaylistToFirestore?.(window.tracks);
+      //  await window.savePlaylistToFirestore?.(window.tracks); \\
         await window.saveFavoritesToFirestore?.(favorites);
         await window.savePlayerSettingsToFirestore?.({
             currentTrackIndex,
@@ -1157,4 +1157,5 @@ window.populatePlaylist = populatePlaylist;
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
 
 })();
+
 
