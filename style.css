@@ -1125,3 +1125,26 @@ footer a:hover {
     font-size: 15px;
 }
 
+/* 🖖 STAR TREK - VIZUÁLNÍ ODEZVA INTERAKČNÍHO ŠTÍTU */
+
+/* Stav, kdy je tlačítko nebo playlist neaktivní */
+.shield-active {
+    opacity: 0.4 !important; /* Výrazné zprůhlednění */
+    filter: grayscale(1) brightness(0.7) !important; /* Totální zešednutí a ztmavení */
+    cursor: wait !important; /* Změna kurzoru na hodiny/načítání */
+    transition: all 0.3s ease-in-out; /* Hladký přechod štítů */
+    box-shadow: none !important; /* Odstranění záře (pokud ji tlačítko má) */
+    position: relative;
+}
+
+/* Speciální efekt pro Play Button, aby vypadal jako vypnutý terminál */
+#play-button.shield-active {
+    border-color: #555 !important;
+    background: #222 !important;
+}
+
+/* Playlist v režimu štítu */
+#playlist.shield-active {
+    background: rgba(20, 20, 20, 0.8) !important;
+    pointer-events: none;
+}
