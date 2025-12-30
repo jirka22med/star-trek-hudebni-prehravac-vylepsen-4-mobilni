@@ -1,6 +1,6 @@
 const VERSION_BVIS = "1.101.0"; // Verze správy tlačítek
 
-/**
+/** 
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE
  * Více admirál Jiřík & Admirál Claude.AI
  * ✅ OPRAVENO: Nekonečná rekurze ve funkci initializeButtonVisibilityManager
@@ -1503,6 +1503,7 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
 
 
 
