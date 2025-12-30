@@ -883,7 +883,9 @@ duration: '08:57' },
 
  
 
-// Logování přes DebugManager
- window.DebugManager?.log('playlist', `🖖 myPlaylist.js načten: ${window.tracks.length} skladeb (verze: ${window.PLAYLIST_VERSION})`);
- 
+window.PLAYLIST_SOURCE_READY = true;
+window.showNotification('myPlaylist loading', 'success', 2550);
+window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! Signál odeslán. (${window.tracks.length} skladeb)`);
+window.showNotification('myPlaylist hotov', 'success', 2000); 
+
 
