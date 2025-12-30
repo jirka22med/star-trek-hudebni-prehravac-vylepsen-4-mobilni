@@ -19,6 +19,51 @@ window.audioState = {
     lastKnownTime: 0         // Paměť pro pozici při výpadku
 };
 
+ /**
+ * PROTOKOL: INTERACTION SHIELD (EXPERIMENTÁLNÍ VERZE)
+ * Nastaveno na variabilní warp faktor pro testování stability.
+ */
+function applyInteractionCooldown() {
+    // --- NASTAVENÍ WARP FAKTORU (v milisekundách) ---
+    const SHIELD_DURATION = 3000; // Zkusíme 3 sekundy pro vyšší stabilitu
+    // -----------------------------------------------
+
+    window.audioState.isLoadingTrack = true;
+    
+    // 🛡️ AKTIVACE ŠTÍTŮ
+    if (DOM.playButton) {
+        DOM.playButton.style.pointerEvents = 'none';
+        DOM.playButton.classList.add('shield-active'); 
+    }
+    if (DOM.playlist) {
+        DOM.playlist.style.pointerEvents = 'none';
+        DOM.playlist.classList.add('shield-active'); 
+    }
+    
+    // 📢 ZPĚTNÁ VAZBA PRO ADMIRÁLA
+    const durationSec = (SHIELD_DURATION / 1000).toFixed(1);
+    window.showNotification(`🛡️ Štíty nahoře na ${durationSec}s: Stabilizuji tok dat...`, "warn", SHIELD_DURATION);
+    window.DebugManager?.log('main', `🛡️ INTERACTION SHIELD: Aktivován na ${SHIELD_DURATION}ms.`);
+
+    setTimeout(() => {
+        window.audioState.isLoadingTrack = false;
+        
+        // 🔓 UVOLNĚNÍ KONZOLÍ
+        if (DOM.playButton) {
+            DOM.playButton.style.pointerEvents = 'auto';
+            DOM.playButton.classList.remove('shield-active');
+        }
+        if (DOM.playlist) {
+            DOM.playlist.style.pointerEvents = 'auto';
+            DOM.playlist.classList.remove('shield-active');
+        }
+        
+        window.showNotification("🔓 Štíty dole: Systém je připraven!", "success", 2000);
+        window.DebugManager?.log('main', "🔓 INTERACTION SHIELD: Deaktivován.");
+    }, SHIELD_DURATION); 
+}
+    
+    
 // --- Cachování DOM elementů (Bridge Controls) ---
 const DOM = {
     audioPlayer: document.getElementById('audioPlayer'),
@@ -552,8 +597,13 @@ function populatePlaylist(listToDisplay) {
             item.appendChild(favButton);
             
             item.addEventListener('click', () => {
-                if (originalIndex !== -1) playTrack(originalIndex);
-            });
+    // Pokud jsou štíty aktivní, ignorujeme kliknutí
+    if (window.audioState.isLoadingTrack) {
+        window.DebugManager?.log('main', "⚠️ SYSTÉM BUSY: Kliknutí na playlist blokováno štítem.");
+        return;
+    }
+    if (originalIndex !== -1) playTrack(originalIndex);
+});
             
             fragment.appendChild(item);
         });
@@ -577,7 +627,10 @@ function populatePlaylist(listToDisplay) {
 // ▶️ playTrack (S INTEGRACÍ STREAM GUARDU)
 // ============================================================================
 function playTrack(originalIndex) {
-    // 🛡️ DŮLEŽITÉ: Při změně skladby resetujeme Recovery počítadla
+    // 🛡️ [NOVÉ] AKTIVACE INTERACTION SHIELDU (2s COOLDOWN)
+    applyInteractionCooldown();
+
+    // 🛡️ DŮLEŽITÉ: Při změně skladby resetujeme Recovery počítadla (StreamGuard)
     StreamGuard.reset();
 
     window.audioState.isLoadingTrack = true;
@@ -605,6 +658,7 @@ function playTrack(originalIndex) {
     DOM.audioSource.src = audioUrl;
     DOM.trackTitle.textContent = track.title;
 
+    // Notifikace s časovým posunem pro stabilitu
     setTimeout(() => {
         window.showNotification(`▶️ Hraje: ${track.title}`, 'play', 2034);
     }, 2500);
@@ -717,18 +771,19 @@ window.toggleFavorite = async function(trackTitle) {
 // 🎮 EVENT LISTENERY (BRIDGE CONTROLS)
 // ============================================================================
 function addEventListeners() {
-    // Tlačítka přehrávání
-    DOM.playButton?.addEventListener('click', () => {
-        if (DOM.audioPlayer && DOM.audioSource.src && DOM.audioSource.src !== window.location.href) {
-            DOM.audioPlayer.play().then(() => {
-                window.audioState.isPlaying = true;
-                window.dispatchEvent(new Event('player-resumed'));
-                updateButtonActiveStates(true);
-            }).catch(e => console.error(e));
-        } else if (originalTracks.length > 0) {
-            playTrack(currentTrackIndex);
-        }
-    });
+    // 1. Ošetření Play tlačítka v addEventListeners()
+DOM.playButton?.addEventListener('click', () => {
+    if (window.audioState.isLoadingTrack) return; // Blokace při stahování
+    
+    if (DOM.audioPlayer && DOM.audioSource.src && DOM.audioSource.src !== window.location.href) {
+        DOM.audioPlayer.play().then(() => {
+            window.audioState.isPlaying = true;
+            updateButtonActiveStates(true);
+        }).catch(e => console.error(e));
+    } else if (originalTracks.length > 0) {
+        playTrack(currentTrackIndex);
+    }
+});
 
     DOM.pauseButton?.addEventListener('click', () => {
         if (DOM.audioPlayer) DOM.audioPlayer.pause();
@@ -749,14 +804,32 @@ function addEventListeners() {
     });
 
     // Režim opakování
-    DOM.loopButton?.addEventListener('click', async () => {
-        if (DOM.audioPlayer) DOM.audioPlayer.loop = !DOM.audioPlayer.loop;
-        const isLooping = DOM.audioPlayer?.loop;
-        DOM.loopButton.classList.toggle('active', isLooping);
-        DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
-        window.showNotification(isLooping ? 'Opakování zapnuto' : 'Opakování vypnuto', 'info', 2028);
-        await debounceSaveAudioData();
-    });
+    // ============================================================================
+// 🔄 ARCHITECT EDITION: LOOP CONTROL (FULL LOGIC)
+// ============================================================================
+DOM.loopButton?.addEventListener('click', async () => {
+    if (!DOM.audioPlayer) {
+        window.DebugManager?.log('main', "⚠️ CHYBA: audioPlayer nenalezen při přepínání smyčky.", null, 'error');
+        return;
+    }
+
+    // Přepnutí stavu smyčky
+    DOM.audioPlayer.loop = !DOM.audioPlayer.loop;
+    const isLooping = DOM.audioPlayer.loop;
+
+    // Aktualizace vizuálního stavu tlačítka
+    DOM.loopButton.classList.toggle('active', isLooping);
+    DOM.loopButton.title = isLooping ? "Opakování zapnuto" : "Opakování vypnuto";
+
+    // Komunikační protokol pro uživatele
+    window.showNotification(isLooping ? 'Opakování zapnuto' : 'Opakování vypnuto', 'info', 2028);
+
+    // Systémové hlášení pro DebugManager
+    window.DebugManager?.log('main', `🔄 Režim LOOP změněn na: ${isLooping ? 'ZAPNUTO' : 'VYPNUTO'}`);
+
+    // Uložení stavu do Cloudu a lokální paměti
+    await debounceSaveAudioData();
+});
 
     // Náhodné přehrávání
     DOM.shuffleButton?.addEventListener('click', async () => {
@@ -895,18 +968,21 @@ function addEventListeners() {
         });
 
         // 5. Konec skladby (Looping vs Next)
-        DOM.audioPlayer.addEventListener('ended', async () => {
-            updateButtonActiveStates(false);
-            StreamGuard.reset(); // Úspěšně dohráno -> reset counteru
+       // 5. Konec skladby (Looping vs Next) - ARCHITECT EDITION (ZERO COMPRESSION)
+DOM.audioPlayer.addEventListener('ended', async () => {
+    // ✅ OPRAVENO: Název funkce bez překlepu
+    updateButtonActiveStates(false);
+    StreamGuard.reset();
 
-            if (DOM.audioPlayer.loop) {
-                // Smyčka: vynutíme reload, aby se vyčistily případné chyby bufferu z minulého kola
-                playTrack(currentTrackIndex);
-            } else {
-                playNextTrack();
-            }
-            await debounceSaveAudioData();
-        });
+    if (DOM.audioPlayer.loop) {
+        // Smyčka: tvůj původní funkční reload
+        playTrack(currentTrackIndex);
+    } else {
+        playNextTrack();
+    }
+    
+    await debounceSaveAudioData();
+});
     }
 
     // --- Klávesové zkratky ---
