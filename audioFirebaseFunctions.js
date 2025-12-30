@@ -1,15 +1,16 @@
 // audioFirebaseFunctions.js
-// 🖖 STAR TREK AUDIO CORE - DEBUGMANAGER EDITION (V3.3)
-// Verze: 3.3 (DebugManager Integration)
-// Tento soubor nyní respektuje centrální DebugManager
+// 🖖 STAR TREK AUDIO CORE - DEBUGMANAGER EDITION (V3.4 - NO SRC LINKS)
+// Verze: 3.4 (DebugManager Integration + Playlist bez HTTPS odkazů)
+// ═══════════════════════════════════════════════════════════════════════════════
+// ✅ KOMPLETNÍ KONTROLA PROVEDENA - VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CLAUDE.AI
+// ═══════════════════════════════════════════════════════════════════════════════
 
 (function() {
     'use strict';
 
-    // 🔥 NOVÉ: Dynamické logování přes DebugManager
-    // Místo konstanty DEBUG_COLOUDE_FIRESTORE používáme DebugManager.isEnabled('firebase')
-    
-    // --- 1. KONFIGURACE (SECURE LINK) ---
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 📡 KONFIGURACE FIREBASE (SECURE LINK)
+    // ═══════════════════════════════════════════════════════════════════════════
     const firebaseConfig = {
         apiKey: "AIzaSyCxO2BdPLkvRW9q3tZTW5J39pjjAoR-9Sk", 
         authDomain: "audio-prehravac-v-3.firebaseapp.com",
@@ -21,9 +22,10 @@
 
     let db; // Globální instance databáze
 
-    // 🔥 NOVÝ LOGOVACÍ SYSTÉM - Napojený na DebugManager
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 📋 LOGOVACÍ SYSTÉM - Napojený na DebugManager
+    // ═══════════════════════════════════════════════════════════════════════════
     function log(component, message, data = null, type = 'info') {
-        // Kontrola, zda je DebugManager připraven a modul 'firebase' je zapnutý
         if (!window.DebugManager?.isEnabled('firebase')) return;
         
         const style = type === 'error' ? 'background: #550000; color: #ffaaaa' : 
@@ -32,23 +34,18 @@
         
         console.groupCollapsed(`%c[${component}] ${message}`, `padding: 2px 5px; border-radius: 3px; font-weight: bold; ${style}`);
         if (data) console.log("📦 Data:", data);
-        
-        // Stack trace jen při errorech (optimalizace)
-        if (type === 'error') {
-            console.trace("🔍 Stack Trace (Error)");
-        }
-        
+        if (type === 'error') console.trace("🔍 Stack Trace (Error)");
         console.groupEnd();
     }
 
-    // 🔥 NOVÝ: Pomocná funkce pro API logy (kratší formát)
     function apiLog(action, details = '') {
         if (!window.DebugManager?.isEnabled('firebase')) return;
         console.log(`%c[Firebase API] ${action}`, 'color: #00CCFF; font-weight: bold;', details);
     }
 
-    // --- 2. POMOCNÉ FUNKCE PRO STABILITU ---
-
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🛠️ POMOCNÉ FUNKCE PRO STABILITU
+    // ═══════════════════════════════════════════════════════════════════════════
     function getFirestoreDB() {
         if (db) return db;
         if (window.db) return window.db;
@@ -62,7 +59,6 @@
     async function waitForDatabaseConnection() {
         let attempts = 0;
         
-        // 🔥 ZMĚNA: Logujeme jen pokud je firebase logging zapnutý
         if (window.DebugManager?.isEnabled('firebase')) {
             console.log("⏳ [DB Check] Ověřuji spojení s warp jádrem (Firestore)...");
         }
@@ -84,7 +80,9 @@
         return isReady;
     }
 
-    // --- 3. INICIALIZACE ---
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🚀 INICIALIZACE FIREBASE
+    // ═══════════════════════════════════════════════════════════════════════════
     window.initializeFirebaseAppAudio = async function() {
         log("INIT", "Zahajuji start sekvence Firebase...");
         
@@ -106,12 +104,15 @@
         });
     };
 
-    // ============================================================================
-    // 🎵 HLAVNÍ PLAYLIST (CORE FUNCTIONS)
-    // ============================================================================
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🎵 HLAVNÍ PLAYLIST (UPRAVENO - BEZ HTTPS ODKAZŮ)
+    // ═══════════════════════════════════════════════════════════════════════════
 
+    /**
+     * 💾 SAVE PLAYLIST - Ukládáme JEN názvy skladeb (BEZ src odkazů)
+     */
     window.savePlaylistToFirestore = async function(tracks) {
-        log("SAVE Playlist", "🚀 Požadavek na uložení playlistu přijat.");
+        log("SAVE Playlist", "🚀 Požadavek na uložení playlistu přijat (JEN názvy, BEZ odkazů).");
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -129,36 +130,39 @@
         }
 
         try {
-            // Očištění dat + DIAGNOSTIKA DAT
-            const cleanTracks = tracksToSave.map(track => ({
-                title: track.title || "Neznámá skladba", 
-                src: track.src || "",
-                originalTitle: track.originalTitle || track.title, 
-                duration: track.duration || "", 
-                addedAt: track.addedAt || Date.now(),
-                // 🔥 Ochrana ručních úprav
+            // 🔥 KLÍČOVÁ ZMĚNA: Ukládáme JEN názvy, ne odkazy
+            const cleanTracks = tracksToSave.map((track, index) => ({
+                // ✅ ULOŽÍME: Názvy a metadata
+                title: track.title || "Neznámá skladba",
+                originalTitle: track.originalTitle || track.title,
                 manuallyEdited: track.manuallyEdited || false,
-                lastEditedAt: track.lastEditedAt || null
+                lastEditedAt: track.lastEditedAt || null,
+                
+                // 🔑 PÁROVACÍ KLÍČ: Čistý odkaz (BEZ tokenu)
+                cleanSrc: track.src ? track.src.split('?')[0].trim() : `__INDEX_${index}__`,
+                
+                // ❌ NEULOŽÍME: track.src (HTTPS odkaz zůstane v myPlaylist.js)
+                // ❌ NEULOŽÍME: track.duration (nepotřebujeme)
+                // ❌ NEULOŽÍME: track.addedAt (nepotřebujeme)
             }));
 
-            // 🔥 ZMĚNA: Zkrácený log - zobrazí jen základní info
-            apiLog(`💾 Ukládám ${cleanTracks.length} skladeb do 'app_data/main_playlist'`);
+            apiLog(`💾 Ukládám ${cleanTracks.length} názvů skladeb do 'app_data/main_playlist' (BEZ HTTPS)`);
             
-            // 🔥 VOLITELNÉ: Detailní log jen při zapnutém firebase debuggingu
             if (window.DebugManager?.isEnabled('firebase')) {
-                log("SAVE Playlist", `Připravuji ${cleanTracks.length} skladeb k teleportaci.`, cleanTracks);
+                log("SAVE Playlist", `Připravuji ${cleanTracks.length} názvů k teleportaci.`, cleanTracks);
             }
 
             await database.collection("app_data").doc("main_playlist").set({
                 tracks: cleanTracks,
                 lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                 totalTracks: cleanTracks.length,
-                version: "3.3-DebugManager-Integration"
+                version: "3.4-NoSrcLinks"
             });
 
-            log("SAVE Playlist", "✅ ZÁPIS ÚSPĚŠNÝ! Data jsou v cloudu.", null, 'success');
-            if (window.showNotification) //window.showNotification("Playlist uložen do Cloudu!", "success");
+            log("SAVE Playlist", "✅ ZÁPIS ÚSPĚŠNÝ! Názvy jsou v cloudu.", null, 'success');
+            if (window.showNotification) window.showNotification("Názvy skladeb uloženy do Cloudu!", "success");
             return true;
+
         } catch (error) {
             console.error("❌ CRITICAL SAVE ERROR:", error);
             log("SAVE Playlist", "KRITICKÁ CHYBA PŘI ZÁPISU", error, 'error');
@@ -167,8 +171,26 @@
         }
     };
 
+    /**
+     * 📥 LOAD PLAYLIST - Párujeme názvy z Cloudu s odkazy z myPlaylist.js
+     */
     window.loadPlaylistFromFirestore = async function() {
-        log("LOAD Playlist", "📥 Požadavek na stažení playlistu.");
+        log("LOAD Playlist", "📥 Požadavek na stažení playlistu (názvy z Cloudu + odkazy lokálně).");
+
+        // 🔥 RACE CONDITION FIX: Čekáme na explicitní signál z myPlaylist.js
+        let waitAttempts = 0;
+        log("LOAD Playlist", "⏳ Čekám na signál window.PLAYLIST_SOURCE_READY z myPlaylist.js...");
+        
+        while (!window.PLAYLIST_SOURCE_READY && waitAttempts < 30) {
+            await new Promise(resolve => setTimeout(resolve, 100)); // Čekáme 100ms
+            waitAttempts++;
+        }
+        
+        if (window.PLAYLIST_SOURCE_READY) {
+            log("LOAD Playlist", `✅ myPlaylist.js je READY! (${window.originalTracks?.length || 0} skladeb)`, null, 'success');
+        } else {
+            log("LOAD Playlist", "⚠️ TIMEOUT: myPlaylist.js se nenačetl včas! Pokračuji s rizikem...", null, 'error');
+        }
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -180,16 +202,53 @@
             
             if (doc.exists) {
                 const data = doc.data();
+                const cloudTracks = data.tracks || [];
                 
-                // 🔥 ZMĚNA: Zkrácený log
-                apiLog(`📥 Načteno ${data.tracks?.length || 0} skladeb z Cloudu`);
+                apiLog(`📥 Načteno ${cloudTracks.length} názvů z Cloudu`);
                 
-                // 🔥 VOLITELNÉ: Detailní log
                 if (window.DebugManager?.isEnabled('firebase')) {
-                    log("LOAD Playlist", `✅ Dokument nalezen. Obsahuje ${data.tracks?.length || 0} skladeb.`, data, 'success');
+                    log("LOAD Playlist", `✅ Dokument nalezen. Obsahuje ${cloudTracks.length} názvů.`, data, 'success');
                 }
+
+                // 🔥 PÁROVACÍ LOGIKA - Propojíme cloud názvy s lokálními odkazy
+                if (!window.originalTracks || window.originalTracks.length === 0) {
+                    log("LOAD Playlist", "⚠️ window.originalTracks je prázdné! Nelze párovat.", null, 'error');
+                    return cloudTracks; // Vrátíme alespoň názvy
+                }
+
+                // Vytvoříme mapu: cleanSrc → cloudData
+                const cloudMap = new Map();
+                cloudTracks.forEach(ct => {
+                    if (ct.cleanSrc) {
+                        cloudMap.set(ct.cleanSrc, ct);
+                    }
+                });
+
+                // Projdeme lokální skladby a najdeme jim názvy z Cloudu
+                const mergedTracks = window.originalTracks.map((localTrack, index) => {
+                    const cleanSrc = localTrack.src ? localTrack.src.split('?')[0].trim() : `__INDEX_${index}__`;
+                    const cloudData = cloudMap.get(cleanSrc);
+
+                    if (cloudData) {
+                        // ✅ NAŠLI JSME SHODU - použijeme název z Cloudu
+                        return {
+                            src: localTrack.src, // ✅ Odkaz z myPlaylist.js
+                            title: cloudData.title, // ✅ Název z Cloudu
+                            originalTitle: cloudData.originalTitle || localTrack.title,
+                            manuallyEdited: cloudData.manuallyEdited || false,
+                            lastEditedAt: cloudData.lastEditedAt || null,
+                            duration: localTrack.duration || "" // Z lokálu
+                        };
+                    } else {
+                        // ⚠️ NENÍ V CLOUDU - nová skladba, použijeme lokální název
+                        log("LOAD Playlist", `⚠️ Skladba "${localTrack.title}" není v Cloudu (nová?)`, null, 'info');
+                        return localTrack;
+                    }
+                });
+
+                log("LOAD Playlist", `✅ Spárováno ${mergedTracks.length} skladeb (názvy z Cloudu + odkazy lokálně)`, null, 'success');
+                return mergedTracks;
                 
-                return data.tracks || [];
             } else {
                 log("LOAD Playlist", "ℹ️ Dokument 'main_playlist' v kolekci 'app_data' neexistuje (první spuštění?).", null, 'info');
                 return null;
@@ -200,10 +259,9 @@
         }
     };
 
-    // ============================================================================
-    // ⭐ OBLÍBENÉ A NASTAVENÍ
-    // ============================================================================
-
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ⭐ OBLÍBENÉ SKLADBY
+    // ═══════════════════════════════════════════════════════════════════════════
     window.saveFavoritesToFirestore = async function(favoritesArray) {
         apiLog("💾 Ukládám oblíbené...");
         if (!await waitForDatabaseConnection()) return;
@@ -225,6 +283,9 @@
         } catch (e) { return null; }
     };
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ⚙️ NASTAVENÍ PŘEHRÁVAČE
+    // ═══════════════════════════════════════════════════════════════════════════
     window.savePlayerSettingsToFirestore = async function(settings) {
         apiLog("💾 Ukládám nastavení přehrávače...");
         if (!await waitForDatabaseConnection()) return;
@@ -242,10 +303,9 @@
         } catch (e) { return null; }
     };
 
-    // ============================================================================
+    // ═══════════════════════════════════════════════════════════════════════════
     // 🛠️ NASTAVENÍ VZHLEDU PLAYLISTU
-    // ============================================================================
-
+    // ═══════════════════════════════════════════════════════════════════════════
     window.savePlaylistSettingsToFirestore = async function(settings) {
         apiLog("💾 Ukládám vizuální nastavení playlistu...");
         if (!await waitForDatabaseConnection()) return;
@@ -270,10 +330,9 @@
         } catch (e) { return null; }
     };
 
-    // ============================================================================
+    // ═══════════════════════════════════════════════════════════════════════════
     // 👁️ BUTTON VISIBILITY MANAGER
-    // ============================================================================
-
+    // ═══════════════════════════════════════════════════════════════════════════
     window.saveButtonVisibilityToFirestore = async function(config) {
         apiLog("💾 Ukládám konfiguraci tlačítek...");
         if (!await waitForDatabaseConnection()) return;
@@ -335,10 +394,9 @@
         autoSync: window.autoSyncButtonVisibilityOnLoad
     };
 
-    // ============================================================================
+    // ═══════════════════════════════════════════════════════════════════════════
     // 🧹 ÚDRŽBA - FUNKČNÍ ATOMOVKA
-    // ============================================================================
-
+    // ═══════════════════════════════════════════════════════════════════════════
     window.clearAllAudioFirestoreData = async function() {
         log("DANGER", "⚠️ SPUŠTĚNA SEKVICE AUTODESTRUKCE CLOUDU!", null, 'error');
         
@@ -384,14 +442,18 @@
         }
     };
 
-    // Automatický start syncu
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🚀 AUTOMATICKÝ START SYNCU
+    // ═══════════════════════════════════════════════════════════════════════════
     if (typeof window !== 'undefined') {
         setTimeout(() => window.autoSyncButtonVisibilityOnLoad(), 2000);
     }
 
-    // 🔥 ZÁVĚREČNÁ ZPRÁVA - Zobrazí se vždy
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 📡 ZÁVĚREČNÁ ZPRÁVA
+    // ═══════════════════════════════════════════════════════════════════════════
     console.log(
-        "%c🖖 audioFirebaseFunctions V3.3", 
+        "%c🖖 audioFirebaseFunctions V3.4 - NO SRC LINKS", 
         "color: #00FF00; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00FF00;"
     );
     console.log(
@@ -399,13 +461,12 @@
         "color: #FFCC00; font-size: 12px;"
     );
     console.log(
+        "%c   🔒 HTTPS odkazy SE NEUKLÁDAJÍ do Cloudu (jen názvy)", 
+        "color: #00CCFF; font-size: 11px; font-weight: bold;"
+    );
+    console.log(
         "%c   Zapni logging: Ctrl+Shift+D → Firebase modul", 
         "color: #00CCFF; font-size: 11px;"
     );
 
-
-//ŠTĚNICE PRO TESTOVACÍ SOUBOR PRO test-vypadku-cloude-firestore.js \\
-
-
-
-})(); 
+})();
