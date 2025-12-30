@@ -884,8 +884,10 @@ duration: '08:57' },
  
 
 window.PLAYLIST_SOURCE_READY = true;
-window.showNotification('myPlaylist loading', 'success', 2550);
-window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! Signál odeslán. (${window.tracks.length} skladeb)`);
-window.showNotification('myPlaylist hotov', 'success', 2000); 
+window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks.length} skladeb)`);
+
+if (window.showNotification) {
+    window.showNotification('🖖 Hvězdná flotila připravena k warp skoku!', 'success', 2111);
+}
 
 
