@@ -1,4 +1,4 @@
-const VERSION_BVIS = "1.3.0"; // Verze správy tlačítek
+const VERSION_BVIS = "1.101.0"; // Verze správy tlačítek
 
 /**
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE
@@ -1503,5 +1503,6 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
 
 
