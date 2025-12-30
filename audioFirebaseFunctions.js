@@ -331,15 +331,49 @@
     };
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // 👁️ BUTTON VISIBILITY MANAGER
+    // 👁️ BUTTON VISIBILITY MANAGER (OPRAVENO - FLATTEN DATA)
     // ═══════════════════════════════════════════════════════════════════════════
+    
+    /**
+     * Pomocná funkce: Zploští hluboký objekt na max 3 úrovně
+     */
+    function flattenConfig(obj, maxDepth = 3, currentDepth = 0) {
+        if (currentDepth >= maxDepth || typeof obj !== 'object' || obj === null) {
+            return obj;
+        }
+        
+        const flattened = {};
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                const value = obj[key];
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                    flattened[key] = flattenConfig(value, maxDepth, currentDepth + 1);
+                } else {
+                    flattened[key] = value;
+                }
+            }
+        }
+        return flattened;
+    }
+    
     window.saveButtonVisibilityToFirestore = async function(config) {
         apiLog("💾 Ukládám konfiguraci tlačítek...");
         if (!await waitForDatabaseConnection()) return;
+        
         try {
+            // 🔥 FIX: Zploštíme config, aby nepřekročil 20 úrovní
+            const flatConfig = flattenConfig(config, 3);
+            
             await getFirestoreDB().collection('audioPlayerSettings').doc('buttonVisibilityConfig')
-                .set({ ...config, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-        } catch (e) { log("SAVE Visibility", "Chyba", e, 'error'); }
+                .set({ 
+                    ...flatConfig, 
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+                }, { merge: true });
+                
+            log("SAVE Visibility", "✅ Konfigurace uložena.", null, 'success');
+        } catch (e) { 
+            log("SAVE Visibility", "Chyba", e, 'error'); 
+        }
     };
 
     window.loadButtonVisibilityFromFirestore = async function() {
