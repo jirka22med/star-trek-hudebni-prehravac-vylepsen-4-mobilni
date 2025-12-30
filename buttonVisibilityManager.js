@@ -1,4 +1,4 @@
-const VERSION_BVIS = "1.101.0"; // Verze správy tlačítek
+const VERSION_BVIS = "1.101.1"; // Verze správy tlačítek
 
 /**  
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE 
@@ -176,7 +176,7 @@ const BUTTON_CONFIG = {
     'clearAllDataBtn': {
         name: '🗑️ Smazat vše z cloudu',
         category: 'Systém',
-        essential: true,
+        essential: false,
         description: 'Smaže všechna data z Firebase cloudu'
     },
     'mini-mode-float': {
@@ -304,25 +304,25 @@ const DEFAULT_VISIBILITY = {
     'next-button': true,
     'reset-button': true,
     'loop-button': true,
-    'shuffle-button': true,
+    'shuffle-button': false,
     'mute-button': true,
     'fullscreen-toggle': true,
-    'toggle-info-button': true,
-    'toggle-playlist-button': true,
+    'toggle-info-button': false,
+    'toggle-playlist-button': false,
     'reload-button': false,
-    'timer-button': true,
-    'favorites-button': true,
-    'playlist-manager-button': true,
-    'playlist-settings-button': true,
-    'auto-fade-button': true,
-    'timer-start': true,
-    'timer-stop': true,
+    'timer-button': false,
+    'favorites-button': false,
+    'playlist-manager-button': false,
+    'playlist-settings-button': false,
+    'auto-fade-button': false,
+    'timer-start': false,
+    'timer-stop': false,
     
 
-    'jirik-manual-opener-btn': true,
-    'perf-monitor-btn': true,
-    'voice-control-toggle': true,
-    'voice-commands-help': true,
+    'jirik-manual-opener-btn': false,
+    'perf-monitor-btn': false,
+    'voice-control-toggle': false,
+    'voice-commands-help': false,
     'clearAllDataBtn': false,
     
     'mini-mode-float': false,
@@ -1503,6 +1503,7 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
 
 
 
