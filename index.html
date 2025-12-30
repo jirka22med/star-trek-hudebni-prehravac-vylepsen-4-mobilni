@@ -109,6 +109,10 @@
  <button id="uprava-barev-moldar-system" title="zobrazit moldar">🎨 UI</button>           
  <button id="zobrazit-panel-hlasitosti" title="panel-hlasitost">🔊📋</button>      
          <button id="install-app-button" class="control-button" title="Instalovat aplikaci do systému">📥 INSTALOVAT</button>
+            
+   <button id="playlist-sync-button" title="playlist-syn">🔄📋</button>         
+            
+             
         </div>
        
           
@@ -167,7 +171,8 @@
         id="timer-input" 
         placeholder="Zadej minuty" 
         min="1"
-        value="15"/>
+        value="15"
+      />
       
       <!-- Ovládací tlačítka -->
       <button id="timer-start">▶️ Start</button>
@@ -177,16 +182,17 @@
   </div>
 </div>
         <!-- Mám nastaveno v buttonVisibilityManager.js >> pouze jen id popisky to mi skrývá celý tento blok až po <canvas id="waveform-canvas"></canvas> -->
-    <div class="keyboard-container">
+     <div class="keyboard-container">
     <div id="popisky"> 
         
-    </div>
-</div> 
+      </div>
+         
+       </div>
     <footer>
       &copy; <span id="currentYear"  ></span> Star Trek: Hudební Přehravač | Vytvořeno s láskou ke Star Treku
     </footer>
           
-  </div>  
+   </div>
     <!-- ============================================ -->
 <!-- KRITICKÉ SKRIPTY - NESMÍ MÍT DEFER! -->
 <!-- Musí se načíst SYNCHRONNĚ v tomto pořadí -->
@@ -195,42 +201,76 @@
 <!-- Firebase SDK - musí být PŘED audioFirebaseFunctions.js -->
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-<script src="fleet-registry.js"></script>
-<script src="audioFirebaseFunctions.js"></script>   
-<script src="DebugManager.js"></script>
-<script src="script.js"></script>
-<script src="backgroundManager.js"></script>
-<script src="myPlaylist.js"></script> 
-<script src="universalni-perfomens-monitor.js" defer></script>
-<!--<script src="jirkuv-hlidac.js" defer></script>-->  <!--HL konzoloví loger pro mobil & windows-->
-<script src="notificationFix.js" defer></script>
-<script src="autoFade.js" defer></script>   
-<script src="playlistSettings.js" defer></script>  
-<script src="playlistSync.js" defer></script>
-<script src="pokrocila-sprava-playlistu.js" defer></script>
-<script src="bluetoothDisconnectMonitor.js" defer></script>  
-<script src="buttonVisibilityManager.js" defer></script>
-<script src="vyhledavac-skladeb.js" defer></script>  
-<script src="sprava-rozhrani.js" defer></script>      
-<script src="miniPlayer.js" defer></script>  
-<script src="scrollbar.js" defer></script>  
-<script src="colorManager.js"></script>  
-<script src="timer-module.js"></script>   
-<script src="pwa-installer.js"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('browser-info').textContent = detectBrowser();
     
-    // Animace při načtení
-    const status = document.getElementById('browser-status');
-    status.style.transform = 'translateX(-300px)';
-    setTimeout(() => {
-        status.style.transform = 'translateX(0)';
-    }, 100);
-});
-</script>    
+     <script src="fleet-registry.js"></script>
+<!-- Hlavní přehrávač - inicializuje globální proměnné (window.tracks, window.favorites) -->
+ 
+  <script src="audioFirebaseFunctions.js"></script>   
+<script src="DebugManager.js"></script>
+<!-- Data playlistu - naplňuje window.tracks -->
+ <script src="script.js"></script>
+<script src="backgroundManager.js"></script>
+<!-- Cloud synchronizace - poskytuje API pro ostatní moduly -->
+ 
+    
+ <script src="myPlaylist.js"></script> 
+<!-- ============================================ -->
+<!-- FEATURE MODULY - MŮŽOU MÍT DEFER -->
+<!-- Tyto skripty se načtou paralelně a spustí po DOM ready -->
+<!-- ============================================ -->
+
+<!-- Performance monitoring -->
+  <script src="universalni-perfomens-monitor.js" defer></script>
+
+<!-- Debug wrapper -->
+   <script src="jirkuv-hlidac.js" defer></script>   
+
+ 
+    
+
+<!-- Notifikační systém -->
+<script src="notificationFix.js" defer></script>
+
+<!-- Automatické přechody mezi skladbami -->
+   <script src="autoFade.js" defer></script>   
+
+<!-- Hlasové ovládání -->
+ <!-- <script src="voiceControl.js" defer></script>  -->
+
+ <!-- <script src="pocitac.js" defer></script>  -->
+    
+ <!-- <script src="pomocnik-hlasoveho-ovladani-pro-mobil.js" defer></script> -->
+    
+<!-- Nastavení vzhledu playlistu -->
+<script src="playlistSettings.js" defer></script>  
+
+<script src="playlistSync.js" defer></script>
+
+<script src="pokrocila-sprava-playlistu.js" defer></script>
+
+<!-- Detekce odpojení Bluetooth a kabelových sluchátek/reproduktorů -->
+   <script src="bluetoothDisconnectMonitor.js" defer></script>   
+
+<!-- Správa viditelnosti tlačítek -->
+<script src="buttonVisibilityManager.js" defer></script>
+
+<!-- Vyhledávač skladeb -->
+  <script src="vyhledavac-skladeb.js" defer></script>  
+
+<!-- UI management - finalizace rozhraní (měl by být poslední) -->
+  <script src="sprava-rozhrani.js" defer></script>  
+    
+    <!-- Plovoucí okno mini Přehravače -->
+     <script src="miniPlayer.js" defer></script>
+   <!--  <script src="loadingScreen.js" defer></script>  -->
+   <!--   <script src="prednacitani-pisnicek.js"  ></script>   -->
+   <script src="scrollbar.js" defer></script>  
+    <script src="colorManager.js"></script>  
+   <script src="timer-module.js"></script>   
+<!--    <script src="audio-upravovac.js"  -->
+
+ <script src="pwa-installer.js"></script>
  
 </body>
 </html>
-
