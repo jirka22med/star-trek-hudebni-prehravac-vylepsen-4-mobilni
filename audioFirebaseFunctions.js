@@ -1,6 +1,6 @@
 // audioFirebaseFunctions.js
-// 🖖 STAR TREK AUDIO CORE - DEBUGMANAGER EDITION (V3.4 - NO SRC LINKS)
-// Verze: 3.4 (DebugManager Integration + Playlist bez HTTPS odkazů)
+// 🖖 STAR TREK AUDIO CORE - DEBUGMANAGER EDITION (V3.5 - CLEAN)
+// Verze: 3.5 (Button Visibility ODSTRANĚNO - Separace modulů)
 // ═══════════════════════════════════════════════════════════════════════════════
 // ✅ KOMPLETNÍ KONTROLA PROVEDENA - VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CLAUDE.AI
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -156,7 +156,7 @@
                 tracks: cleanTracks,
                 lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                 totalTracks: cleanTracks.length,
-                version: "3.4-NoSrcLinks"
+                version: "3.5-NoSrcLinks-Clean"
             });
 
             log("SAVE Playlist", "✅ ZÁPIS ÚSPĚŠNÝ! Názvy jsou v cloudu.", null, 'success');
@@ -179,17 +179,25 @@
 
         // 🔥 RACE CONDITION FIX: Čekáme na explicitní signál z myPlaylist.js
         let waitAttempts = 0;
+        const maxAttempts = 100; // Zvýšeno z 30 na 100 (10 sekund místo 2.4s)
+        const waitInterval = 100; // 100ms interval
+        
         log("LOAD Playlist", "⏳ Čekám na signál window.PLAYLIST_SOURCE_READY z myPlaylist.js...");
         
-        while (!window.PLAYLIST_SOURCE_READY && waitAttempts < 30) {
-            await new Promise(resolve => setTimeout(resolve, 100)); // Čekáme 100ms
+        while (!window.PLAYLIST_SOURCE_READY && waitAttempts < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, waitInterval));
             waitAttempts++;
+            
+            // Progress log každou sekundu (každých 10 pokusů)
+            if (waitAttempts % 10 === 0 && window.DebugManager?.isEnabled('firebase')) {
+                console.log(`⏳ Stále čekám... (${waitAttempts * waitInterval / 1000}s / ${maxAttempts * waitInterval / 1000}s)`);
+            }
         }
         
         if (window.PLAYLIST_SOURCE_READY) {
-            log("LOAD Playlist", `✅ myPlaylist.js je READY! (${window.originalTracks?.length || 0} skladeb)`, null, 'success');
+            log("LOAD Playlist", `✅ myPlaylist.js je READY! (${window.originalTracks?.length || 0} skladeb) - načetl se za ${waitAttempts * waitInterval}ms`, null, 'success');
         } else {
-            log("LOAD Playlist", "⚠️ TIMEOUT: myPlaylist.js se nenačetl včas! Pokračuji s rizikem...", null, 'error');
+            log("LOAD Playlist", `⚠️ TIMEOUT po ${maxAttempts * waitInterval / 1000} sekundách! myPlaylist.js se nenačetl. Pokračuji s rizikem...`, null, 'error');
         }
 
         const isReady = await waitForDatabaseConnection();
@@ -330,104 +338,7 @@
         } catch (e) { return null; }
     };
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 👁️ BUTTON VISIBILITY MANAGER (OPRAVENO - FLATTEN DATA)
-    // ═══════════════════════════════════════════════════════════════════════════
     
-    /**
-     * Pomocná funkce: Zploští hluboký objekt na max 3 úrovně
-     */
-    function flattenConfig(obj, maxDepth = 3, currentDepth = 0) {
-        if (currentDepth >= maxDepth || typeof obj !== 'object' || obj === null) {
-            return obj;
-        }
-        
-        const flattened = {};
-        for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                const value = obj[key];
-                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                    flattened[key] = flattenConfig(value, maxDepth, currentDepth + 1);
-                } else {
-                    flattened[key] = value;
-                }
-            }
-        }
-        return flattened;
-    }
-    
-    window.saveButtonVisibilityToFirestore = async function(config) {
-        apiLog("💾 Ukládám konfiguraci tlačítek...");
-        if (!await waitForDatabaseConnection()) return;
-        
-        try {
-            // 🔥 FIX: Zploštíme config, aby nepřekročil 20 úrovní
-            const flatConfig = flattenConfig(config, 3);
-            
-            await getFirestoreDB().collection('audioPlayerSettings').doc('buttonVisibilityConfig')
-                .set({ 
-                    ...flatConfig, 
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
-                }, { merge: true });
-                
-            log("SAVE Visibility", "✅ Konfigurace uložena.", null, 'success');
-        } catch (e) { 
-            log("SAVE Visibility", "Chyba", e, 'error'); 
-        }
-    };
-
-    window.loadButtonVisibilityFromFirestore = async function() {
-        if (!await waitForDatabaseConnection()) return null;
-        try {
-            const doc = await getFirestoreDB().collection('audioPlayerSettings').doc('buttonVisibilityConfig').get();
-            if (doc.exists) {
-                const { lastUpdated, version, deviceInfo, configHash, ...data } = doc.data();
-                return data;
-            }
-            return null;
-        } catch (e) { return null; }
-    };
-
-    window.syncButtonVisibilityWithFirestore = async function(localConfig = null) {
-        apiLog("🔄 Zahajuji synchronizaci tlačítek...");
-        if (!await waitForDatabaseConnection()) return { success: false };
-        
-        const cloudConfig = await window.loadButtonVisibilityFromFirestore();
-        
-        if (!localConfig) {
-            const stored = localStorage.getItem('buttonVisibility');
-            localConfig = stored ? JSON.parse(stored) : null;
-        }
-
-        if (!cloudConfig && localConfig) {
-            log("SYNC Visibility", "Cloud prázdný -> Nahrávám lokální.");
-            await window.saveButtonVisibilityToFirestore(localConfig);
-            return { action: 'uploaded_to_cloud', config: localConfig };
-        } else if (cloudConfig) {
-            log("SYNC Visibility", "Cloud nalezen -> Stahuji do lokálu.");
-            localStorage.setItem('buttonVisibility', JSON.stringify(cloudConfig));
-            return { action: 'downloaded_from_cloud', config: cloudConfig };
-        }
-        return { action: 'no_changes' };
-    };
-
-    window.autoSyncButtonVisibilityOnLoad = async function() {
-        await window.initializeFirebaseAppAudio();
-        const res = await window.syncButtonVisibilityWithFirestore();
-        if (res.config && window.ButtonVisibilityManager) {
-            window.ButtonVisibilityManager.setConfig(res.config);
-            log("AUTO SYNC", "Konfigurace aplikována do UI.");
-        }
-    };
-
-    // EXPORT PRO VISIBILITY MANAGER
-    window.ButtonVisibilityFirebaseManager = {
-        save: window.saveButtonVisibilityToFirestore,
-        load: window.loadButtonVisibilityFromFirestore,
-        sync: window.syncButtonVisibilityWithFirestore,
-        autoSync: window.autoSyncButtonVisibilityOnLoad
-    };
-
     // ═══════════════════════════════════════════════════════════════════════════
     // 🧹 ÚDRŽBA - FUNKČNÍ ATOMOVKA
     // ═══════════════════════════════════════════════════════════════════════════
@@ -447,22 +358,22 @@
             await database.collection("app_data").doc("main_playlist").delete();
             log("DANGER", "🔥 Dokument 'main_playlist' smazán.", null, 'success');
 
-            // 2. Smazání všech nastavení
-            const settingsDocs = ['favorites', 'mainSettings', 'playlistSettings', 'buttonVisibilityConfig'];
+            // 2. Smazání všech nastavení (BEZ button_visibility)
+            const settingsDocs = ['favorites', 'mainSettings', 'playlistSettings'];
             for (const docId of settingsDocs) {
                 await database.collection('audioPlayerSettings').doc(docId).delete();
                 log("DANGER", `🔥 Nastavení '${docId}' smazáno.`, null, 'success');
             }
 
-            log("DANGER", "✅ CLOUD JE ČISTÝ (Tabula Rasa).", null, 'success');
+            log("DANGER", "✅ AUDIO CLOUD JE ČISTÝ (Tabula Rasa).", null, 'success');
 
-            // 3. Totální čistka lokální paměti
-            localStorage.clear();
-            sessionStorage.clear();
-            log("DANGER", "🧹 Lokální mezipaměť vymazána.", null, 'success');
+            // 3. Totální čistka lokální paměti (jen audio části)
+            const keysToRemove = ['favorites', 'playerSettings', 'playlistSettings'];
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            log("DANGER", "🧹 Lokální audio cache vymazána.", null, 'success');
 
             if (window.showNotification) {
-                window.showNotification("Všechna data vymazána. Systém se restartuje...", "success");
+                window.showNotification("Audio data vymazána. Systém se restartuje...", "success");
             }
 
             // 4. Restart lodi
@@ -477,17 +388,10 @@
     };
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // 🚀 AUTOMATICKÝ START SYNCU
-    // ═══════════════════════════════════════════════════════════════════════════
-    if (typeof window !== 'undefined') {
-        setTimeout(() => window.autoSyncButtonVisibilityOnLoad(), 2000);
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════════
     // 📡 ZÁVĚREČNÁ ZPRÁVA
     // ═══════════════════════════════════════════════════════════════════════════
     console.log(
-        "%c🖖 audioFirebaseFunctions V3.4 - NO SRC LINKS", 
+        "%c🖖 audioFirebaseFunctions V3.5 - CLEAN (bez Button Visibility)", 
         "color: #00FF00; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00FF00;"
     );
     console.log(
@@ -497,6 +401,10 @@
     console.log(
         "%c   🔒 HTTPS odkazy SE NEUKLÁDAJÍ do Cloudu (jen názvy)", 
         "color: #00CCFF; font-size: 11px; font-weight: bold;"
+    );
+    console.log(
+        "%c   🧹 Button Visibility ODSTRANĚNO - separátní modul", 
+        "color: #FF6B35; font-size: 11px; font-weight: bold;"
     );
     console.log(
         "%c   Zapni logging: Ctrl+Shift+D → Firebase modul", 
