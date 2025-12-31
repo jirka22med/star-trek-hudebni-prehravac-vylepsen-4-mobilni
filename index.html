@@ -22,6 +22,8 @@
   
 </head>
 <body>
+   
+    
     <div id="browser-status" class="ukazatel">
     <span style="color: #ff00ff;"> </span> 
     <strong> </strong> 
@@ -193,78 +195,114 @@
     </footer>
           
    </div>
-    <!-- ============================================ -->
-<!-- KRITICKÉ SKRIPTY - NESMÍ MÍT DEFER! -->
-<!-- Musí se načíst SYNCHRONNĚ v tomto pořadí -->
+  <!-- ============================================ -->
+<!-- 🖖 STAR TREK AUDIO PLAYER - MODULE LOADING ORDER -->
+<!-- Verze: 3.5 - Optimalizované pořadí pro Firebase -->
 <!-- ============================================ -->
 
-<!-- Firebase SDK - musí být PŘED audioFirebaseFunctions.js -->
+<!-- ============================================ -->
+<!-- LAYER 0: PWA FLEET REGISTRY (MUSÍ BÝT PRVNÍ!) -->
+<!-- ============================================ -->
+<script src="fleet-registry.js"></script>
+
+<!-- ============================================ -->
+<!-- LAYER 1: FIREBASE CORE (SYNCHRONNÍ - BEZ DEFER!) -->
+<!-- Musí se načíst PŘED všemi Firebase moduly -->
+<!-- ============================================ -->
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
 
-    
-     <script src="fleet-registry.js"></script>
-<!-- Hlavní přehrávač - inicializuje globální proměnné (window.tracks, window.favorites) -->
- 
-  <script src="audioFirebaseFunctions.js"></script>   
+<!-- ============================================ -->
+<!-- LAYER 2: DEBUG & LOGGING (SYNCHRONNÍ - BEZ DEFER!) -->
+<!-- Musí být PŘED Firebase moduly, aby mohly logovat -->
+<!-- ============================================ -->
 <script src="DebugManager.js"></script>
-<!-- Data playlistu - naplňuje window.tracks -->
- <script src="script.js"></script>
+
+<!-- ============================================ -->
+<!-- LAYER 3: FIREBASE MODULY (SYNCHRONNÍ - BEZ DEFER!) -->
+<!-- Poskytují API pro ostatní moduly -->
+<!-- ============================================ -->
+<script src="audioFirebaseFunctions.js"></script>
+<script src="buttonVisibilityFirebase.js"></script>
+
+<!-- ============================================ -->
+<!-- LAYER 4: CORE AUDIO ENGINE (SYNCHRONNÍ - BEZ DEFER!) -->
+<!-- Inicializuje window.tracks, window.favorites, audio element -->
+<!-- ============================================ -->
+<script src="script.js"></script>
+
+<!-- ============================================ -->
+<!-- LAYER 5: DATA LAYER (SYNCHRONNÍ - BEZ DEFER!) -->
+<!-- KRITICKÉ: myPlaylist.js MUSÍ být BEZ DEFER! -->
+<!-- audioFirebaseFunctions.js čeká na window.PLAYLIST_SOURCE_READY -->
+<!-- ============================================ -->
+<script src="myPlaylist.js"></script>
+
+<!-- ============================================ -->
+<!-- LAYER 6: UI MANAGERS (SYNCHRONNÍ nebo DEFER podle závislostí) -->
+<!-- Správa pozadí, barev, notifikací -->
+<!-- ============================================ -->
 <script src="backgroundManager.js"></script>
-<!-- Cloud synchronizace - poskytuje API pro ostatní moduly -->
- 
-    
- <script src="myPlaylist.js"></script> 
-<!-- ============================================ -->
-<!-- FEATURE MODULY - MŮŽOU MÍT DEFER -->
-<!-- Tyto skripty se načtou paralelně a spustí po DOM ready -->
-<!-- ============================================ -->
-
-<!-- Performance monitoring -->
-  <script src="universalni-perfomens-monitor.js" defer></script>
-
- 
-
- 
-    
-
-<!-- Notifikační systém -->
+<script src="colorManager.js"></script>
 <script src="notificationFix.js" defer></script>
 
-<!-- Automatické přechody mezi skladbami -->
-   <script src="autoFade.js" defer></script>   
-
-<!-- Hlasové ovládání -->
-  
-    
-<!-- Nastavení vzhledu playlistu -->
-<script src="playlistSettings.js" defer></script>  
-
+<!-- ============================================ -->
+<!-- LAYER 7: SYNC & STORAGE (DEFER OK) -->
+<!-- Synchronizace playlistu s cloudem -->
+<!-- ============================================ -->
 <script src="playlistSync.js" defer></script>
 
+<!-- ============================================ -->
+<!-- LAYER 8: FEATURE MODULY (DEFER nebo ASYNC) -->
+<!-- Rozšiřující funkce - můžou se načíst paralelně -->
+<!-- ============================================ -->
+
+<!-- Pokročilá správa playlistu -->
 <script src="pokrocila-sprava-playlistu.js" defer></script>
 
-<!-- Detekce odpojení Bluetooth a kabelových sluchátek/reproduktorů -->
-   <script src="bluetoothDisconnectMonitor.js" defer></script>   
+<!-- Nastavení vzhledu playlistu -->
+<script src="playlistSettings.js" defer></script>
 
 <!-- Správa viditelnosti tlačítek -->
 <script src="buttonVisibilityManager.js" defer></script>
 
+<!-- Automatické přechody mezi skladbami -->
+<script src="autoFade.js" defer></script>
+
+<!-- Časovač -->
+<script src="timer-module.js" defer></script>
+
 <!-- Vyhledávač skladeb -->
-  <script src="vyhledavac-skladeb.js" defer></script>  
+<script src="vyhledavac-skladeb.js" defer></script>
 
-<!-- UI management - finalizace rozhraní (měl by být poslední) -->
-  <script src="sprava-rozhrani.js" defer></script>  
-    
-    <!-- Plovoucí okno mini Přehravače -->
-     <script src="miniPlayer.js" defer></script>
-  
-   <script src="scrollbar.js" defer></script>  
-    <script src="colorManager.js"></script>  
-   <script src="timer-module.js"></script>   
- 
+<!-- Mini přehrávač (plovoucí okno) -->
+<script src="miniPlayer.js" defer></script>
 
- <script src="pwa-installer.js"></script>
+<!-- ============================================ -->
+<!-- LAYER 9: MONITORING & DEBUG (DEFER nebo ASYNC) -->
+<!-- Monitorovací nástroje - nejnižší priorita -->
+<!-- ============================================ -->
+<script src="universalni-perfomens-monitor.js" defer></script>
+<script src="jirkuv-hlidac.js" async></script>
+<script src="bluetoothDisconnectMonitor.js" defer></script>
+
+<!-- ============================================ -->
+<!-- LAYER 10: UI FINALIZATION (DEFER - POSLEDNÍ!) -->
+<!-- Finální úpravy UI - musí být po všech feature modulech -->
+<!-- ============================================ -->
+<script src="sprava-rozhrani.js" defer></script>
+<script src="scrollbar.js" defer></script>
+
+<!-- ============================================ -->
+<!-- LAYER 11: PWA INSTALLER (SYNC nebo DEFER) -->
+<!-- Instalace PWA aplikace -->
+<!-- ============================================ -->
+<script src="pwa-installer.js"></script>
+
+<!-- ============================================ -->
+<!-- 🖖 KONEC NAČÍTÁNÍ MODULŮ -->
+<!-- Více admirál Jiřík & Admirál Claude.AI -->
+<!-- ============================================ -->
  
 </body>
 </html>
