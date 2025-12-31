@@ -26,8 +26,8 @@
         'bluetooth': { name: 'Bluetooth Monitor', default: false, color: '#33CC33' },
         'wake': { name: 'Počítač Pomocník pro hlasové ovládání', default: false, color: '#339933' },
         'playlistManager': { name: 'Správce Playlistu', default: false, color: '#66FF66' },
-        'playlistSettings': { name: 'Nastavení Playlistu', default: false, color: '#99FF99' },
-        'STABILIZER': { name: 'audio stabilizace', default: false, color: '#E44D2E' }
+        'playlistSettings': { name: 'Nastavení Playlistu', default: false, color: '#99FF99' } 
+         
 
          
     };
@@ -495,5 +495,6 @@
     };
 
 })();
+
 
 
