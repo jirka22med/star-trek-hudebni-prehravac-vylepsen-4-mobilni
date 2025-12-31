@@ -169,20 +169,38 @@ window.showNotification = function(message, type = 'info', duration = 3000) {
     setTimeout(() => DOM.notification.style.display = 'none', duration);
 };
 
-// --- Oprava URL adres ---
+// --- Oprava URL adres pro stabilní streamování ---
 function checkAndFixTracks(trackList) {
     let fixedUrls = 0;
     if (!Array.isArray(trackList)) return;
+
     trackList.forEach(track => {
-        if (track?.src?.includes("dl=0")) {
-            track.src = track.src.replace("dl=0", "dl=1");
-            fixedUrls++;
+        if (track?.src?.includes("dropbox.com")) {
+            // 1. Zachytíme staré parametry (dl=0, dl=1) nebo odkazy bez parametrů
+            if (track.src.includes("dl=0") || track.src.includes("dl=1") || !track.src.includes("raw=1")) {
+                
+                // 2. Odstraníme vše za otazníkem (včetně rlkey, st, atd. - Dropbox si je u scl/fi odkazů pamatuje i bez toho)
+                // Nebo bezpečněji: jen vyměníme dl=X za raw=1
+                let newSrc = track.src.replace(/dl=[01]/, "raw=1");
+                
+                // Pokud tam raw=1 pořád není, přidáme ho
+                if (!newSrc.includes("raw=1")) {
+                    newSrc += (newSrc.includes("?") ? "&" : "?") + "raw=1";
+                }
+
+                if (track.src !== newSrc) {
+                    track.src = newSrc;
+                    fixedUrls++;
+                }
+            }
         }
     });
+
     if (fixedUrls > 0) {
-        window.DebugManager?.log('main', 'checkAndFixTracks: Opraveno URL adres:', fixedUrls); // tady je toto 
+        window.DebugManager?.log('main', 'checkAndFixTracks: Optimalizováno pro RAW streamování:', fixedUrls);
     }
 }
+
 
 // ════════════════════════════════════════════════════════════════════════════════
 // 🔧 OPRAVA loadAudioData() PRO NOVÝ FIRESTORE SYSTÉM
@@ -562,12 +580,8 @@ item.appendChild(trackNumber);
 // ============================================================================
 // ▶️ playTrack (S INTEGRACÍ STREAM GUARDU)
 // ============================================================================
-function playTrack(originalIndex) {
-    // 🛡️ [NOVÉ] AKTIVACE INTERACTION SHIELDU (2s COOLDOWN)
+async function playTrack(originalIndex) {
     applyInteractionCooldown();
-
-    // 🛡️ DŮLEŽITÉ: Při změně skladby resetujeme Recovery počítadla (StreamGuard)
-     
 
     window.audioState.isLoadingTrack = true;
     window.dispatchEvent(new Event('track-loading-start'));
@@ -581,7 +595,6 @@ function playTrack(originalIndex) {
     
     if (!DOM.audioSource || !DOM.trackTitle || !DOM.audioPlayer) return;
     
-    // Použití cache preloaderu
     let audioUrl = track.src;
     if (window.audioPreloader?.isCached(track.src)) {
         const cachedUrl = window.audioPreloader.createObjectURL(track.src);
@@ -591,47 +604,60 @@ function playTrack(originalIndex) {
         }
     }
     
+    // 🛠️ OPRAVA 1: Před načtením nové skladby zajistíme čistý stav
+    DOM.audioPlayer.pause(); 
     DOM.audioSource.src = audioUrl;
-DOM.trackTitle.textContent = track.title;
-// Notifikace s časovým posunem pro stabilitu
-setTimeout(() => {
-    window.showNotification('▶️ Hraje: ' + track.title, 'play', 2034);
-}, 2500);
+    DOM.trackTitle.textContent = track.title;
+
+    setTimeout(() => {
+        window.showNotification('▶️ Hraje: ' + track.title, 'play', 2034);
+    }, 2500);
 
     DOM.audioPlayer.load();
     
-    DOM.audioPlayer.play().then(async () => {
-        window.audioState.isLoadingTrack = false;
-        window.audioState.isPlaying = true;
-        window.audioState.canPreload = true;
+    // 🛠️ OPRAVA 2: Použijeme try/catch uvnitř asynchronního volání
+    try {
+        const playPromise = DOM.audioPlayer.play();
         
-        window.dispatchEvent(new CustomEvent('track-loaded-success', {
-            detail: { src: track.src, title: track.title }
-        }));
-       
-        window.DebugManager?.log('main', "playTrack: Přehrávání:", track.title);
-        updateButtonActiveStates(true);
-        updateActiveTrackVisuals();
-        
-        // Spuštění preloaderu pro další skladby
-        if (window.audioPreloader) {
-            window.preloadTracks(originalTracks, currentTrackIndex, isShuffled, shuffledIndices)
-                .catch(err => console.warn('⚠️ Preload error:', err));
+        if (playPromise !== undefined) {
+            await playPromise;
+            
+            // Sem se kód dostane jen pokud play() úspěšně začal
+            window.audioState.isLoadingTrack = false;
+            window.audioState.isPlaying = true;
+            window.audioState.canPreload = true;
+            
+            window.dispatchEvent(new CustomEvent('track-loaded-success', {
+                detail: { src: track.src, title: track.title }
+            }));
+           
+            window.DebugManager?.log('main', "playTrack: Přehrávání:", track.title);
+            updateButtonActiveStates(true);
+            updateActiveTrackVisuals();
+            
+            if (window.audioPreloader) {
+                window.preloadTracks(originalTracks, currentTrackIndex, isShuffled, shuffledIndices)
+                    .catch(err => console.warn('⚠️ Preload error:', err));
+            }
+            
+            await debounceSaveAudioData();
         }
-        
-        await debounceSaveAudioData();
-    }).catch(error => {
+    } catch (error) {
+        // 🛠️ OPRAVA 3: Tiché zachycení AbortError
         window.audioState.isLoadingTrack = false;
         window.audioState.canPreload = false;
         
-        console.error('playTrack: Chyba při spuštění:', error);
-        
-        // 🛡️ Pokud se nepodaří spustit, zkusíme recovery
-        if (error.name !== 'AbortError') {
-             StreamGuard.attemptRecovery('START_FAIL');
+        if (error.name === 'AbortError') {
+            // Tuto chybu ignorujeme, protože znamená jen, že přišel nový požadavek
+            window.DebugManager?.log('main', 'playTrack: Požadavek přerušen (přeskočeno)');
+        } else {
+            // Jen skutečné chyby logujeme jako error
+            console.error('playTrack: Skutečná chyba při spuštění:', error);
+            StreamGuard.attemptRecovery('START_FAIL');
         }
-    });
+    }
 }
+
 
 function updateActiveTrackVisuals() {
     if (!DOM.playlist || !originalTracks?.length) return;
