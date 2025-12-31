@@ -362,8 +362,8 @@ let buttonVisibility = JSON.parse(localStorage.getItem('buttonVisibility') || JS
 
 // Základní funkce pro ukládání
 function saveButtonVisibility() {
-    // localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility));
-    // localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString());
+     localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility)); //aktivovano z důvodu že gemini.ai udělal kompresi 
+     localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString()); //v audiofirestore.js ohleně tohoto modulu
     
     // Logování uložení s tvojí verzí
     window.DebugManager?.log('buttons', `ButtonVisibility v${VERSION_BVIS}: Konfigurace uložena:`, buttonVisibility);
@@ -1503,6 +1503,7 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
 
 
 
