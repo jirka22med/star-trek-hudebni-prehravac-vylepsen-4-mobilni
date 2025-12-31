@@ -1,4 +1,4 @@
-const VERSION_BVIS = "100.101.100"; // Verze správy tlačítek
+const VERSION_BVIS = "1.101.1"; // Verze správy tlačítek
 
 /**  
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE 
@@ -17,8 +17,283 @@ let isVisibilityManagerInitialized = false;
 
 // --- Kompletní mapa všech tlačítek ---
 const BUTTON_CONFIG = {
-    //zálohu obsahu mám v brackets editoru\\ 
+    // Hlavní ovládání přehrávače
+    'play-button': {
+        name: '▶️ Přehrát',
+        category: 'Přehrávání',
+        essential: true,
+        description: 'Spustí přehrávání skladby'
+    },
+    'pause-button': {
+        name: '⏸️ Pauza', 
+        category: 'Přehrávání',
+        essential: true,
+        description: 'Pozastaví přehrávání'
+    },
+    'prev-button': {
+        name: '⏮️ Předchozí',
+        category: 'Přehrávání',
+        essential: false,
+        description: 'Přehraje předchozí skladbu'
+    },
+    'next-button': {
+        name: '⏭️ Další',
+        category: 'Přehrávání', 
+        essential: false,
+        description: 'Přehraje další skladbu'
+    },
+    'reset-button': {
+        name: '↻ Reset',
+        category: 'Přehrávání',
+        essential: false,
+        description: 'Restartuje aktuální skladbu'
+    },
+    'loop-button': {
+        name: '🔁 Opakování',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Zapne/vypne opakování skladby'
+    },
+    'shuffle-button': {
+        name: '🔀 Náhodně',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Zapne/vypne náhodné přehrávání'
+    },
+    'mute-button': {
+        name: '🔇 Ztlumit',
+        category: 'Zvuk',
+        essential: false,
+        description: 'Ztlumí/obnoví zvuk'
+    },
+    'fullscreen-toggle': {
+        name: '🖥️ Celá obrazovka',
+        category: 'Zobrazení',
+        essential: false,
+        description: 'Přepne do/z celé obrazovky'
+    },
+    'toggle-info-button': {
+        name: 'ℹ️ Informace',
+        category: 'Zobrazení',
+        essential: false,
+        description: 'Zobrazí/skryje informace'
+    },
+    'toggle-playlist-button': {
+        name: '📋 Playlist',
+        category: 'Zobrazení',
+        essential: false,
+        description: 'Zobrazí/skryje playlist'
+    },
+    'reload-button': {
+        name: '🔄 Reload',
+        category: 'Systém',
+        essential: false,
+        description: 'Znovu načte stránku'
+    },
+    'timer-button': {
+        name: '⏰ Časovač',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Otevře nastavení časovače'
+    },
+    'favorites-button': {
+        name: '⭐ Oblíbené',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Zobrazí oblíbené skladby'
+    },
+    'playlist-manager-button': {
+        name: '🎛️ Správa playlistu',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Otevře pokročilou správu playlistu'
+    },
+    'playlist-settings-button': {
+        name: '⚙️ Nastavení playlistu',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Otevře nastavení vzhledu a chování playlistu'
+    },
+    'auto-fade-button': {
+        name: '🔄 Auto-fade',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Zapne/vypne plynulé přechody mezi skladbami'
+    },
+    'timer-start': {
+        name: '▶️ Start časovač',
+        category: 'Časovač',
+        essential: false,
+        description: 'Spustí časovač'
+    },
+    'timer-stop': {
+        name: '⏹️ Stop časovač',
+        category: 'Časovač',
+        essential: false,
+        description: 'Zastaví časovač'
+    },
+    
 
+     
+    'jirik-manual-opener-btn': {
+        name: '📋 Console Logger',
+        category: 'Debug',
+        essential: false,
+        description: 'Otevře pokročilý konzolový logger pro debugging'
+    },
+    'perf-monitor-btn': {
+        name: '🔍📊 perf-monitor-btn',
+        category: 'Monitor výkonu',
+        essential: false,
+        description: 'Zapne se monitorování výkonu přehravače'
+    },
+    'voice-control-toggle': {
+        name: '🎤 voice-control-toggle',
+        category: 'Hlasové ovládání',
+        essential: false,
+        description: 'Hlasové ovládání'
+    },
+    'zobrazeni-manualu': {
+        name: '📋 voice-commands-help',
+        category: 'Hlasové ovládání',
+        essential: false,
+        description: 'Hlasové ovládání manual'
+    },
+    'voice-commands-help': {
+        name: 'Manuální hlasové ovládání',
+        category: 'Hlasové ovládání',
+        essential: false,
+        description: 'Hlasové ovládání Star Trek Hudebního Přehravače'
+    },
+    
+    'wake-word-toggle': {
+    name: 'Hlídač hlasového ovládání',
+        category: 'Hlasové ovládání',
+        essential: false,
+        description: 'hlídá hlasové ovládání a ovládá se příkazem počítači nebo bender'
+        },
+    
+    'clearAllDataBtn': {
+        name: '🗑️ Smazat vše z cloudu',
+        category: 'Systém',
+        essential: false,
+        description: 'Smaže všechna data z Firebase cloudu'
+    },
+    'mini-mode-float': {
+        name: '🖼️ přepne na Float',
+        category: 'MiniPlayer',
+        essential: false,
+        description: 'přepne na Float'
+    },
+    'mini-mode-pip': {
+        name: '📺 přepne na plovoucí okno',
+        category: 'MiniPlayer',
+        essential: false,
+        description: 'přepne na plovoucí okno'
+    },
+    'mini-mode-popup': {
+        name: '🪟 otevře nové okno',
+        category: 'MiniPlayer',
+        essential: false,
+        description: 'otevře nové okno prohlížeče'
+    },
+    
+    'toggle-mini-player': {
+    name: '🖼️ okno mini přehravače',
+        category: 'MiniPlayer',
+        essential: false,
+        description: 'otevírá mini přehravač'
+        },
+    
+    'playlist-sync-button': {
+        name: 'Synchronizace',
+        category: 'Systém',
+        essential: false,
+        description: 'manuální kontrola nad synchronizací playlistu'
+    },
+    'openMissionLog': {
+    name: 'Archivní záznam mise',
+    category: 'Systém',
+    essential: false,
+    description: 'Otevře detailní LCARS dokumentaci projektu s technickými daty, verzemi a logem mise. Záznam vytvořen ve spolupráci s admirálem Chatbotem a flotilovým AI Claudem.'
+},
+    
+    'nazev-prehravace': {
+        name: '🎵 Název Prěhravače',
+        category: 'Informace Přehravače',
+        essential: true,
+        description: 'Hlavní nadpis přehrávače (STAR TREK: HUDEBNÍ PŘEHRÁVAČ)'
+    },
+    'progres-bar-time-part': {
+        name: '⏱️ Progress bar + časovač',
+        category: 'Informace Přehravače',
+        essential: true,
+        description: 'Kompletní panel s časovým ukazatelem a progress barem skladby'
+    },
+    
+    'search-container': {
+    name: 'Star Trek vyhledávač',
+        category: 'Informace Přehravače',
+        essential: true,
+        description: 'Kompletní vyhledávání ve Star Trek Hudebním Přehravači'
+        },
+    
+    'volume-sider-nastaveni-hlasitosti': {
+    name: 'Nastavení hlasitosti',
+        category: 'Informace Přehravače',
+        essential: true,
+        description: 'Nastavování Hlasitosti v Star Trek Hudebním Přehravači'
+        },    
+    
+   'trackTitle': {
+   name: 'název skladby',
+        category: 'Informace Přehravače',
+        essential: true,
+        description: 'Vtéto části se zobrazoví názvi písniček ve Star Trek Hudebním Přehravači'
+        },    
+    
+   'digitalni-hodini-datum': {
+    name: 'Digitální hodiny z aktuálním datumem',
+        category: 'Informace Přehravače',
+        essential: true,
+        description: 'Zobrazuje aktuální digitální čas a datum'
+        },   
+    
+   'debug-manager-button': {
+    name: 'Diagnostika',
+        category: 'Debug',
+        essential: false,
+        description: 'Diagnostika spouští logování všech modulu pomocí moldare rozhraní'
+        },    
+     
+    'bluetooth-monitor-toggle': {
+    name: 'Bluetooth monitor toggle false and true',
+        category: 'Monitor výkonu',
+        essential: false,
+        description: 'zapíná a vipíná logování'
+        },
+    
+     'uprava-barev-moldar-system': {
+      name: 'uprava barev UI',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'pokročilí moldar systém pro přebarvení UI track title'
+        },
+    
+    'zobrazit-panel-hlasitosti': {
+    name: 'zobrazit-panel-hlasitosti',
+        category: 'Zobrazení',
+        essential: false,
+        description: 'pokročilí moldar systém pro přebarvení UI track title'
+        },    
+'install-app-button': {
+    name: 'Instalace',
+        category: 'Systém',
+        essential: false,
+        description: 'Instalování PWA aplikace'
+        },   
+
+   
 };
 
 // --- Defaultní viditelnost tlačítek ---
@@ -87,8 +362,8 @@ let buttonVisibility = JSON.parse(localStorage.getItem('buttonVisibility') || JS
 
 // Základní funkce pro ukládání
 function saveButtonVisibility() {
-     //localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility)); //aktivovano z důvodu že gemini.ai udělal kompresi 
-     //localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString()); //v audiofirestore.js ohleně tohoto modulu
+     localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility)); //aktivovano z důvodu že gemini.ai udělal kompresi 
+     localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString()); //v audiofirestore.js ohleně tohoto modulu
     
     // Logování uložení s tvojí verzí
     window.DebugManager?.log('buttons', `ButtonVisibility v${VERSION_BVIS}: Konfigurace uložena:`, buttonVisibility);
@@ -1228,4 +1503,3 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
-
