@@ -1,6 +1,6 @@
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "599.999.101", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "599.999.101.1", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -28,7 +28,7 @@ const FLEET_CONFIG = {
         './myPlaylist.js',
         './pwa-installer.js',
         './fleet-registry.js',
-        
+        './stream_stabilizer.js',
         // --- FEATURE JS MODULY (POUZE AKTIVNÍ) ---
         './universalni-perfomens-monitor.js',
         // './jirkuv-hlidac.js',
