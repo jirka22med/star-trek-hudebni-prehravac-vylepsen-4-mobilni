@@ -43,7 +43,7 @@ function applyInteractionCooldown() {
     // 📢 ZPĚTNÁ VAZBA PRO ADMIRÁLA
     const durationSec = (SHIELD_DURATION / 1000).toFixed(1);
     window.showNotification(`🛡️ Štíty nahoře na ${durationSec}s: Stabilizuji tok dat...`, "warn", SHIELD_DURATION);
-    window.DebugManager?.log('main', `🛡️ INTERACTION SHIELD: Aktivován na ${SHIELD_DURATION}ms.`);
+     
 
     setTimeout(() => {
         window.audioState.isLoadingTrack = false;
@@ -109,78 +109,16 @@ const DOM = {
     favoritesMenu: document.createElement('div')
 };
 
-
-// ═══════════════════════════════════════════════════════════════
-// 🛡️ STREAM GUARD - PROTOKOL ZÁCHRANY DAT (NEW MODULE)
-// ═══════════════════════════════════════════════════════════════
-// Tento objekt řídí stabilitu přehrávání při výpadcích sítě.
-// Místo okamžitého přeskočení skladby se pokusí 3x o reconnect.
-
-const StreamGuard = {
-    retryCount: 0,          // Počítadlo pokusů o záchranu
-    maxRetries: 3,          // Maximální počet pokusů
-    recoveryTimeout: null,  // Časovač pro prodlevu mezi pokusy
-
-    /**
-     * Resetuje počítadla při úspěšném načtení nové skladby
-     */
-    reset: function() {
-        this.retryCount = 0;
-        window.audioState.isRecovering = false;
-        window.audioState.lastKnownTime = 0;
-        if (this.recoveryTimeout) clearTimeout(this.recoveryTimeout);
-        window.DebugManager?.log('StreamGuard', "🟢 Systém stabilizován. Počítadla vynulována.");
-    },
-
-    /**
-     * Hlavní procedura pro záchranu streamu
-     * Volá se při 'error', 'stalled' nebo dlouhém 'waiting'
-     */
-    attemptRecovery: function(errorCode = 'UNKNOWN') {
-        // Pokud už překročíme limit pokusů, kapitulujeme
-        if (this.retryCount >= this.maxRetries) {
-            window.DebugManager?.log('StreamGuard', `🔴 KRITICKÉ SELHÁNÍ. Pokusy vyčerpány (${this.retryCount}/${this.maxRetries}). Skáču dál.`);
-            window.showNotification("Spojení ztraceno. Přeskakuji poškozený sektor.", "error", 4000);
-            this.reset();
-            playNextTrack(); // Skok na další
-            return;
-        }
-
-        this.retryCount++;
-        window.audioState.isRecovering = true;
-        
-        // Uložíme aktuální čas, abychom navázali tam, kde to spadlo
-        if (DOM.audioPlayer.currentTime > 0) {
-            window.audioState.lastKnownTime = DOM.audioPlayer.currentTime;
-        }
-
-        window.DebugManager?.log('StreamGuard', `⚠️ ZTRÁTA STREAMU (Chyba: ${errorCode}). Zahajuji Recovery Protokol ${this.retryCount}/${this.maxRetries}. Čas: ${window.audioState.lastKnownTime.toFixed(2)}s`);
-        window.showNotification(`Obnovuji spojení... (${this.retryCount}/${this.maxRetries}) 📡`, "warn", 2000);
-
-        // Měkký restart streamu
-        if (this.recoveryTimeout) clearTimeout(this.recoveryTimeout);
-        
-        this.recoveryTimeout = setTimeout(() => {
-            const currentSrc = DOM.audioSource.src;
-            
-            // Trik pro vynucení nového síťového požadavku - znovu načteme src
-            DOM.audioSource.src = ""; 
-            DOM.audioSource.src = currentSrc;
-            DOM.audioPlayer.load();
-            
-            // Nastavíme čas zpět a zkusíme play
-            DOM.audioPlayer.currentTime = window.audioState.lastKnownTime;
-            
-            DOM.audioPlayer.play().then(() => {
-                window.DebugManager?.log('StreamGuard', "✅ Recovery úspěšné. Stream obnoven.");
-                // Neresetujeme counter hned, počkáme, jestli to nespadne znovu za sekundu
-            }).catch(e => {
-                window.DebugManager?.log('StreamGuard', "❌ Recovery Play selhal: " + e);
-            });
-
-        }, 1500); // Počkáme 1.5 sekundy před pokusem (buffer time)
+// ═══════════════════════════════════════════════════════════════════
+// 🛡️ INTEGRACE SE STREAM STABILIZEREM (nahrazuje StreamGuard)
+// ═══════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+    // Registrace audio elementu pro monitoring
+    if (DOM.audioPlayer && window.StreamStabilizer_RegisterAudio) {
+        window.StreamStabilizer_RegisterAudio(DOM.audioPlayer);
     }
-};
+});
+ 
 
 // ═══════════════════════════════════════════════════════════════
 // --- Globální proměnné a logika playlistu ---
@@ -206,17 +144,16 @@ if (!Array.isArray(window.tracks)) {
     window.tracks = []; 
 }
 
-// --- Notifikace ---
+/// --- Notifikace ---
 window.showNotification = function(message, type = 'info', duration = 3000) {
-    window.DebugManager?.log('main', `[${type.toUpperCase()}] ${message}`);
+    window.DebugManager?.log('main', '[' + type.toUpperCase() + '] ' + message);
     
     if (!DOM.notification && document.getElementById('notification')) {
          DOM.notification = document.getElementById('notification');
     }
-
     if (!DOM.notification) {
         if (window.DebugManager?.isEnabled('main')) {
-            console.warn(`showNotification: #notification nenalezen. Zpráva: ${message}`);
+            console.warn('showNotification: #notification nenalezen. Zpráva:', message);
         }
         return;
     }
@@ -243,7 +180,7 @@ function checkAndFixTracks(trackList) {
         }
     });
     if (fixedUrls > 0) {
-        window.DebugManager?.log('main', `checkAndFixTracks: Opraveno ${fixedUrls} URL adres.`);
+        window.DebugManager?.log('main', 'checkAndFixTracks: Opraveno URL adres:', fixedUrls); // tady je toto 
     }
 }
 
@@ -268,17 +205,16 @@ async function loadAudioData() {
     currentPlaylist = [...originalTracks];
     
     let firestoreLoaded = { playlist: false, favorites: false, settings: false };
-
-    try {
-        // ═══════════════════════════════════════════════════════════════════════
-        // 📥 NAČTENÍ Z CLOUDU (nyní už obsahuje spárované src odkazy!)
-        // ═══════════════════════════════════════════════════════════════════════
-        const loadedPlaylist = await window.loadPlaylistFromFirestore?.();
+try {
+    // ═══════════════════════════════════════════════════════════════════════
+    // 📥 NAČTENÍ Z CLOUDU (nyní už obsahuje spárované src odkazy!)
+    // ═══════════════════════════════════════════════════════════════════════
+    const loadedPlaylist = await window.loadPlaylistFromFirestore?.();
+    
+    if (loadedPlaylist?.length > 0) {
+        const cloudCount = loadedPlaylist.length;
         
-        if (loadedPlaylist?.length > 0) {
-            const cloudCount = loadedPlaylist.length;
-            
-            window.DebugManager?.log('main', `📊 Cloud: ${cloudCount} skladeb | Lokál: ${originalFileCount} skladeb`);
+        window.DebugManager?.log('main', '📊 Cloud:', cloudCount, 'skladeb | Lokál:', originalFileCount, 'skladeb');
             
             if (originalFileCount === 0) {
                 // ✅ Lokál prázdný → Beru Cloud (už spárovaný)
@@ -364,23 +300,23 @@ async function loadAudioData() {
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // ✅ FINALIZACE
-    // ═══════════════════════════════════════════════════════════════════════════
-    originalTracks = window.tracks; // ✅ Aktualizujeme lokální proměnnou
-    currentPlaylist = [...originalTracks];
-    
-    window.DebugManager?.log('main', `🎵 HOTOVO: ${window.tracks.length} skladeb načteno.`);
-    
-    // Ověření, že src odkazy jsou OK
-    if (window.tracks.length > 0) {
-        const firstTrack = window.tracks[0];
-        if (!firstTrack.src || !firstTrack.src.includes('http')) {
-            window.DebugManager?.log('main', "⚠️ VAROVÁNÍ: První skladba nemá platný src odkaz!", firstTrack, 'error');
-            window.showNotification("Chyba: Odkazy na skladby chybí!", "error");
-        } else {
-            window.DebugManager?.log('main', `✅ Ověřeno: Skladby mají platné src odkazy (např. ${firstTrack.src.substring(0, 50)}...)`);
-        }
+// ✅ FINALIZACE
+// ═══════════════════════════════════════════════════════════════════════════
+originalTracks = window.tracks; // ✅ Aktualizujeme lokální proměnnou
+currentPlaylist = [...originalTracks];
+
+window.DebugManager?.log('main', '🎵 HOTOVO: skladeb načteno:', window.tracks.length);
+
+// Ověření, že src odkazy jsou OK
+if (window.tracks.length > 0) {
+    const firstTrack = window.tracks[0];
+    if (!firstTrack.src || !firstTrack.src.includes('http')) {
+        window.DebugManager?.log('main', "⚠️ VAROVÁNÍ: První skladba nemá platný src odkaz!", firstTrack, 'error');
+        window.showNotification("Chyba: Odkazy na skladby chybí!", "error");
+    } else {
+        window.DebugManager?.log('main', '✅ Ověřeno: Skladby mají platné src odkazy (např.', firstTrack.src.substring(0, 50) + '...)');
     }
+}
     
     if (typeof populatePlaylist === 'function') populatePlaylist(window.tracks);
     if (typeof updateActiveTrackVisuals === 'function') updateActiveTrackVisuals();
@@ -578,9 +514,9 @@ function populatePlaylist(listToDisplay) {
             }
             
             const trackNumber = document.createElement('span');
-            trackNumber.className = 'track-number';
-            trackNumber.textContent = `${index + 1}.`;
-            item.appendChild(trackNumber);
+trackNumber.className = 'track-number';
+trackNumber.textContent = (index + 1) + '.';
+item.appendChild(trackNumber);
             
             const titleSpan = document.createElement('span');
             titleSpan.className = 'track-title';
@@ -631,7 +567,7 @@ function playTrack(originalIndex) {
     applyInteractionCooldown();
 
     // 🛡️ DŮLEŽITÉ: Při změně skladby resetujeme Recovery počítadla (StreamGuard)
-    StreamGuard.reset();
+     
 
     window.audioState.isLoadingTrack = true;
     window.dispatchEvent(new Event('track-loading-start'));
@@ -656,12 +592,11 @@ function playTrack(originalIndex) {
     }
     
     DOM.audioSource.src = audioUrl;
-    DOM.trackTitle.textContent = track.title;
-
-    // Notifikace s časovým posunem pro stabilitu
-    setTimeout(() => {
-        window.showNotification(`▶️ Hraje: ${track.title}`, 'play', 2034);
-    }, 2500);
+DOM.trackTitle.textContent = track.title;
+// Notifikace s časovým posunem pro stabilitu
+setTimeout(() => {
+    window.showNotification('▶️ Hraje: ' + track.title, 'play', 2034);
+}, 2500);
 
     DOM.audioPlayer.load();
     
@@ -824,8 +759,7 @@ DOM.loopButton?.addEventListener('click', async () => {
     // Komunikační protokol pro uživatele
     window.showNotification(isLooping ? 'Opakování zapnuto' : 'Opakování vypnuto', 'info', 2028);
 
-    // Systémové hlášení pro DebugManager
-    window.DebugManager?.log('main', `🔄 Režim LOOP změněn na: ${isLooping ? 'ZAPNUTO' : 'VYPNUTO'}`);
+     
 
     // Uložení stavu do Cloudu a lokální paměti
     await debounceSaveAudioData();
@@ -953,26 +887,19 @@ DOM.loopButton?.addEventListener('click', async () => {
             }
         });
 
-        // 4. Hlavní Error Handler - Nyní napojen na Recovery
-        DOM.audioPlayer.addEventListener('error', (e) => {
-            const error = e.target.error;
-            const code = error ? error.code : 'UNKNOWN';
-            
-            // Ignorovat chybu, pokud ji už řešíme nebo pokud uživatel stopnul přehrávání
-            if (window.audioState.isLoadingTrack) return;
-
-            window.DebugManager?.log('main', `⚠️ Chyba přehrávače: ${code}`);
-            
-            // Spustit záchranný protokol
-            StreamGuard.attemptRecovery(`ERROR_${code}`);
-        });
+      // 4. Hlavní Error Handler - Stream Stabilizer převzal kontrolu
+DOM.audioPlayer.addEventListener('error', (e) => {
+    // Stabilizer už to řeší automaticky přes event listener
+    // Zde jen logujeme pro debug
+    window.DebugManager?.log('main', '⚠️ Error event - Stabilizer aktivován');
+});
 
         // 5. Konec skladby (Looping vs Next)
        // 5. Konec skladby (Looping vs Next) - ARCHITECT EDITION (ZERO COMPRESSION)
 DOM.audioPlayer.addEventListener('ended', async () => {
     // ✅ OPRAVENO: Název funkce bez překlepu
     updateButtonActiveStates(false);
-    StreamGuard.reset();
+     
 
     if (DOM.audioPlayer.loop) {
         // Smyčka: tvůj původní funkční reload
@@ -1154,9 +1081,9 @@ function adjustPlaylistHeight(isFullscreen = false) {
     }
     
     DOM.playlist.style.maxHeight = newHeight;
-    window.DebugManager?.log('main', `📏 Výška playlistu nastavena na: ${newHeight} (Fullscreen: ${isFullscreen})`);
+    window.DebugManager?.log('main', '📏 Výška playlistu nastavena na:', newHeight, '(Fullscreen:', isFullscreen + ')');
 }
-
+    
 function restorePreviousSettings() {
     const isCurrentlyFullscreen = document.fullscreenElement !== null;
     adjustPlaylistHeight(isCurrentlyFullscreen);
@@ -1256,7 +1183,7 @@ function monitorPerformance() {
     if (now - lastFpsUpdate > 5000) {
         const fps = Math.round((frameCount / 5) * 10) / 10;
         const perfEl = document.getElementById('perfMode');
-        if (perfEl) perfEl.textContent = `⚡ Stabilita  | ${fps} FPS`;
+        if (perfEl) perfEl.textContent = '⚡ Stabilita  | ' + fps + ' FPS';
         frameCount = 0;
         lastFpsUpdate = now;
     }
@@ -1270,5 +1197,5 @@ window.playNextTrack = playNextTrack;
 window.playPrevTrack = playPrevTrack;
 window.populatePlaylist = populatePlaylist; 
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
-
+    
 })();
