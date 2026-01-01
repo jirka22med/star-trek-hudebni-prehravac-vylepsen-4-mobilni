@@ -46,7 +46,7 @@ const ASSETS_TO_CACHE = [
   './timer-module.js',
   './playlist-height.js',
  './baner-filter.js',  
-  './stream_stabilizer.js', 
+ // './stream_stabilizer.js', 
   // --- FIREBASE SDK (absolutní URL) ---
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js'
