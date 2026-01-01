@@ -45,7 +45,7 @@ const FLEET_CONFIG = {
         './scrollbar.js',
         './colorManager.js',
         './timer-module.js',
-        
+        './playlist-height.js',
         
         // --- FIREBASE SDK (absolutní URL) ---
         'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
