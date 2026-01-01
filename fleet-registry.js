@@ -1,6 +1,6 @@
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "599.999.250.8", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "599.999.250.9", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -66,33 +66,35 @@ if (typeof window !== 'undefined') {
     window.FLEET_CONFIG = FLEET_CONFIG;
 }
 
-window.debug = function() {
 // ═══════════════════════════════════════════════════════════════════════════
-// 📡 FLEET STATUS LOGGER (NO COMPRESSION)
+// 📡 FLEET STATUS LOGGER
 // ═══════════════════════════════════════════════════════════════════════════
 
+// Kontrola, zda DebugManager existuje
+if (window.DebugManager) {
+    
     // 1. Hlášení: Verze (Zelený rámeček)
-    window.DebugManager?.log('fleet-registry', 
+    window.DebugManager.log('fleet-registry', 
         `%c🖖 USS PROMETHEUS - Fleet Registry v${FLEET_CONFIG.version}`,
         'color: #00FF00; font-size: 16px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00FF00;'
     );
 
     // 2. Hlášení: Kódové jméno (Modrá)
-    window.DebugManager?.log('fleet-registry', 
+    window.DebugManager.log('fleet-registry', 
         `%c   Kódové jméno: ${FLEET_CONFIG.codename}`,
         'color: #00CCFF; font-size: 12px;'
     );
 
     // 3. Hlášení: Moduly (Zlatá)
-    window.DebugManager?.log('fleet-registry', 
+    window.DebugManager.log('fleet-registry', 
         `%c   Registrované moduly: ${FLEET_CONFIG.modules.length}`,
         'color: #FFCC00; font-size: 12px;'
     );
 
     // 4. Hlášení: Status (Zelená tučná)
-    window.DebugManager?.log('fleet-registry', 
+    window.DebugManager.log('fleet-registry', 
         `%c   Status: Všechny systémy zelené! ✅`,
         'color: #00FF00; font-size: 12px; font-weight: bold;'
     );
 
-};
+}
