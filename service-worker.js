@@ -1,5 +1,5 @@
 // Na začátek service-worker.js
-importScripts('./fleet-registry.js'); 
+importScripts('./fleet-registry.js');  
 
 // Místo ručního vypisování seznamu použijeme registr
 const CACHE_NAME = `st-player-v${FLEET_CONFIG.version}`;
