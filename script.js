@@ -117,13 +117,13 @@ window.DOM = DOM; // Export pro playlist-height.js
 // Inicializace výšky playlistu (pokud existuje funkce z playlist-height.js)
 if (typeof restorePreviousSettings === 'function') {
     restorePreviousSettings();
-    window.DebugManager?.log('main', '✅ Playlist výška inicializována z script.js');
+ //   window.DebugManager?.log('main', '✅ Playlist výška inicializována z script.js');
 } else {
     // Pokud se playlist-height.js ještě nenačetl, počkáme na něj
     window.addEventListener('DOMContentLoaded', () => {
         if (typeof restorePreviousSettings === 'function') {
             restorePreviousSettings();
-            window.DebugManager?.log('main', '✅ Playlist výška inicializována po DOMContentLoaded');
+          //  window.DebugManager?.log('main', '✅ Playlist výška inicializována po DOMContentLoaded');
         }
     });
 }
@@ -1203,3 +1203,4 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
  
      
 })();
+
