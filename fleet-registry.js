@@ -29,7 +29,7 @@ const FLEET_CONFIG = {
         './myPlaylist.js',
         './pwa-installer.js',
         './fleet-registry.js',
-        './stream_stabilizer.js',
+       // './stream_stabilizer.js',
         // --- FEATURE JS MODULY (POUZE AKTIVNÍ) ---
         './universalni-perfomens-monitor.js',
         // './jirkuv-hlidac.js',
