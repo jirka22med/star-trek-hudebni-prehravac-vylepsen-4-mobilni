@@ -29,7 +29,7 @@ const ASSETS_TO_CACHE = [
   './fleet-registry.js',  //toto v cach
   // --- FEATURE JS MODULY (POUZE AKTIVNÍ) ---
   './universalni-perfomens-monitor.js',
-   './jirkuv-hlidac.js',
+  // './jirkuv-hlidac.js',
   './notificationFix.js',
   './autoFade.js',
   './playlistSettings.js',
@@ -44,6 +44,7 @@ const ASSETS_TO_CACHE = [
   './scrollbar.js',
   './colorManager.js',
   './timer-module.js',
+  './playlist-height.js',
   // './audio-upravovac.js', // ❌ DEAKTIVOVÁN V HTML
   
   // --- FIREBASE SDK (absolutní URL) ---
