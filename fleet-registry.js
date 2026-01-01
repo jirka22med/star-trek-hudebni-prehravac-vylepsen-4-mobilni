@@ -1,6 +1,6 @@
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "599.999.250.9",
+    version: "599.999.250.19",
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
