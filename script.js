@@ -1,3 +1,4 @@
+
 (function() {
     'use strict';
 
@@ -108,7 +109,25 @@ const DOM = {
     favoritesButton: document.createElement('button'),
     favoritesMenu: document.createElement('div')
 };
+// ═══════════════════════════════════════════════════════════════════════════
+// 🚀 NOVÝ KÓD - EXPORT DOM A INICIALIZACE PLAYLIST VÝŠKY
+// ═══════════════════════════════════════════════════════════════════════════
+window.DOM = DOM; // Export pro playlist-height.js
 
+// Inicializace výšky playlistu (pokud existuje funkce z playlist-height.js)
+if (typeof restorePreviousSettings === 'function') {
+    restorePreviousSettings();
+    window.DebugManager?.log('main', '✅ Playlist výška inicializována z script.js');
+} else {
+    // Pokud se playlist-height.js ještě nenačetl, počkáme na něj
+    window.addEventListener('DOMContentLoaded', () => {
+        if (typeof restorePreviousSettings === 'function') {
+            restorePreviousSettings();
+            window.DebugManager?.log('main', '✅ Playlist výška inicializována po DOMContentLoaded');
+        }
+    });
+}
+// ═══════════════════════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════════════════
 // 🛡️ INTEGRACE SE STREAM STABILIZEREM (nahrazuje StreamGuard)
 // ═══════════════════════════════════════════════════════════════════
@@ -1074,49 +1093,6 @@ document.addEventListener('click', e => {
     }
 });
 
-// --- Adaptivní výška playlistu (Device Detection) ---
-function detectDeviceType() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isWindowsDesktop = (userAgent.includes('windows') && !userAgent.includes('mobile'));
-    const isAndroidMobile = (userAgent.includes('android') && userAgent.includes('mobile'));
-    
-    return {
-        isLenovoNotebook: (isWindowsDesktop && window.screen.width >= 1366 && window.screen.width <= 1920),
-        isInfinixNote30: (isAndroidMobile && window.innerWidth <= 420 && window.innerHeight >= 800),
-        isMobile: (isAndroidMobile || (window.innerWidth <= 768 && userAgent.includes('mobile'))),
-        isLargeDesktop: (isWindowsDesktop && window.screen.width > 1920),
-        isWindowsDesktop: isWindowsDesktop
-    };
-}
-
-function adjustPlaylistHeight(isFullscreen = false) {
-    if (!DOM.playlist) return;
-    const device = detectDeviceType();
-    let newHeight = '150px';
-    
-    if (device.isLenovoNotebook) {
-        newHeight = isFullscreen ? '320px' : '200px';
-    } else if (device.isInfinixNote30) {
-        newHeight = '50px';
-    } else if (device.isMobile) {
-        newHeight = isFullscreen ? '296px' : '184px';
-    } else if (device.isLargeDesktop) {
-        newHeight = isFullscreen ? '420px' : '390px';
-    } else {
-        newHeight = isFullscreen ? '390px' : '260px'; // Fallback
-    }
-    
-    DOM.playlist.style.maxHeight = newHeight;
-    window.DebugManager?.log('main', '📏 Výška playlistu nastavena na:', newHeight, '(Fullscreen:', isFullscreen + ')');
-}
-    
-function restorePreviousSettings() {
-    const isCurrentlyFullscreen = document.fullscreenElement !== null;
-    adjustPlaylistHeight(isCurrentlyFullscreen);
-}
-
-document.addEventListener('resize', () => adjustPlaylistHeight(document.fullscreenElement !== null));
-
 // --- Inicializace systému ---
 if (DOM.syncStatus) setTimeout(() => DOM.syncStatus.style.display = 'none', 6000);
 
@@ -1155,7 +1131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     updateActiveTrackVisuals();
-    restorePreviousSettings();
+    // restorePreviousSettings(); <--- TOTO ZDE UŽ NENÍ (Řídí to nový modul)
     addEventListeners();
     
     setTimeout(() => {
@@ -1223,5 +1199,7 @@ window.playNextTrack = playNextTrack;
 window.playPrevTrack = playPrevTrack;
 window.populatePlaylist = populatePlaylist; 
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
-    
+ 
+ 
+     
 })();
