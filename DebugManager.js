@@ -28,8 +28,8 @@
         'playlistManager': { name: 'Správce Playlistu', default: false, color: '#66FF66' },
         'playlistSettings': { name: 'Nastavení Playlistu', default: false, color: '#99FF99' }, 
          'playlist01': { name: 'playlist-height', default: false, color: '#99FF99' },
-          
-          
+         'fleet-registry': { name: 'playlist-height', default: false, color: '#99FF99' }, 
+           
     };
 
     // --- Stavová paměť ---
@@ -495,6 +495,7 @@
     };
 
 })();
+
 
 
 
