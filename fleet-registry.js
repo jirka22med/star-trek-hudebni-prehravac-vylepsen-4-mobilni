@@ -1,7 +1,7 @@
 
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "1.1.1.1.1", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "1.1.1.1.2", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -52,12 +52,7 @@ const FLEET_CONFIG = {
         'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
         'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js'
         
-        // ❌ TYTO MODULY JSOU DEAKTIVOVÁNY V index.html:
-        // - voiceControl.js
-        // - pocitac.js
-        // - pomocnik-hlasoveho-ovladani-pro-mobil.js
-        // - loadingScreen.js
-        // - audio-upravovac.js
+         
     ]
 };
 
