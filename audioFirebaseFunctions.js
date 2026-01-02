@@ -234,7 +234,7 @@
 
                 // Projdeme lokální skladby a najdeme jim názvy z Cloudu
                 const mergedTracks = window.originalTracks.map((localTrack, index) => {
-                    const cleanSrc = localTrack.src ? localTrack.src.split('?')[0].trim() : `__INDEX_${index}__`;
+                   const cleanSrc = localTrack.src ? localTrack.src.split('?')[0].trim() : `__INDEX_${index}__`;
                     const cloudData = cloudMap.get(cleanSrc);
 
                     if (cloudData) {
@@ -243,8 +243,8 @@
                             src: localTrack.src, // ✅ Odkaz z myPlaylist.js
                             title: cloudData.title, // ✅ Název z Cloudu
                             originalTitle: cloudData.originalTitle || localTrack.title,
-                            manuallyEdited: cloudData.manuallyEdited || false,
-                            lastEditedAt: cloudData.lastEditedAt || null,
+                            manuallyEdited: cloudData.manuallyEdited ?? false,
+                            lastEditedAt: cloudData.lastEditedAt ?? null,
                             duration: localTrack.duration || "" // Z lokálu
                         };
                     } else {
