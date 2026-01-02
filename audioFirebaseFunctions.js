@@ -7,7 +7,8 @@
 
 (function() {
     'use strict';
-
+// ⏱️ LOG START
+const __WARP_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════════
     // 📡 KONFIGURACE FIREBASE (SECURE LINK)
     // ═══════════════════════════════════════════════════════════════════════════
@@ -410,5 +411,6 @@
         "%c   Zapni logging: Ctrl+Shift+D → Firebase modul", 
         "color: #00CCFF; font-size: 11px;"
     );
-
+// ⏱️ LOG END
+console.log(`%c🔥 [FIREBASE] Načteno za ${(performance.now() - __WARP_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
