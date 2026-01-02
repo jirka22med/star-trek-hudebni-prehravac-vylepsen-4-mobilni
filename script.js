@@ -109,6 +109,7 @@ const DOM = {
     favoritesButton: document.createElement('button'),
     favoritesMenu: document.createElement('div')
 };
+    DOM.currentYear = document.getElementById('currentYear');   
 // ═══════════════════════════════════════════════════════════════════════════
 // 🚀 NOVÝ KÓD - EXPORT DOM A INICIALIZACE PLAYLIST VÝŠKY
 // ═══════════════════════════════════════════════════════════════════════════
@@ -437,19 +438,32 @@ window.clearAllAudioPlayerData = async function() {
 };
 
 // --- Hodiny ---
+// 2. Upravená funkce updateClock s tvým klíčovým prvkem
 function updateClock() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
+
     if (DOM.clock.hours) DOM.clock.hours.textContent = hours;
     if (DOM.clock.minutes) DOM.clock.minutes.textContent = minutes;
     if (DOM.clock.seconds) DOM.clock.seconds.textContent = seconds;
+
+    // --- INTEGRACE TVÉHO PRVKU ---
+    // Kontrolujeme, zda prvek existuje a zda je prázdný, abychom neprováděli zbytečné zápisy 
+    // do DOM každou vteřinu (optimalizace pro tvůj systém setin).
+    if (DOM.currentYear && DOM.currentYear.textContent === "") {
+        DOM.currentYear.textContent = now.getFullYear();
+    }
+    // ----------------------------
+
     if (DOM.currentDate) {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long' };
         DOM.currentDate.textContent = now.toLocaleDateString('cs-CZ', options);
     }
 }
+
+// Spouštění smyčky (pro tvůj systém setin můžeš interval snížit, např. na 10 nebo 16ms)
 setInterval(updateClock, 1000);
 
 // --- Hlasitost ---
@@ -1203,4 +1217,5 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
  
      
 })();
+
 
