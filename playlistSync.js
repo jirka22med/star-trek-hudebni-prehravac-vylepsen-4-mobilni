@@ -125,92 +125,115 @@ window.PlaylistSyncManager = {
     },
 
     // =========================================================================
-    // 🧠 SMART MERGE V2.2: FUZZY LOGIC + OCHRANA RUČNÍCH ÚPRAV (JÁDRO ÚSPĚCHU)
-    // =========================================================================
-    autoCheckOnLoad: async function() {
-        if (!this.config.autoSyncOnLoad) return;
+// 🧠 SMART MERGE V2.3: FUZZY LOGIC + MANUAL EDIT PROTECTION (FIXED!)
+// =========================================================================
+autoCheckOnLoad: async function() {
+    if (!this.config.autoSyncOnLoad) return;
 
-        window.DebugManager?.log('sync', "playlistSync.js: ⚡ Spouštím Smart Merge (Fuzzy Mode + Manual Protection)...");
-        await this.waitForFirebase();
+    window.DebugManager?.log('sync', "playlistSync.js: ⚡ Spouštím Smart Merge (Manual Protection ACTIVE)...");
+    await this.waitForFirebase();
 
-        try {
-            // 1. Získáme data z Cloudu
-            const cloudPlaylist = await window.loadPlaylistFromFirestore?.();
-            
-            if (!cloudPlaylist || cloudPlaylist.length === 0) {
-                window.DebugManager?.log('sync', "playlistSync.js: Cloud prázdný, používám lokální data.");
-                return;
-            }
-
-            // 2. Pomocná funkce: Odřízne vše za '?' (tokeny)
-            const normalizeSrc = (src) => src ? src.split('?')[0].trim() : '';
-
-            // 3. Vytvoříme mapu Cloud dat (klíč je ČISTÝ odkaz)
-            const cloudMap = new Map();
-            cloudPlaylist.forEach(track => {
-                if (track.src) {
-                    cloudMap.set(normalizeSrc(track.src), track);
-                }
-            });
-
-            let hasChanges = false;
-            
-            // 4. PROCHÁZÍME LOKÁLNÍ PLAYLIST (window.tracks z myPlaylist.js)
-            const mergedTracks = window.tracks.map(localTrack => {
-                // Hledáme podle čistého odkazu
-                const cleanSrc = normalizeSrc(localTrack.src);
-                const cloudVersion = cloudMap.get(cleanSrc);
-                
-                if (cloudVersion) {
-                    // SHODA! Písničkka je v Cloudu (i když má jiný token)
-                    
-                    // 🔥 NOVÁ LOGIKA: Pokud je skladba ručně upravená, NEMĚNÍME NÁZEV!
-                    if (localTrack.manuallyEdited) {
-                        window.DebugManager?.log('sync', `🚫 Přeskakuji "${localTrack.title}" - ručně upraveno`);
-                        return localTrack; // <--- PONECHÁME LOKÁLNÍ NÁZEV!
-                    }
-                    
-                    // Jinak běžná synchronizace z cloudu
-                    if (localTrack.title !== cloudVersion.title) {
-                        hasChanges = true; 
-                        window.DebugManager?.log('sync', `🔄 Obnovuji název: "${localTrack.title}" -> "${cloudVersion.title}"`);
-                        return { 
-                            ...localTrack, 
-                            title: cloudVersion.title,
-                            originalTitle: localTrack.title 
-                        };
-                    }
-                    return localTrack; 
-                } else {
-                    // NENÍ v Cloudu -> Nová písničkka, necháme ji být
-                    hasChanges = true;
-                    return localTrack;
-                }
-            });
-
-            // 5. Aplikujeme výsledek
-            window.tracks = mergedTracks;
-            
-            // 6. Uložíme a Překreslíme
-            localStorage.setItem('currentPlaylist', JSON.stringify(window.tracks));
-            
-            if (window.populatePlaylist) window.populatePlaylist(window.tracks);
-            if (window.applyEverything) window.applyEverything();
-
-            // 7. Sync zpět do cloudu, pokud jsme něco sloučili
-            if (hasChanges) {
-                window.DebugManager?.log('sync', "playlistSync.js: 🔄 Aktualizuji Cloud (sjednocení verzí)...");
-                await this.syncLocalToCloud(true);
-            } else {
-                window.DebugManager?.log('sync', "playlistSync.js: ✅ Data sedí.");
-                this.updateButtonStatus('ok');
-            }
-
-        } catch (error) {
-            console.error("playlistSync.js: Chyba Smart Merge:", error);
-            this.updateButtonStatus('error');
+    try {
+        // 1. Získáme data z Cloudu
+        const cloudPlaylist = await window.loadPlaylistFromFirestore?.();
+        
+        if (!cloudPlaylist || cloudPlaylist.length === 0) {
+            window.DebugManager?.log('sync', "playlistSync.js: Cloud prázdný, používám lokální data.");
+            return;
         }
-    },
+
+        // 2. Normalizační funkce (ořízneme tokeny)
+        const normalizeSrc = (src) => src ? src.split('?')[0].trim() : '';
+
+        // 3. Vytvoříme mapu Cloud dat (klíč = čistý odkaz)
+        const cloudMap = new Map();
+        cloudPlaylist.forEach(track => {
+            if (track.src || track.cleanSrc) {
+                const key = track.cleanSrc || normalizeSrc(track.src);
+                cloudMap.set(key, track);
+            }
+        });
+
+        let hasChanges = false;
+        
+        // 4. PROCHÁZÍME LOKÁLNÍ PLAYLIST (window.tracks)
+        const mergedTracks = window.tracks.map((localTrack, idx) => {
+            const cleanSrc = normalizeSrc(localTrack.src);
+            const cloudVersion = cloudMap.get(cleanSrc);
+            
+            if (!cloudVersion) {
+                // Skladba není v Cloudu → nová, necháme bejt
+                hasChanges = true;
+                return localTrack;
+            }
+            
+            // ═══════════════════════════════════════════════════════════
+            // 🔥 KLÍČOVÁ OPRAVA: PRIORITA RUČNÍCH ÚPRAV
+            // ═══════════════════════════════════════════════════════════
+            
+            // 1. Kontrola: Je skladba ručně editovaná V CLOUDU?
+            if (cloudVersion.manuallyEdited === true) {
+                window.DebugManager?.log('sync', `🛡️ "${cloudVersion.title}" - Cloud má manual flag → POUŽIJU CLOUD`);
+                
+                // Pokud se lokální název liší, UPDATE!
+                if (localTrack.title !== cloudVersion.title) {
+                    hasChanges = true;
+                    return {
+                        ...localTrack,
+                        title: cloudVersion.title,
+                        originalTitle: cloudVersion.originalTitle || localTrack.title,
+                        manuallyEdited: true, // ✅ DŮLEŽITÉ!
+                        lastEditedAt: cloudVersion.lastEditedAt || Date.now()
+                    };
+                }
+                // Název sedí → ponecháme jak je
+                return localTrack;
+            }
+            
+            // 2. Kontrola: Je skladba ručně editovaná LOKÁLNĚ?
+            if (localTrack.manuallyEdited === true) {
+                window.DebugManager?.log('sync', `🚫 "${localTrack.title}" - LOCAL má manual flag → IGNORUJI CLOUD`);
+                return localTrack; // <--- LOKÁLNÍ PRIORITA!
+            }
+            
+            // 3. Žádné ruční úpravy → běžná sync z Cloudu
+            if (localTrack.title !== cloudVersion.title) {
+                hasChanges = true;
+                window.DebugManager?.log('sync', `🔄 Obnovuji název: "${localTrack.title}" → "${cloudVersion.title}"`);
+                return {
+                    ...localTrack,
+                    title: cloudVersion.title,
+                    originalTitle: cloudVersion.originalTitle || localTrack.title,
+                    manuallyEdited: false // Není ručně upraveno
+                };
+            }
+            
+            return localTrack; // Beze změny
+        });
+
+        // 5. Aplikujeme výsledek
+        window.tracks = mergedTracks;
+        
+        // 6. Uložíme a překreslíme
+        localStorage.setItem('currentPlaylist', JSON.stringify(window.tracks));
+        
+        if (window.populatePlaylist) window.populatePlaylist(window.tracks);
+        if (window.applyEverything) window.applyEverything();
+
+        // 7. Sync zpět do cloudu, pokud jsme něco sloučili
+        if (hasChanges) {
+            window.DebugManager?.log('sync', "playlistSync.js: 🔄 Aktualizuji Cloud (sjednocení verzí)...");
+            await this.syncLocalToCloud(true);
+        } else {
+            window.DebugManager?.log('sync', "playlistSync.js: ✅ Data sedí.");
+            this.updateButtonStatus('ok');
+        }
+
+    } catch (error) {
+        console.error("playlistSync.js: Chyba Smart Merge:", error);
+        this.updateButtonStatus('error');
+    }
+}
     // =========================================================================
 
     // Pomocné funkce
