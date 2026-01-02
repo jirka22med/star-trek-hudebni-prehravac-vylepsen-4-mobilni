@@ -107,9 +107,11 @@ const DOM = {
      
     // Dynamické prvky
     favoritesButton: document.createElement('button'),
-    favoritesMenu: document.createElement('div')
+    favoritesMenu: document.createElement('div'),
+    // 1. Nejprve přidej referenci do tvého objektu DOM (tam, kde definuješ ostatní prvky)
+  
 };
-    DOM.currentYear = document.getElementById('currentYear');   
+        DOM.currentYear = document.getElementById('currentYear');   
 // ═══════════════════════════════════════════════════════════════════════════
 // 🚀 NOVÝ KÓD - EXPORT DOM A INICIALIZACE PLAYLIST VÝŠKY
 // ═══════════════════════════════════════════════════════════════════════════
@@ -190,35 +192,43 @@ window.showNotification = function(message, type = 'info', duration = 3000) {
 };
 
 // --- Oprava URL adres pro stabilní streamování ---
+/**
+ * Optimalizuje URL pro přímé streamování (verze 2026).
+ */
 function checkAndFixTracks(trackList) {
-    let fixedUrls = 0;
     if (!Array.isArray(trackList)) return;
 
     trackList.forEach(track => {
         if (track?.src?.includes("dropbox.com")) {
-            // 1. Zachytíme staré parametry (dl=0, dl=1) nebo odkazy bez parametrů
-            if (track.src.includes("dl=0") || track.src.includes("dl=1") || !track.src.includes("raw=1")) {
-                
-                // 2. Odstraníme vše za otazníkem (včetně rlkey, st, atd. - Dropbox si je u scl/fi odkazů pamatuje i bez toho)
-                // Nebo bezpečněji: jen vyměníme dl=X za raw=1
-                let newSrc = track.src.replace(/dl=[01]/, "raw=1");
-                
-                // Pokud tam raw=1 pořád není, přidáme ho
-                if (!newSrc.includes("raw=1")) {
-                    newSrc += (newSrc.includes("?") ? "&" : "?") + "raw=1";
-                }
+            let url = new URL(track.src);
+            
+            // === 2026 PROTOCOL ===
+            // 1. Zajistíme raw=1 (přímý stream bez HTML wrapperu)
+            if (url.searchParams.has("dl")) {
+                url.searchParams.set("raw", "1");
+                url.searchParams.delete("dl");
+            }
+            if (!url.searchParams.has("raw")) {
+                url.searchParams.append("raw", "1");
+            }
 
-                if (track.src !== newSrc) {
-                    track.src = newSrc;
-                    fixedUrls++;
-                }
+            // 2. Optimalizace domény (2026: HTTP/2 multiplexing preference)
+            let finalSrc = url.toString()
+                .replace("www.dropbox.com", "dl.dropboxusercontent.com")
+                .replace("http://", "https://"); // Force HTTPS pro HTTP/2
+            
+            // 3. Anti-cache bypass (pro debug)
+            if (window.FORCE_NOCACHE) {
+                url.searchParams.set("_nc", Date.now());
+                finalSrc = url.toString();
+            }
+            
+            if (track.src !== finalSrc) {
+                track.src = finalSrc;
+               window.DebugManager?.log('main', '🔧 URL opravena: ' + track.title);
             }
         }
     });
-
-    if (fixedUrls > 0) {
-        window.DebugManager?.log('main', 'checkAndFixTracks: Optimalizováno pro RAW streamování:', fixedUrls);
-    }
 }
 
 
@@ -437,7 +447,8 @@ window.clearAllAudioPlayerData = async function() {
     window.showNotification('Všechna data přehrávače smazána!', 'info', 2035);
 };
 
-// --- Hodiny ---
+ 
+
 // 2. Upravená funkce updateClock s tvým klíčovým prvkem
 function updateClock() {
     const now = new Date();
@@ -620,6 +631,7 @@ async function playTrack(originalIndex) {
     window.dispatchEvent(new Event('track-loading-start'));
     
     if (!originalTracks || originalIndex < 0 || originalIndex >= originalTracks.length) {
+        window.DebugManager?.log('main', '⚠️ Neplatný index skladby', null, 'error');
         return;
     }
     
@@ -628,17 +640,19 @@ async function playTrack(originalIndex) {
     
     if (!DOM.audioSource || !DOM.trackTitle || !DOM.audioPlayer) return;
     
+    // === CACHE LOGIC ===
     let audioUrl = track.src;
     if (window.audioPreloader?.isCached(track.src)) {
         const cachedUrl = window.audioPreloader.createObjectURL(track.src);
         if (cachedUrl) {
             audioUrl = cachedUrl;
-            window.DebugManager?.log('main', '⚡ Použita cached verze:', track.title);
+            window.DebugManager?.log('main', '⚡ Cache hit:', track.title);
         }
     }
     
-    // 🛠️ OPRAVA 1: Před načtením nové skladby zajistíme čistý stav
-    DOM.audioPlayer.pause(); 
+    // === CLEAN STATE (2026: Force stop před novým loadem) ===
+    DOM.audioPlayer.pause();
+    DOM.audioPlayer.currentTime = 0; // Reset pozice
     DOM.audioSource.src = audioUrl;
     DOM.trackTitle.textContent = track.title;
 
@@ -648,14 +662,19 @@ async function playTrack(originalIndex) {
 
     DOM.audioPlayer.load();
     
-    // 🛠️ OPRAVA 2: Použijeme try/catch uvnitř asynchronního volání
+    // === 2026 PLAY PROTOCOL (s timeout guard) ===
     try {
         const playPromise = DOM.audioPlayer.play();
         
         if (playPromise !== undefined) {
-            await playPromise;
+            // Timeout protection (10s max wait)
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('PLAY_TIMEOUT')), 10000)
+            );
             
-            // Sem se kód dostane jen pokud play() úspěšně začal
+            await Promise.race([playPromise, timeoutPromise]);
+            
+            // === SUCCESS PROTOCOL ===
             window.audioState.isLoadingTrack = false;
             window.audioState.isPlaying = true;
             window.audioState.canPreload = true;
@@ -664,29 +683,38 @@ async function playTrack(originalIndex) {
                 detail: { src: track.src, title: track.title }
             }));
            
-            window.DebugManager?.log('main', "playTrack: Přehrávání:", track.title);
+            window.DebugManager?.log('main', "✅ Přehrávání:", track.title);
             updateButtonActiveStates(true);
             updateActiveTrackVisuals();
             
+            // Preload next tracks
             if (window.audioPreloader) {
                 window.preloadTracks(originalTracks, currentTrackIndex, isShuffled, shuffledIndices)
-                    .catch(err => console.warn('⚠️ Preload error:', err));
+                    .catch(err => window.DebugManager?.log('main', '⚠️ Preload:', err));
             }
             
             await debounceSaveAudioData();
         }
     } catch (error) {
-        // 🛠️ OPRAVA 3: Tiché zachycení AbortError
         window.audioState.isLoadingTrack = false;
         window.audioState.canPreload = false;
         
+        // === ERROR CLASSIFICATION (2026) ===
         if (error.name === 'AbortError') {
-            // Tuto chybu ignorujeme, protože znamená jen, že přišel nový požadavek
-            window.DebugManager?.log('main', 'playTrack: Požadavek přerušen (přeskočeno)');
+            // Normální přerušení (skip track) - TICHÝ LOG
+            window.DebugManager?.log('main', '⏭️ Track skipped');
+        } else if (error.message === 'PLAY_TIMEOUT') {
+            // Timeout - možná síťový problém
+            window.DebugManager?.log('main', '⏱️ Play timeout, retry...', null, 'warn');
+            if (window.StreamStabilizer) {
+                window.StreamStabilizer.handleError(DOM.audioPlayer);
+            }
         } else {
-            // Jen skutečné chyby logujeme jako error
-            console.error('playTrack: Skutečná chyba při spuštění:', error);
-            StreamGuard.attemptRecovery('START_FAIL');
+            // Skutečná chyba
+            console.error('❌ Play error:', error);
+            if (window.StreamStabilizer) {
+                window.StreamStabilizer.handleError(DOM.audioPlayer);
+            }
         }
     }
 }
@@ -1217,5 +1245,4 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
  
      
 })();
-
 
