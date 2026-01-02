@@ -156,60 +156,70 @@ autoCheckOnLoad: async function() {
 
         let hasChanges = false;
         
-        // 4. PROCHÁZÍME LOKÁLNÍ PLAYLIST (window.tracks)
-        const mergedTracks = window.tracks.map((localTrack, idx) => {
-            const cleanSrc = normalizeSrc(localTrack.src);
-            const cloudVersion = cloudMap.get(cleanSrc);
-            
-            if (!cloudVersion) {
-                // Skladba není v Cloudu → nová, necháme bejt
-                hasChanges = true;
-                return localTrack;
-            }
-            
-            // ═══════════════════════════════════════════════════════════
-            // 🔥 KLÍČOVÁ OPRAVA: PRIORITA RUČNÍCH ÚPRAV
-            // ═══════════════════════════════════════════════════════════
-            
-            // 1. Kontrola: Je skladba ručně editovaná V CLOUDU?
-            if (cloudVersion.manuallyEdited === true) {
-                window.DebugManager?.log('sync', `🛡️ "${cloudVersion.title}" - Cloud má manual flag → POUŽIJU CLOUD`);
-                
-                // Pokud se lokální název liší, UPDATE!
-                if (localTrack.title !== cloudVersion.title) {
-                    hasChanges = true;
-                    return {
-                        ...localTrack,
-                        title: cloudVersion.title,
-                        originalTitle: cloudVersion.originalTitle || localTrack.title,
-                        manuallyEdited: true, // ✅ DŮLEŽITÉ!
-                        lastEditedAt: cloudVersion.lastEditedAt || Date.now()
-                    };
-                }
-                // Název sedí → ponecháme jak je
-                return localTrack;
-            }
-            
-            // 2. Kontrola: Je skladba ručně editovaná LOKÁLNĚ?
-            if (localTrack.manuallyEdited === true) {
-                window.DebugManager?.log('sync', `🚫 "${localTrack.title}" - LOCAL má manual flag → IGNORUJI CLOUD`);
-                return localTrack; // <--- LOKÁLNÍ PRIORITA!
-            }
-            
-            // 3. Žádné ruční úpravy → běžná sync z Cloudu
-            if (localTrack.title !== cloudVersion.title) {
-                hasChanges = true;
-                window.DebugManager?.log('sync', `🔄 Obnovuji název: "${localTrack.title}" → "${cloudVersion.title}"`);
-                return {
-                    ...localTrack,
-                    title: cloudVersion.title,
-                    originalTitle: cloudVersion.originalTitle || localTrack.title,
-                    manuallyEdited: false // Není ručně upraveno
-                };
-            }
-            
-            return localTrack; // Beze změny
-        });
+      // 4. PROCHÁZÍME LOKÁLNÍ PLAYLIST (window.tracks)
+const mergedTracks = window.tracks.map((localTrack, idx) => {
+    const cleanSrc = normalizeSrc(localTrack.src);
+    const cloudVersion = cloudMap.get(cleanSrc);
+    
+    if (!cloudVersion) {
+        // Skladba není v Cloudu → nová, necháme bejt
+        hasChanges = true;
+        return localTrack;
+    }
+    
+    // ═══════════════════════════════════════════════════════════
+    // 🔥 KLÍČOVÁ OPRAVA: PRIORITA RUČNÍCH ÚPRAV + METADATA
+    // ═══════════════════════════════════════════════════════════
+    
+    // 1. Kontrola: Je skladba ručně editovaná V CLOUDU?
+    if (cloudVersion.manuallyEdited === true) {
+        window.DebugManager?.log('sync', `🛡️ "${cloudVersion.title}" - Cloud má manual flag → POUŽIJU CLOUD`);
+        
+        // Pokud se lokální název liší, UPDATE!
+        if (localTrack.title !== cloudVersion.title) {
+            hasChanges = true;
+            return {
+                ...localTrack,
+                title: cloudVersion.title,
+                originalTitle: cloudVersion.originalTitle || localTrack.title,
+                manuallyEdited: cloudVersion.manuallyEdited ?? false,    // ✅ OPRAVENO
+                lastEditedAt: cloudVersion.lastEditedAt ?? null          // ✅ OPRAVENO
+            };
+        }
+        // Název sedí → ponecháme jak je (ale zkontrolujeme metadata!)
+        return {
+            ...localTrack,
+            manuallyEdited: cloudVersion.manuallyEdited ?? localTrack.manuallyEdited ?? false,  // ✅ PŘIDÁNO
+            lastEditedAt: cloudVersion.lastEditedAt ?? localTrack.lastEditedAt ?? null          // ✅ PŘIDÁNO
+        };
+    }
+    
+    // 2. Kontrola: Je skladba ručně editovaná LOKÁLNĚ?
+    if (localTrack.manuallyEdited === true) {
+        window.DebugManager?.log('sync', `🚫 "${localTrack.title}" - LOCAL má manual flag → IGNORUJI CLOUD`);
+        return localTrack; // <--- LOKÁLNÍ PRIORITA!
+    }
+    
+    // 3. Žádné ruční úpravy → běžná sync z Cloudu
+    if (localTrack.title !== cloudVersion.title) {
+        hasChanges = true;
+        window.DebugManager?.log('sync', `🔄 Obnovuji název: "${localTrack.title}" → "${cloudVersion.title}"`);
+        return {
+            ...localTrack,
+            title: cloudVersion.title,
+            originalTitle: cloudVersion.originalTitle || localTrack.title,
+            manuallyEdited: cloudVersion.manuallyEdited ?? false,     // ✅ OPRAVENO (místo false)
+            lastEditedAt: cloudVersion.lastEditedAt ?? null           // ✅ PŘIDÁNO
+        };
+    }
+    
+    // 4. Žádné změny názvu → ale zkontrolujeme metadata
+    return {
+        ...localTrack,
+        manuallyEdited: cloudVersion.manuallyEdited ?? localTrack.manuallyEdited ?? false,  // ✅ PŘIDÁNO
+        lastEditedAt: cloudVersion.lastEditedAt ?? localTrack.lastEditedAt ?? null          // ✅ PŘIDÁNO
+    };
+});
 
         // 5. Aplikujeme výsledek
         window.tracks = mergedTracks;
