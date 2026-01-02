@@ -1,6 +1,6 @@
 // 🖖 OCHRANA PLAYLISTU - Zabraňuje přepsání Firestorem
-window.PLAYLIST_SOURCE = 'myPlaylist.js';
-window.PLAYLIST_VERSION = new Date().toISOString(); 
+/*window.PLAYLIST_SOURCE = 'myPlaylist.js';
+window.PLAYLIST_VERSION = new Date().toISOString(); */
 
 // 🎯 DEFINICE SEKCÍ (Aktualizováno na 480 skladeb, indexy 0-479)
 window.playlistSections = [
@@ -117,7 +117,7 @@ window.tracks = [
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK - HLAVNÍ TÉMATA & POSÁDKY
 // ═══════════════════════════════════════════════════════════
-{ src: 'https://www.dropbox.com/scl/fi/x0z9ddkz3zfqrvcnb6nr8/Odysea-Kapit-na-Ar-era-1.mp3?rlkey=mlav41qi6qe5ukss3q4qdd8f6&st=44y26ef2&dl=1', title: 'Odysea Kapitána Arčra v.1', duration: '02:12' },
+{ src: 'https://www.dropbox.com/scl/fi/x0z9ddkz3zfqrvcnb6nr8/Odysea-Kapit-na-Ar-era-1.mp3?rlkey=mlav41qi6qe5ukss3q4qdd8f6&st=44y26ef2&dl=1', title: 'Odysea Kapitána Arčra', duration: '02:12' },
 { src: 'https://www.dropbox.com/scl/fi/hl4pp862wvlgd3kj2uixj/Hv-zdn-lo-sn.mp3?rlkey=uxfr6emv2h70v9blgmoily2ug&st=h40ynmje&dl=1', title: 'Hvězdná Loď Snů', duration: '02:54' },
 { src: "https://www.dropbox.com/scl/fi/qs7h9fotngaf8dc5bmvf2/Vesm-rn-Odyssea-1.mp3?rlkey=e38vuocv7kuieiccmf5oz8562&st=ju9xxk8e&dl=1", title: "Vesmírná Odysea 1", duration: '02:20' },
 { src: "https://www.dropbox.com/scl/fi/2m0xferijus0v4lbpdj2k/Bl-en-k-Hv-zd-m-1.mp3?rlkey=7h7sdbaph6qpi4tcia94vybvq&st=b4xy2s6z&dl=1", title: "Blížení ke hvězdám", duration: '02:43' },
@@ -889,5 +889,6 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 if (window.showNotification) {
     window.showNotification('🖖 Hvězdná flotila připravena k warp skoku!', 'success', 2111);
 }
+
 
 
