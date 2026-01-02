@@ -243,7 +243,7 @@ const mergedTracks = window.tracks.map((localTrack, idx) => {
         console.error("playlistSync.js: Chyba Smart Merge:", error);
         this.updateButtonStatus('error');
     }
-}
+},
     // =========================================================================
 
     // Pomocné funkce
