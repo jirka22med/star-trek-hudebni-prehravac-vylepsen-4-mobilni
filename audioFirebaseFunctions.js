@@ -13,13 +13,14 @@ const __WARP_START = performance.now();
     // 📡 KONFIGURACE FIREBASE (SECURE LINK)
     // ═══════════════════════════════════════════════════════════════════════════
     const firebaseConfig = {
-        apiKey: "AIzaSyCxO2BdPLkvRW9q3tZTW5J39pjjAoR-9Sk", 
-        authDomain: "audio-prehravac-v-3.firebaseapp.com",
-        projectId: "audio-prehravac-v-3", 
-        storageBucket: "audio-prehravac-v-3.firebasestorage.app", 
-        messagingSenderId: "343140348126", 
-        appId: "1:343140348126:web:c61dc969efb6dcb547524f" 
-    };
+  apiKey: "AIzaSyC0TDTs0DDqVEWaXGPUCSoTHAC53KgrmaM",
+  authDomain: "star-trek-hudebni-prehravac-4m.firebaseapp.com",
+  projectId: "star-trek-hudebni-prehravac-4m",
+  storageBucket: "star-trek-hudebni-prehravac-4m.firebasestorage.app",
+  messagingSenderId: "983335156196",
+  appId: "1:983335156196:web:56a21a3fefe08cb217aff1",
+  measurementId: "G-GFGWZN6M15"
+};
 
     let db; // Globální instance databáze
 
@@ -320,3 +321,4 @@ const __WARP_START = performance.now();
 // ⏱️ LOG END
 console.log(`%c🔥 [FIREBASE] Načteno za ${(performance.now() - __WARP_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
+
