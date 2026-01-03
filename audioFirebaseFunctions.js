@@ -142,7 +142,7 @@ const __WARP_START = performance.now();
             
             try {
                 const snapshot = await db.collection('app_data')
-                    .orderBy('__version_num__', 'desc')
+                    .orderBy('versionNumber', 'desc')
                     .limit(1)
                     .get();
                 
@@ -150,7 +150,7 @@ const __WARP_START = performance.now();
                 
                 if (!snapshot.empty) {
                     const lastDoc = snapshot.docs[0].data();
-                    const lastVersionNum = lastDoc.__version_num__ || 1.0;
+                    const lastVersionNum = lastDoc.versionNumber || 1.0;
                     newVersionNum = Math.round((lastVersionNum + 0.1) * 10) / 10;
                     
                     window.DebugManager?.log('firebase-verze', 
@@ -226,19 +226,19 @@ const __WARP_START = performance.now();
             
             try {
                 const snapshot = await db.collection('app_data')
-                    .where('__version_num__', '>=', 0)
-                    .orderBy('__version_num__', 'desc')
+                    .where('versionNumber', '>=', 0)
+                    .orderBy('versionNumber', 'desc')
                     .get();
                 
                 const versions = snapshot.docs.map(doc => {
                     const data = doc.data();
                     return {
-                        version: data.__version__ || 'neznámá',
-                        versionNum: data.__version_num__ || 0,
+                        version: data.versionString || 'neznámá',
+                        versionNum: data.versionNumber || 0,
                         docId: doc.id,
                         lastUpdated: data.lastUpdated?.toDate(),
                         trackCount: data.totalTracks || 0,
-                        sessionId: data.__session_id__ || 'N/A'
+                        sessionId: data.sessionId || 'N/A'
                     };
                 });
                 
@@ -362,10 +362,10 @@ const __WARP_START = performance.now();
             tracks: cleanTracks,
             lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
             totalTracks: cleanTracks.length,
-            // 🔢 NOVÁ POLE PRO VERZOVÁNÍ:
-            __version__: FirebaseVersionManager.currentVersion,
-            __version_num__: versionNum,
-            __session_id__: FirebaseVersionManager.sessionId,
+            // 🔢 NOVÁ POLE PRO VERZOVÁNÍ (BEZ __ prefixu):
+            versionString: FirebaseVersionManager.currentVersion,
+            versionNumber: versionNum,
+            sessionId: FirebaseVersionManager.sessionId,
             version: "3.6-AutoVersioning"
         });
 
@@ -476,7 +476,7 @@ const __WARP_START = performance.now();
         try {
             // 1. Smazání VŠECH verzovaných playlistů
             const snapshot = await database.collection("app_data")
-                .where('__version_num__', '>=', 0)
+                .where('versionNumber', '>=', 0)
                 .get();
             
             for (const doc of snapshot.docs) {
