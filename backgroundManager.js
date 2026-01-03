@@ -79,7 +79,7 @@
             }
 
             // 📊 DETAILNÍ LOG PRO DEBUGGING
-            window.DebugManager?.log('main', `
+            window.DebugManager?.log('backgroundManager', `
 ╔════════════════════════════════════════════════════
 ║ 🔍 DETEKCE ZAŘÍZENÍ
 ╠════════════════════════════════════════════════════
@@ -99,13 +99,13 @@
         // ───────────────────────────────────────────────────────────────────
         applyBackground(deviceType, forceReload = false) {
             if (!this.bgElement) {
-                window.DebugManager?.log('main', '❌ Background element nenalezen!');
+                window.DebugManager?.log('backgroundManager', '❌ Background element nenalezen!');
                 return false;
             }
 
             const background = BACKGROUNDS[deviceType];
             if (!background) {
-                window.DebugManager?.log('main', `❌ Neznámý typ zařízení: ${deviceType}`);
+                window.DebugManager?.log('backgroundManager', `❌ Neznámý typ zařízení: ${deviceType}`);
                 return false;
             }
 
@@ -115,7 +115,7 @@
                 const freshUrl = `${background.url}&t=${Date.now()}`;
                 this.bgElement.src = freshUrl;
                 
-                window.DebugManager?.log('main', `🔄 VYNUCENÉ OBNOVENÍ tapety (forceReload=true)`);
+                window.DebugManager?.log('backgroundManager', `🔄 VYNUCENÉ OBNOVENÍ tapety (forceReload=true)`);
             } else {
                 this.bgElement.src = background.url;
             }
@@ -128,7 +128,7 @@
             this.applyImageProtection(this.bgElement);
 
             // 📊 LOG
-            window.DebugManager?.log('main', `
+            window.DebugManager?.log('backgroundManager', `
 ╔════════════════════════════════════════════════════
 ║ 🖼️  TAPETA APLIKOVÁNA
 ╠════════════════════════════════════════════════════
@@ -188,7 +188,7 @@
             imgElement.style.webkitTouchCallout = 'none';
             imgElement.style.pointerEvents = 'none';
 
-            window.DebugManager?.log('main', '🛡️ Ochrana obrázku aktivována');
+            window.DebugManager?.log('backgroundManager', '🛡️ Ochrana obrázku aktivována');
         }
 
         // ───────────────────────────────────────────────────────────────────
@@ -219,12 +219,12 @@
                         .doc('backgroundSettings')
                         .set(data, { merge: true });
                     
-                    window.DebugManager?.log('main', '💾 Tapeta uložena do Firebase');
+                    window.DebugManager?.log('backgroundManager', '💾 Tapeta uložena do Firebase');
                 } else {
-                    window.DebugManager?.log('main', '💾 Tapeta uložena jen do localStorage (offline nebo Firebase nedostupný)');
+                    window.DebugManager?.log('backgroundManager', '💾 Tapeta uložena jen do localStorage (offline nebo Firebase nedostupný)');
                 }
             } catch (error) {
-                window.DebugManager?.log('main', `⚠️ Chyba při ukládání: ${error.message}`);
+                window.DebugManager?.log('backgroundManager', `⚠️ Chyba při ukládání: ${error.message}`);
             }
         }
 
@@ -244,10 +244,10 @@
                         
                         // 🔍 VALIDACE DAT
                         if (this.validateCachedData(data)) {
-                            window.DebugManager?.log('main', '📥 Tapeta načtena z Firebase (validní)');
+                            window.DebugManager?.log('backgroundManager', '📥 Tapeta načtena z Firebase (validní)');
                             return data;
                         } else {
-                            window.DebugManager?.log('main', '⚠️ Firebase data nevalidní, používám detekci');
+                            window.DebugManager?.log('backgroundManager', '⚠️ Firebase data nevalidní, používám detekci');
                             return null;
                         }
                     }
@@ -259,15 +259,15 @@
                     const data = JSON.parse(localData);
                     
                     if (this.validateCachedData(data)) {
-                        window.DebugManager?.log('main', '📥 Tapeta načtena z localStorage (validní)');
+                        window.DebugManager?.log('backgroundManager', '📥 Tapeta načtena z localStorage (validní)');
                         return data;
                     } else {
-                        window.DebugManager?.log('main', '⚠️ localStorage data nevalidní, používám detekci');
+                        window.DebugManager?.log('backgroundManager', '⚠️ localStorage data nevalidní, používám detekci');
                         return null;
                     }
                 }
             } catch (error) {
-                window.DebugManager?.log('main', `⚠️ Chyba při načítání: ${error.message}`);
+                window.DebugManager?.log('backgroundManager', `⚠️ Chyba při načítání: ${error.message}`);
             }
 
             return null;
@@ -285,14 +285,14 @@
             
             // Pokud je rozdíl větší než 200px, cache je neplatná
             if (Math.abs(currentWidth - cachedWidth) > 200) {
-                window.DebugManager?.log('main', `⚠️ Cache neplatná: velikost okna se změnila (${cachedWidth}px → ${currentWidth}px)`);
+                window.DebugManager?.log('backgroundManager', `⚠️ Cache neplatná: velikost okna se změnila (${cachedWidth}px → ${currentWidth}px)`);
                 return false;
             }
 
             // Zkontroluj deviceType proti aktuální detekci
             const currentDeviceType = this.detectDeviceType();
             if (data.deviceType !== currentDeviceType) {
-                window.DebugManager?.log('main', `⚠️ Cache neplatná: deviceType se změnil (${data.deviceType} → ${currentDeviceType})`);
+                window.DebugManager?.log('backgroundManager', `⚠️ Cache neplatná: deviceType se změnil (${data.deviceType} → ${currentDeviceType})`);
                 return false;
             }
 
@@ -308,7 +308,7 @@
             // Pokud se změnil typ zařízení NEBO je vynucené obnovení
             if (newDeviceType !== this.deviceType || forceReload) {
                 if (newDeviceType !== this.deviceType) {
-                    window.DebugManager?.log('main', `🔄 Změna zařízení: ${this.deviceType} → ${newDeviceType}`);
+                    window.DebugManager?.log('backgroundManager', `🔄 Změna zařízení: ${this.deviceType} → ${newDeviceType}`);
                 }
                 
                 this.applyBackground(newDeviceType, forceReload);
@@ -321,11 +321,11 @@
         // ───────────────────────────────────────────────────────────────────
         async init() {
             if (this.initialized) {
-                window.DebugManager?.log('main', '⚠️ BackgroundManager již inicializován');
+                window.DebugManager?.log('backgroundManager', '⚠️ BackgroundManager již inicializován');
                 return;
             }
 
-            window.DebugManager?.log('main', '🚀 Inicializuji BackgroundManager V1.1...');
+            window.DebugManager?.log('backgroundManager', '🚀 Inicializuji BackgroundManager V1.1...');
 
             // Najdi background element
             this.bgElement = document.querySelector('.background-image-container img');
@@ -353,7 +353,7 @@
             this.setupEventListeners();
 
             this.initialized = true;
-            window.DebugManager?.log('main', '✅ BackgroundManager V1.1 připraven!');
+            window.DebugManager?.log('backgroundManager', '✅ BackgroundManager V1.1 připraven!');
         }
 
         // ───────────────────────────────────────────────────────────────────
@@ -376,7 +376,7 @@
                 }, 250);
             });
 
-            window.DebugManager?.log('main', '🎧 Event listeners nastaveny (s forced reload)');
+            window.DebugManager?.log('backgroundManager', '🎧 Event listeners nastaveny (s forced reload)');
         }
 
         // ───────────────────────────────────────────────────────────────────
@@ -415,7 +415,7 @@
     // 🌐 OFFLINE HANDLER
     // ───────────────────────────────────────────────────────────────────
     window.addEventListener('offline', () => {
-        window.DebugManager?.log('main', `
+        window.DebugManager?.log('backgroundManager', `
 ╔════════════════════════════════════════════════════
 ║ 🖼️  TAPETA: OFFLINE REŽIM
 ╠════════════════════════════════════════════════════
@@ -430,7 +430,7 @@
     // 🌐 ONLINE HANDLER
     // ───────────────────────────────────────────────────────────────────
     window.addEventListener('online', async () => {
-        window.DebugManager?.log('main', `
+        window.DebugManager?.log('backgroundManager', `
 ╔════════════════════════════════════════════════════
 ║ 🖼️  TAPETA: ONLINE REŽIM
 ╠════════════════════════════════════════════════════
@@ -445,7 +445,7 @@
                 // Použij refresh s vynuceným načtením
                 window.BackgroundManager.refresh(true); // forceReload = true
                 
-                window.DebugManager?.log('main', `
+                window.DebugManager?.log('backgroundManager', `
 ╔════════════════════════════════════════════════════
 ║ ✅ TAPETA ÚSPĚŠNĚ OBNOVENA
 ╠════════════════════════════════════════════════════
@@ -457,13 +457,13 @@
                 `.trim());
 
             } catch (error) {
-                window.DebugManager?.log('main', `❌ Chyba při obnově tapety: ${error.message}`);
+                window.DebugManager?.log('backgroundManager', `❌ Chyba při obnově tapety: ${error.message}`);
             }
         } else {
             // Pokud BackgroundManager ještě není inicializovaný, spusť init
             if (window.BackgroundManager) {
                 await window.BackgroundManager.init();
-                window.DebugManager?.log('main', '✅ BackgroundManager inicializován po obnovení spojení');
+                window.DebugManager?.log('backgroundManager', '✅ BackgroundManager inicializován po obnovení spojení');
             }
         }
     });
@@ -472,9 +472,9 @@
     // 🎯 STARTOVNÍ CHECK
     // ───────────────────────────────────────────────────────────────────
     if (!navigator.onLine) {
-        window.DebugManager?.log('main', '⚠️ TAPETA: Spouštím v OFFLINE režimu');
+        window.DebugManager?.log('backgroundManager', '⚠️ TAPETA: Spouštím v OFFLINE režimu');
     } else {
-        window.DebugManager?.log('main', '✅ TAPETA: Spouštím v ONLINE režimu');
+        window.DebugManager?.log('backgroundManager', '✅ TAPETA: Spouštím v ONLINE režimu');
     }
 
     // ═══════════════════════════════════════════════════════════════════════
