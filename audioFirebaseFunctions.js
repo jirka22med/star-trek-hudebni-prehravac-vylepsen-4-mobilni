@@ -1,8 +1,8 @@
 // audioFirebaseFunctions.js
-// 🖖 STAR TREK AUDIO CORE - DEBUGMANAGER EDITION (V3.5 - CLEAN)
-// Verze: 3.5 (Button Visibility ODSTRANĚNO - Separace modulů)
+// 🖖 STAR TREK AUDIO CORE - DEBUGMANAGER EDITION (V3.7 - VERZOVÁNÍ)
+// Verze: 3.7 (Přidáno automatické verzování + ZACHOVÁNA původní inicializace)
 // ═══════════════════════════════════════════════════════════════════════════════
-// ✅ KOMPLETNÍ KONTROLA PROVEDENA - VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CLAUDE.AI
+// ✅ TVOJE PŮVODNÍ INICIALIZACE ZACHOVÁNA - VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CLAUDE.AI
 // ═══════════════════════════════════════════════════════════════════════════════
 
 (function() {
@@ -12,7 +12,7 @@ const __WARP_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════════
     // 📡 KONFIGURACE FIREBASE (SECURE LINK)
     // ═══════════════════════════════════════════════════════════════════════════
-   const firebaseConfig = {
+    const firebaseConfig = {
   apiKey: "AIzaSyC0TDTs0DDqVEWaXGPUCSoTHAC53KgrmaM",
   authDomain: "star-trek-hudebni-prehravac-4m.firebaseapp.com",
   projectId: "star-trek-hudebni-prehravac-4m",
@@ -24,7 +24,7 @@ const __WARP_START = performance.now();
 
     let db; // Globální instance databáze
 
-    // ═══════════════════════════════════════════════════════════════════════════
+     // ═══════════════════════════════════════════════════════════════════════════
     // 📋 LOGOVACÍ SYSTÉM - Napojený na DebugManager
     // ═══════════════════════════════════════════════════════════════════════════
     function log(component, message, data = null, type = 'info') {
@@ -65,10 +65,10 @@ const __WARP_START = performance.now();
             console.log("⏳ [DB Check] Ověřuji spojení s warp jádrem (Firestore)...");
         }
         
-        while (!getFirestoreDB() && attempts < 50) { 
-            await new Promise(resolve => setTimeout(resolve, 100));
-            attempts++;
-        }
+       while (!getFirestoreDB() && attempts < 100) {  // Zvětši počet pokusů
+    await new Promise(resolve => setTimeout(resolve, 200));  // Zvětši interval
+    attempts++;
+}
         
         const isReady = !!getFirestoreDB();
         
@@ -107,13 +107,223 @@ const __WARP_START = performance.now();
     };
 
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🔢 FIREBASE VERSION MANAGER - NOVÝ MODUL PRO VERZOVÁNÍ
+    // ═══════════════════════════════════════════════════════════════════════════
+    const FirebaseVersionManager = {
+        currentVersion: null,
+        sessionId: null,
+        
+        async init() {
+            window.DebugManager?.log('firebase-verze', '🚀 Spouštím verzovací systém...', 'info');
+            
+            this.sessionId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            this.currentVersion = await this.generateNewVersion();
+            
+            localStorage.setItem('firebase_current_version', this.currentVersion);
+            localStorage.setItem('firebase_session_id', this.sessionId);
+            
+            window.DebugManager?.log('firebase-verze', 
+                `✅ Nová verze aktivována: ${this.currentVersion}`, 
+                'success', 
+                { sessionId: this.sessionId }
+            );
+            
+            return this.currentVersion;
+        },
+        
+        async generateNewVersion() {
+            const db = getFirestoreDB();
+            if (!db) {
+                const fallback = 'v1.0';
+                window.DebugManager?.log('firebase-verze', `⚠️ DB nedostupná, používám fallback: ${fallback}`, 'warning');
+                return fallback;
+            }
+            
+            try {
+                const snapshot = await db.collection('app_data')
+                    .orderBy('versionNum', 'desc')
+                    .limit(1)
+                    .get();
+                
+                let newVersionNum = 1.0;
+                
+                if (!snapshot.empty) {
+                    const lastDoc = snapshot.docs[0].data();
+                    const lastVersionNum = lastDoc.versionNum || 1.0;
+                    newVersionNum = Math.round((lastVersionNum + 0.1) * 10) / 10;
+                    
+                    window.DebugManager?.log('firebase-verze', 
+                        `⬆️ Inkrementuji: v${lastVersionNum} → v${newVersionNum}`, 
+                        'info'
+                    );
+                } else {
+                    window.DebugManager?.log('firebase-verze', '🆕 První verze v cloudu', 'info');
+                }
+                
+                return `v${newVersionNum}`;
+                
+            } catch (error) {
+                window.DebugManager?.log('firebase-verze', 
+                    '❌ Chyba při detekci verze, používám v1.0', 
+                    'error', 
+                    error
+                );
+                return 'v1.0';
+            }
+        },
+        
+        getVersionedDocId(baseName) {
+            return `${baseName}_${this.currentVersion}`;
+        },
+        
+        async switchVersion(targetVersion) {
+            const db = getFirestoreDB();
+            if (!db) {
+                window.DebugManager?.log('firebase-verze', '❌ DB nedostupná', 'error');
+                return false;
+            }
+            
+            try {
+                const docId = `main_playlist_${targetVersion}`;
+                const doc = await db.collection('app_data').doc(docId).get();
+                
+                if (!doc.exists) {
+                    window.DebugManager?.log('firebase-verze', 
+                        `❌ Verze ${targetVersion} neexistuje v cloudu!`, 
+                        'error'
+                    );
+                    return false;
+                }
+                
+                this.currentVersion = targetVersion;
+                localStorage.setItem('firebase_current_version', targetVersion);
+                
+                window.DebugManager?.log('firebase-verze', 
+                    `✅ Přepnuto na verzi: ${targetVersion}`, 
+                    'success'
+                );
+                
+                if (window.loadPlaylistFromFirestore) {
+                    await window.loadPlaylistFromFirestore();
+                }
+                
+                return true;
+                
+            } catch (error) {
+                window.DebugManager?.log('firebase-verze', 
+                    '❌ Chyba při přepínání verze', 
+                    'error', 
+                    error
+                );
+                return false;
+            }
+        },
+        
+        async listAllVersions() {
+            const db = getFirestoreDB();
+            if (!db) return [];
+            
+            try {
+                const snapshot = await db.collection('app_data')
+                    .where('versionNum', '>=', 0)
+                    .orderBy('versionNum', 'desc')
+                    .get();
+                
+                const versions = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        version: data.versionString || 'neznámá',
+                        versionNum: data.versionNum || 0,
+                        docId: doc.id,
+                        lastUpdated: data.lastUpdated?.toDate(),
+                        trackCount: data.totalTracks || 0,
+                        sessionId: data.sessionId || 'N/A'
+                    };
+                });
+                
+                window.DebugManager?.log('firebase-verze', 
+                    `📚 Nalezeno verzí: ${versions.length}`, 
+                    'info', 
+                    versions
+                );
+                
+                return versions;
+                
+            } catch (error) {
+                window.DebugManager?.log('firebase-verze', 
+                    '❌ Chyba při listování verzí', 
+                    'error', 
+                    error
+                );
+                return [];
+            }
+        },
+        
+        async cleanOldVersions(keepCount = 5) {
+            const db = getFirestoreDB();
+            if (!db) return false;
+            
+            try {
+                const allVersions = await this.listAllVersions();
+                
+                if (allVersions.length <= keepCount) {
+                    window.DebugManager?.log('firebase-verze', 
+                        `ℹ️ Počet verzí (${allVersions.length}) je OK, není co mazat`, 
+                        'info'
+                    );
+                    return true;
+                }
+                
+                const toDelete = allVersions.slice(keepCount);
+                
+                window.DebugManager?.log('firebase-verze', 
+                    `🧹 Mažu ${toDelete.length} starých verzí...`, 
+                    'warning', 
+                    toDelete.map(v => v.version)
+                );
+                
+                for (const version of toDelete) {
+                    await db.collection('app_data').doc(version.docId).delete();
+                    window.DebugManager?.log('firebase-verze', 
+                        `🗑️ Smazána: ${version.version}`, 
+                        'info'
+                    );
+                }
+                
+                window.DebugManager?.log('firebase-verze', 
+                    `✅ Úklid dokončen! Ponecháno ${keepCount} nejnovějších verzí.`, 
+                    'success'
+                );
+                
+                return true;
+                
+            } catch (error) {
+                window.DebugManager?.log('firebase-verze', 
+                    '❌ Chyba při mazání starých verzí', 
+                    'error', 
+                    error
+                );
+                return false;
+            }
+        }
+    };
+    
+    // Exportuj do window
+    window.FirebaseVersionManager = FirebaseVersionManager;
 
  // ============================================================================
-    // 🎵 HLAVNÍ PLAYLIST (CORE FUNCTIONS)
+    // 🎵 HLAVNÍ PLAYLIST - S VERZOVÁNÍM
     // ============================================================================
 
     window.savePlaylistToFirestore = async function(tracks) {
-    log("SAVE Playlist", "🚀 Požadavek na uložení playlistu přijat.");
+    // 🔢 Inicializace verzování (pokud ještě není)
+    if (!FirebaseVersionManager.currentVersion) {
+        await FirebaseVersionManager.init();
+    }
+    
+    const docId = FirebaseVersionManager.getVersionedDocId('main_playlist');
+    log("SAVE Playlist", `🚀 Požadavek na uložení playlistu do ${docId}.`);
 
     const isReady = await waitForDatabaseConnection();
     const database = getFirestoreDB();
@@ -131,29 +341,36 @@ const __WARP_START = performance.now();
     }
 
     try {
-        // Očištění dat + DIAGNOSTIKA DAT
+        // Očištění dat + ZACHOVÁNÍ RUČNÍCH ÚPRAV
         const cleanTracks = tracksToSave.map(track => ({
             title: track.title || "Neznámá skladba", 
             src: track.src || "",
             originalTitle: track.originalTitle || track.title, 
             duration: track.duration || "", 
             addedAt: track.addedAt || Date.now(),
-            // 🔥 NOVÉ: Zachováme vlajku ručních úprav!
+            // 🔥 ZACHOVÁNO: Vlajka ručních úprav!
             manuallyEdited: track.manuallyEdited || false,
             lastEditedAt: track.lastEditedAt || null
         }));
 
-        log("SAVE Playlist", `Připravuji ${cleanTracks.length} skladeb k teleportaci do 'app_data/main_playlist'.`, cleanTracks);
+        log("SAVE Playlist", `Připravuji ${cleanTracks.length} skladeb k teleportaci do '${docId}'.`, cleanTracks);
 
-        await database.collection("app_data").doc("main_playlist").set({
+        // 🔢 Extrakce čísla verze pro řazení
+        const versionNum = parseFloat(FirebaseVersionManager.currentVersion.replace('v', ''));
+
+        await database.collection("app_data").doc(docId).set({
             tracks: cleanTracks,
             lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
             totalTracks: cleanTracks.length,
-            version: "3.2-ManualEditProtection" // <--- Nová verze!
+            // 🔢 VERZOVÁNÍ (kompatibilní s ostatními moduly):
+            versionString: FirebaseVersionManager.currentVersion,
+            versionNum: versionNum,
+            sessionId: FirebaseVersionManager.sessionId,
+            version: "3.7-AutoVersioning"
         });
 
         log("SAVE Playlist", "✅ ZÁPIS ÚSPĚŠNÝ! Data jsou v cloudu.", null, 'success');
-        if (window.showNotification) window.showNotification("Playlist uložen do Cloudu!", "success");
+        if (window.showNotification) window.showNotification(`Playlist uložen (${FirebaseVersionManager.currentVersion})!`, "success");
         return true;
     } catch (error) {
         console.error("❌ CRITICAL SAVE ERROR:", error);
@@ -164,7 +381,13 @@ const __WARP_START = performance.now();
 };
 
     window.loadPlaylistFromFirestore = async function() {
-        log("LOAD Playlist", "📥 Požadavek na stažení playlistu.");
+        // 🔢 Inicializace verzování (pokud ještě není)
+        if (!FirebaseVersionManager.currentVersion) {
+            await FirebaseVersionManager.init();
+        }
+        
+        const docId = FirebaseVersionManager.getVersionedDocId('main_playlist');
+        log("LOAD Playlist", `📥 Požadavek na stažení playlistu z ${docId}.`);
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -172,14 +395,14 @@ const __WARP_START = performance.now();
         if (!isReady || !database) return null;
 
         try {
-            const doc = await database.collection("app_data").doc("main_playlist").get();
+            const doc = await database.collection("app_data").doc(docId).get();
             
             if (doc.exists) {
                 const data = doc.data();
                 log("LOAD Playlist", `✅ Dokument nalezen. Obsahuje ${data.tracks?.length || 0} skladeb.`, data, 'success');
                 return data.tracks || [];
             } else {
-                log("LOAD Playlist", "ℹ️ Dokument 'main_playlist' v kolekci 'app_data' neexistuje (první spuštění?).", null, 'info');
+                log("LOAD Playlist", `ℹ️ Dokument '${docId}' neexistuje (první spuštění této verze?).`, null, 'info');
                 return null;
             }
         } catch (error) {
@@ -187,16 +410,6 @@ const __WARP_START = performance.now();
             return null;
         }
     };
-
-
-
-
-
-
-
-
-
-
 
     // ═══════════════════════════════════════════════════════════════════════════
     // ⚙️ NASTAVENÍ PŘEHRÁVAČE
@@ -261,11 +474,17 @@ const __WARP_START = performance.now();
         }
 
         try {
-            // 1. Smazání hlavního playlistu
-            await database.collection("app_data").doc("main_playlist").delete();
-            log("DANGER", "🔥 Dokument 'main_playlist' smazán.", null, 'success');
+            // 1. Smazání VŠECH verzovaných playlistů
+            const snapshot = await database.collection("app_data")
+                .where('versionNum', '>=', 0)
+                .get();
+            
+            for (const doc of snapshot.docs) {
+                await doc.ref.delete();
+                log("DANGER", `🔥 Dokument '${doc.id}' smazán.`, null, 'success');
+            }
 
-            // 2. Smazání všech nastavení (BEZ button_visibility)
+            // 2. Smazání všech nastavení
             const settingsDocs = ['favorites', 'mainSettings', 'playlistSettings'];
             for (const docId of settingsDocs) {
                 await database.collection('audioPlayerSettings').doc(docId).delete();
@@ -274,8 +493,8 @@ const __WARP_START = performance.now();
 
             log("DANGER", "✅ AUDIO CLOUD JE ČISTÝ (Tabula Rasa).", null, 'success');
 
-            // 3. Totální čistka lokální paměti (jen audio části)
-            const keysToRemove = ['favorites', 'playerSettings', 'playlistSettings'];
+            // 3. Totální čistka lokální paměti
+            const keysToRemove = ['favorites', 'playerSettings', 'playlistSettings', 'firebase_current_version', 'firebase_session_id'];
             keysToRemove.forEach(key => localStorage.removeItem(key));
             log("DANGER", "🧹 Lokální audio cache vymazána.", null, 'success');
 
@@ -295,30 +514,75 @@ const __WARP_START = performance.now();
     };
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // 🚀 AUTO-START VERZOVACÍHO SYSTÉMU (spustí se PO inicializaci Firebase)
+    // ═══════════════════════════════════════════════════════════════════════════
+    (async function autoInitVersioning() {
+    // 🔥 POČKEJ NA FIREBASE (kterou inicializuje DebugManager)
+    await new Promise(resolve => {
+        const check = setInterval(() => {
+            if (window.db || (typeof firebase !== 'undefined' && firebase.apps.length > 0)) {
+                clearInterval(check);
+                console.log("✅ [AutoInit] Firebase je ready, spouštím verzování...");
+                resolve();
+            }
+        }, 200);
+    });
+    
+    // Extra delay pro jistotu
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Pak inicializuj verzování
+    await FirebaseVersionManager.init();
+        
+        console.log(
+            `%c🔢 FirebaseVersionManager V2.0 - AUTO-INCREMENT`, 
+            'color: #00FF00; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00FF00;'
+        );
+        console.log(
+            `%c   📡 Aktivní verze: ${FirebaseVersionManager.currentVersion}`, 
+            'color: #00CCFF; font-size: 12px; font-weight: bold;'
+        );
+        console.log(
+            `%c   🔄 Každý refresh = nová verze (ochrana před duplikáty)`, 
+            'color: #FFCC00; font-size: 11px;'
+        );
+        console.log(
+            `%c   🎛️ API: FirebaseVersionManager.listAllVersions() / .switchVersion('v1.2')`, 
+            'color: #FF6B35; font-size: 10px;'
+        );
+    })();
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // 📡 ZÁVĚREČNÁ ZPRÁVA
     // ═══════════════════════════════════════════════════════════════════════════
     console.log(
-        "%c🖖 audioFirebaseFunctions V3.5 - CLEAN (bez Button Visibility)", 
+        "%c🖖 audioFirebaseFunctions V3.7 - AUTO VERSIONING (Původní inicializace)", 
         "color: #00FF00; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00FF00;"
     );
     console.log(
-        "%c   📡 Napojeno na DebugManager | Modul: 'firebase'", 
+        "%c   📡 Napojeno na DebugManager | Modul: 'firebase' + 'firebase-verze'", 
         "color: #FFCC00; font-size: 12px;"
     );
-    // 🔥 TOTO JSME ZMĚNILI - ABY TO ŘÍKALO PRAVDU:
     console.log(
         "%c   🔓 HTTPS odkazy i Názvy SE UKLÁDAJÍ do Cloudu (Full Sync)", 
         "color: #00FF00; font-size: 11px; font-weight: bold;"
     );
     console.log(
-        "%c   🧹 Button Visibility ODSTRANĚNO - separátní modul", 
+        "%c   🔢 Automatické verzování: Každý refresh = nová verze", 
         "color: #FF6B35; font-size: 11px; font-weight: bold;"
     );
     console.log(
-        "%c   Zapni logging: Ctrl+Shift+D → Firebase modul", 
+        "%c   🛡️ Ochrana ručních úprav: manuallyEdited + lastEditedAt ZACHOVÁNO", 
+        "color: #00FF00; font-size: 11px; font-weight: bold;"
+    );
+    console.log(
+        "%c   🚀 TVOJE PŮVODNÍ INICIALIZACE ZACHOVÁNA!", 
+        "color: #FF00FF; font-size: 11px; font-weight: bold;"
+    );
+    console.log(
+        "%c   Zapni logging: Ctrl+Shift+D → Firebase modul + firebase-verze", 
         "color: #00CCFF; font-size: 11px;"
     );
 // ⏱️ LOG END
 console.log(`%c🔥 [FIREBASE] Načteno za ${(performance.now() - __WARP_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
-
