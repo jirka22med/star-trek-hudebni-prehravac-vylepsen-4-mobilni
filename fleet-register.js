@@ -1,7 +1,7 @@
 
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.8", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.9", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -32,7 +32,7 @@ const FLEET_CONFIG = {
            './DebugManager.js',
     // --- Inicializuje window.tracks, window.favorites, audio element ---
             './script.js',
-   // './audioFirebaseFunctions.js',
+    './audioFirebaseFunctions.js',
       './playlistSync.js',
          './pokrocila-sprava-playlistu.js',
        './buttonVisibilityFirebase.js',
