@@ -327,7 +327,7 @@
                     var serverVerze = match[1];
                     // Získáme aktuální verzi, kterou má prohlížeč v paměti
                     // (Pokud FLEET_CONFIG ještě neexistuje, je to stará cache nebo chyba)
-                    var browserVerze = (window.FLEET_CONFIG) ? window.FLEET_CONFIG.version : "0.0.0";
+                    var browserVerze = (window.FLEET_CONFIG) ? window.FLEET_CONFIG.version : "0.0.0.0.0.2";
 
                     console.log("🐕 [Watchdog] Server: " + serverVerze + " | Prohlížeč: " + browserVerze);
 
@@ -347,6 +347,7 @@
 
 </body>
 </html>
+
 
 
 
