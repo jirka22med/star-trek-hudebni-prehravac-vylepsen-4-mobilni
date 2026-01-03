@@ -1,7 +1,7 @@
 
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.7", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.8", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -26,13 +26,13 @@ const FLEET_CONFIG = {
          // --- NULTÉ POŘADÍ V POŘADÍ ---
         './fleet-register.js',
         // --- Musí se načíst PŘED všemi Firebase moduly ---
-       'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
-        'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js',  
+      // 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
+       // 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js',  
        // --- Musí být PŘED Firebase moduly, aby mohly logovat ---  
            './DebugManager.js',
     // --- Inicializuje window.tracks, window.favorites, audio element ---
             './script.js',
-    './audioFirebaseFunctions.js',
+   // './audioFirebaseFunctions.js',
       './playlistSync.js',
          './pokrocila-sprava-playlistu.js',
        './buttonVisibilityFirebase.js',
