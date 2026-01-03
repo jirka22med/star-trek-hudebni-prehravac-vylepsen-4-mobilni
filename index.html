@@ -306,8 +306,31 @@
 <!-- 🖖 KONEC NAČÍTÁNÍ MODULŮ -->
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
-  
+  <script>
+    (function() {
+        // 1. ZLIKVIDOVAT DUCHY (Staré Service Workery z PWA éry)
+        // Pokud v prohlížeči visí starý správce cache, okamžitě ho odpojíme.
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                    console.log("👻 [Cache Guard] Starý Service Worker odstraněn.");
+                }
+            });
+        }
+
+        // 2. VYNUTIT NOVÝ REGISTR (Cache Busting)
+        // Přidáme k názvu souboru aktuální čas (?v=...), což prohlížeč donutí
+        // zahodit starou verzi z paměti a stáhnout tu nejnovější z GitHubu.
+        var script = document.createElement('script');
+        script.src = 'fleet-register.js?v=' + new Date().getTime();
+        document.body.appendChild(script);
+        
+        console.log("🛡️ [Cache Guard] Fleet Register úspěšně nasazen a odjištěn.");
+    })();
+</script>
 
 </body>
 </html>
+
 
