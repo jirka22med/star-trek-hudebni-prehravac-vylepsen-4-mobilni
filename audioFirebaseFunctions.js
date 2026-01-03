@@ -87,19 +87,26 @@ const __WARP_START = performance.now();
     // 🚀 INICIALIZACE FIREBASE
     // ═══════════════════════════════════════════════════════════════════════════
     // Jen připoj se k EXISTUJÍCÍ Firebase instanci:
-(async function() {
-    await new Promise(resolve => {
-        const check = setInterval(() => {
-            if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-                clearInterval(check);
-                db = firebase.firestore();
-                window.db = db;
-                log("INIT", "✅ Připojeno k existující Firebase instanci.", null, 'success');
-                resolve(true);
-            }
-        }, 100);
-    });
-})();
+window.initializeFirebaseAppAudio = async function() {
+        log("INIT", "Zahajuji start sekvence Firebase...");
+        
+        return new Promise((resolve) => {
+            const check = setInterval(() => {
+                if (typeof firebase !== 'undefined' && firebase.firestore) {
+                    clearInterval(check);
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                        log("INIT", "Firebase App Inicializována.");
+                    } else {
+                        log("INIT", "Firebase App již běží.");
+                    }
+                    db = firebase.firestore();
+                    window.db = db;
+                    resolve(true);
+                }
+            }, 100);
+        });
+    };
 
     // ═══════════════════════════════════════════════════════════════════════════
     // 🔢 FIREBASE VERSION MANAGER V2.0 - AUTO-INCREMENT ON RELOAD
@@ -561,3 +568,4 @@ const __WARP_START = performance.now();
 // ⏱️ LOG END
 console.log(`%c🔥 [FIREBASE] Načteno za ${(performance.now() - __WARP_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
+
