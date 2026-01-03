@@ -220,8 +220,7 @@
 <!-- LAYER 3: FIREBASE MODULY (SYNCHRONNÍ - BEZ DEFER!) -->
 <!-- Poskytují API pro ostatní moduly -->
 <!-- ============================================ -->
-<script src="audioFirebaseFunctions.js"></script>
-<script src="buttonVisibilityFirebase.js"></script>
+ 
 
 <!-- ============================================ -->
 <!-- LAYER 4: CORE AUDIO ENGINE (SYNCHRONNÍ - BEZ DEFER!) -->
@@ -230,8 +229,12 @@
 <!-- Inicializuje window.tracks, window.favorites, audio element -->
 <!-- ============================================ -->
 <script src="script.js"></script>
+ <script src="audioFirebaseFunctions.js"></script>   
+    <script src="playlistSync.js" ></script>
+  <script src="pokrocila-sprava-playlistu.js" defer></script>   
+<script src="buttonVisibilityFirebase.js"></script>
 <script src="playlist-height.js"  ></script>  <!-- PŘED -->
- 
+  
 <!-- ============================================ -->
 <!-- LAYER 5: DATA LAYER (SYNCHRONNÍ - BEZ DEFER!) -->
 <!-- KRITICKÉ: myPlaylist.js MUSÍ být BEZ DEFER! -->
@@ -258,7 +261,7 @@
 <!-- ============================================ -->
 
 <!-- Pokročilá správa playlistu -->
-<script src="pokrocila-sprava-playlistu.js" defer></script>
+ 
 
 <!-- Nastavení vzhledu playlistu -->
 <script src="playlistSettings.js" defer></script>
@@ -303,18 +306,7 @@
 <!-- 🖖 KONEC NAČÍTÁNÍ MODULŮ -->
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
- <script src="playlistSync.js" async defer></script>
+  
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
