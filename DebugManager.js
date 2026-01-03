@@ -29,7 +29,8 @@
         'playlistSettings': { name: 'Nastavení Playlistu', default: false, color: '#99FF99' }, 
          'playlist01': { name: 'playlist-height', default: false, color: '#99FF99' },
          'backgroundManager': { name: 'backgroundManager', default: false, color: '#FF00FF' },
-           
+          'firebase-verze': { name: 'firebase-verze', default: false, color: '#FF0000' },
+         
     };
 
     // --- Stavová paměť ---
@@ -495,6 +496,7 @@
     };
 
 })();
+
 
 
 
