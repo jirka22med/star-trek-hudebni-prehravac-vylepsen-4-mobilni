@@ -308,29 +308,45 @@
 <!-- ============================================ -->
   <script>
     (function() {
-        // 1. ZLIKVIDOVAT DUCHY (Staré Service Workery z PWA éry)
-        // Pokud v prohlížeči visí starý správce cache, okamžitě ho odpojíme.
+        // 1. ZLIKVIDOVAT DUCHY (Staré Service Workery)
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
-                    registration.unregister();
-                    console.log("👻 [Cache Guard] Starý Service Worker odstraněn.");
-                }
+                for(let registration of registrations) registration.unregister();
             });
         }
 
-        // 2. VYNUTIT NOVÝ REGISTR (Cache Busting)
-        // Přidáme k názvu souboru aktuální čas (?v=...), což prohlížeč donutí
-        // zahodit starou verzi z paměti a stáhnout tu nejnovější z GitHubu.
-        var script = document.createElement('script');
-        script.src = 'fleet-register.js?v=' + new Date().getTime();
-        document.body.appendChild(script);
-        
-        console.log("🛡️ [Cache Guard] Fleet Register úspěšně nasazen a odjištěn.");
+        // 2. KONTROLA ČERSTVOSTI (Bez spuštění kódu)
+        // Stáhneme text souboru ze serveru s unikátním časovým razítkem
+        fetch('fleet-register.js?check=' + new Date().getTime())
+            .then(response => response.text())
+            .then(text => {
+                // Najdeme verzi v novém souboru (hledáme text 'version: "..."')
+                var match = text.match(/version:\s*"([^"]+)"/);
+                
+                if (match && match[1]) {
+                    var serverVerze = match[1];
+                    // Získáme aktuální verzi, kterou má prohlížeč v paměti
+                    // (Pokud FLEET_CONFIG ještě neexistuje, je to stará cache nebo chyba)
+                    var browserVerze = (window.FLEET_CONFIG) ? window.FLEET_CONFIG.version : "0.0.0";
+
+                    console.log("🐕 [Watchdog] Server: " + serverVerze + " | Prohlížeč: " + browserVerze);
+
+                    // POKUD SE VERZE LIŠÍ -> TVRDÝ RELOAD
+                    if (serverVerze !== browserVerze) {
+                        console.warn("⚠️ [Watchdog] Zastaralá cache detekována! Provádím tvrdý restart...");
+                        // Toto donutí prohlížeč zahodit cache a načíst stránku znova
+                        window.location.reload(true);
+                    } else {
+                        console.log("✅ [Watchdog] Verze souhlasí. Systém je aktuální.");
+                    }
+                }
+            })
+            .catch(err => console.log("🐕 [Watchdog] Kontrola selhala (asi offline):", err));
     })();
 </script>
 
 </body>
 </html>
+
 
 
