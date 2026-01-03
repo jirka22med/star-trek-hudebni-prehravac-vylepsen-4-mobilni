@@ -1,7 +1,8 @@
 
 (function() {
     'use strict';
-
+// ⏱️ LOG START
+const __CORE_START = performance.now();
 // ════════════════════════════════════════════════════════════════════════════════
 // 🛸 STAR TREK AUDIO CORE - ARCHITECT EDITION (V 8.0 - CLOUD STALL FIX)
 // ════════════════════════════════════════════════════════════════════════════════
@@ -199,7 +200,7 @@ function checkAndFixTracks(trackList) {
     if (!Array.isArray(trackList)) return;
 
     trackList.forEach(track => {
-        if (track?.src?.includes("dropbox.com")) {
+        if (track?.src?.includes("www.dropbox.com")) {
             let url = new URL(track.src);
             
             // === 2026 PROTOCOL ===
@@ -238,55 +239,81 @@ function checkAndFixTracks(trackList) {
 // Nahraď celou funkci loadAudioData() v script.js tímto kódem:
 // ════════════════════════════════════════════════════════════════════════════════
 
+// ============================================================================
+// � ️ loadAudioData (V7.0 - BENDER EDITION - FUNKČNÍ ORIGINÁL)
+// ============================================================================
+// Vychází přesně z tvého 'loadAudioData-original.js'.
+// Vrací zpět globální proměnné (aby se načítal myPlaylist).
+// Opravuje přepisování názvů (aby zůstalo "hovno").
+
 async function loadAudioData() {
     window.DebugManager?.log('main', "loadAudioData: Načítám data přehrávače...");
     
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 🔥 KLÍČOVÁ ZMĚNA: Nastavíme originalTracks PŘED načtením z Cloudu
-    // ═══════════════════════════════════════════════════════════════════════════
+    // 1. ZÁKLADNÍ NAČTENÍ Z myPlaylist.js
     const originalPlaylistFromFile = window.tracks ? [...window.tracks] : [];
     const originalFileCount = originalPlaylistFromFile.length;
     
-    // ✅ DŮLEŽITÉ: Nastavíme window.originalTracks HNED (pro párování v Firestore)
-    window.originalTracks = originalPlaylistFromFile;
-    originalTracks = originalPlaylistFromFile; // Lokální proměnná
+    const originalFileHash = originalFileCount > 0 
+        ? `${originalFileCount}-${originalPlaylistFromFile[0]?.title || ''}-${originalPlaylistFromFile[originalFileCount-1]?.title || ''}`
+        : 'empty';
+    
+    window.DebugManager?.log('main', `🖖 loadAudioData: Původní playlist z myPlaylist.js má ${originalFileCount} skladeb`);
+    window.DebugManager?.log('main', `🖖 loadAudioData: Hash lokálního playlistu: ${originalFileHash}`);
+    
+    // 🔥 TOTO JSEM MINULE VYNECHAL - PROTO TO NEJELO! 🔥
+    // Inicializace globálních proměnných pro fungování přehrávače
+    originalTracks = originalPlaylistFromFile;
     currentPlaylist = [...originalTracks];
     
     let firestoreLoaded = { playlist: false, favorites: false, settings: false };
-try {
-    // ═══════════════════════════════════════════════════════════════════════
-    // 📥 NAČTENÍ Z CLOUDU (nyní už obsahuje spárované src odkazy!)
-    // ═══════════════════════════════════════════════════════════════════════
-    const loadedPlaylist = await window.loadPlaylistFromFirestore?.();
-    
-    if (loadedPlaylist?.length > 0) {
-        const cloudCount = loadedPlaylist.length;
+
+    try {
+        // 2. POKUS O NAČTENÍ Z CLOUDU
+        const loadedPlaylist = await window.loadPlaylistFromFirestore?.();
         
-        window.DebugManager?.log('main', '📊 Cloud:', cloudCount, 'skladeb | Lokál:', originalFileCount, 'skladeb');
+        if (loadedPlaylist?.length > 0) {
+            const cloudCount = loadedPlaylist.length;
+            const cloudHash = `${cloudCount}-${loadedPlaylist[0]?.title || ''}-${loadedPlaylist[cloudCount-1]?.title || ''}`;
+            
+            window.DebugManager?.log('main', `☁️ loadAudioData: Cloud playlist má ${cloudCount} skladeb`);
             
             if (originalFileCount === 0) {
-                // ✅ Lokál prázdný → Beru Cloud (už spárovaný)
-                window.DebugManager?.log('main', "⬇️ Lokál prázdný → Používám Cloud (spárované názvy + src)");
+                // Lokál je prázdný -> Bereme Cloud
+                window.DebugManager?.log('main', "⬇️ Lokál prázdný -> Beru Cloud.");
                 window.tracks = loadedPlaylist;
                 checkAndFixTracks(window.tracks);
                 firestoreLoaded.playlist = true;
                 
+            } else if (originalFileHash === cloudHash) {
+                // Jsou stejné -> Bereme Cloud
+                window.DebugManager?.log('main', "✅ Playlisty jsou SHODNÉ.");
+                window.tracks = loadedPlaylist; 
+                checkAndFixTracks(window.tracks);
+                firestoreLoaded.playlist = true;
+                
             } else {
-                // Konflikt resolution
+                // � ️ KONFLIKT (Tady se rozhoduje o "hovnu")
+                window.DebugManager?.log('main', "🔄 Playlisty se liší.");
+                
+                // Pokud sedí počet skladeb, znamená to, že jsi jen PŘEJMENOVÁVAL.
+                // V tom případě VĚŘÍME CLOUDU!
                 if (originalFileCount === cloudCount) {
-                    window.DebugManager?.log('main', "👑 Počet sedí → Používám CLOUD (spárované názvy + lokální src)");
-                    window.tracks = loadedPlaylist; // Už spárované!
+                    window.DebugManager?.log('main', "👑 Počet sedí -> POUŽÍVÁM CLOUD (zachovávám tvé názvy)");
+                    window.tracks = loadedPlaylist; // <--- TOTO ZACHRÁNÍ NÁZEV
                     firestoreLoaded.playlist = true;
                 } else {
-                    window.DebugManager?.log('main', "⚠️ Nesedí počet → Používám LOKÁL (čekám na sync)");
+                    // Pokud počet nesedí (přidal jsi skladbu), musíme vzít lokál
+                    window.DebugManager?.log('main', "� ️ Nesedí počet -> Používám LOKÁL (čekám na sync)");
                     window.tracks = originalPlaylistFromFile;
                     window.PLAYLIST_NEEDS_SYNC = true;
                 }
+                
                 checkAndFixTracks(window.tracks);
             }
+            
         } else {
             // Cloud prázdný
-            window.DebugManager?.log('main', "📁 Cloud prázdný → Používám myPlaylist.js");
+            window.DebugManager?.log('main', "📁 Cloud prázdný -> Používám myPlaylist.js");
             window.tracks = originalPlaylistFromFile;
             checkAndFixTracks(window.tracks);
             window.PLAYLIST_NEEDS_SYNC = true;
@@ -1243,6 +1270,7 @@ window.populatePlaylist = populatePlaylist;
 window.updateActiveTrackVisuals = updateActiveTrackVisuals;
  
  
-     
+     // ⏱️ LOG END
+console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
 
