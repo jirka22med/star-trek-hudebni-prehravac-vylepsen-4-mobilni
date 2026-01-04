@@ -201,7 +201,7 @@
 <!-- ============================================ -->
 <!-- LAYER 0: PWA FLEET REGISTRY (MUSÍ BÝT PRVNÍ!) -->
 <!-- ============================================ -->
-  
+  <script src="fleet-register.js"></script>
 
 <!-- ============================================ -->
 <!-- LAYER 1: FIREBASE CORE (SYNCHRONNÍ - BEZ DEFER!) -->
@@ -306,10 +306,48 @@
 <!-- 🖖 KONEC NAČÍTÁNÍ MODULŮ -->
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
- 
+ <script>
+    (function() {
+        // 1. ZLIKVIDOVAT DUCHY (Staré Service Workery)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) registration.unregister();
+            });
+        }
+
+        // 2. KONTROLA ČERSTVOSTI (Bez spuštění kódu)
+        // Stáhneme text souboru ze serveru s unikátním časovým razítkem
+        fetch('fleet-register.js?check=' + new Date().getTime())
+            .then(response => response.text())
+            .then(text => {
+                // Najdeme verzi v novém souboru (hledáme text 'version: "..."')
+                var match = text.match(/version:\s*"([^"]+)"/);
+                
+                if (match && match[1]) {
+                    var serverVerze = match[1];
+                    // Získáme aktuální verzi, kterou má prohlížeč v paměti
+                    // (Pokud FLEET_CONFIG ještě neexistuje, je to stará cache nebo chyba)
+                    var browserVerze = (window.FLEET_CONFIG) ? window.FLEET_CONFIG.version : "0.0.0";
+
+                    console.log("🐕 [Watchdog] Server: " + serverVerze + " | Prohlížeč: " + browserVerze);
+
+                    // POKUD SE VERZE LIŠÍ -> TVRDÝ RELOAD
+                    if (serverVerze !== browserVerze) {
+                        console.warn("⚠️ [Watchdog] Zastaralá cache detekována! Provádím tvrdý restart...");
+                        // Toto donutí prohlížeč zahodit cache a načíst stránku znova
+                        window.location.reload(true);
+                    } else {
+                        console.log("✅ [Watchdog] Verze souhlasí. Systém je aktuální.");
+                    }
+                }
+            })
+            .catch(err => console.log("🐕 [Watchdog] Kontrola selhala (asi offline):", err));
+    })();
+</script>
 
 </body>
 </html>
+
 
 
 
