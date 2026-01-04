@@ -179,15 +179,17 @@ window.PlaylistSyncManager = {
                     }
                     
                     // Jinak běžná synchronizace z cloudu
-                    if (localTrack.title !== cloudVersion.title) {
-                        hasChanges = true; 
-                        window.DebugManager?.log('sync', `🔄 Obnovuji název: "${localTrack.title}" -> "${cloudVersion.title}"`);
-                        return { 
-                            ...localTrack, 
-                            title: cloudVersion.title,
-                            originalTitle: localTrack.title 
-                        };
-                    }
+                     // ✅ OPRAVENO: Pokud se názvy liší, věříme lokálu (tvému v.2 / v.3)
+if (localTrack.title !== cloudVersion.title) {
+    hasChanges = true; 
+    window.DebugManager?.log('sync', `✨ Zachovávám tvůj nový název: "${localTrack.title}" (Cloud má starý: "${cloudVersion.title}")`);
+    
+    // 🔥 KLÍČOVÁ ZMĚNA: Vrátíme localTrack, čímž Cloud donutíme se aktualizovat podle tebe
+    return { 
+        ...localTrack,
+        manuallyEdited: true // Pro jistotu označíme jako upravené
+    };
+}
                     return localTrack; 
                 } else {
                     // NENÍ v Cloudu -> Nová písničkka, necháme ji být
