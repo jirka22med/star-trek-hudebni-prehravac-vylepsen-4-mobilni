@@ -1,11 +1,7 @@
 <!DOCTYPE html>
  <html lang="cs">
  <link rel="icon" href="https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_82x82.jpg?ver=1" type="image/png">
- <script>
-    // ⏱️ START GLOBÁLNÍHO WARP MĚŘENÍ
-    window.__INDEX_START = performance.now();
-    console.log("%c🚀 [FLOTILA]: Zahajuji startovní sekvenci index.html...", "color: #00ffff; font-weight: bold;");
-</script>
+
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -211,17 +207,14 @@
 <!-- LAYER 1: FIREBASE CORE (SYNCHRONNÍ - BEZ DEFER!) -->
 <!-- Musí se načíst PŘED všemi Firebase moduly -->
 <!-- ============================================ -->
-<!-- 🔥 DOPORUČENÁ (stabilní + bugfixy): -->
-<!-- ✅ TVOJE SOUČASNÁ (první v9 série): -->
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    <script src="DebugManager.js"></script>
-<script type="module" src="audioFirebaseFunctions.js"></script>   
+
 <!-- ============================================ -->
 <!-- LAYER 2: DEBUG & LOGGING (SYNCHRONNÍ - BEZ DEFER!) -->
 <!-- Musí být PŘED Firebase moduly, aby mohly logovat -->
 <!-- ============================================ -->
- 
+<script src="DebugManager.js"></script>
 
 <!-- ============================================ -->
 <!-- LAYER 3: FIREBASE MODULY (SYNCHRONNÍ - BEZ DEFER!) -->
@@ -235,8 +228,8 @@
 
 <!-- Inicializuje window.tracks, window.favorites, audio element -->
 <!-- ============================================ -->
-<script  type="module"src="script.js"></script>
-  
+<script src="script.js"></script>
+ <script src="audioFirebaseFunctions.js"></script>   
     <script src="playlistSync.js" ></script>
   <script src="pokrocila-sprava-playlistu.js" defer></script>   
 <script src="buttonVisibilityFirebase.js"></script>
@@ -313,22 +306,13 @@
 <!-- 🖖 KONEC NAČÍTÁNÍ MODULŮ -->
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
- <script>
-    // ⏱️ KONEC GLOBÁLNÍHO WARP MĚŘENÍ
-    window.addEventListener('load', () => {
-        const totalTime = (performance.now() - window.__INDEX_START).toFixed(2);
-        console.log(
-            `%c🖖 [MOSTEK]: Celý index.html nahrán za ${totalTime} ms`, 
-            "background: #000; color: #00ff00; font-size: 14px; font-weight: bold; padding: 10px; border: 2px solid #00ff00;"
-        );
-        
-        // Zápis do tvého Jiříkova hlídače, pokud je aktivní
-        if (window.DebugManager) {
-            window.DebugManager.log('system', `🚀 Celková inicializace PWA dokončena za ${totalTime} ms`, 'success');
-        }
-    });
-</script>
+ 
 
 </body>
-</html> 
+</html>
+
+
+
+
+
 
