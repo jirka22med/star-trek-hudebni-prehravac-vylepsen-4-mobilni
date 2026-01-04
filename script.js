@@ -399,18 +399,28 @@ if (window.tracks.length > 0) {
     // ═══════════════════════════════════════════════════════════════════════════
     // 🔄 SYNC (pokud třeba)
     // ═══════════════════════════════════════════════════════════════════════════
-    if (window.PLAYLIST_NEEDS_SYNC) {
-        setTimeout(async () => {
-            window.DebugManager?.log('main', "🔄 Zahajuji sync playlistu do Cloudu...");
-            // Sync se postará funkce v playlistSync.js nebo můžeš volat přímo:
-            // await window.savePlaylistToFirestore(window.tracks);
-            window.PLAYLIST_NEEDS_SYNC = false;
-        }, 2000);
-    } else if (!firestoreLoaded.playlist) {
-        if(typeof debounceSaveAudioData === 'function') await debounceSaveAudioData();
+    // 🛡️ OPRAVENÁ SYNC LOGIKA (USS PROMETHEUS - Fleet Registry Fix)
+    // Už žádné setTimeout, synchronizujeme jen když je to nutné a bezpečné
+    if (window.PLAYLIST_NEEDS_SYNC && firestoreLoaded.playlist) {
+        // Máme Cloud (v1.3), ale lokál má víc skladeb -> aktualizujeme Cloud tvými novými daty
+        window.DebugManager?.log('main', "🔄 [SYNC] Lokální změny zjištěny, aktualizuji Cloud...");
+        if (typeof window.savePlaylistToFirestore === 'function') {
+            await window.savePlaylistToFirestore(window.tracks);
+        }
+        window.PLAYLIST_NEEDS_SYNC = false;
+
+    } else if (!firestoreLoaded.playlist && originalPlaylistFromFile.length > 0) {
+        // Cloud byl prázdný, nahráváme lokální soubor poprvé
+        window.DebugManager?.log('main', "📤 [SYNC] Cloud prázdný, nahrávám lokální databázi...");
+        if (typeof debounceSaveAudioData === 'function') {
+            await debounceSaveAudioData();
+        }
     }
     
-    if (window.CaptainNotifyChange) window.CaptainNotifyChange();
+    // 🖖 Finální synchronizace vizuálu - Kapitán hlásí připravenost
+    if (window.CaptainNotifyChange) {
+        window.CaptainNotifyChange();
+    }
 }
 
 // ════════════════════════════════════════════════════════════════════════════════
