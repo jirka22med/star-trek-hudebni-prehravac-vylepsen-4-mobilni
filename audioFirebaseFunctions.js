@@ -132,45 +132,10 @@ const __WARP_START = performance.now();
         },
         
         async generateNewVersion() {
-            const db = getFirestoreDB();
-            if (!db) {
-                const fallback = 'v1.0';
-                window.DebugManager?.log('firebase-verze', `⚠️ DB nedostupná, používám fallback: ${fallback}`, 'warning');
-                return fallback;
-            }
-            
-            try {
-                const snapshot = await db.collection('app_data')
-                    .orderBy('versionNum', 'desc')
-                    .limit(1)
-                    .get();
-                
-                let newVersionNum = 1.0;
-                
-                if (!snapshot.empty) {
-                    const lastDoc = snapshot.docs[0].data();
-                    const lastVersionNum = lastDoc.versionNum || 1.0;
-                    newVersionNum = Math.round((lastVersionNum + 0.1) * 10) / 10;
-                    
-                    window.DebugManager?.log('firebase-verze', 
-                        `⬆️ Inkrementuji: v${lastVersionNum} → v${newVersionNum}`, 
-                        'info'
-                    );
-                } else {
-                    window.DebugManager?.log('firebase-verze', '🆕 První verze v cloudu', 'info');
-                }
-                
-                return `v${newVersionNum}`;
-                
-            } catch (error) {
-                window.DebugManager?.log('firebase-verze', 
-                    '❌ Chyba při detekci verze, používám v1.0', 
-                    'error', 
-                    error
-                );
-                return 'v1.0';
-            }
-        },
+    // 🔥 FIXNÍ VERZE v1.0 - žádný auto-increment (Gemini diagnostika)
+    window.DebugManager?.log('firebase-verze', '✅ Používám fixní verzi v1.0 (Fleet-register řídí globální verze)', 'info');
+    return 'v1.0';
+},
         
         getVersionedDocId(baseName) {
             return `${baseName}_${this.currentVersion}`;
