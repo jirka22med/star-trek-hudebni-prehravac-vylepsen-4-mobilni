@@ -6,7 +6,8 @@
 // Řešení: Automatické vytvoření notifikačního systému pokud chybí
 // Verze: 1.1 (DebugManager Integration)
 // =============================================================================
-
+const __notificationFixJS_START = performance.now();
+ 
 // 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager
 // const DEBUG_NOTIFICATION_FIX = false;
 
@@ -323,3 +324,4 @@ window.checkNotificationSystem = function() {
 // Nyní by všechny notifikace měly fungovat bez chyb!
 // =============================================================================
 
+console.log(`%c🚀 [notificationFixJS] Načteno za ${(performance.now() - __notificationFixJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
