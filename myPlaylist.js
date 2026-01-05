@@ -1,3 +1,6 @@
+const __myPlaylistJS_START = performance.now();
+ 
+
 // 🖖 OCHRANA PLAYLISTU - Zabraňuje přepsání Firestorem
 window.PLAYLIST_SOURCE = 'myPlaylist.js';
 window.PLAYLIST_VERSION = new Date().toISOString(); 
@@ -887,4 +890,5 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null },
 window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks.length} skladeb)`);
 
  
- 
+ console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
