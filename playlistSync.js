@@ -295,5 +295,6 @@ if (typeof window !== 'undefined') {
 window.syncPlaylist = () => window.PlaylistSyncManager.syncLocalToCloud();
 window.CaptainNotifyChange = () => window.PlaylistSyncManager.notifyDataChanged();
                 // ⏱️ LOG END
-console.error(`%c🔄 [playlistSyncJS] Načteno za ${(performance.now() - __playlistSyncJS_START).toFixed(2)} ms`, 'color: #00d4ff; font-weight: bold;');
+console.log(`%c🔄 [playlistSyncJS] Načteno za ${(performance.now() - __playlistSyncJS_START).toFixed(2)} ms`, 'color: #00d4ff; font-weight: bold;');
+
 
