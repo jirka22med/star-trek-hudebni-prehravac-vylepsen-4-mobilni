@@ -7,7 +7,8 @@
 
 (function() {
     'use strict';
-
+const __buttonVisibilityFirebase_START = performance.now();
+ 
     const COLLECTION_NAME = 'spravaTlacitek'; // Samostatná kolekce
     const DOC_NAME = 'config'; // Hlavní dokument s konfigurací
 
@@ -333,4 +334,5 @@
         "color: #00CCFF; font-size: 11px;"
     );
 
+console.log(`%c🚀 [buttonVisibilityFirebase] Načteno za ${(performance.now() - __buttonVisibilityFirebase_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
