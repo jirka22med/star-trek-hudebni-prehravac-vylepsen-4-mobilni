@@ -7,7 +7,8 @@
 
 (function() {
     'use strict';
-
+const __DebugManager_START = performance.now();
+ 
     // --- Konfigurace modulů ---
     const MODULES_CONFIG = {
         'main': { name: 'Jádro (script.js)', default: false, color: '#FF9900' },
@@ -494,8 +495,9 @@
         getFirestoreInstance: () => firestoreDB,
         BUTTON_ID: 'debug-manager-button'
     };
-
+console.log(`%c🚀 [DebugManager] Načteno za ${(performance.now() - __DebugManager_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
