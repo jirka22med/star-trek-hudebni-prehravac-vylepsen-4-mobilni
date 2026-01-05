@@ -1,4 +1,4 @@
-const VERSION_BVIS = "121.101.111"; // Verze správy tlačítek
+const VERSION_BVIS = "121.101.112"; // Verze správy tlačítek
 
 /**  
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE 
@@ -292,7 +292,12 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'Instalování PWA aplikace'
         },   
-
+     'lehka-atomovka': {
+    name: '☢️ lehka-atomovka',
+        category: 'Systém',
+        essential: false,
+        description: 'Čistí-localstorage caha windows'
+        }, 
    
 };
 
@@ -352,6 +357,8 @@ const DEFAULT_VISIBILITY = {
     'zobrazit-panel-hlasitosti': false,
 
     'install-app-button': false,
+
+    'lehka-atomovka': false,
 };
  
 
@@ -1503,4 +1510,5 @@ if (typeof window !== 'undefined') {
  * ✅ Firebase integrace stále funkční
  * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
  */
+
 
