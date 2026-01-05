@@ -3,7 +3,8 @@
 
 (function() {
     'use strict';
-    
+    const __universalniPER_START = performance.now();
+ 
     // Globální proměnné pro monitoring
     let frameCount = 0;
     let lastLogTime = performance.now();
@@ -206,3 +207,5 @@
 // --- Vysvětlení ikon ---
 // Paměť: 🟢 (pod 50MB) | 🟡 (50-100MB) | 🔴 (nad 100MB)
 // Odezva: ⚡ (16ms/60fps) | 🟢 (33ms/30fps) | 🟡 (50ms/20fps) | 🐌 (nad 50ms)
+console.log(`%c🚀 [universalniPER] Načteno za ${(performance.now() - __universalniPER_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+})();
