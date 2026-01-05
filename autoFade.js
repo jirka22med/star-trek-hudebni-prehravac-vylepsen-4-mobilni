@@ -1,6 +1,7 @@
 (function() {
     'use strict';
-
+const __autoFade_START = performance.now();
+ 
 // =============================================================================
 // 🚀 AUTO-FADE MODUL PRO AUDIO PŘEHRÁVAČ - Admirálův upgrade V2.0
 // =============================================================================
@@ -756,5 +757,6 @@ initAutoFadeModule();
 // Rekalibrováno pro script.js V8.0 - StreamGuard kompatibilní!
 // Připraven k nasazení ve flotile více admirála Jiříka!
 // =============================================================================
-
+console.log(`%c🚀 [autoFade] Načteno za ${(performance.now() - __autoFade_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
