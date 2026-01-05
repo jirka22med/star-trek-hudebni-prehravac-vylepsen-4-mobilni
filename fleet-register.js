@@ -1,7 +1,7 @@
 
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.16", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.17", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -63,8 +63,12 @@ const FLEET_CONFIG = {
               './bluetoothDisconnectMonitor.js',
         //Finální úpravy UI - musí být po všech feature modulech
                  './sprava-rozhrani.js',
+        //boční posuvník na stránce
                  './scrollbar.js',
-    ]            
+        //lehká atomovka odpáli vše co jí stojí v cestě i borgy odpalit dokáže?.
+                   './lehka-atomovka.js',  
+        
+    ]           
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
