@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 // ⏱️ LOG START
-const __WARP_START = performance.now();
+const __audioFirebaseFunctions_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════════
     // 📡 KONFIGURACE FIREBASE (SECURE LINK)
     // ═══════════════════════════════════════════════════════════════════════════
@@ -548,5 +548,6 @@ const __WARP_START = performance.now();
         "color: #00CCFF; font-size: 11px;"
     );
 // ⏱️ LOG END
-console.log(`%c🔥 [FIREBASE] Načteno za ${(performance.now() - __WARP_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
+console.log(`%c🔥 [audioFirebaseFunctions] Načteno za ${(performance.now() - __audioFirebaseFunctions_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
+
