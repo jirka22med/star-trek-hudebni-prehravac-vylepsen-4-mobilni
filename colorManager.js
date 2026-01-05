@@ -1,6 +1,7 @@
 (function() {
     'use strict';
-
+const __colorManagerJS_START = performance.now();
+ 
     let trackColors = {}; // Mapa barev: { "Název skladby": "hex_barva" }
 
     // --- 1. Inicializace Modálního okna (Moldaru) ---
@@ -162,4 +163,5 @@
         setTimeout(loadColorsFromCloud, 2000);
     });
 
+console.log(`%c🚀 [colorManagerJS] Načteno za ${(performance.now() - __colorManagerJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
