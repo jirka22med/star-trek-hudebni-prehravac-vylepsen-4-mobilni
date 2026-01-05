@@ -16,7 +16,8 @@
 
 (function() {
     'use strict';
-
+const __SpravaTapet_START = performance.now();
+ 
     // ═══════════════════════════════════════════════════════════════════════
     // 📚 KNIHOVNA TAPET
     // ═══════════════════════════════════════════════════════════════════════
@@ -496,5 +497,6 @@
         "%c   Použití: await BackgroundManager.init()", 
         "color: #00CCFF; font-size: 11px;"
     );
-
+console.log(`%c🚀 [SpravaTapet] Načteno za ${(performance.now() - __SpravaTapet_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
