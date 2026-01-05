@@ -27,10 +27,10 @@
         'wake': { name: 'Počítač Pomocník pro hlasové ovládání', default: false, color: '#339933' },
         'playlistManager': { name: 'Správce Playlistu', default: false, color: '#66FF66' },
         'playlistSettings': { name: 'Nastavení Playlistu', default: false, color: '#99FF99' }, 
-         'playlist01': { name: 'playlist-height', default: false, color: '#99FF99' },
-         'backgroundManager': { name: 'backgroundManager', default: false, color: '#FF00FF' },
-          'firebase-verze': { name: 'firebase-verze', default: false, color: '#FF0000' },
-         
+        'playlist01': { name: 'playlist-height', default: false, color: '#52BE80' }, // Nová unikátní zelená (pro výšku a logy)
+        'backgroundManager': { name: 'backgroundManager', default: false, color: '#FF00FF' },
+        'firebase-verze': { name: 'firebase-verze', default: false, color: '#FF0000' },
+        'lehka-atomovka-v1': { name: '☢️ lehka-atomovka-v1', default: false, color: '#FFD700' },
     };
 
     // --- Stavová paměť ---
@@ -496,6 +496,7 @@
     };
 
 })();
+
 
 
 
