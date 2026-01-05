@@ -7,7 +7,8 @@
 
 (function() {
     'use strict';
-
+const __timerModuleJS_START = performance.now();
+ 
     // ========== Globální proměnné časovače ==========
     let timerValueInSeconds = 0;
     let timerInterval = null;
@@ -206,10 +207,11 @@
     } else {
         initTimer();
     }
-
+console.log(`%c🚀 [timerModuleJS] Načteno za ${(performance.now() - __timerModuleJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
 
 // ============================================
 // 🖖 Konec Timer Module
 
 // ============================================
+
