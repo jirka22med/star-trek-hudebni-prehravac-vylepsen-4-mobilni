@@ -2,7 +2,8 @@
 // 🌈 UNIVERSAL RAINBOW SCROLLBAR
 // Podpora všech moderních prohlížečů
 // ========================================
-
+const __scrollbarJS_START = performance.now();
+ 
 // Detekce prohlížeče
 const browser = {
     isChrome: /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor),
@@ -153,4 +154,7 @@ const observer = new MutationObserver(function() {
 observer.observe(document.body, {
     childList: true,
     subtree: true
+
 });
+
+console.log(`%c🚀 [scrollbarJS] Načteno za ${(performance.now() - __scrollbarJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
