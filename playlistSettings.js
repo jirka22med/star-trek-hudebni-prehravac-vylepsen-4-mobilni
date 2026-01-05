@@ -1,7 +1,8 @@
 // playlistSettings.js - Modulární nastavení playlistu
 // Připojitelný soubor pro modal okno s nastavením playlistu
 // Verze: 1.1 (DebugManager Integration)
-
+const __playlistSettingsJS_START = performance.now();
+ 
 const PlaylistSettings = {
     // Konfigurace
     // 🔇 DEBUG_MODE odstraněn - řízeno centrálně přes DebugManager
@@ -1658,4 +1659,7 @@ if (typeof window !== 'undefined') {
 // Export pro Node.js prostředí
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = PlaylistSettings;
+
 }
+
+console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
