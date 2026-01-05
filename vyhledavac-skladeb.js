@@ -4,7 +4,8 @@
  * Vytvořeno pro více admirála Jiříka
  * Verze: 1.1 (DebugManager Integration)
  */
-
+const __vyhledavacS_START = performance.now();
+ 
 // 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager
 // const DEBUG_SEARCH = false;
 
@@ -614,4 +615,7 @@ if (document.readyState === 'loading') {
 
 // Logování inicializace
 window.DebugManager?.log('search', '🖖 Star Trek Music Player - Vyhledávací modul načten');
+
 window.DebugManager?.log('search', '📋 Použití: window.searchModule.init() nebo automaticky při DOMContentLoaded');
+
+console.log(`%c🚀 [vyhledavacS] Načteno za ${(performance.now() - __vyhledavacS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
