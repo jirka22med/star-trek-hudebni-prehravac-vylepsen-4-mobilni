@@ -12,7 +12,8 @@
 // =========================================================================
 (function() {
     'use strict';
-    
+    const __bluetoothDisc_START = performance.now();
+ 
     // =========================================================================
     // 🎛️ LOGOVÁNÍ - NYNÍ ŘÍZENO PŘES DebugManager
     // =========================================================================
@@ -595,5 +596,6 @@
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = AudioMonitor;
     }
+console.log(`%c🚀 [bluetoothDisc] Načteno za ${(performance.now() - __bluetoothDisc_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 
 })(); // KONEC IIFE - Vše je izolované
