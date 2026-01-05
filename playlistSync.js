@@ -4,7 +4,7 @@
 // KOMPLETNÍ MODUL - UPGRADE O FUZZY LOGIC + OCHRANA RUČNÍCH ÚPRAV
 // Verze: 2.2 (Manual Edit Protection Edition)
 // ⏱️ LOG START
-const __SYNC_START = performance.now();
+const __playlistSyncJS_START = performance.now();
 
 // playlistSync.js
 // 🖖 Hvězdná flotila - Inteligentní synchronizace playlistu
@@ -295,4 +295,5 @@ if (typeof window !== 'undefined') {
 window.syncPlaylist = () => window.PlaylistSyncManager.syncLocalToCloud();
 window.CaptainNotifyChange = () => window.PlaylistSyncManager.notifyDataChanged();
                 // ⏱️ LOG END
-console.error(`%c🔄 [SYNC] Načteno za ${(performance.now() - __SYNC_START).toFixed(2)} ms`, 'color: #00d4ff; font-weight: bold;');
+console.error(`%c🔄 [playlistSyncJS] Načteno za ${(performance.now() - __playlistSyncJS_START).toFixed(2)} ms`, 'color: #00d4ff; font-weight: bold;');
+
