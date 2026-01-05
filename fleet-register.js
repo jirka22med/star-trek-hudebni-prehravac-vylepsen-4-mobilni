@@ -1,4 +1,5 @@
-
+const __fleet-register_START = performance.now();
+ 
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
     version: "0.0.0.0.0.17", // ← Zvýšil jsem o 1 (nový modul přidán)
@@ -101,3 +102,4 @@ console.log(
     `%c   Status: Všechny systémy zelené! ✅`,
     'color: #00FF00; font-size: 12px; font-weight: bold;'
 );
+console.log(`%c🚀 [fleet-register] Načteno za ${(performance.now() - __fleet-register_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
