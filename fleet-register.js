@@ -1,8 +1,8 @@
-const __fleet-registery_START = performance.now();
+ 
  
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.17", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.18", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -102,4 +102,4 @@ console.log(
     `%c   Status: Všechny systémy zelené! ✅`,
     'color: #00FF00; font-size: 12px; font-weight: bold;'
 );
-console.log(`%c🚀 [fleet-registery] Načteno za ${(performance.now() - __fleet-registery_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+ 
