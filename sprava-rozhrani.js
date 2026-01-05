@@ -7,7 +7,8 @@
 
 // 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager (klíč 'interface')
 // const DEBUG_ROZHRANI = false;
-const __ MediaSessionAPI_START = performance.now();
+const __MediaSessionAPI_START = performance.now();
+ 
  
 // --- Media Session API Manager ---
 class MediaSessionManager {
@@ -747,3 +748,4 @@ if (document.readyState === 'loading') {
 window.DebugManager?.log('interface', '🚀 Modul sprava-rozhrani.js načten - Verze 1.1 - Více admirál Jiřík');
 
 console.log(`%c🚀 [MediaSessionAPI] Načteno za ${(performance.now() - __MediaSessionAPI_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
