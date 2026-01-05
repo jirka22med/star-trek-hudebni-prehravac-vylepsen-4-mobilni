@@ -6,7 +6,8 @@
 
 // 🔇 Starý přepínač odstraněn - nyní řízeno přes DebugManager
 // const DEBUG_MINI = false;
-
+const __miniPlayerJS_START = performance.now();
+ 
 class MiniPlayer {
     constructor() {
         this.isMinimized = false;
@@ -735,4 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Export pro případné ruční volání
+
 window.MiniPlayer = MiniPlayer;
+
+console.log(`%c🚀 [miniPlayerJS] Načteno za ${(performance.now() - __miniPlayerJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
