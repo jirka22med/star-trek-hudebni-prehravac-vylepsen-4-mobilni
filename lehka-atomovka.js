@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 (function() {
-    const __lehka-atomovka0_START = performance.now();
+    const __lehkaatomovka0_START = performance.now();
  
     // 1. Čekáme na ID z vašeho UI
     const btnLehkaAtomovka = document.getElementById('lehka-atomovka');
@@ -68,5 +68,5 @@
         // Log, pokud tlačítko v index.html ještě neexistuje
         window.DebugManager?.log('lehka-atomovka-v1', "⚠️ Varování: ID 'lehka-atomovka' nebylo v UI nalezeno.");
     }
-    console.log(`%c🚀 [lehka-atomovka0] Načteno za ${(performance.now() - __lehka-atomovka0_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+    console.log(`%c🚀 [lehkaatomovka0] Načteno za ${(performance.now() - __lehkaatomovka0_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
