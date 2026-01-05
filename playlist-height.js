@@ -7,7 +7,8 @@
 // Datum: 01.01.2026
 // Čas:   14:15:00
 // ═══════════════════════════════════════════════════════════════════════════════════════════════════
-
+const __playlistHeightJS_START = performance.now();
+ 
 // 🚨 ANTI-DUPLICATE SHIELD
 if (window.playlistHeightLoaded) {
     console.warn('⚠️ playlist-height.js již byl načten! Skript ukončen.');
@@ -259,4 +260,5 @@ if (document.readyState === 'loading') {
 }
 // ═══════════════════════════════════════════════════════════════════════════
 // 🚀 TADY KONČÍ NASTAVENÍ PLALISTU
+console.log(`%c🚀 [playlistHeightJS] Načteno za ${(performance.now() - __playlistHeightJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 // ═══════════════════════════════════════════════════════════════════════════
