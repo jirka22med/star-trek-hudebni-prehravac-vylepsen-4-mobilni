@@ -1,8 +1,9 @@
 // buttonVisibilityFirebase.js
-// 🖖 BUTTON VISIBILITY FIREBASE MODULE
-// Verze: 1.0.0 (Samostatná struktura v Cloud Firestore)
+// 🖖 BUTTON VISIBILITY FIREBASE MODULE - RED ALERT EDITION
+// Verze: 1.1.0 (Přidány Red Alert pojistky proti výpadku Firebase)
 // ═══════════════════════════════════════════════════════════════════════════════
 // ✅ Více admirál Jiřík & Admirál Claude.AI
+// 🛡️ UPGRADE: Offline režim + Firebase výpadek protection
 // ═══════════════════════════════════════════════════════════════════════════════
 
 (function() {
@@ -34,45 +35,75 @@ const __buttonVisibilityFirebase_START = performance.now();
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // 🛠️ POMOCNÉ FUNKCE
+    // 🛠️ POMOCNÉ FUNKCE PRO STABILITU
     // ═══════════════════════════════════════════════════════════════════════════
     function getFirestoreDB() {
-        if (window.db) return window.db;
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-            return firebase.firestore();
-        }
+    // 🛡️ 3VRSTVÁ OCHRANA
+    if (!navigator.onLine || typeof firebase === 'undefined') {
         return null;
     }
-
-    async function waitForDatabaseConnection() {
-        let attempts = 0;
-        
-        if (window.DebugManager?.isEnabled('buttons')) {
-            console.log("⏳ [Button DB Check] Ověřuji spojení s Firebase...");
-        }
-        
-        while (!getFirestoreDB() && attempts < 50) { 
-            await new Promise(resolve => setTimeout(resolve, 100));
-            attempts++;
-        }
-        
-        const isReady = !!getFirestoreDB();
-        
-        if (isReady) {
-            if (window.DebugManager?.isEnabled('buttons')) {
-                console.log("✅ [Button DB Check] Spojení NAVÁZÁNO.");
-            }
-        } else {
-            console.error("❌ [Button DB Check] Spojení SELHALO po 5 sekundách.");
-        }
-        return isReady;
+    
+    // 🛡️ NOVÁ VRSTVA: Firebase init check
+    if (firebase.apps.length === 0) {
+        console.warn('🔴 Firebase exists but NOT initialized');
+        return null;
     }
+    
+    if (window.db) return window.db;
+    if (typeof firebase !== 'undefined' && firebase.firestore) {
+        return firebase.firestore();
+    }
+    return null;
+}
+    async function waitForDatabaseConnection() {
+    // 🛡️ 3VRSTVÁ OCHRANA
+    if (!navigator.onLine || typeof firebase === 'undefined') {
+        log("DB Check", "📡 Offline režim - použiji lokální data.", null, 'warn');
+        return false;
+    }
+    
+    if (firebase.apps.length === 0) {
+        log("DB Check", "⚠️ Firebase není inicializován - offline režim.", null, 'warn');
+        return false;
+    }
+
+    let attempts = 0;
+    
+    if (window.DebugManager?.isEnabled('buttons')) {
+        console.log("⏳ [Button DB Check] Ověřuji Firebase Firestore...");
+    }
+    
+    while (!getFirestoreDB() && attempts < 30) { // Sníženo z 50 na 30 (3s)
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+    }
+    
+    const isReady = !!getFirestoreDB();
+    
+    if (isReady) {
+        if (window.DebugManager?.isEnabled('buttons')) {
+            console.log("✅ [Button DB Check] Firestore READY.");
+        }
+    } else {
+        console.warn("⚠️ [Button DB Check] Timeout - offline režim.");
+    }
+    return isReady;
+}
 
     // ═══════════════════════════════════════════════════════════════════════════
     // 💾 SAVE - Uložení konfigurace tlačítek
     // ═══════════════════════════════════════════════════════════════════════════
     window.saveButtonVisibilityToFirestore = async function(dataToSync) {
         log("SAVE Buttons", "🚀 Požadavek na uložení konfigurace tlačítek přijat.");
+
+        // 🛡️ RED ALERT POJISTKA #3 - Offline/Firebase check
+        if (!navigator.onLine || typeof firebase === 'undefined') {
+            log("SAVE Buttons", "🔴 RED ALERT: Offline/Firebase nedostupný - ukládám pouze lokálně.", null, 'error');
+            if (window.showNotification) {
+                window.showNotification("Offline režim: Data uložena pouze lokálně", "warning");
+            }
+            return false;
+        }
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -116,7 +147,7 @@ const __buttonVisibilityFirebase_START = performance.now();
             return true;
 
         } catch (error) {
-            console.error("❌ CRITICAL SAVE ERROR:", error);
+            console.warn("⚠️ Firebase nedostupný (SAVE):", error.code || error.message);
             log("SAVE Buttons", "KRITICKÁ CHYBA PŘI ZÁPISU", error, 'error');
             
             if (window.showNotification) {
@@ -132,6 +163,12 @@ const __buttonVisibilityFirebase_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════════
     window.loadButtonVisibilityFromFirestore = async function() {
         log("LOAD Buttons", "📥 Požadavek na stažení konfigurace tlačítek.");
+
+        // 🛡️ RED ALERT POJISTKA #4 - Offline/Firebase check
+        if (!navigator.onLine || typeof firebase === 'undefined') {
+            log("LOAD Buttons", "🔴 RED ALERT: Offline/Firebase nedostupný - vracím null.", null, 'error');
+            return null;
+        }
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -165,7 +202,7 @@ const __buttonVisibilityFirebase_START = performance.now();
                 return null;
             }
         } catch (error) {
-            console.error("❌ LOAD ERROR:", error);
+            console.warn("⚠️ Firebase nedostupný (LOAD):", error.code || error.message);
             log("LOAD Buttons", "CHYBA PŘI ČTENÍ", error, 'error');
             return null;
         }
@@ -176,6 +213,17 @@ const __buttonVisibilityFirebase_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════════
     window.syncButtonVisibilityWithFirestore = async function(localConfig) {
         log("SYNC Buttons", "🔄 Zahajuji inteligentní synchronizaci...");
+
+        // 🛡️ RED ALERT POJISTKA #5 - Offline/Firebase check
+        if (!navigator.onLine || typeof firebase === 'undefined') {
+            log("SYNC Buttons", "🔴 RED ALERT: Offline režim - sync vynechán.", null, 'error');
+            return { 
+                success: false, 
+                message: "Offline režim - pouze lokální data",
+                config: localConfig,
+                source: "local"
+            };
+        }
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -237,7 +285,7 @@ const __buttonVisibilityFirebase_START = performance.now();
             }
 
         } catch (error) {
-            console.error("❌ SYNC ERROR:", error);
+            console.warn("⚠️ Firebase nedostupný (SYNC):", error.code || error.message);
             log("SYNC Buttons", "CHYBA PŘI SYNCHRONIZACI", error, 'error');
             
             return { 
@@ -252,6 +300,12 @@ const __buttonVisibilityFirebase_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════════
     window.backupButtonVisibilityToFirestore = async function(backupName = null, config = null) {
         log("BACKUP Buttons", "💾 Vytvářím zálohu konfigurace...");
+
+        // 🛡️ RED ALERT POJISTKA #6 - Offline/Firebase check
+        if (!navigator.onLine || typeof firebase === 'undefined') {
+            log("BACKUP Buttons", "🔴 RED ALERT: Offline - záloha nedostupná.", null, 'error');
+            throw new Error("Cloud nedostupný - nelze vytvořit zálohu");
+        }
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -276,7 +330,7 @@ const __buttonVisibilityFirebase_START = performance.now();
             return name;
 
         } catch (error) {
-            console.error("❌ BACKUP ERROR:", error);
+            console.warn("⚠️ Firebase nedostupný (BACKUP):", error.code || error.message);
             log("BACKUP Buttons", "CHYBA PŘI VYTVÁŘENÍ ZÁLOHY", error, 'error');
             throw error;
         }
@@ -287,6 +341,15 @@ const __buttonVisibilityFirebase_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════════
     window.clearButtonVisibilityFromFirestore = async function() {
         log("CLEAR Buttons", "⚠️ MAZÁNÍ konfigurace tlačítek!", null, 'error');
+
+        // 🛡️ RED ALERT POJISTKA #7 - Offline/Firebase check
+        if (!navigator.onLine || typeof firebase === 'undefined') {
+            log("CLEAR Buttons", "🔴 RED ALERT: Offline - cloud nelze smazat.", null, 'error');
+            if (window.showNotification) {
+                window.showNotification("Offline režim: Cloud nelze smazat", "warning");
+            }
+            return false;
+        }
 
         const isReady = await waitForDatabaseConnection();
         const database = getFirestoreDB();
@@ -308,7 +371,7 @@ const __buttonVisibilityFirebase_START = performance.now();
             return true;
 
         } catch (error) {
-            console.error("❌ CLEAR ERROR:", error);
+            console.warn("⚠️ Firebase nedostupný (CLEAR):", error.code || error.message);
             log("CLEAR Buttons", "Chyba při mazání", error, 'error');
             return false;
         }
@@ -318,7 +381,7 @@ const __buttonVisibilityFirebase_START = performance.now();
     // 📡 ZÁVĚREČNÁ ZPRÁVA
     // ═══════════════════════════════════════════════════════════════════════════
     console.log(
-        "%c🖖 buttonVisibilityFirebase V1.0.0", 
+        "%c🖖 buttonVisibilityFirebase V1.1.0 - RED ALERT EDITION", 
         "color: #FF00FF; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #FF00FF;"
     );
     console.log(
@@ -328,6 +391,10 @@ const __buttonVisibilityFirebase_START = performance.now();
     console.log(
         "%c   ☁️ Samostatná struktura: spravaTlacitek/config", 
         "color: #00CCFF; font-size: 11px; font-weight: bold;"
+    );
+    console.log(
+        "%c   🛡️ RED ALERT POJISTKY: 7x Offline/Firebase protection", 
+        "color: #FF0000; font-size: 11px; font-weight: bold;"
     );
     console.log(
         "%c   Zapni logging: Ctrl+Shift+D → Buttons modul", 
