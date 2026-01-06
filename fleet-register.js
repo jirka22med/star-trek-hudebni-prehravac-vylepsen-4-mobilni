@@ -68,6 +68,7 @@ const FLEET_CONFIG = {
                  './scrollbar.js',
         //lehká atomovka odpáli vše co jí stojí v cestě i borgy odpalit dokáže?.
                    './lehka-atomovka.js',  
+                  './jirkuv-hlidac.js',
         
     ]           
 };
