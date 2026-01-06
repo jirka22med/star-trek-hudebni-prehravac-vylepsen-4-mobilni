@@ -1,5 +1,5 @@
 (function() {
-    const __jirkuv-hlidac_START = performance.now();
+    const __jirkuvhlidaca_START = performance.now();
  
     // Globální flag pro zajištění jednorázové inicializace
     if (window.enhancedConsoleLoggerInitialized) {
@@ -775,6 +775,7 @@ window.updateLogDisplay = function() {
 
     // Spustit inicializaci
     initializeLogger();
-    console.log(`%c🚀 [jirkuv-hlidac] Načteno za ${(performance.now() - __jirkuv-hlidac_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+    console.log(`%c🚀 [jirkuv-hlidac] Načteno za ${(performance.now() - __jirkuvhlidaca_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
