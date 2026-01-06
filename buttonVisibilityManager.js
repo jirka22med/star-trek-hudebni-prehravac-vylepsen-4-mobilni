@@ -1,5 +1,5 @@
 const __UItlacitka_START = performance.now();
-const VERSION_BVIS = "121.101.112"; // Verze správy tlačítek
+const VERSION_BVIS = "121.101.113"; // Verze správy tlačítek
 
 /**  
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE 
@@ -293,7 +293,7 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'Instalování PWA aplikace'
         },   
-     'lehka-atomovka': {
+'lehka-atomovka': {
     name: '☢️ lehka-atomovka',
         category: 'Systém',
         essential: false,
@@ -358,7 +358,6 @@ const DEFAULT_VISIBILITY = {
     'zobrazit-panel-hlasitosti': false,
 
     'install-app-button': false,
-
     'lehka-atomovka': false,
 };
  
@@ -370,11 +369,20 @@ let buttonVisibility = JSON.parse(localStorage.getItem('buttonVisibility') || JS
 
 // Základní funkce pro ukládání
 function saveButtonVisibility() {
-     localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility)); //aktivovano z důvodu že gemini.ai udělal kompresi 
-     localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString()); //v audiofirestore.js ohleně tohoto modulu
+    localStorage.setItem('buttonVisibility', JSON.stringify(buttonVisibility));
+    localStorage.setItem('buttonVisibilityLastModified', new Date().toISOString());
     
-    // Logování uložení s tvojí verzí
+    // Logování uložení s tvoji verzí
     window.DebugManager?.log('buttons', `ButtonVisibility v${VERSION_BVIS}: Konfigurace uložena:`, buttonVisibility);
+    
+    // 🛡️ RED ALERT POJISTKA #1 - Kontrola Firebase dostupnosti
+    if (!navigator.onLine || typeof firebase === 'undefined') {
+        window.DebugManager?.log('buttons', '🔴 RED ALERT: Firebase nedostupný - pouze lokální uložení.', null, 'warn');
+        if (window.showNotification) {
+            window.showNotification('Offline režim: Data uložena pouze lokálně', 'warning', 2000);
+        }
+        return; // ⚠️ UKONČÍME zde - NEBUDEME volat Firebase
+    }
     
     // Async Firebase save (pokud je dostupné)
     if (window.saveButtonVisibilityToFirestore && typeof window.saveButtonVisibilityToFirestore === 'function') {
@@ -409,7 +417,28 @@ async function loadButtonVisibility() {
     let loadedData = null;
     let source = 'default';
     
-    // Zkus Firebase
+    // 🛡️ RED ALERT POJISTKA #2 - Kontrola před Firebase voláním
+    if (!navigator.onLine || typeof firebase === 'undefined') {
+        window.DebugManager?.log('buttons', "🔴 [Red Alert] Offline/Firebase nedostupný: Používám lokální/výchozí konfiguraci.", null, 'warn');
+        
+        // Zkusíme načíst z localStorage
+        const localData = localStorage.getItem('buttonVisibility');
+        if (localData) {
+            try {
+                buttonVisibility = JSON.parse(localData);
+                window.DebugManager?.log('buttons', "ButtonVisibility: Načteno z localStorage (offline režim).");
+                return { config: buttonVisibility, source: 'localStorage' };
+            } catch (e) {
+                console.error("Chyba při parsování localStorage:", e);
+            }
+        }
+        
+        // Fallback na výchozí
+        buttonVisibility = { ...DEFAULT_VISIBILITY };
+        return { config: buttonVisibility, source: 'default' };
+    }
+    
+    // Zkus Firebase (pouze pokud je online a dostupný)
     try {
         if (window.loadButtonVisibilityFromFirestore && typeof window.loadButtonVisibilityFromFirestore === 'function') {
             loadedData = await window.loadButtonVisibilityFromFirestore();
@@ -417,7 +446,6 @@ async function loadButtonVisibility() {
             if (loadedData) {
                 source = 'firebase';
                 
-                // Kontrola, zda data z Firebase obsahují verzi a metadata
                 if (loadedData.version) {
                     window.DebugManager?.log('buttons', `ButtonVisibility: Načtena verze v${loadedData.version} z cloudu.`);
                     
@@ -425,10 +453,8 @@ async function loadButtonVisibility() {
                         window.DebugManager?.log('buttons', `⚠️ Varování: Cloudová verze (v${loadedData.version}) se liší od lokální (v${VERSION_BVIS})!`);
                     }
                     
-                    // Extraktujeme pouze konfiguraci tlačítek
                     buttonVisibility = { ...DEFAULT_VISIBILITY, ...loadedData.config };
                 } else {
-                    // Fallback pro starý formát dat bez verze
                     window.DebugManager?.log('buttons', "ButtonVisibility: Načtena starší struktura dat (bez verze).");
                     buttonVisibility = { ...DEFAULT_VISIBILITY, ...loadedData };
                 }
@@ -437,34 +463,31 @@ async function loadButtonVisibility() {
             }
         }
     } catch (error) {
-        console.error("ButtonVisibility: Firebase nedostupný:", error);
-    }
-    
-    // Fallback localStorage (i když ho nepoužíváš, ponechávám tvou logiku pro případ nouze)
-    if (!loadedData) {
-        const stored = localStorage.getItem('buttonVisibility');
-        if (stored) {
+        // 🛡️ Tichá degradace - žádný error, jen warning
+        window.DebugManager?.log('buttons', `⚠️ Cloud nedostupný: ${error.code || 'Offline režim'}`, null, 'warn');
+        
+        // Fallback na localStorage
+        const localData = localStorage.getItem('buttonVisibility');
+        if (localData) {
             try {
-                const parsed = JSON.parse(stored);
-                // Kontrola verze i v localStorage, pokud existuje
-                buttonVisibility = { ...DEFAULT_VISIBILITY, ...(parsed.config || parsed) };
+                buttonVisibility = JSON.parse(localData);
                 source = 'localStorage';
-                window.DebugManager?.log('buttons', "ButtonVisibility: Načteno z localStorage.");
-            } catch (parseError) {
-                console.error("ButtonVisibility: Parse chyba:", parseError);
+                window.DebugManager?.log('buttons', "ButtonVisibility: Načteno z localStorage (Firebase selhalo).");
+            } catch (e) {
+                buttonVisibility = { ...DEFAULT_VISIBILITY };
+                source = 'default';
             }
+        } else {
+            buttonVisibility = { ...DEFAULT_VISIBILITY };
+            source = 'default';
         }
     }
     
-    // Poslední fallback
+    // Pokud Firebase selhalo a není ani localStorage, použij DEFAULT
     if (!loadedData && source === 'default') {
         buttonVisibility = { ...DEFAULT_VISIBILITY };
         window.DebugManager?.log('buttons', "ButtonVisibility: Použita výchozí konfigurace.");
     }
-    
-    //if (window.showNotification && source === 'firebase') {
-     //   window.showNotification('Konfigurace načtena z cloudu!', 'info', 2000);
-   // }
     
     return { config: buttonVisibility, source };
 }
@@ -1026,7 +1049,7 @@ function addFirebaseControlPanel() {
             </div>
             <div class="firebase-info-panel">
                 <div id="firebase-sync-status" class="sync-status-info">
-                    Stav synchronizace: Neprovězeno
+                    Stav synchronizace: Neprověřeno
                 </div>
                 <div id="firebase-last-sync" class="last-sync-info">
                     Poslední synchronizace: Nikdy
@@ -1145,21 +1168,22 @@ function addFirebasePanelEventListeners() {
                 const result = await window.syncButtonVisibilityWithFirestore(buttonVisibility);
                 
                 if (result && result.success) {
-                    window.showNotification && window.showNotification(`Synchronizace úspěšná: ${result.message}`, 'success');
+                    window.showNotification && window.showNotification(`${result.message}`, 'success');
                     
                     if (result.config) {
                         buttonVisibility = { ...DEFAULT_VISIBILITY, ...result.config };
                         populateVisibilityCategories();
                     }
                 } else {
-                    window.showNotification && window.showNotification('Chyba synchronizace', 'error');
+                    // 🛡️ Offline/Firebase výpadek - zobrazíme warning, ale nepanic
+                    window.showNotification && window.showNotification(result.message || 'Sync nepodařen', 'warning');
                 }
             } else {
-                window.showNotification && window.showNotification('Firebase funkce nejsou dostupné', 'warning');
+                window.showNotification && window.showNotification('Firebase modul není načten', 'warning');
             }
         } catch (error) {
             console.error('Chyba synchronizace:', error);
-            window.showNotification && window.showNotification(`Chyba synchronizace: ${error.message}`, 'error');
+            window.showNotification && window.showNotification('Offline režim - pouze lokální data', 'warning');
         }
         
         btn.disabled = false;
@@ -1175,13 +1199,14 @@ function addFirebasePanelEventListeners() {
         try {
             if (window.backupButtonVisibilityToFirestore) {
                 const backupName = await window.backupButtonVisibilityToFirestore(null, buttonVisibility);
-                window.showNotification && window.showNotification(`Záloha vytvořena: ${backupName}`, 'success');
+                window.showNotification && window.showNotification(`Záloha: ${backupName}`, 'success');
             } else {
-                window.showNotification && window.showNotification('Firebase funkce nejsou dostupné', 'warning');
+                throw new Error('Firebase modul nedostupný');
             }
         } catch (error) {
-            console.error('Chyba vytváření zálohy:', error);
-            window.showNotification && window.showNotification(`Chyba při vytváření zálohy: ${error.message}`, 'error');
+            console.error('Chyba zálohy:', error);
+            // 🛡️ Při výpadku nabídneme lokální export
+            window.showNotification && window.showNotification('Cloud nedostupný - použij "Export konfigurace"', 'warning');
         }
         
         btn.disabled = false;
@@ -1198,12 +1223,15 @@ function addFirebasePanelEventListeners() {
             if (config.source === 'firebase') {
                 populateVisibilityCategories();
                 window.showNotification && window.showNotification('Konfigurace načtena z cloudu!', 'success');
+            } else if (config.source === 'localStorage') {
+                populateVisibilityCategories();
+                window.showNotification && window.showNotification('Cloud nedostupný - použita lokální konfigurace', 'info');
             } else {
-                window.showNotification && window.showNotification('Žádná konfigurace v cloudu nenalezena', 'info');
+                window.showNotification && window.showNotification('Použita výchozí konfigurace', 'info');
             }
         } catch (error) {
             console.error('Chyba načítání:', error);
-            window.showNotification && window.showNotification(`Chyba při načítání: ${error.message}`, 'error');
+            window.showNotification && window.showNotification('Offline režim - lokální data', 'warning');
         }
         
         btn.disabled = false;
@@ -1227,11 +1255,34 @@ async function updateFirebaseStatus() {
     
     if (!statusElement) return;
     
+    // 🛡️ RED ALERT POJISTKA #9 - Kontrola offline/Firebase
+    // 🛡️ 3VRSTVÁ OCHRANA
+    if (!navigator.onLine) {
+        statusElement.textContent = '📡 Offline';
+        statusElement.style.background = 'rgba(251, 188, 5, 0.3)';
+        if (syncStatusElement) syncStatusElement.textContent = 'Stav: Offline režim';
+        return;
+    }
+    
+    if (typeof firebase === 'undefined' || firebase.apps.length === 0) {
+        statusElement.textContent = '⚠️ Firebase nedostupný';
+        statusElement.style.background = 'rgba(251, 188, 5, 0.3)';
+        if (syncStatusElement) syncStatusElement.textContent = 'Stav: Firebase není ready - offline režim';
+        return;
+    }
+    
+    if (typeof firebase === 'undefined') {
+        statusElement.textContent = '❌ Firebase nedostupný';
+        statusElement.style.background = 'rgba(234, 67, 53, 0.3)';
+        if (syncStatusElement) syncStatusElement.textContent = 'Stav: Firebase není inicializován';
+        return;
+    }
+    
     try {
         if (!window.loadButtonVisibilityFromFirestore) {
-            statusElement.textContent = '❌ Nedostupné';
+            statusElement.textContent = '⚠️ Modul chybí';
             statusElement.style.background = 'rgba(234, 67, 53, 0.3)';
-            if (syncStatusElement) syncStatusElement.textContent = 'Stav: Firebase nedostupný';
+            if (syncStatusElement) syncStatusElement.textContent = 'Stav: Firebase modul není načten';
             return;
         }
         
@@ -1240,11 +1291,11 @@ async function updateFirebaseStatus() {
         if (config) {
             statusElement.textContent = '✅ Připojeno';
             statusElement.style.background = 'rgba(52, 168, 83, 0.3)';
-            if (syncStatusElement) syncStatusElement.textContent = 'Stav: Konfigurace nalezena v cloudu';
+            if (syncStatusElement) syncStatusElement.textContent = 'Stav: Cloud dostupný, konfigurace nalezena';
         } else {
             statusElement.textContent = '⚠️ Prázdné';
             statusElement.style.background = 'rgba(251, 188, 5, 0.3)';
-            if (syncStatusElement) syncStatusElement.textContent = 'Stav: Žádná konfigurace v cloudu';
+            if (syncStatusElement) syncStatusElement.textContent = 'Stav: Cloud dostupný, žádná konfigurace';
         }
         
         const lastSync = localStorage.getItem('buttonVisibilityLastModified');
@@ -1254,16 +1305,15 @@ async function updateFirebaseStatus() {
         }
         
     } catch (error) {
-        console.error('Chyba při kontrole Firebase stavu:', error);
-        statusElement.textContent = '❌ Chyba';
+        console.error('Chyba kontroly Firebase:', error);
+        statusElement.textContent = '🔴 Výpadek';
         statusElement.style.background = 'rgba(234, 67, 53, 0.3)';
-        if (syncStatusElement) syncStatusElement.textContent = `Stav: Chyba - ${error.message}`;
+        if (syncStatusElement) syncStatusElement.textContent = `Stav: Firebase výpadek - pouze lokální režim`;
     }
 }
 
 // --- Backup Manager ---
 function showBackupManager() {
-    // Implementace správy záloh by byla zde
     window.showNotification && window.showNotification('Správa záloh bude implementována v další verzi', 'info');
 }
 
@@ -1272,7 +1322,7 @@ function exportVisibilityConfig() {
     const config = {
         buttonVisibility,
         timestamp: new Date().toISOString(),
-        version: '1.0'
+        version: VERSION_BVIS
     };
     
     const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
@@ -1280,13 +1330,13 @@ function exportVisibilityConfig() {
     
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'button_visibility_config.json';
+    a.download = `button_visibility_v${VERSION_BVIS}_${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    window.showNotification && window.showNotification('Konfigurace viditelnosti exportována!', 'info');
+    window.showNotification && window.showNotification('Konfigurace exportována lokálně!', 'success');
 }
 
 // --- Otevření/zavření správce ---
@@ -1419,7 +1469,6 @@ function observeButtonChanges() {
 
 // --- HLAVNÍ INICIALIZAČNÍ FUNKCE - OPRAVENÁ ---
 function initializeButtonVisibilityManager() {
-    // ✅ OPRAVENO: Přidána kontrola pro zabránění duplikace
     if (isVisibilityManagerInitialized) {
         window.DebugManager?.log('buttons', "ButtonVisibility: Již inicializováno, přeskakuji.");
         return;
@@ -1427,27 +1476,22 @@ function initializeButtonVisibilityManager() {
     
     window.DebugManager?.log('buttons', `🖖 ButtonVisibility v${VERSION_BVIS}: Spouštím inicializaci...`);
     
-    // Čekáme na DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            // ✅ OPRAVENO: Používáme setTimeout místo rekurzivního volání
             setTimeout(initializeButtonVisibilityManager, 100);
         });
         return;
     }
     
     try {
-        // Označíme jako inicializované HNED na začátku
         isVisibilityManagerInitialized = true;
         
-        // Vytvoříme komponenty
         createVisibilityToggleButton();
         createVisibilityModal();
         addVisibilityManagerEventListeners();
         addGlobalKeyboardShortcuts();
         observeButtonChanges();
         
-        // Načtení a aplikace konfigurace
         setTimeout(async () => {
             try {
                 await loadButtonVisibility();
@@ -1455,15 +1499,17 @@ function initializeButtonVisibilityManager() {
                 
                 window.DebugManager?.log('buttons', "🖖 ButtonVisibility: Inicializace dokončena úspěšně!");
                 
-                
             } catch (error) {
                 console.error("ButtonVisibility: Chyba při načítání konfigurace:", error);
+                window.DebugManager?.log('buttons', "⚠️ ButtonVisibility: Fallback na výchozí konfiguraci", null, 'warn');
+                buttonVisibility = { ...DEFAULT_VISIBILITY };
+                applyButtonVisibility();
             }
         }, 2000);
         
     } catch (error) {
         console.error("ButtonVisibility: Chyba při inicializaci:", error);
-        isVisibilityManagerInitialized = false; // Reset při chybě
+        isVisibilityManagerInitialized = false;
     }
 }
 
@@ -1491,7 +1537,6 @@ window.ButtonVisibilityManager = {
 
 // --- Automatická inicializace ---
 if (typeof window !== 'undefined') {
-    // ✅ OPRAVENO: Jednoduché spuštění bez rekurze
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(initializeButtonVisibilityManager, 1000);
@@ -1502,15 +1547,15 @@ if (typeof window !== 'undefined') {
 }
 
 /**
- * 🖖 OPRAVENO - BUTTON VISIBILITY MANAGER
- * * ✅ HLAVNÍ OPRAVA: Odstraněna nekonečná rekurze v initializeButtonVisibilityManager
- * ✅ Přidána kontrola isVisibilityManagerInitialized na začátku funkce
- * ✅ Odstraněno volání originalInitializeButtonVisibilityManager
- * ✅ Bezpečnější error handling a timeout mechanismy
- * ✅ Zachována všechna původní funkcionalita
- * ✅ Firebase integrace stále funkční
- * * Více admirále Jiříku, tvá flotila je nyní v bezpečí před stack overflow! 🚀
+ * 🖖 BUTTON VISIBILITY MANAGER - RED ALERT EDITION
+ * ✅ Plná podpora Firebase výpadku simulace
+ * ✅ Všechny pojistky implementovány
+ * ✅ Graceful degradation při offline režimu
+ * ✅ Kompatibilní s buttonVisibilityFirebase.js v1.1.0
+ * 
+ * Více admirále Jiříku, tvoje flotila je připravena i při výpadku cloudu! 🚀
+ * Verze:  
  */
 
-
 console.log(`%c🚀 [UItlacitka] Načteno za ${(performance.now() - __UItlacitka_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
