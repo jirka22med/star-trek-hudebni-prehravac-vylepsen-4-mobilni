@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 // ⏱️ LOG START
-const __ScriptJS_START = performance.now();
+const __CORE_START = performance.now();
 // ════════════════════════════════════════════════════════════════════════════════
 // 🛸 STAR TREK AUDIO CORE - ARCHITECT EDITION (V 8.0 - CLOUD STALL FIX)
 // ════════════════════════════════════════════════════════════════════════════════
@@ -248,6 +248,24 @@ function checkAndFixTracks(trackList) {
 
 async function loadAudioData() {
     window.DebugManager?.log('main', "loadAudioData: Načítám data přehrávače...");
+
+    // 🛡️ NOUZOVÁ POJISTKA: Detekce offline stavu před startem Cloudu
+    if (!navigator.onLine) {
+        window.DebugManager?.log('main', "📡 [Red Alert] Offline režim! Warp jádro nedostupné, aktivuji lokální databázi.");
+        
+        // Okamžitě načteme tvůj myPlaylist.js z paměti
+        window.tracks = window.tracks ? [...window.tracks] : [];
+        originalTracks = window.tracks;
+        currentPlaylist = [...originalTracks];
+
+        // Spustíme UI bez čekání na Firebase
+        if (typeof populatePlaylist === 'function') populatePlaylist(window.tracks);
+        if (typeof updateActiveTrackVisuals === 'function') updateActiveTrackVisuals();
+        
+        window.showNotification("📟 Nouzový režim: Načteno z lokální flotily", "warn");
+        return; // UKONČÍME FUNKCI - nepokoušíme se o Cloud, aby nevznikly chyby
+    }
+     
     
     // 1. ZÁKLADNÍ NAČTENÍ Z myPlaylist.js
     const originalPlaylistFromFile = window.tracks ? [...window.tracks] : [];
@@ -1281,7 +1299,6 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
  
  
      // ⏱️ LOG END
-console.log(`%c🚀 [ScriptJS] Načteno za ${(performance.now() - __ScriptJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
-
 
