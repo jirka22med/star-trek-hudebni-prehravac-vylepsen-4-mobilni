@@ -97,7 +97,13 @@ window.PlaylistSyncManager = {
     },
 
     // Synchronizace UP (Local -> Cloud)
-    syncLocalToCloud: async function(force = false) {
+    // --- UPRAVENÁ FUNKCE S POJISTKOU ---
+syncLocalToCloud: async function(force = false) {
+    // 🛡️ RED ALERT POJISTKA
+    if (!navigator.onLine) {
+        window.DebugManager?.log('sync', "📡 [Red Alert] Offline: Synchronizace s Firebase pozastavena pojistkou.");
+        return { success: false, error: "Offline mode active" };
+    }
         window.DebugManager?.log('sync', "playlistSync.js: Uploaduji playlist do cloudu...");
 
         if (!window.tracks) return { success: false, error: "Žádná data" };
@@ -126,8 +132,12 @@ window.PlaylistSyncManager = {
             return { success: true, action: 'uploaded' };
 
         } catch (error) {
-            console.error("Sync Error:", error);
-            this.updateButtonState('error', 'Chyba!');
+            // 🛡️ TICHÁ POJISTKA PRO v0.19
+            // Místo console.error použijeme tvůj DebugManager, aby loď nepanikařila
+            window.DebugManager?.log('sync', `📡 [Kapitán Sync] Informace: Uložení do Cloudu se nezdařilo (${error.message}). Jedeme v lokálním režimu.`, 'warn');
+            
+            this.updateButtonState('error', 'Režim offline');
+            this.updateButtonStatus('warning');
             return { success: false, error: error.message };
         }
     },
@@ -296,5 +306,6 @@ window.syncPlaylist = () => window.PlaylistSyncManager.syncLocalToCloud();
 window.CaptainNotifyChange = () => window.PlaylistSyncManager.notifyDataChanged();
                 // ⏱️ LOG END
 console.log(`%c🔄 [playlistSyncJS] Načteno za ${(performance.now() - __playlistSyncJS_START).toFixed(2)} ms`, 'color: #00d4ff; font-weight: bold;');
+
 
 
