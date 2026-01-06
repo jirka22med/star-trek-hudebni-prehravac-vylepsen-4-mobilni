@@ -2,7 +2,7 @@
  
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.35", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.36", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -68,7 +68,7 @@ const FLEET_CONFIG = {
                  './scrollbar.js',
         //lehká atomovka odpáli vše co jí stojí v cestě i borgy odpalit dokáže?.
                    './lehka-atomovka.js',  
-                  
+                  './jirkuv-hlidac.js',
         
     ]           
 };
