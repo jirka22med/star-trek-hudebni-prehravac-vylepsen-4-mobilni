@@ -306,7 +306,7 @@
 <!-- 🖖 KONEC NAČÍTÁNÍ MODULŮ -->
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
- <!-- <script>
+  <script>
     (function() {
         // 1. ZLIKVIDOVAT DUCHY (Staré Service Workery)
         if ('serviceWorker' in navigator) {
@@ -335,7 +335,7 @@
                     if (serverVerze !== browserVerze) {
                         console.warn("⚠️ [Watchdog] Zastaralá cache detekována! Provádím tvrdý restart...");
                         // Toto donutí prohlížeč zahodit cache a načíst stránku znova
-                        window.location.reload(true);
+                        window.location.reload(false);
                     } else {
                         console.log("✅ [Watchdog] Verze souhlasí. Systém je aktuální.");
                     }
@@ -343,10 +343,11 @@
             })
             .catch(err => console.log("🐕 [Watchdog] Kontrola selhala (asi offline):", err));
     })();
-</script> -->
+</script> 
 
 </body>
 </html>
+
 
 
 
