@@ -2,7 +2,7 @@
  
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.18", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.20", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -102,4 +102,7 @@ console.log(
     `%c   Status: Všechny systémy zelené! ✅`,
     'color: #00FF00; font-size: 12px; font-weight: bold;'
 );
- 
+ console.log(
+    `%c   Projekt běží na: https://jirka22med.github.io/star-trek-hudebni-prehravac-vylepsen-4-mobilni/! ✅`,
+    'color: #00FF00; font-size: 12px; font-weight: bold;'
+);
