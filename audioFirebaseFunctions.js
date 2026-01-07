@@ -516,62 +516,41 @@ const __audioFirebaseFunctions_START = performance.now();
         );
     })();
 
-   // ═══════════════════════════════════════════════════════════════════════════
-// 📡 POKROČILÁ TABULKOVÁ ZPRÁVA
-// ═══════════════════════════════════════════════════════════════════════════
-
-function logSystemTable() {
-    const data = {
-        'Modul':'________________audioFirebaseFunctions V3.7',
-        'Status':'____________________AUTO VERSIONING Aktivní',
-        'DebugManager':'______Připojeno (firebase + firebase-verze)',
-        'Cloud Sync':'__________________Full Sync (HTTPS + Názvy)',
-        'Verzování':'________________________v1.0 (Refresh = +1)',
-        'Ochrana dat':'___________________manuallyEdited ZACHOVÁNO',
-        'Logging':'____________________Ctrl+Shift+D k aktivaci'
-    };
-
+  // ═══════════════════════════════════════════════════════════════════════════
+    // 📡 ZÁVĚREČNÁ ZPRÁVA
+    // ═══════════════════════════════════════════════════════════════════════════
     console.log(
-        "%c\n╔════════════════════════════════════════════════════════════════════╗", 
-        "color: #00FF00; font-weight: bold;"
+        "%c🖖 audioFirebaseFunctions V3.7 - AUTO VERSIONING (Původní inicializace)", 
+        "color: #00FF00; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00FF00;"
     );
     console.log(
-        "%c║  audioFirebaseFunctions V3.7-SYSTEM-STATUS-REPORT        ║", 
-        "color: #00FF00; font-weight: bold; font-size: 14px;"
+        "%c   📡 Napojeno na DebugManager | Modul: 'firebase' + 'firebase-verze'", 
+        "color: #FFCC00; font-size: 12px;"
     );
     console.log(
-        "%c╠════════════════════════════════════════════════════════════════════╣", 
-        "color: #00FF00; font-weight: bold;"
-    );
-
-    Object.entries(data).forEach(([key, value]) => {
-        const padding = ' '.repeat(Math.max(0, 20 - key.length));
-        console.log(
-            `%c║  ${key}:${padding}%c${value}%c  ║`,
-            "color: #FFCC00; font-weight: bold;",
-            "color: #00CCFF;",
-            "color: #00FF00;"
-        );
-    });
-
-    console.log(
-        "%c╠════════════════════════════════════════════════════════════════════╣", 
-        "color: #00FF00; font-weight: bold;"
+        "%c   🔓 HTTPS odkazy i Názvy SE UKLÁDAJÍ do Cloudu (Full Sync)", 
+        "color: #00FF00; font-size: 11px; font-weight: bold;"
     );
     console.log(
-        "%c║       PŮVODNÍ INICIALIZACE ZACHOVÁNA!                              ║", 
-        "color: #FF00FF; font-weight: bold; font-size: 12px;"
+        "%c   🔢 Automatické verzování: Každý refresh = nová verze, aktualně je jen jedna verze 1.0, z důvodu že při každé nové verzi mizeli ručně upravené názvy skladeb.", 
+        "color: #FF6B35; font-size: 11px; font-weight: bold;"
     );
     console.log(
-        "%c╚════════════════════════════════════════════════════════════════════╝\n", 
-        "color: #00FF00; font-weight: bold;"
+        "%c   🛡️ Ochrana ručních úprav: manuallyEdited + lastEditedAt ZACHOVÁNO", 
+        "color: #00FF00; font-size: 11px; font-weight: bold;"
     );
-}
-
-logSystemTable();
+    console.log(
+        "%c   🚀 TVOJE PŮVODNÍ INICIALIZACE ZACHOVÁNA!", 
+        "color: #FF00FF; font-size: 11px; font-weight: bold;"
+    );
+    console.log(
+        "%c   Zapni logging: Ctrl+Shift+D → Firebase modul + firebase-verze", 
+        "color: #00CCFF; font-size: 11px;"
+    );
 // ⏱️ LOG END
 console.log(`%c🔥 [audioFirebaseFunctions] Načteno za ${(performance.now() - __audioFirebaseFunctions_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
+
 
 
 
