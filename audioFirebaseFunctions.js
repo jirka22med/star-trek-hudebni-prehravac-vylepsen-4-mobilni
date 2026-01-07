@@ -486,7 +486,7 @@ const __audioFirebaseFunctions_START = performance.now();
         const check = setInterval(() => {
             if (window.db || (typeof firebase !== 'undefined' && firebase.apps.length > 0)) {
                 clearInterval(check);
-                console.log("✅ [AutoInit] Firebase je ready, spouštím verzování...");
+                console.log("✅ [AutoInit] Firebase je ready, spouštím verzování [pouze verze 1.0]");
                 resolve();
             }
         }, 200);
@@ -507,7 +507,7 @@ const __audioFirebaseFunctions_START = performance.now();
             'color: #00CCFF; font-size: 12px; font-weight: bold;'
         );
         console.log(
-            `%c   🔄 Každý refresh = nová verze (ochrana před duplikáty)`, 
+            `%c   🔄 Každý refresh = nová verze (pouze verze 1.0)`, 
             'color: #FFCC00; font-size: 11px;'
         );
         console.log(
@@ -550,6 +550,7 @@ const __audioFirebaseFunctions_START = performance.now();
 // ⏱️ LOG END
 console.log(`%c🔥 [audioFirebaseFunctions] Načteno za ${(performance.now() - __audioFirebaseFunctions_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
+
 
 
 
