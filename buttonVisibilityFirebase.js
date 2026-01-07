@@ -377,29 +377,71 @@ const __buttonVisibilityFirebase_START = performance.now();
         }
     };
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 📡 ZÁVĚREČNÁ ZPRÁVA
-    // ═══════════════════════════════════════════════════════════════════════════
-    console.log(
-        "%c🖖 buttonVisibilityFirebase V1.1.0 - RED ALERT EDITION", 
-        "color: #FF00FF; font-size: 14px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #FF00FF;"
-    );
-    console.log(
-        "%c   📡 Napojeno na DebugManager | Modul: 'buttons'", 
-        "color: #FFCC00; font-size: 12px;"
-    );
-    console.log(
-        "%c   ☁️ Samostatná struktura: spravaTlacitek/config", 
-        "color: #00CCFF; font-size: 11px; font-weight: bold;"
-    );
-    console.log(
-        "%c   🛡️ RED ALERT POJISTKY: 7x Offline/Firebase protection", 
-        "color: #FF0000; font-size: 11px; font-weight: bold;"
-    );
-    console.log(
-        "%c   Zapni logging: Ctrl+Shift+D → Buttons modul", 
-        "color: #00CCFF; font-size: 11px;"
+     // ═══════════════════════════════════════════════════════════════════════════
+// 📡 RED ALERT TABULKOVÁ ZPRÁVA
+// ═══════════════════════════════════════════════════════════════════════════
+
+function logButtonSystemTable() {
+    const data = {
+        'Hlavní info':'buttonVisibilityFirebase V1.1.0 -RED ALERT EDITION',
+        'DebugManager': "Napojeno na DebugManager | Modul: 'buttons'",
+        'Struktura': 'Samostatná struktura: spravaTlacitek/config',
+        'Pojistky': 'RED ALERT POJISTKY: 7x Offline/Firebase protection',
+        'Debug Logging': 'Zapni logging: Ctrl+Shift+D → Buttons modul'
+    };
+
+    // Zjistíme nejdelší řádek
+    const maxLength = Math.max(
+        ...Object.entries(data).map(([key, value]) => 
+            key.length + value.length + 5
+        ),
+        70
     );
 
+    const border = '═'.repeat(maxLength);
+    const baseStyle = "font-family: 'Courier New', monospace; font-weight: bold;";
+
+    console.log(
+        `%c\n╔${border}╗`, 
+        `color: #FF00FF; ${baseStyle}`
+    );
+    console.log(
+        `%c║ buttonVisibilityFirebase V1.1.0 - SYSTEM STATUS ${' '.repeat(maxLength - 59)}║`, 
+        `color: #FF00FF; font-size: 14px; ${baseStyle}`
+    );
+    console.log(
+        `%c╠${border}╣`, 
+        `color: #FF00FF; ${baseStyle}`
+    );
+
+    Object.entries(data).forEach(([key, value]) => {
+        const contentLength = key.length + value.length + 4;
+        const padding = ' '.repeat(Math.max(0, maxLength - contentLength));
+        
+        console.log(
+            `%c║  %c${key}:%c ${value}${padding}%c║`,
+            `color: #FF00FF; ${baseStyle}`,
+            `color: #FFCC00; ${baseStyle}`,
+            `color: #00CCFF; ${baseStyle}`,
+            `color: #FF00FF; ${baseStyle}`
+        );
+    });
+
+    console.log(
+        `%c╠${border}╣`, 
+        `color: #FF00FF; ${baseStyle}`
+    );
+    console.log(
+        `%c║  RED ALERT MODE AKTIVNÍ!${' '.repeat(maxLength - 25)}║`, 
+        `color: #FF0000; font-size: 12px; ${baseStyle}`
+    );
+    console.log(
+        `%c╚${border}╝\n`, 
+        `color: #FF00FF; ${baseStyle}`
+    );
+}
+
+logButtonSystemTable();
 console.log(`%c🚀 [buttonVisibilityFirebase] Načteno za ${(performance.now() - __buttonVisibilityFirebase_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
