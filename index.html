@@ -310,9 +310,67 @@
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
   
-
+ <script>
+(function() {
+    const WATCHDOG_KEY = 'watchdog_last_check';
+    const RELOAD_COOLDOWN = 10000; // 10s ochrana proti loop
+    
+    // 🛡️ POJISTKA #1: Cooldown check
+    const lastCheck = localStorage.getItem(WATCHDOG_KEY);
+    if (lastCheck && (Date.now() - parseInt(lastCheck)) < RELOAD_COOLDOWN) {
+        console.log("🐕 [Watchdog] Cooldown aktivní - přeskakuji check.");
+        return;
+    }
+    
+    // 1. ZLIKVIDOVAT DUCHY
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(reg => reg.unregister());
+        });
+    }
+    
+    // 2. KONTROLA ČERSTVOSTI
+    fetch('fleet-register.js?v=' + Date.now())
+        .then(r => r.text())
+        .then(text => {
+            const match = text.match(/version:\s*"([^"]+)"/);
+            if (!match) return;
+            
+            const serverVer = match[1];
+            const browserVer = window.FLEET_CONFIG?.version || "0.0.0";
+            
+            console.log(`🐕 [Watchdog] Server: ${serverVer} | Browser: ${browserVer}`);
+            
+            if (serverVer !== browserVer) {
+                console.warn("⚠️ [Watchdog] Zastaralá verze! Restart za 2s...");
+                
+                // 🛡️ POJISTKA #2: Timestamp před reload
+                localStorage.setItem(WATCHDOG_KEY, Date.now().toString());
+                
+                // 🛡️ POJISTKA #3: Vyčistit cache PŘED reload
+                if ('caches' in window) {
+                    caches.keys().then(names => {
+                        names.forEach(name => caches.delete(name));
+                    });
+                }
+                
+                // 🛡️ POJISTKA #4: Delay + hard reload
+                setTimeout(() => {
+                    window.location.href = window.location.href.split('?')[0] + '?refresh=' + Date.now();
+                }, 2000);
+            } else {
+                console.log("✅ [Watchdog] Verze OK.");
+                localStorage.removeItem(WATCHDOG_KEY); // Reset cooldown
+            }
+        })
+        .catch(err => {
+            console.log("🐕 [Watchdog] Offline nebo chyba:", err.message);
+        });
+})();
+</script>
 </body>
 </html>
+
 
 
 
