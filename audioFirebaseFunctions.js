@@ -532,7 +532,7 @@ const __audioFirebaseFunctions_START = performance.now();
         "color: #00FF00; font-size: 11px; font-weight: bold;"
     );
     console.log(
-        "%c   🔢 Automatické verzování: Každý refresh = nová verze", 
+        "%c   🔢 Automatické verzování: Každý refresh = nová verze, aktualně je jen jedna verze 1.0, z důvodu že při každé nové verzi mizeli ručně upravené názvy skladeb.", 
         "color: #FF6B35; font-size: 11px; font-weight: bold;"
     );
     console.log(
@@ -550,4 +550,5 @@ const __audioFirebaseFunctions_START = performance.now();
 // ⏱️ LOG END
 console.log(`%c🔥 [audioFirebaseFunctions] Načteno za ${(performance.now() - __audioFirebaseFunctions_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
+
 
