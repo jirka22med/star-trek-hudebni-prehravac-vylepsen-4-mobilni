@@ -30,6 +30,8 @@ const PlaylistSettings = {
         animateTransitions: true,
         fontSize: 'medium', // 'small', 'medium', 'large'
         trackSpacing: 'normal', // 'compact', 'normal', 'spacious'
+        headerFontSizePx: 24,    // Výchozí velikost pro "STAR TREK..."
+        trackTitleFontSizePx: 20, // Výchozí velikost pro "Vyberte skladbu"
         // Nová barevná nastavení
         customColors: {
             backgroundColor: '#1a1a1a',
@@ -167,6 +169,31 @@ const PlaylistSettings = {
                         </select>
                     </div>
                 </div>
+                    
+                <div class="setting-item">
+                        <label for="track-spacing">Rozestupy mezi skladbami:</label>
+                        <select id="track-spacing" class="setting-select">
+                            <option value="compact">Kompaktní</option>
+                            <option value="normal">Normální</option>
+                            <option value="spacious">Prostorné</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="header-font-size">Velikost nadpisu (Header):</label>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="range" id="header-font-size" class="range-input" min="1" max="40" value="24">
+                            <span class="range-value">24px</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="track-title-font-size">Velikost názvu skladby:</label>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="range" id="track-title-font-size" class="range-input" min="1" max="40" value="20">
+                            <span class="range-value">20px</span>
+                        </div>
+                    </div>
 
                 <div class="settings-section" id="custom-colors-section">
                     <h3>🌈 Vlastní barvy</h3>
@@ -691,7 +718,18 @@ const PlaylistSettings = {
             const valueSpan = borderRadiusInput.parentElement?.querySelector('.range-value');
             if (valueSpan) valueSpan.textContent = `${borderRadiusInput.value}px`;
         }
+        /* 🆕 Načtení velikosti písma do posuvníků */
+        const headerFontInput = this.DOM.modal.querySelector('#header-font-size');
+        if (headerFontInput && this.currentSettings.headerFontSizePx) {
+            headerFontInput.value = this.currentSettings.headerFontSizePx;
+            this.updateRangeValue(headerFontInput);
+        }
 
+        const trackTitleFontInput = this.DOM.modal.querySelector('#track-title-font-size');
+        if (trackTitleFontInput && this.currentSettings.trackTitleFontSizePx) {
+            trackTitleFontInput.value = this.currentSettings.trackTitleFontSizePx;
+            this.updateRangeValue(trackTitleFontInput);
+        }
         // Zobrazení/skrytí gradient nastavení
         this.toggleGradientSettings();
         this.toggleCustomColorsSection();
@@ -752,7 +790,13 @@ const PlaylistSettings = {
 
         const borderRadiusInput = this.DOM.modal.querySelector('#border-radius');
         if (borderRadiusInput) newSettings.borderRadius = parseInt(borderRadiusInput.value);
+         /* 🆕 Uložení velikosti písma z posuvníků */
+        const headerFontInput = this.DOM.modal.querySelector('#header-font-size');
+        if (headerFontInput) newSettings.headerFontSizePx = parseInt(headerFontInput.value);
 
+        const trackTitleFontInput = this.DOM.modal.querySelector('#track-title-font-size');
+        if (trackTitleFontInput) newSettings.trackTitleFontSizePx = parseInt(trackTitleFontInput.value);
+            
         return newSettings;
     },
 
@@ -869,7 +913,19 @@ const PlaylistSettings = {
         let customCSS = '';
         const settings = this.currentSettings;
         const colors = settings.customColors;
+        /* 🆕 APLIKACE VELIKOSTI PÍSMA HLAVIČKY */
+        const h1Size = settings.headerFontSizePx || 24; 
+        const h2Size = settings.trackTitleFontSizePx || 20;
 
+        customCSS += `
+            /* Přebijeme inline styly v index.html pomocí !important */
+            h1#nazev-prehravace {
+                font-size: ${h1Size}px !important;
+            }
+            h2#trackTitle {
+                font-size: ${h2Size}px !important;
+            }
+        `;
         // Skrytí/zobrazení čísel skladeb
         if (!settings.showTrackNumbers) {
             customCSS += '.playlist .track-number { display: none !important; }';
@@ -897,6 +953,19 @@ const PlaylistSettings = {
                     color: ${colors.textColor} !important;
                     border: ${settings.borderWidth}px ${settings.borderStyle} ${colors.borderColor} !important;
                     border-radius: ${settings.borderRadius}px !important;
+                    
+                    /* --- 🛠️ JIŘÍKOVA STABILIZACE + VZDUCH --- */
+                    box-sizing: border-box !important;  /* Rámeček se počítá dovnitř (nepřeteče) */
+                    
+                    /* Tady přidáme trochu vzduchu, aby text nebyl nalepený na rámečku: */
+                    padding: 4px !important;            
+                    
+                    /* Centrování na mobilu: */
+                    margin-left: auto !important;       
+                    margin-right: auto !important;
+                    width: 98% !important;              /* Jistota, aby se nedotýkal okrajů displeje */
+                    /* -------------------------------------- */
+
                     ${settings.shadowEffect ? 'box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;' : ''}
                     ${settings.glowEffect ? `box-shadow: 0 0 20px ${colors.activeTrackColor}40 !important;` : ''}
                 }
