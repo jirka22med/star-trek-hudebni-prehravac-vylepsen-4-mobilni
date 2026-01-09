@@ -97,12 +97,12 @@ body, html {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.0rem;
     font-weight: 700;
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-    background-size: 300% 300%;
+   /* background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));*/
+  /*  background-size: 300% 300%;*/
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
-    animation: gradientAnimation 15s ease infinite;
+   /* color: transparent;
+    animation: gradientAnimation 15s ease infinite;*/
     margin: var(--spacing-md) 0;
     text-shadow: var(--glow-effect);
     user-select: none;
@@ -116,10 +116,48 @@ body, html {
 }
 
 /* Animace gradientu */
-@keyframes gradientAnimation {
+/*@keyframes gradientAnimation {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}*/
+
+#nazev-prehravace-nazev-skladby{
+    margin-top: -5px;
+     
+} 
+#trackTitle {
+    padding:2px;
+    background:#000;
+    border:2px solid #C00000;
+    color:#fff;
+    margin-left: 0px;
+    margin-right: 0px;    
+     
+     
+     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; 
+    margin-top: -5px;
+}
+.header-title{
+padding:2px;
+    background:#000;
+    border:2px solid #C00000;
+    color:#fff;
+    margin-left: 0px;
+    margin-right: 0px;    
+     
+     
+     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; 
+    margin-top: -5px;    
+    
 }
 
 /* Hlavní kontejner audia */
@@ -1148,3 +1186,4 @@ footer a:hover {
     background: rgba(20, 20, 20, 0.8) !important;
     pointer-events: none;
 }
+
