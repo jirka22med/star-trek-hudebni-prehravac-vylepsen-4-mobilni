@@ -102,7 +102,7 @@ window.playlistSections = [
   { name: '🛠️ Zábavné & Pracovní Písničky', start: 407, end: 414 },
   { name: '🎷 Speciální & Instrumentální Sety', start: 415, end: 422 },
   { name: '🎛️ Mix Písniček (Komplet)', start: 423, end: 432 },
-  { name: '📖 Audio Kapitoly (1-40)', start: 433, end: 472 },
+  { name: '📖 Audio Kapitoly (1-40)', start: 433, end: 473 },
   { name: '🚶 Jardova cesta s přáteli', start: 473, end: 479 } // Opraveno: index 479 je 480. skladba
 ];
 
@@ -891,4 +891,5 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
