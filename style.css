@@ -124,40 +124,41 @@ body, html {
 
 #nazev-prehravace-nazev-skladby{
     margin-top: -5px;
-     
-} 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #trackTitle {
     padding:2px;
     background:#000;
     border:2px solid #C00000;
-    color:#fff;
+     
     margin-left: 0px;
     margin-right: 0px;    
-     
-     
-     display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     box-sizing: border-box; 
     margin-top: -5px;
+    width: fit-content;
 }
-.header-title{
-padding:2px;
+
+.header-title {
+    padding:2px;
     background:#000;
     border:2px solid #C00000;
-    color:#fff;
+     
     margin-left: 0px;
     margin-right: 0px;    
-     
-     
-     display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     box-sizing: border-box; 
-    margin-top: -5px;    
-    
+    margin-top: -5px;
+    width: fit-content;
 }
 
 /* Hlavní kontejner audia */
@@ -1186,4 +1187,5 @@ footer a:hover {
     background: rgba(20, 20, 20, 0.8) !important;
     pointer-events: none;
 }
+
 
