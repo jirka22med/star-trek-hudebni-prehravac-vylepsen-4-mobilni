@@ -595,7 +595,7 @@ const PlaylistSettings = {
                 borderColor: '#ff00ff',
                 favoriteStarColor: '#00ffff'
             },
-        // 🆕 STAR TREK PRESETY - OPRAVENÁ VERZE (TMAVŠÍ)
+       // 🆕 STAR TREK PRESETY - OPRAVENÁ VERZE (TMAVŠÍ)
 'enterprise-command': {
     backgroundColor: '#1a0000',
     backgroundGradientStart: '#1a0000',
@@ -619,7 +619,7 @@ const PlaylistSettings = {
 'deep-space-nine': {
     backgroundColor: '#1a1100',
     backgroundGradientStart: '#1a1100',
-    backgroundGradientEnd: '#995500',
+    backgroundGradientEnd: '#bd8814',
     textColor: '#ffddaa',
     activeTrackColor: '#cc6600',
     hoverColor: '#ff8833',
@@ -629,7 +629,7 @@ const PlaylistSettings = {
 'borg-cube': {
     backgroundColor: '#000a00',
     backgroundGradientStart: '#000a00',
-    backgroundGradientEnd: '#00cc00',
+    backgroundGradientEnd: '#006400',
     textColor: '#00ff00',
     activeTrackColor: '#00ff00',
     hoverColor: '#33ff33',
@@ -649,7 +649,7 @@ const PlaylistSettings = {
 'klingon-bridge': {
     backgroundColor: '#1a0000',
     backgroundGradientStart: '#1a0000',
-    backgroundGradientEnd: '#cc0000',
+    backgroundGradientEnd: '#92000A',
     textColor: '#ffcccc',
     activeTrackColor: '#ff0000',
     hoverColor: '#ff4444',
@@ -1801,4 +1801,5 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
