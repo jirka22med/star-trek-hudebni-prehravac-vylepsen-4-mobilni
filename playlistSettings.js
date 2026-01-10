@@ -303,7 +303,7 @@ const PlaylistSettings = {
                     
                     <div class="setting-item">
                         <label for="border-radius">Zaoblení rohů (px):</label>
-                        <input type="range" id="border-radius" class="range-input" min="0" max="1200" value="8">
+                        <input type="range" id="border-radius" class="range-input" min="0" max="130" value="8">
                         <span class="range-value">8px</span>
                     </div>
                     
@@ -1801,6 +1801,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
