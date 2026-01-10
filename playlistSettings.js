@@ -170,14 +170,14 @@ const PlaylistSettings = {
                     </div>
                 </div>
                     
-                <div class="setting-item">
+              <!--  <div class="setting-item">
                         <label for="track-spacing">Rozestupy mezi skladbami:</label>
                         <select id="track-spacing" class="setting-select">
                             <option value="compact">Kompaktní</option>
                             <option value="normal">Normální</option>
                             <option value="spacious">Prostorné</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="setting-item">
                         <label for="header-font-size">Velikost nadpisu (Header):</label>
@@ -289,13 +289,13 @@ const PlaylistSettings = {
                     
                     <div class="setting-item">
                         <label for="border-width">Šířka okrajů (px):</label>
-                        <input type="range" id="border-width" class="range-input" min="0" max="10" value="2">
+                        <input type="range" id="border-width" class="range-input" min="0" max="600" value="2">
                         <span class="range-value">2px</span>
                     </div>
                     
                     <div class="setting-item">
                         <label for="border-radius">Zaoblení rohů (px):</label>
-                        <input type="range" id="border-radius" class="range-input" min="0" max="30" value="8">
+                        <input type="range" id="border-radius" class="range-input" min="0" max="600" value="8">
                         <span class="range-value">8px</span>
                     </div>
                     
@@ -1732,3 +1732,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
