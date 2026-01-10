@@ -595,65 +595,65 @@ const PlaylistSettings = {
                 borderColor: '#ff00ff',
                 favoriteStarColor: '#00ffff'
             },
-          // 🆕 STAR TREK PRESETY - 6 NOVÝCH TÉMAT
+        // 🆕 STAR TREK PRESETY - OPRAVENÁ VERZE (TMAVŠÍ)
 'enterprise-command': {
     backgroundColor: '#1a0000',
     backgroundGradientStart: '#1a0000',
-    backgroundGradientEnd: '#cc0000',
+    backgroundGradientEnd: '#8b0000',
     textColor: '#ffffff',
-    activeTrackColor: '#ff3333',
-    hoverColor: '#ff6666',
-    borderColor: '#990000',
-    favoriteStarColor: '#ffd700'
+    activeTrackColor: '#cc0000',
+    hoverColor: '#ff3333',
+    borderColor: '#660000',
+    favoriteStarColor: '#ffcc00'
 },
 'voyager-astrometrics': {
     backgroundColor: '#000d1a',
     backgroundGradientStart: '#000d1a',
-    backgroundGradientEnd: '#0066ff',
-    textColor: '#00ccff',
-    activeTrackColor: '#0099ff',
-    hoverColor: '#33aaff',
-    borderColor: '#0066cc',
-    favoriteStarColor: '#ffffff'
+    backgroundGradientEnd: '#003d7a',
+    textColor: '#e0f0ff',
+    activeTrackColor: '#0080ff',
+    hoverColor: '#3399ff',
+    borderColor: '#004080',
+    favoriteStarColor: '#ffaa00'
 },
 'deep-space-nine': {
     backgroundColor: '#1a1100',
     backgroundGradientStart: '#1a1100',
-    backgroundGradientEnd: '#cc8800',
-    textColor: '#ffcc99',
-    activeTrackColor: '#ffaa00',
-    hoverColor: '#ffcc33',
-    borderColor: '#996600',
-    favoriteStarColor: '#ff9900'
+    backgroundGradientEnd: '#995500',
+    textColor: '#ffddaa',
+    activeTrackColor: '#cc6600',
+    hoverColor: '#ff8833',
+    borderColor: '#663300',
+    favoriteStarColor: '#ffdd00'
 },
 'borg-cube': {
     backgroundColor: '#000a00',
     backgroundGradientStart: '#000a00',
-    backgroundGradientEnd: '#00ff00',
+    backgroundGradientEnd: '#00cc00',
     textColor: '#00ff00',
     activeTrackColor: '#00ff00',
     hoverColor: '#33ff33',
-    borderColor: '#00cc00',
+    borderColor: '#008800',
     favoriteStarColor: '#00ffff'
 },
 'romulan-warbird': {
     backgroundColor: '#001a00',
     backgroundGradientStart: '#001a00',
-    backgroundGradientEnd: '#00cc44',
-    textColor: '#99ff99',
-    activeTrackColor: '#00ff66',
-    hoverColor: '#33ff88',
-    borderColor: '#009933',
-    favoriteStarColor: '#ffff00'
+    backgroundGradientEnd: '#006622',
+    textColor: '#ccffcc',
+    activeTrackColor: '#00cc44',
+    hoverColor: '#33ff66',
+    borderColor: '#004411',
+    favoriteStarColor: '#ffdd00'
 },
 'klingon-bridge': {
-    backgroundColor: '#330000',
-    backgroundGradientStart: '#330000',
-    backgroundGradientEnd: '#ff0000',
+    backgroundColor: '#1a0000',
+    backgroundGradientStart: '#1a0000',
+    backgroundGradientEnd: '#cc0000',
     textColor: '#ffcccc',
-    activeTrackColor: '#ff4444',
-    hoverColor: '#ff6666',
-    borderColor: '#cc0000',
+    activeTrackColor: '#ff0000',
+    hoverColor: '#ff4444',
+    borderColor: '#880000',
     favoriteStarColor: '#ffaa00'
 }
         };
@@ -1801,3 +1801,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
