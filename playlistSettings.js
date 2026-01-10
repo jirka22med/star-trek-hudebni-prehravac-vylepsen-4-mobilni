@@ -170,14 +170,14 @@ const PlaylistSettings = {
                     </div>
                 </div>
                     
-              <!--  <div class="setting-item">
+                <div class="setting-item">
                         <label for="track-spacing">Rozestupy mezi skladbami:</label>
                         <select id="track-spacing" class="setting-select">
                             <option value="compact">Kompaktní</option>
                             <option value="normal">Normální</option>
                             <option value="spacious">Prostorné</option>
                         </select>
-                    </div> -->
+                    </div>
 
                     <div class="setting-item">
                         <label for="header-font-size">Velikost nadpisu (Header):</label>
@@ -271,6 +271,14 @@ const PlaylistSettings = {
                             <button type="button" class="preset-btn" data-preset="green-forest" style="background: linear-gradient(135deg, #064e3b 0%, #10b981 100%);">Zelený les</button>
                             <button type="button" class="preset-btn" data-preset="orange-sunset" style="background: linear-gradient(135deg, #7c2d12 0%, #f97316 100%);">Oranžový západ</button>
                             <button type="button" class="preset-btn" data-preset="cyberpunk" style="background: linear-gradient(135deg, #0a0a0a 0%, #ff00ff 100%);">Cyberpunk</button>
+                            <!-- 🆕 NOVÉ STAR TREK PRESETY -->
+<button type="button" class="preset-btn" data-preset="enterprise-command" style="background: linear-gradient(135deg, #1a0000 0%, #cc0000 100%);">Enterprise Command</button>
+<button type="button" class="preset-btn" data-preset="voyager-astrometrics" style="background: linear-gradient(135deg, #000d1a 0%, #0066ff 100%);">Voyager Astrometrics</button>
+<button type="button" class="preset-btn" data-preset="deep-space-nine" style="background: linear-gradient(135deg, #1a1100 0%, #cc8800 100%);">Deep Space Nine</button>
+<button type="button" class="preset-btn" data-preset="borg-cube" style="background: linear-gradient(135deg, #000a00 0%, #00ff00 100%);">Borg Cube</button>
+<button type="button" class="preset-btn" data-preset="romulan-warbird" style="background: linear-gradient(135deg, #001a00 0%, #00cc44 100%);">Romulan Warbird</button>
+<button type="button" class="preset-btn" data-preset="klingon-bridge" style="background: linear-gradient(135deg, #330000 0%, #ff0000 100%);">Klingon Bridge</button>    
+
                         </div>
                     </div>
                 </div>
@@ -289,13 +297,13 @@ const PlaylistSettings = {
                     
                     <div class="setting-item">
                         <label for="border-width">Šířka okrajů (px):</label>
-                        <input type="range" id="border-width" class="range-input" min="0" max="28" value="2">
+                        <input type="range" id="border-width" class="range-input" min="0" max="10" value="2">
                         <span class="range-value">2px</span>
                     </div>
                     
                     <div class="setting-item">
                         <label for="border-radius">Zaoblení rohů (px):</label>
-                        <input type="range" id="border-radius" class="range-input" min="0" max="1500" value="8">
+                        <input type="range" id="border-radius" class="range-input" min="0" max="30" value="8">
                         <span class="range-value">8px</span>
                     </div>
                     
@@ -586,7 +594,68 @@ const PlaylistSettings = {
                 hoverColor: '#ff44ff',
                 borderColor: '#ff00ff',
                 favoriteStarColor: '#00ffff'
-            }
+            },
+          // 🆕 STAR TREK PRESETY - 6 NOVÝCH TÉMAT
+'enterprise-command': {
+    backgroundColor: '#1a0000',
+    backgroundGradientStart: '#1a0000',
+    backgroundGradientEnd: '#cc0000',
+    textColor: '#ffffff',
+    activeTrackColor: '#ff3333',
+    hoverColor: '#ff6666',
+    borderColor: '#990000',
+    favoriteStarColor: '#ffd700'
+},
+'voyager-astrometrics': {
+    backgroundColor: '#000d1a',
+    backgroundGradientStart: '#000d1a',
+    backgroundGradientEnd: '#0066ff',
+    textColor: '#00ccff',
+    activeTrackColor: '#0099ff',
+    hoverColor: '#33aaff',
+    borderColor: '#0066cc',
+    favoriteStarColor: '#ffffff'
+},
+'deep-space-nine': {
+    backgroundColor: '#1a1100',
+    backgroundGradientStart: '#1a1100',
+    backgroundGradientEnd: '#cc8800',
+    textColor: '#ffcc99',
+    activeTrackColor: '#ffaa00',
+    hoverColor: '#ffcc33',
+    borderColor: '#996600',
+    favoriteStarColor: '#ff9900'
+},
+'borg-cube': {
+    backgroundColor: '#000a00',
+    backgroundGradientStart: '#000a00',
+    backgroundGradientEnd: '#00ff00',
+    textColor: '#00ff00',
+    activeTrackColor: '#00ff00',
+    hoverColor: '#33ff33',
+    borderColor: '#00cc00',
+    favoriteStarColor: '#00ffff'
+},
+'romulan-warbird': {
+    backgroundColor: '#001a00',
+    backgroundGradientStart: '#001a00',
+    backgroundGradientEnd: '#00cc44',
+    textColor: '#99ff99',
+    activeTrackColor: '#00ff66',
+    hoverColor: '#33ff88',
+    borderColor: '#009933',
+    favoriteStarColor: '#ffff00'
+},
+'klingon-bridge': {
+    backgroundColor: '#330000',
+    backgroundGradientStart: '#330000',
+    backgroundGradientEnd: '#ff0000',
+    textColor: '#ffcccc',
+    activeTrackColor: '#ff4444',
+    hoverColor: '#ff6666',
+    borderColor: '#cc0000',
+    favoriteStarColor: '#ffaa00'
+}
         };
 
         const preset = presets[presetName];
@@ -1732,5 +1801,3 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
-
-
