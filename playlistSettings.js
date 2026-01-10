@@ -170,14 +170,7 @@ const PlaylistSettings = {
                     </div>
                 </div>
                     
-                <div class="setting-item">
-                        <label for="track-spacing">Rozestupy mezi skladbami:</label>
-                        <select id="track-spacing" class="setting-select">
-                            <option value="compact">Kompaktní</option>
-                            <option value="normal">Normální</option>
-                            <option value="spacious">Prostorné</option>
-                        </select>
-                    </div>
+                
 
                     <div class="setting-item">
                         <label for="header-font-size">Velikost nadpisu (Header):</label>
@@ -1801,6 +1794,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
