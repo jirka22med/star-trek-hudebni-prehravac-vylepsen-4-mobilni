@@ -612,7 +612,7 @@ const PlaylistSettings = {
 'deep-space-nine': {
     backgroundColor: '#1a1100',
     backgroundGradientStart: '#1a1100',
-    backgroundGradientEnd: '#bd8814',
+    backgroundGradientEnd: '#FF8C00',
     textColor: '#ffddaa',
     activeTrackColor: '#cc6600',
     hoverColor: '#ff8833',
@@ -1794,6 +1794,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
