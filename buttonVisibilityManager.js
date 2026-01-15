@@ -1,5 +1,5 @@
 const __UItlacitka_START = performance.now();
-const VERSION_BVIS = "121.101.113"; // Verze správy tlačítek
+const VERSION_BVIS = "121.101.114"; // Verze správy tlačítek
 
 /**  
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE 
@@ -1584,5 +1584,6 @@ if (typeof window !== 'undefined') {
  */
 
 console.log(`%c🚀 [UItlacitka] Načteno za ${(performance.now() - __UItlacitka_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
