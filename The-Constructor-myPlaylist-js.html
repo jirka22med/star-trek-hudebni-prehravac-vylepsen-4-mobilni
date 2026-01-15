@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>🖖 The Constructor: Playlist Upgrade</title>
+    <style>
+        body { background: #050505; color: #00d4ff; font-family: 'Segoe UI', monospace; padding: 20px; height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; }
+        h1 { border-bottom: 2px solid #00d4ff; padding-bottom: 10px; margin-top: 0; color: #fff; }
+        
+        .container { display: flex; gap: 20px; flex: 1; min-height: 0; }
+        .col { flex: 1; display: flex; flex-direction: column; }
+        
+        label { font-weight: bold; margin-bottom: 5px; display: block; color: #ff9900; }
+        label.out { color: #00ff00; }
+        
+        textarea { 
+            flex: 1; background: #111; color: #ccc; border: 1px solid #333; padding: 10px; 
+            font-family: 'Consolas', monospace; font-size: 12px; resize: none; border-radius: 5px;
+        }
+        textarea:focus { outline: 1px solid #00d4ff; }
+        
+        .controls { padding: 15px 0; display: flex; align-items: center; gap: 20px; background: #050505; flex-wrap: wrap;}
+        
+        button { 
+            background: #005588; color: white; border: none; padding: 12px 30px; 
+            font-size: 16px; cursor: pointer; border-radius: 4px; font-weight: bold; 
+            transition: all 0.2s;
+        }
+        button:hover { background: #0077aa; transform: scale(1.02); }
+        button.copy { background: #006633; }
+        button.copy:hover { background: #008844; }
+
+        .stats { color: #888; font-size: 0.9em; line-height: 1.5; }
+        .highlight { color: #00ff00; font-weight: bold; }
+        .chk-group { display: flex; gap: 10px; align-items: center; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <h1>🖖 The Constructor: URL Fix + Metadata Injection</h1>
+
+    <div class="controls">
+        <button onclick="processPlaylist()">🚀 SPUSTIT UPGRADE</button>
+        <div class="stats" id="status">Vložte kód a palte!</div>
+    </div>
+
+    <div class="container">
+        <div class="col">
+            <label>1. SEM VLOŽTE myPlaylist.js (Ctrl+V)</label>
+            <textarea id="input" placeholder="// Zde vložte obsah souboru..."></textarea>
+        </div>
+
+        <div class="col">
+            <label class="out">2. VÝSLEDEK (Ctrl+C)</label>
+            <textarea id="output" readonly placeholder="Zde se objeví vylepšený kód..."></textarea>
+            <button onclick="copyToClipboard()" class="copy" style="margin-top: 10px;">📋 Zkopírovat výsledek</button>
+        </div>
+    </div>
+
+    <script>
+        function processPlaylist() {
+            const input = document.getElementById('input').value;
+            const status = document.getElementById('status');
+            
+            if (!input.trim()) {
+                status.innerHTML = "<span style='color:red'>⚠️ Žádná data na vstupu!</span>";
+                return;
+            }
+
+            let output = input;
+            let log = [];
+
+            // 1. OPRAVA URL (WWW -> DL)
+            const countDropbox = (output.match(/www\.dropbox\.com/g) || []).length;
+            if (countDropbox > 0) {
+                output = output.replace(/www\.dropbox\.com/g, 'dl.dropboxusercontent.com');
+                output = output.replace(/http:\/\/dl\.dropbox/g, 'https://dl.dropbox');
+                log.push(`🔹 Opraveno URL u <span class="highlight">${countDropbox}</span> skladeb.`);
+            } else {
+                log.push(`🔹 URL adresy vypadají v pořádku (žádné www.dropbox).`);
+            }
+
+            // 2. INJEKCE METADAT (manuallyEdited: false)
+            // Regex hledá objekty { ... src: ... }, které ještě nemají 'manuallyEdited'
+            // A přidá to před uzavírací závorku }
+            
+            let injectCount = 0;
+            
+            // Hledáme uzavírací závorku objektu '}', ale jen pokud ten objekt obsahuje 'src' nebo 'title' 
+            // a ještě neobsahuje 'manuallyEdited'.
+            // Používáme replace s funkcí pro logiku
+            output = output.replace(/(\{(?:(?!manuallyEdited)[^}])*?(?:src|title)(?:(?!manuallyEdited)[^}])*?)\}/g, (match, content) => {
+                injectCount++;
+                // Odstraníme bílé znaky na konci obsahu
+                let clean = content.trimEnd();
+                // Pokud končí čárkou, dáme ji pryč (přidáme ji znovu v templatu)
+                if (clean.endsWith(',')) clean = clean.slice(0, -1);
+                
+                // Vrátíme s přidanými daty
+                return `${clean}, manuallyEdited: false, lastEditedAt: null }`;
+            });
+
+            log.push(`🔹 Metadata přidána k <span class="highlight">${injectCount}</span> skladbám.`);
+
+            // 3. VÝPIS
+            document.getElementById('output').value = output;
+            
+            status.innerHTML = `✅ HOTOVO!<br>` + log.join('<br>');
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            alert("Kód zkopírován! Vložte ho zpět do myPlaylist.js a uložte.");
+        }
+    </script>
+
+</body>
+</html>

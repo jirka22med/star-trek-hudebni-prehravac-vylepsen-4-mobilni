@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Skener Sekcí - Star Trek v.5</title>
+    <style>
+        body {
+            background-color: #050a14;
+            color: #a2d2ff;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+        }
+        .panel {
+            border: 2px solid #4361ee;
+            background: #101525;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 1100px;
+            margin: auto;
+            box-shadow: 0 0 25px rgba(67, 97, 238, 0.4);
+        }
+        h2 { color: #f72585; text-align: center; text-transform: uppercase; letter-spacing: 2px; }
+        .grid { display: flex; gap: 20px; }
+        textarea {
+            flex: 1;
+            height: 500px;
+            background: #000;
+            color: #00ff00;
+            border: 1px solid #4361ee;
+            padding: 15px;
+            font-size: 13px;
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            padding: 18px;
+            background: linear-gradient(90deg, #4361ee, #f72585);
+            color: white;
+            border: none;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 15px #f72585;
+        }
+        .status-bar {
+            margin-top: 15px;
+            padding: 10px;
+            background: #1a1a2e;
+            border-left: 5px solid #4cc9f0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="panel">
+    <h2>🖖 Automatická Rekalibrace Sekcí</h2>
+    <p>Vlož celý blok <b>window.tracks</b> z tvého souboru <i>myPlaylist.js</i>:</p>
+    
+    <div class="grid">
+        <textarea id="fullPlaylist" placeholder="Zde vlož kód skladeb i s komentáři sekcí..."></textarea>
+        <textarea id="outputCode" placeholder="Zde se vygenerují hotové sekce..." readonly></textarea>
+    </div>
+
+    <button onclick="scanPlaylist()">📡 Spustit hloubkový sken a spočítat indexy</button>
+    
+    <div id="stats" class="status-bar">
+        Stav senzorů: Čekám na data...
+    </div>
+</div>
+
+<script>
+    function scanPlaylist() {
+        const input = document.getElementById('fullPlaylist').value;
+        const lines = input.split('\n');
+        
+        let sections = [];
+        let currentSection = null;
+        let trackCounter = 0;
+        let totalTracksFound = 0;
+
+        lines.forEach((line) => {
+            // Detekce nové sekce (hledáme tvoje 🎧 nebo 🚀 v komentářích)
+            if (line.includes('// 🎧') || line.includes('// 🚀') || line.includes('// 🏙️') || line.includes('// 🏢')) {
+                // Pokud už nějaká sekce existovala, uzavřeme ji
+                if (currentSection) {
+                    currentSection.end = trackCounter - 1;
+                    sections.push(currentSection);
+                }
+                
+                // Vyčistíme název sekce od bordelu
+                let name = line.replace('//', '').replace(/═/g, '').replace('🎧', '').trim();
+                currentSection = {
+                    name: name,
+                    start: trackCounter,
+                    end: 0
+                };
+            }
+
+            // Počítání skladeb (hledáme výskyt src:)
+            if (line.includes('src:')) {
+                trackCounter++;
+                totalTracksFound++;
+            }
+        });
+
+        // Uložení poslední sekce
+        if (currentSection) {
+            currentSection.end = trackCounter - 1;
+            sections.push(currentSection);
+        }
+
+        // Generování výsledného kódu
+        let resultCode = "window.playlistSections = [\n";
+        sections.forEach((sec, idx) => {
+            const comma = idx === sections.length - 1 ? "" : ",";
+            resultCode += `  { name: '${sec.name}', start: ${sec.start}, end: ${sec.end} }${comma}\n`;
+        });
+        resultCode += "];";
+
+        document.getElementById('outputCode').value = resultCode;
+        document.getElementById('stats').innerHTML = `✅ Sken dokončen! Nalezeno <b>${sections.length} sekcí</b> a <b>${totalTracksFound} skladeb</b>. (Poslední index: ${totalTracksFound - 1})`;
+    }
+</script>
+
+</body>
+</html>

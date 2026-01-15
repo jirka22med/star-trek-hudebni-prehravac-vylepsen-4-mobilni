@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Indexátor Playlistu - Flotila</title>
+    <style>
+        body {
+            background-color: #0b0d17;
+            color: #4cc9f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 { color: #f72585; text-transform: uppercase; }
+        textarea {
+            width: 90%;
+            height: 300px;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            border: 2px solid #4361ee;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: monospace;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #f72585;
+            box-shadow: 0 0 15px #f72585;
+        }
+        .container { max-width: 1000px; margin: auto; }
+    </style>
+</head>
+<body>
+
+    <h1>🖖 Diagnostika a Indexace Flotily</h1>
+    <p>Vlož své skladby (celý blok window.tracks) a já jim přidělím kódové označení.</p>
+
+    <div class="container">
+        <textarea id="inputData" placeholder="Sem vlož kód skladeb..."></textarea>
+        <br>
+        <button onclick="processPlaylist()">🚀 Očíslovat skladby</button>
+        <br><br>
+        <textarea id="outputData" placeholder="Výsledek se objeví zde..." readonly></textarea>
+    </div>
+
+    <script>
+        function processPlaylist() {
+            const input = document.getElementById('inputData').value;
+            let counter = 0;
+            
+            // Regulární výraz hledá konce objektů }, a přidává za ně komentář
+            // Funguje to tak, že hledá "}," a nahradí to "}, //číslo"
+            const processed = input.replace(/},/g, function(match) {
+                const replacement = match + " //" + counter;
+                counter++;
+                return replacement;
+            });
+
+            document.getElementById('outputData').value = processed;
+            
+            if (counter > 0) {
+                alert("Operace úspěšná, vice admirále! Očíslováno " + counter + " skladeb.");
+            }
+        }
+    </script>
+
+</body>
+</html>
