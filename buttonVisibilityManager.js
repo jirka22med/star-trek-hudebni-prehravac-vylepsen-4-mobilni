@@ -180,6 +180,28 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'Smaže všechna data z Firebase cloudu'
     },
+    'The-Constructor': {
+    name: 'The-Constructor',
+    category: 'Systém',
+    essential: false,
+    description: 'Nástroj pro automatickou opravu Dropbox URL a hromadnou injekci metadat do souboru myPlaylist.js pro zajištění stability v.5.'
+}, 
+
+'indexator': {
+    name: 'indexator',
+    category: 'Systém',
+    essential: false,
+    description: 'Systémový modul pro automatické přidělování kódového označení a indexaci skladeb v playlistu pomocí komentářů.'
+}, 
+
+'sekce': {
+    name: 'sekce',
+    category: 'Systém',
+    essential: false,
+    description: 'Hloubkový skener pro detekci ikon v komentářích a automatický výpočet rozsahů start-end pro organizaci sekcí playlistu.'
+},
+
+    
     'mini-mode-float': {
         name: '🖼️ přepne na Float',
         category: 'MiniPlayer',
@@ -359,6 +381,10 @@ const DEFAULT_VISIBILITY = {
 
     'install-app-button': false,
     'lehka-atomovka': false,
+    
+    'The-Constructor': false,
+    'indexator': false,
+    'sekce': false,
 };
  
 
@@ -1558,4 +1584,5 @@ if (typeof window !== 'undefined') {
  */
 
 console.log(`%c🚀 [UItlacitka] Načteno za ${(performance.now() - __UItlacitka_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
