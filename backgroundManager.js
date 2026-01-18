@@ -23,7 +23,7 @@ const __SpravaTapet_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════
     const BACKGROUNDS = {
         desktop: {
-            url: 'https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/ChatGPTImage17.1.202622_40_02.jpg?ver=0',
+            url: 'https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_1920x1080_3.jpg?ver=0',
             name: 'Starfleet Command Desktop',
             resolution: '1920x1080'
         },
@@ -499,6 +499,7 @@ const __SpravaTapet_START = performance.now();
     );
 console.log(`%c🚀 [SpravaTapet] Načteno za ${(performance.now() - __SpravaTapet_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
