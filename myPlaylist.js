@@ -263,7 +263,7 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/84tlmmxh64iolx01ofmar/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.2.mp3?rlkey=7u578p0v5s4agnjay038em6cb&st=qgo4ulrh&dl=1", title: "Více Admirál Jiřík & Claude.AI v.5", manuallyEdited: false, lastEditedAt: null }, //113
 { src: "https://dl.dropboxusercontent.com/scl/fi/edbjjt81i88k86lia9j30/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.3.mp3?rlkey=t5dk6eycz1ssjmv616932wmup&st=dqtzjo4h&dl=1", title: "Více Admirál Jiřík & Claude.AI v.6", manuallyEdited: false, lastEditedAt: null }, //114
 { src: "https://dl.dropboxusercontent.com/scl/fi/38kj9ots81lhn4ch60xrx/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.4.mp3?rlkey=djwohayh7hx84qfro81n5nmiv&st=mlhfn4pu&dl=1", title: "Více Admirál Jiřík & Claude.AI v.7", manuallyEdited: false, lastEditedAt: null }, //115
-{ src: "https://dl.dropboxusercontent.com/scl/fi/im4sdwxotklkzex3zi16z/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.5.mp3?rlkey=mzt6de71erbever33umixey60&st=vohzb0sv&dl=1", title: "Více Admirál Jiřík & Claude.AI v.8", manuallyEdited: false, lastEditedAt: null }, //116
+{ src: "https://dl.dropboxusercontent.com/scl/fi/4o201yvml13ia1dn7qcli/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V-1-2-3.mp3?rlkey=shfno8g9db24i686a6il771kk&st=c7sv9qex&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-0 v.8", manuallyEdited: false, lastEditedAt: null }, //116
 //{ src: "https://dl.dropboxusercontent.com/scl/fi/htvb306qxwg7rjzhp10vc/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.6.mp3?rlkey=b52shzqsf5180xcmcibzk6fl6&st=biqawas8&dl=1", title: "Více Admirál Jiřík & Claude.AI v.9", manuallyEdited: false, lastEditedAt: null }, //117    
 { src: "https://dl.dropboxusercontent.com/scl/fi/36pqt85qncua07mvj93vj/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI.mp3?rlkey=qcl0b9318a673ix4wh1v26314&st=0y3abjy5&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-1", manuallyEdited: false, lastEditedAt: null }, //117-8     
 // ═══════════════════════════════════════════════════════════
@@ -880,6 +880,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
