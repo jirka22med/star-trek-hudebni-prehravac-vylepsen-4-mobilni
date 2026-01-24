@@ -625,9 +625,9 @@ Dvouleté úsilí o vylepšování se vyplatilo. Každý prvek, od slideru hlasi
 
 Taktická data odeslána na hlavní obrazovku (Canvas). Čekám na další souřadnice, vice admirále Jiříku.
 
-
+---
 **Hlášení z AI Studia Google.com:**
-
+---
  Rozkaz, vice admirále Jiříku.
 
  Přijímám tvé poslední hlášení. Provádím okamžitou analýzu přiložených 
