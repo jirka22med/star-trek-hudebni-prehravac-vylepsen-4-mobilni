@@ -223,125 +223,202 @@ class MiniPlayer {
         }
     }
     
-    async activatePiP() {
-        try {
-            const mainVideo = document.getElementById('audioPlayer');
+    // 🔧 OPRAVA SEKCE activatePiP() v miniPlayer.js
+
+async activatePiP() {
+    // 🔒 OCHRANA PROTI DUPLICITNÍMU KLIKNUTÍ
+    if (this.pipActivating) {
+        console.log('⚠️ PiP se už aktivuje, čekej...');
+        return;
+    }
+    
+    this.pipActivating = true; // Zámek
+    
+    try {
+        const mainVideo = document.getElementById('audioPlayer');
+        
+        if (!mainVideo) {
+            throw new Error('Hlavní audio player nenalezen');
+        }
+        
+        if (mainVideo.tagName === 'AUDIO') {
+            let pipVideo = document.getElementById('pip-video-element');
             
-            if (!mainVideo) {
-                throw new Error('Hlavní audio player nenalezen');
+            // ✅ VŽDY VYTVOŘ NOVÝ VIDEO ELEMENT (zabráníme reuse problémům)
+            if (pipVideo) {
+                console.log('🔄 Odstraňuji starý PiP video element');
+                pipVideo.srcObject = null;
+                pipVideo.remove();
+                pipVideo = null;
             }
             
-            if (mainVideo.tagName === 'AUDIO') {
-                let pipVideo = document.getElementById('pip-video-element');
-                if (!pipVideo) {
-                    pipVideo = document.createElement('video');
-                    pipVideo.id = 'pip-video-element';
-                    pipVideo.style.display = 'none';
-                    pipVideo.width = 320;
-                    pipVideo.height = 180;
-                    
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 320;
-                    canvas.height = 180;
-                    const ctx = canvas.getContext('2d');
-                    
-                    // Načtení statického pozadí z GitHub (CORS podporován!)
-                    const bgImage = new Image();
-                    bgImage.crossOrigin = 'anonymous';
-                    bgImage.src = 'https://raw.githubusercontent.com/jirka22med/star-trek-assets/main/image_4k6.jpg';
-                    
-                    bgImage.onerror = () => {
-                        console.error('❌ GitHub obrázek se nepodařilo načíst, používám fallback');
-                        ctx.fillStyle = '#0a0e27';
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    };
-                    
-                    bgImage.onload = () => {
-                        window.DebugManager?.log('miniplayer', '✅ GitHub obrázek úspěšně načten!');
-                    };
-                    
-                    const animateCanvas = () => {
-                        // Vykreslení statického pozadí z GitHubu
-                        if (bgImage.complete && bgImage.naturalWidth > 0) {
-                            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-                        } else {
-                            // Fallback zatímco se načítá
-                            ctx.fillStyle = '#0a0e27';
-                            ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        }
-                        
-                        // Tmavý overlay pro lepší čitelnost textu
-                        ctx.fillStyle = 'rgba(10, 14, 39, 0.5)';
-                        ctx.fillRect(0, 0, 320, 180);
-                        
-                        // Logo a název v horní části
-                        ctx.fillStyle = '#4ade80';
-                        ctx.font = 'bold 15px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.fillText('🖖 STAR TREK', 160, 45);
-                        
-                        // Header s názvem skladby
-                        ctx.fillStyle = 'rgba(15, 52, 96, 0.9)';
-                        ctx.fillRect(0, 0, 320, 30);
-                        
-                        const trackTitle = document.getElementById('trackTitle');
-                        if (trackTitle) {
-                            ctx.fillStyle = '#fff';
-                            ctx.font = '15px Arial';
-                            ctx.textAlign = 'center';
-                            const text = trackTitle.textContent.substring(0, 30);
-                            ctx.fillText(text, 160, 25);
-                        }
-                        
-                        // Progress bar
-                        const audioPlayer = document.getElementById('audioPlayer');
-                        if (audioPlayer && audioPlayer.duration) {
-                            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 300;
-                            ctx.fillStyle = '#4ade80';
-                            ctx.fillRect(10, 170, progress, 4);
-                            ctx.strokeStyle = '#0f3460';
-                            ctx.lineWidth = 1;
-                            ctx.strokeRect(10, 170, 300, 4);
-                        }
-                        
-                        requestAnimationFrame(animateCanvas);
-                    };
-                    
-                    animateCanvas();
-                    
-                    pipVideo.srcObject = canvas.captureStream(24);
-                    pipVideo.play();
-                    
-                    document.body.appendChild(pipVideo);
+            console.log('🚀 Vytvářím nový PiP video element');
+            pipVideo = document.createElement('video');
+            pipVideo.id = 'pip-video-element';
+            pipVideo.style.display = 'none';
+            pipVideo.width = 320;
+            pipVideo.height = 180;
+            pipVideo.muted = true; // DŮLEŽITÉ pro autoplay
+            pipVideo.playsInline = true;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = 320;
+            canvas.height = 180;
+            const ctx = canvas.getContext('2d');
+            
+            // ✅ PŘEDNAHRÁNÍ OBRÁZKU (await místo async callback)
+            const bgImage = new Image();
+            bgImage.crossOrigin = 'anonymous';
+            bgImage.src = 'https://raw.githubusercontent.com/jirka22med/star-trek-assets/main/image_4k6.jpg';
+            
+            console.log('⏳ Načítám GitHub obrázek...');
+            
+            // ČEKÁME NA LOAD NEBO ERROR
+            await new Promise((resolve, reject) => {
+                bgImage.onload = () => {
+                    console.log('✅ GitHub obrázek načten!');
+                    resolve();
+                };
+                bgImage.onerror = () => {
+                    console.warn('⚠️ GitHub obrázek selhal, používám fallback');
+                    resolve(); // Resolve i při chybě (fallback funguje)
+                };
+                // Timeout jako záchrana
+                setTimeout(() => {
+                    console.warn('⏱️ GitHub obrázek timeout, pokračuji s fallbackem');
+                    resolve();
+                }, 3000);
+            });
+            
+            // ✅ RENDERING FUNKCE (už máme obrázek ready)
+            const animateCanvas = () => {
+                // Vykreslení pozadí
+                if (bgImage.complete && bgImage.naturalWidth > 0) {
+                    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                } else {
+                    // Fallback gradient
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 180);
+                    gradient.addColorStop(0, '#0a0e27');
+                    gradient.addColorStop(1, '#1a1a2e');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
                 }
                 
-                await pipVideo.requestPictureInPicture();
-                this.miniPlayerContainer?.classList.add('hidden');
-                window.showNotification?.('Picture-in-Picture aktivován! 🖖 (GitHub hosting)', 'info', 3000);
+                // Tmavý overlay
+                ctx.fillStyle = 'rgba(10, 14, 39, 0.5)';
+                ctx.fillRect(0, 0, 320, 180);
                 
-                window.DebugManager?.log('miniplayer', 'PiP: Aktivován s GitHub pozadím - CORS podporován! 🖖');
+                // Logo
+                ctx.fillStyle = '#4ade80';
+                ctx.font = 'bold 15px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('🖖 STAR TREK', 160, 45);
                 
-            } else if (mainVideo.tagName === 'VIDEO') {
-                await mainVideo.requestPictureInPicture();
-                this.miniPlayerContainer?.classList.add('hidden');
-                window.showNotification?.('Picture-in-Picture aktivován 📺', 'info', 2000);
-            }
+                // Header s názvem skladby
+                ctx.fillStyle = 'rgba(15, 52, 96, 0.9)';
+                ctx.fillRect(0, 0, 320, 30);
+                
+                const trackTitle = document.getElementById('trackTitle');
+                if (trackTitle) {
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '15px Arial';
+                    ctx.textAlign = 'center';
+                    const text = trackTitle.textContent.substring(0, 30);
+                    ctx.fillText(text, 160, 20);
+                }
+                
+                // Progress bar
+                const audioPlayer = document.getElementById('audioPlayer');
+                if (audioPlayer && audioPlayer.duration) {
+                    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 300;
+                    ctx.fillStyle = '#4ade80';
+                    ctx.fillRect(10, 170, progress, 4);
+                    ctx.strokeStyle = '#0f3460';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(10, 170, 300, 4);
+                }
+                
+                requestAnimationFrame(animateCanvas);
+            };
             
-        } catch (error) {
-            window.DebugManager?.log('miniplayer', 'PiP chyba:', error);
+            // Spustíme rendering HNED
+            animateCanvas();
             
-            let message = 'PiP není podporován!';
-            if (error.message.includes('requestPictureInPicture')) {
-                message = 'Tvůj prohlížeč nepodporuje PiP. Použij Chrome, Edge nebo Safari.';
-            }
+            console.log('🎥 Připojuji canvas stream k videu');
             
-            window.showNotification?.(message, 'error', 3000);
+            // ✅ PŘIPOJENÍ STREAMU
+            const stream = canvas.captureStream(24);
+            pipVideo.srcObject = stream;
             
-            document.getElementById('mini-mode-select').value = 'floating';
-            this.currentMode = 'floating';
-            this.miniPlayerContainer?.classList.remove('hidden');
+            // ✅ PŘIDÁME DO DOM
+            document.body.appendChild(pipVideo);
+            
+            console.log('▶️ Spouštím video play()');
+            
+            // ✅ ČEKÁME NA PLAY
+            await pipVideo.play();
+            
+            console.log('📺 Aktivuji Picture-in-Picture');
+            
+            // ✅ AKTIVACE PiP
+            await pipVideo.requestPictureInPicture();
+            
+            console.log('✅ PiP AKTIVOVÁN!');
+            
+            this.miniPlayerContainer?.classList.add('hidden');
+            window.showNotification?.('Picture-in-Picture aktivován! 🖖', 'info', 3000);
+            
+            window.DebugManager?.log('miniplayer', 'PiP: Aktivován s GitHub pozadím - CORS podporován! 🖖');
+            
+            // ✅ CLEANUP PŘI ZAVŘENÍ
+            pipVideo.addEventListener('leavepictureinpicture', () => {
+                console.log('🔔 PiP uzavřen uživatelem');
+                if (pipVideo) {
+                    pipVideo.srcObject = null;
+                    pipVideo.remove();
+                }
+                // Přepneme zpět na floating
+                const modeSelect = document.getElementById('mini-mode-select');
+                if (modeSelect) {
+                    modeSelect.value = 'floating';
+                }
+                this.currentMode = 'floating';
+                this.miniPlayerContainer?.classList.remove('hidden');
+            }, { once: true });
+            
+        } else if (mainVideo.tagName === 'VIDEO') {
+            // Pro video elementy
+            await mainVideo.requestPictureInPicture();
+            this.miniPlayerContainer?.classList.add('hidden');
+            window.showNotification?.('Picture-in-Picture aktivován 📺', 'info', 2000);
         }
+        
+    } catch (error) {
+        window.DebugManager?.log('miniplayer', 'PiP chyba:', error);
+        
+        let message = 'PiP není podporován!';
+        if (error.message.includes('requestPictureInPicture')) {
+            message = 'Tvůj prohlížeč nepodporuje PiP. Použij Chrome, Edge nebo Safari.';
+        } else if (error.name === 'NotAllowedError') {
+            message = 'PiP bylo zablokováno prohlížečem. Zkontroluj nastavení.';
+        }
+        
+        window.showNotification?.(message, 'error', 3000);
+        
+        // Reset na floating mode
+        const modeSelect = document.getElementById('mini-mode-select');
+        if (modeSelect) {
+            modeSelect.value = 'floating';
+        }
+        this.currentMode = 'floating';
+        this.miniPlayerContainer?.classList.remove('hidden');
+        
+    } finally {
+        // ✅ VŽDY ODEMKNI ZÁMEK
+        this.pipActivating = false;
+        console.log('🔓 PiP aktivace dokončena');
     }
+}
     
     openPopupWindow() {
         if (this.popupWindow && !this.popupWindow.closed) {
