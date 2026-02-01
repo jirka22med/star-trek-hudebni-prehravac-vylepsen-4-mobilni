@@ -603,9 +603,9 @@ function populatePlaylist(listToDisplay) {
         stickyHeader.textContent = '🎧 Načítání...';
         stickyHeader.style.cssText = `
     position: sticky;
-    top: 0;
+    margin-top: -5px;
     z-index: 200;
-    padding: 8px 12px;
+    padding: 12px 15px;
     margin: 0;
     background: linear-gradient(135deg, rgba(0, 120, 215, 0.4), rgba(0, 212, 255, 0.2));  /* 🆕 STEJNÁ jako normální sekce */
     color: #00d4ff;                /* 🆕 STEJNÁ barva textu jako normální sekce */
@@ -1370,6 +1370,7 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
      // ⏱️ LOG END
 console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
