@@ -602,20 +602,20 @@ function populatePlaylist(listToDisplay) {
         stickyHeader.className = 'playlist-section-header';
         stickyHeader.textContent = '🎧 Načítání...';
         stickyHeader.style.cssText = `
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 12px 15px;
-            background: linear-gradient(135deg, rgba(0, 120, 215, 0.9), rgba(0, 212, 255, 0.6));
-            color: #00d4ff;
-            font-weight: bold;
-            font-size: 13px;
-            text-align: center;
-            border-radius: 8px;
-            border-left: 4px solid #00d4ff;
-            cursor: default;
-            box-shadow: 0 2px 10px rgba(0, 212, 255, 0.3);
-        `;
+    position: sticky;
+    top: -2px;                    /* 🆕 Margin top -2px (posun nahoru) */
+    z-index: 100;
+    padding: 10px 15px;           /* 🆕 Snížená tloušťka (bylo 12px) */
+    background: linear-gradient(135deg, rgba(0, 120, 215, 1), rgba(0, 212, 255, 0.95));  /* 🆕 Méně průhlednosti */
+    color: #00d4ff;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 8px;
+    border-left: 4px solid #00d4ff;
+    cursor: default;
+    box-shadow: 0 2px 10px rgba(0, 212, 255, 0.5);  /* 🆕 Silnější stín */
+`;
         fragment.appendChild(stickyHeader);
         
         listToDisplay.forEach((track, index) => {
@@ -1369,4 +1369,5 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
      // ⏱️ LOG END
 console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
