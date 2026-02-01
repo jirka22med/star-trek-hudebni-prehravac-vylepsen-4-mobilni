@@ -603,7 +603,7 @@ function populatePlaylist(listToDisplay) {
         stickyHeader.textContent = '🎧 Načítání...';
         stickyHeader.style.cssText = `
     position: sticky;
-    margin-top: -5px;
+    margin-top: -1px;
     z-index: 200;
     padding: 12px 15px;
     margin: 0;
@@ -1370,6 +1370,7 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
      // ⏱️ LOG END
 console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
