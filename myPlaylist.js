@@ -7,79 +7,83 @@ window.PLAYLIST_VERSION = new Date().toISOString();
 
 // 🎯 DEFINICE SEKCÍ (Aktualizováno na 480 skladeb, indexy 0-479)
 window.playlistSections = [
-  { name: '🖖 STAR TREK - HLAVNÍ TÉMATA & POSÁDKY', start: 0, end: 12 },
-  { name: '🎬 STAR TREK - INTRA & ZNĚLKY', start: 13, end: 17 },
-  { name: '🌌 STAR TREK - EPICKÉ OUTRO (SÉRIE)', start: 18, end: 24 },
-  { name: '🎵 STAR TREK - PÍSNIČKA POSÁDEK (ORIGINÁL & KLINGONI)', start: 25, end: 38 },
-  { name: '🔥 HVĚZDNÉ PLAMENY & HVĚZDY A PLAMENY', start: 39, end: 44 },
-  { name: '💃 HVĚZDNÉ PLAMENY Disco Verze', start: 45, end: 51 },
-  { name: '✨ HVĚZDNÉ PLAMENY Remastered', start: 52, end: 55 },
-  { name: '🚀 HVĚZDNÉ PLAMENY Star Trek Verze', start: 56, end: 57 },
-  { name: '🆕 HVĚZDNÉ PLAMENY Nová Série', start: 58, end: 65 },
-  { name: '🎆 VELKÉ OSLAVY DS9', start: 66, end: 73 },
-  { name: '🦅 SPECIÁL: ČERNÝ HAVRAN & ENTERPRISE', start: 74, end: 78 },
-  { name: '🕺 STAR TREK PÍSNIČKA POSÁDEK (DISCO VERZE)', start: 79, end: 88 },
-  { name: '🎤 STAR TREK SOUTĚŽ (ENTERPRISE & DS9)', start: 89, end: 94 },
-  { name: '🪐 STAR TREK SOUTĚŽ Na Deep Space Nine', start: 95, end: 108 },
-  { name: '🤖 VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CHATBOT CLAUDE.AI', start: 109, end: 117 },
-  { name: '🤝 Více Admirál Jiřík & Chatbot', start: 118, end: 121 },
-  { name: '🧠 Více Admirál & Claude.AI', start: 122, end: 127 },
-  { name: '🎄 VÁNOČNÍ HVĚZDNÁ FLOTILA', start: 128, end: 138 },
-  { name: '🌌 STAR TREK - DO NEZNÁMA (SÉRIE)', start: 139, end: 143 },
-  { name: '🔄 STAR TREK - DO NEZNÁMA Remake', start: 144, end: 146 },
-  { name: '📜 STAR TREK - DO NEZNÁMA Starší verze', start: 147, end: 149 },
-  { name: '🆕 STAR TREK - DO NEZNÁMA Nová Série', start: 150, end: 154 },
-  { name: '🎧 MIX & SPECIÁLNÍ PROJEKTY', start: 155, end: 157 },
-  { name: '🤝 Týmová Práce', start: 158, end: 162 },
-  { name: '📔 Admirálský Deník', start: 163, end: 168 },
-  { name: '🔔 Vánoční Hudba na palubě', start: 169, end: 173 },
-  { name: '✨ Remastered Bonusy', start: 174, end: 177 },
-  { name: '🚀 VESMÍRNÁ ODYSEA (KOMPLET)', start: 178, end: 187 },
-  { name: '🎁 DALŠÍ PROJEKTY & BONUSY', start: 188, end: 192 },
-  { name: '♾️ Na Cestě k Věčnosti', start: 193, end: 200 },
-  { name: '💖 Srdce mezi Hvězdami', start: 201, end: 207 },
-  { name: '🤲 Srdce na Dlani', start: 208, end: 210 },
-  { name: '✨ Ostatní Remastered', start: 211, end: 215 },
-  { name: '🛰️ STANICE HLUBOKÝ VESMÍR 9 (SÉRIE)', start: 216, end: 226 },
-  { name: '♾️ HVEZDNA-FLOTILA-NAVZDY', start: 227, end: 234 },
-  { name: '👶 Děti hvězd', start: 235, end: 244 },
-  { name: '🎻 Louisiana sobotní noc 1 až 9', start: 245, end: 253 },
-  { name: '🎻 Louisiana-sobotni-noc 10 až 19', start: 254, end: 263 },
-  { name: '🎤 PÍSNIČKY O JIRKOVI Klasická Série 1', start: 264, end: 267 },
-  { name: '🦸 PÍSNIČKY O JIRKOVI Klasická Série 2', start: 268, end: 271 },
-  { name: '✨ PÍSNIČKY O JIRKOVI Remastered Verze 1', start: 272, end: 275 },
-  { name: '✨ PÍSNIČKY O JIRKOVI Remastered Verze 2', start: 276, end: 280 },
-  { name: '🧠 Jirkův Futuristický Kvíz', start: 281, end: 285 },
-  { name: '➕ Jirkův dodatek', start: 286, end: 286 },
-  { name: '🏙️ Journey Through Žižkov Originální verze', start: 287, end: 288 },
-  { name: '🔄 Journey Through Žižkov Jirka Remake', start: 289, end: 291 },
-  { name: '✨ Journey Through Žižkov Remastered (Rema)', start: 292, end: 295 },
-  { name: '🏢 FEDERÁLNÍ ÚSTAV Remastered Verze', start: 296, end: 297 },
-  { name: '🏛️ FEDERÁLNÍ ÚSTAV Originální Série', start: 298, end: 300 },
-  { name: '🔄 FEDERÁLNÍ ÚSTAV Remake Série', start: 301, end: 304 },
-  { name: '2️⃣ FEDERÁLNÍ ÚSTAV Série 2', start: 305, end: 306 },
-  { name: '3️⃣ FEDERÁLNÍ ÚSTAV Série 3', start: 307, end: 310 },
-  { name: '4️⃣ FEDERÁLNÍ ÚSTAV Série 4', start: 311, end: 312 },
-  { name: '🍻 Krčma v Dětenicích', start: 313, end: 316 },
-  { name: '🛣️ cesta krystof', start: 317, end: 321 },
-  { name: '🎷 instrumentální disko', start: 322, end: 331 },
-  { name: '🤠 ÚTAH A JEHO BRATR', start: 332, end: 334 },
-  { name: '🌑 NOČNÍ STÍNY & BOD ZLOMU', start: 335, end: 339 },
-  { name: '✨ STÍNY Z UTAHY (REMASTERED)', start: 340, end: 341 },
-  { name: '👬 Jirka a ondra', start: 342, end: 351 },
-  { name: '🦁 Mohambi', start: 352, end: 359 },
-  { name: '✨ Mohombi Remastered', start: 360, end: 361 },
-  { name: '🏍️ Bumpy Rider Mohombi', start: 362, end: 366 },
-  { name: '🐓 kohout / mix-kohout', start: 367, end: 378 },
-  { name: '🏔️ Hora Matterhorn', start: 379, end: 387 },
-  { name: '🎸 Nebude to ľahké', start: 388, end: 398 },
-  { name: '🎵 RŮZNÉ HITY & SINGLY', start: 399, end: 404 },
-  { name: '🏰 SÉRIE: NA OKOŘ JE CESTA (VŠECHNY VERZE)', start: 405, end: 413 },
-  { name: '🛠️ ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY', start: 414, end: 421 },
-  { name: '🎷 SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY', start: 422, end: 429 },
-  { name: '🎛️ MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)', start: 430, end: 439 },
-  { name: '📖 AUDIO KAPITOLY (1-40)', start: 440, end: 479 },
-  { name: '🚶 Jardova cesta s přátely', start: 480, end: 485 }  
+  { name: 'STAR TREK - HLAVNÍ TÉMATA & POSÁDKY', start: 0, end: 12 },
+  { name: 'STAR TREK - INTRA & ZNĚLKY', start: 13, end: 17 },
+  { name: 'STAR TREK - EPICKÉ OUTRO (SÉRIE)', start: 18, end: 24 },
+  { name: 'STAR TREK - PÍSNIČKA POSÁDEK (ORIGINÁL & KLINGONI)', start: 25, end: 38 },
+  { name: 'HVĚZDNÉ PLAMENY & HVĚZDY A PLAMENY', start: 39, end: 44 },
+  { name: 'HVĚZDNÉ PLAMENY Disco Verze', start: 45, end: 51 },
+  { name: 'HVĚZDNÉ PLAMENY Remastered', start: 52, end: 55 },
+  { name: 'HVĚZDNÉ PLAMENY Star Trek Verze', start: 56, end: 57 },
+  { name: 'HVĚZDNÉ PLAMENY Nová Série', start: 58, end: 65 },
+  { name: 'VELKÉ OSLAVY DS9', start: 66, end: 73 },
+  { name: 'SPECIÁL: ČERNÝ HAVRAN & ENTERPRISE', start: 74, end: 78 },
+  { name: 'STAR TREK PÍSNIČKA POSÁDEK (DISCO VERZE)', start: 79, end: 88 },
+  { name: 'STAR TREK SOUTĚŽ (ENTERPRISE & DS9)', start: 89, end: 94 },
+  { name: 'STAR TREK SOUTĚŽ Na Deep Space Nine', start: 95, end: 108 },
+  { name: 'VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CHATBOT CLAUDE.AI', start: 109, end: 118 },
+  { name: 'Více Admirál Jiřík & Chatbot', start: 119, end: 122 },
+  { name: 'Více Admirál & Claude.AI', start: 123, end: 128 },
+  { name: 'VÁNOČNÍ HVĚZDNÁ FLOTILA', start: 129, end: 139 },
+  { name: 'STAR TREK - DO NEZNÁMA (SÉRIE)', start: 140, end: 144 },
+  { name: 'STAR TREK - DO NEZNÁMA Remake', start: 145, end: 147 },
+  { name: 'STAR TREK - DO NEZNÁMA Starší verze', start: 148, end: 150 },
+  { name: 'STAR TREK - DO NEZNÁMA Nová Série', start: 151, end: 155 },
+  { name: 'MIX & SPECIÁLNÍ PROJEKTY', start: 156, end: 158 },
+  { name: 'Týmová Práce', start: 159, end: 163 },
+  { name: 'Admirálský Deník', start: 164, end: 169 },
+  { name: 'Vánoční Hudba na palubě', start: 170, end: 174 },
+  { name: 'Remastered Bonusy', start: 175, end: 178 },
+  { name: 'VESMÍRNÁ ODYSEA (KOMPLET)', start: 179, end: 188 },
+  { name: 'DALŠÍ PROJEKTY & BONUSY', start: 189, end: 193 },
+  { name: 'Na Cestě k Věčnosti', start: 194, end: 201 },
+  { name: 'Srdce mezi Hvězdami', start: 202, end: 208 },
+  { name: 'Srdce na Dlani', start: 209, end: 211 },
+  { name: 'Ostatní Remastered', start: 212, end: 216 },
+  { name: 'STANICE HLUBOKÝ VESMÍR 9 (SÉRIE)', start: 217, end: 227 },
+  { name: 'HVEZDNA-FLOTILA-NAVZDY', start: 228, end: 235 },
+  { name: 'Děti hvězd', start: 236, end: 245 },
+  { name: 'Louisiana sobotní noc 1 až 9', start: 246, end: 254 },
+  { name: 'Louisiana-sobotni-noc 10 až 19', start: 255, end: 264 },
+  { name: 'PÍSNIČKY O JIRKOVI Klasická Série 1', start: 265, end: 268 },
+  { name: 'PÍSNIČKY O JIRKOVI Klasická Série 2', start: 269, end: 272 },
+  { name: 'PÍSNIČKY O JIRKOVI Remastered Verze 1', start: 273, end: 276 },
+  { name: 'PÍSNIČKY O JIRKOVI Remastered Verze 2', start: 277, end: 281 },
+  { name: 'Jirkův Futuristický Kvíz', start: 282, end: 286 },
+  { name: 'Jirkův dodatek', start: 287, end: 287 },
+  { name: 'Journey Through Žižkov Originální verze', start: 288, end: 289 },
+  { name: 'Journey Through Žižkov Jirka Remake', start: 290, end: 292 },
+  { name: 'Journey Through Žižkov Remastered (Rema)', start: 293, end: 296 },
+  { name: 'FEDERÁLNÍ ÚSTAV Remastered Verze', start: 297, end: 298 },
+  { name: 'FEDERÁLNÍ ÚSTAV Originální Série', start: 299, end: 301 },
+  { name: 'FEDERÁLNÍ ÚSTAV Remake Série', start: 302, end: 305 },
+  { name: 'FEDERÁLNÍ ÚSTAV Série 2', start: 306, end: 307 },
+  { name: 'FEDERÁLNÍ ÚSTAV Série 3', start: 308, end: 311 },
+  { name: 'FEDERÁLNÍ ÚSTAV Série 4', start: 312, end: 313 },
+  { name: 'Krčma v Dětenicích', start: 314, end: 317 },
+  { name: 'cesta krystof', start: 318, end: 322 },
+  { name: 'instrumentální disko', start: 323, end: 332 },
+  { name: 'ÚTAH A JEHO BRATR', start: 333, end: 335 },
+  { name: 'NOČNÍ STÍNY & BOD ZLOMU', start: 336, end: 340 },
+  { name: 'STÍNY Z UTAHY (REMASTERED)', start: 341, end: 342 },
+  { name: 'Jirka a ondra', start: 343, end: 352 },
+  { name: 'Mohambi', start: 353, end: 360 },
+  { name: 'Mohombi Remastered', start: 361, end: 362 },
+  { name: 'Bumpy Rider Mohombi', start: 363, end: 367 },
+  { name: 'kohout / mix-kohout', start: 368, end: 379 },
+  { name: 'Hora Matterhorn', start: 380, end: 388 },
+  { name: 'Nebude to ľahké', start: 389, end: 399 },
+  { name: 'RŮZNÉ HITY & SINGLY', start: 400, end: 405 },
+  { name: 'SÉRIE: NA OKOŘ JE CESTA (VŠECHNY VERZE)', start: 406, end: 414 },
+  { name: 'ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY', start: 415, end: 422 },
+  { name: 'SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY', start: 423, end: 430 },
+  { name: 'MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)', start: 431, end: 440 },
+  { name: 'AUDIO KAPITOLY (1-40)', start: 441, end: 486 },
+  { name: 'Ocelová křídla Promethea', start: 487, end: 490 },
+  { name: 'Velení Promethea', start: 491, end: 494 },
+  { name: 'Velení lodi Prometheus', start: 495, end: 496 },
+  { name: 'USS Prometheus', start: 497, end: 498 },
+  { name: 'KONEC PLAYLISTU', start: 499, end: 498 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -870,7 +874,38 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
   { src: 'https://dl.dropboxusercontent.com/scl/fi/5mb4ypu4zdcolj2p28vz2/Jardova-cesta-s-prateli-v.4.mp3?rlkey=wwklrfryzzuc4xcs4vs2n7lgg&st=7h4ukj4b&dl=1', title: 'Jardova-cesta-s-prateli-v.4', manuallyEdited: false, lastEditedAt: null }, //483
   { src: 'https://dl.dropboxusercontent.com/scl/fi/217u0otcntjh44dnkka00/Jardova-cesta-s-prateli-v.5-Top-1.mp3?rlkey=8ba618idnur6vulc462kpohw0&st=dkrdrn6d&dl=1', title: 'Jardova-cesta-s-prateli-v.5-Top-1', manuallyEdited: false, lastEditedAt: null }, //484
   { src: 'https://dl.dropboxusercontent.com/scl/fi/ufegyq7l4ctmighojm7cd/Jardova-cesta-s-prateli-v.5-Top-1-audacity.wav?rlkey=8aux1ne0feoq99m7xzunmt2x9&st=ljmwvfzn&dl=1', title: 'Jardova-cesta-s-prateli-v.6-Top-2', manuallyEdited: false, lastEditedAt: null }, //485   
+  
+// ═══════════════════════════════════════════════════════════
+// 🎧 Ocelová křídla Promethea
+// ═══════════════════════════════════════════════════════════     
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/8lbny7bdce7jjtnjksy4a/Ocelova-kridla-Promethea-v-1.mp3?rlkey=9nfn05k77enm80s5i8o1n7pz5&st=dkm5yn4w&dl=1', title: 'Ocelová křídla Promethea v.1', manuallyEdited: false, lastEditedAt: null }, //486 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/7k8asrn4ln5v56llrgnke/Ocelova-kridla-Promethea-v-2.mp3?rlkey=xcm6vhe9vjv42ldl8qjgabbck&st=an5pg089&dl=1', title: 'Ocelová křídla Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //487
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/91udp50svpx6ynhnqy3w5/Ocelova-kridla-Promethea-v-3.mp3?rlkey=431rxxpankxgtt5jv9uyrw9gl&st=nuxgvezz&dl=1', title: 'Ocelová křídla Promethea v.3', manuallyEdited: false, lastEditedAt: null }, //488 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/v2igjbe1vpp9hyyejwva6/Ocelova-kridla-Promethea-v-4.mp3?rlkey=4c0dnzh9ybgflwgg6o50xu5km&st=h8n4tg2y&dl=1', title: 'Ocelová křídla Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //489 
     
+// ═══════════════════════════════════════════════════════════
+// 🎧 Velení Promethea
+// ═══════════════════════════════════════════════════════════     
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/h4c5cqd05ubkjn9ozl2n4/Veleni-Promethea-v-1.mp3?rlkey=a4ogjw4jfql35hvmfwjo4otew&st=dy8g96bf&dl=1', title: 'Velení Promethea v.1', manuallyEdited: false, lastEditedAt: null }, //490 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/ffxdbsndbxiz9jnvm91vs/Veleni-Promethea-v-2.mp3?rlkey=pwwowp088czo2u3av80aqv7bv&st=w67bpq2q&dl=1', title: 'Velení Promethea v.2', manuallyEdited: false, lastEditedAt: null }, //491 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/ztm1cyexfoq5y75yd2ii0/Veleni-Promethea-v-3.mp3?rlkey=yvjixhwmre5wejt2djodmlm9v&st=75eljqea&dl=1', title: 'Velení Promethea v.3', manuallyEdited: false, lastEditedAt: null }, //492 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/wma7udlkh8guwgx13h2xf/Veleni-Promethea-v-4.mp3?rlkey=o3yslu4qipue7dfr8ydvz3u9q&st=tzx2dz69&dl=1', title: 'Velení Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //493 
+    
+// ═══════════════════════════════════════════════════════════
+// 🎧 Velení lodi Prometheus
+// ═══════════════════════════════════════════════════════════    
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/kjlcxk3bp5st3tiqg57w0/Veleni-lodi-Prometheus-v-1.mp3?rlkey=s1r6kthw2lwxc138q77cmqmyq&st=yfjdli77&dl=1', title: 'Velení lodi Prometheus v.1', manuallyEdited: false, lastEditedAt: null }, //494 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/plpkq9l1vob81ld2dxcxu/Veleni-lodi-Prometheus-v-2.mp3?rlkey=lt05rxiim8emvmrp4yrgg50nq&st=793zpy9w&dl=1', title: 'Velení lodi Prometheus v.2', manuallyEdited: false, lastEditedAt: null }, //495 
+    
+// ═══════════════════════════════════════════════════════════
+// 🎧 USS Prometheus
+// ═══════════════════════════════════════════════════════════    
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/tkeyvchctrzykdqdefkwo/uss-prometheus-v-1.mp3?rlkey=fejzupr64vpv6m8pzgvppucpx&st=lvrkit2a&dl=1', title: 'uss-prometheus-v-1', manuallyEdited: false, lastEditedAt: null }, //496 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/o0c7avusak8dt8x5jk9bx/uss-prometheus-v-2.mp3?rlkey=8cwz1hy10u28otf3ory9hvud5&st=o15f7n1b&dl=1', title: 'uss-prometheus-v-2', manuallyEdited: false, lastEditedAt: null }, //497     
+
+// ═══════════════════════════════════════════════════════════
+// 🎧 KONEC PLAYLISTU
+// ═══════════════════════════════════════════════════════════     
 ];   
 
  
