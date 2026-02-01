@@ -23,9 +23,9 @@ const __SpravaTapet_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════
     const BACKGROUNDS = {
         desktop: {
-            url: 'https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_1920x1080_3.jpg?ver=0',
+            url: 'https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_1918x917.jpg?ver=0',
             name: 'Starfleet Command Desktop',
-            resolution: '1920x1080'
+            resolution: '1918x917'
         },
         mobile: {
             url: 'https://raw.githubusercontent.com/jirka22med/star-trek-hudebni-prehravac-vylepsen-4-mobilni/4832c4c42feee896e5b17eb48f3734f1062f1122/icons/image_1024x1792.jpg',
@@ -499,6 +499,7 @@ const __SpravaTapet_START = performance.now();
     );
 console.log(`%c🚀 [SpravaTapet] Načteno za ${(performance.now() - __SpravaTapet_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
