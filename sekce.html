@@ -121,14 +121,13 @@ Příklad očekávaného formátu:
 
         lines.forEach((line, lineIndex) => {
             // Detekce nové sekce - hledáme řádky s emoji (🎧, 🚀, 🙏️, 🏢, atd.)
-            // Ignorujeme řádky se separátory (rovnítka)
-            if (line.includes('🎧') || line.includes('🚀') || line.includes('🙏') || line.includes('🏢') || 
-                line.includes('🎵') || line.includes('🎶') || line.includes('⭐') || line.includes('🌟')) {
-                
-                // Ignorujeme separátory (řádky plné rovnátek)
-                if (line.includes('═══')) {
-                    return; // Přeskočit tento řádek
-                }
+            // Podporuje oba formáty: "// 🎧" i "//🎧" (s mezerou i bez mezery)
+            const hasEmoji = line.includes('🎧') || line.includes('🚀') || line.includes('🙏') || line.includes('🏢') || 
+                             line.includes('🎵') || line.includes('🎶') || line.includes('⭐') || line.includes('🌟');
+            const isSeparator = line.includes('═══');
+            const isCommentLine = line.trim().startsWith('//');
+            
+            if (hasEmoji && !isSeparator && isCommentLine) {
                 
                 // Pokud již nějaká sekce existovala, uzavřeme ji
                 if (currentSection) {
@@ -138,17 +137,9 @@ Příklad očekávaného formátu:
                 
                 // Vyčistíme název sekce od komentářů a emoji
                 let name = line
-                    .replace('//', '')
-                    .replace(/═/g, '')
-                    .replace(/🎧/g, '')
-                    .replace(/🚀/g, '')
-                    .replace(/🙏/g, '')
-                    .replace(/🏢/g, '')
-                    .replace(/🎵/g, '')
-                    .replace(/🎶/g, '')
-                    .replace(/⭐/g, '')
-                    .replace(/🌟/g, '')
-                    .trim();
+                .replace('//', '')
+                .replace(/═/g, '')
+                .trim();
                 
                 currentSection = {
                     name: name,
