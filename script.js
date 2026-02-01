@@ -605,9 +605,9 @@ function populatePlaylist(listToDisplay) {
     position: sticky;
     top: 0;
     z-index: 200;
-    padding: 8px 12px;
+   padding: 8px 12px;
     margin: 0;
-    background: linear-gradient(135deg, rgba(0, 120, 215, 0.4), rgba(0, 212, 255, 0.2));
+    background: linear-gradient(135deg, #0078d7, #003d6b);  /* 🆕 PLNÉ BARVY (bez rgba) */
     color: #00d4ff;
     font-weight: bold;
     font-size: 11px;
@@ -615,7 +615,7 @@ function populatePlaylist(listToDisplay) {
     border-radius: 0;
     border-left: 3px solid #00d4ff;
     cursor: default;
-    box-shadow: 0 3px 12px #000000;  /* 🆕 100% černý stín */
+    box-shadow: 0 3px 12px #000000;
 `;
         fragment.appendChild(stickyHeader);
         
@@ -1370,6 +1370,7 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
      // ⏱️ LOG END
 console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
