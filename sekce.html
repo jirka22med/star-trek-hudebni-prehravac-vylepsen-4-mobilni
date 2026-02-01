@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>Skener Sekcí - Star Trek v.5</title>
+    <title>Skener Sekcí - Star Trek v.6 🚀 REKALIBROVÁNO</title>
     <style>
         body {
             background-color: #050a14;
@@ -19,8 +19,16 @@
             margin: auto;
             box-shadow: 0 0 25px rgba(67, 97, 238, 0.4);
         }
-        h2 { color: #f72585; text-align: center; text-transform: uppercase; letter-spacing: 2px; }
-        .grid { display: flex; gap: 20px; }
+        h2 { 
+            color: #f72585; 
+            text-align: center; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
+        .grid { 
+            display: flex; 
+            gap: 20px; 
+        }
         textarea {
             flex: 1;
             height: 500px;
@@ -31,6 +39,7 @@
             font-size: 13px;
             border-radius: 8px;
             line-height: 1.4;
+            font-family: 'Courier New', monospace;
         }
         button {
             display: block;
@@ -57,23 +66,45 @@
             border-left: 5px solid #4cc9f0;
             font-size: 14px;
         }
+        .warning {
+            background: #2a1a1e;
+            border-left: 5px solid #f72585;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background: #1a2e1a;
+            border-left: 5px solid #00ff00;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h2>🖖 Automatická Rekalibrace Sekcí</h2>
-    <p>Vlož celý blok <b>window.tracks</b> z tvého souboru <i>myPlaylist.js</i>:</p>
+    <h2>🖖 Automatická Rekalibrace Sekcí - ADMIRÁL CLAUDE.AI</h2>
+    <p>Vlož celý blok <b>window.tracks</b> z tvého souboru <i>myPlaylist.js</i> (včetně komentářů se separátory):</p>
     
     <div class="grid">
-        <textarea id="fullPlaylist" placeholder="Zde vlož kód skladeb i s komentáři sekcí..."></textarea>
+        <textarea id="fullPlaylist" placeholder="Zde vlož kód skladeb včetně komentářů sekcí...
+
+Příklad očekávaného formátu:
+// ═══════════════════════════════════════════════════════════
+// 🎧 STAR TREK - HLAVNÍ TÉMATA & POSÁDKY
+// ═══════════════════════════════════════════════════════════
+{ src: '...', title: '...', ... }, //0
+{ src: '...', title: '...', ... }, //1
+..."></textarea>
         <textarea id="outputCode" placeholder="Zde se vygenerují hotové sekce..." readonly></textarea>
     </div>
 
-    <button onclick="scanPlaylist()">📡 Spustit hloubkový sken a spočítat indexy</button>
+    <button onclick="scanPlaylist()">🔡 Spustit hloubkový sken a spočítat indexy</button>
     
     <div id="stats" class="status-bar">
-        Stav senzorů: Čekám na data...
+        Stav senzorů: Čekám na data... 🛸
     </div>
 </div>
 
@@ -86,18 +117,39 @@
         let currentSection = null;
         let trackCounter = 0;
         let totalTracksFound = 0;
+        let warningsHTML = '';
 
-        lines.forEach((line) => {
-            // Detekce nové sekce (hledáme tvoje 🎧 nebo 🚀 v komentářích)
-            if (line.includes('// 🎧') || line.includes('// 🚀') || line.includes('// 🏙️') || line.includes('// 🏢')) {
-                // Pokud už nějaká sekce existovala, uzavřeme ji
+        lines.forEach((line, lineIndex) => {
+            // Detekce nové sekce - hledáme řádky s emoji (🎧, 🚀, 🙏️, 🏢, atd.)
+            // Ignorujeme řádky se separátory (rovnítka)
+            if (line.includes('🎧') || line.includes('🚀') || line.includes('🙏') || line.includes('🏢') || 
+                line.includes('🎵') || line.includes('🎶') || line.includes('⭐') || line.includes('🌟')) {
+                
+                // Ignorujeme separátory (řádky plné rovnátek)
+                if (line.includes('═══')) {
+                    return; // Přeskočit tento řádek
+                }
+                
+                // Pokud již nějaká sekce existovala, uzavřeme ji
                 if (currentSection) {
                     currentSection.end = trackCounter - 1;
                     sections.push(currentSection);
                 }
                 
-                // Vyčistíme název sekce od bordelu
-                let name = line.replace('//', '').replace(/═/g, '').replace('🎧', '').trim();
+                // Vyčistíme název sekce od komentářů a emoji
+                let name = line
+                    .replace('//', '')
+                    .replace(/═/g, '')
+                    .replace(/🎧/g, '')
+                    .replace(/🚀/g, '')
+                    .replace(/🙏/g, '')
+                    .replace(/🏢/g, '')
+                    .replace(/🎵/g, '')
+                    .replace(/🎶/g, '')
+                    .replace(/⭐/g, '')
+                    .replace(/🌟/g, '')
+                    .trim();
+                
                 currentSection = {
                     name: name,
                     start: trackCounter,
@@ -118,6 +170,18 @@
             sections.push(currentSection);
         }
 
+        // Kontrola validity
+        let hasErrors = false;
+        sections.forEach((sec, idx) => {
+            if (sec.start > sec.end) {
+                warningsHTML += `<div class="warning">⚠️ CHYBA v sekci "${sec.name}": start (${sec.start}) je větší než end (${sec.end})!</div>`;
+                hasErrors = true;
+            }
+            if (sec.name === 'KONEC PLAYLISTU' && sec.start !== sec.end + 1) {
+                warningsHTML += `<div class="warning">⚠️ Sekce "KONEC PLAYLISTU" má nesprávné indexy. Měla by mít start = end + 1.</div>`;
+            }
+        });
+
         // Generování výsledného kódu
         let resultCode = "window.playlistSections = [\n";
         sections.forEach((sec, idx) => {
@@ -127,7 +191,17 @@
         resultCode += "];";
 
         document.getElementById('outputCode').value = resultCode;
-        document.getElementById('stats').innerHTML = `✅ Sken dokončen! Nalezeno <b>${sections.length} sekcí</b> a <b>${totalTracksFound} skladeb</b>. (Poslední index: ${totalTracksFound - 1})`;
+        
+        let statusMessage = `✅ Sken dokončen! Nalezeno <b>${sections.length} sekcí</b> a <b>${totalTracksFound} skladeb</b>.<br>`;
+        statusMessage += `📊 Indexy: <b>0</b> až <b>${totalTracksFound - 1}</b>`;
+        
+        if (hasErrors) {
+            statusMessage = `<div class="warning">${statusMessage}<br><br>${warningsHTML}</div>`;
+        } else {
+            statusMessage = `<div class="success">${statusMessage}</div>`;
+        }
+        
+        document.getElementById('stats').innerHTML = statusMessage;
     }
 </script>
 
