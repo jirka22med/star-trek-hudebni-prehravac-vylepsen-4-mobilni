@@ -114,7 +114,7 @@ function adjustPlaylistHeight(isFullscreen = false) {
             newHeight = '320px';  // 7 skladeb × 65px
             expectedTracks = 8;
         } else {
-            newHeight = '200px';  // 5 skladeb × 65px
+            newHeight = '300px';  // 5 skladeb × 65px
             expectedTracks = 5;
         }
         deviceName = '💻 Lenovo Notebook';
@@ -262,3 +262,4 @@ if (document.readyState === 'loading') {
 // 🚀 TADY KONČÍ NASTAVENÍ PLALISTU
 console.log(`%c🚀 [playlistHeightJS] Načteno za ${(performance.now() - __playlistHeightJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 // ═══════════════════════════════════════════════════════════════════════════
+
