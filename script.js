@@ -596,15 +596,38 @@ function populatePlaylist(listToDisplay) {
     } else {
         const fragment = document.createDocumentFragment();
         
+        // 🆕 STICKY HEADER - vytvoř na začátku
+        const stickyHeader = document.createElement('div');
+        stickyHeader.id = 'sticky-section-header';
+        stickyHeader.className = 'playlist-section-header';
+        stickyHeader.textContent = '🎧 Načítání...';
+        stickyHeader.style.cssText = `
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, rgba(0, 120, 215, 0.9), rgba(0, 212, 255, 0.6));
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+            cursor: default;
+            box-shadow: 0 2px 10px rgba(0, 212, 255, 0.3);
+        `;
+        fragment.appendChild(stickyHeader);
+        
         listToDisplay.forEach((track, index) => {
             const originalIndex = originalTracks.findIndex(ot => ot.title === track.title && ot.src === track.src);
 
-            // Sekce (nadpisy)
+            // Sekce (nadpisy) - normální headery
             if (window.playlistSections && originalIndex !== -1) {
                 const section = window.playlistSections.find(s => s.start === originalIndex);
                 if (section) {
                     const header = document.createElement('div');
                     header.className = 'playlist-section-header';
+                    header.dataset.sectionName = section.name; // 🆕 Pro detekci
                     header.textContent = section.name;
                     header.style.cssText = `
                         padding: 12px 15px;
@@ -631,9 +654,9 @@ function populatePlaylist(listToDisplay) {
             }
             
             const trackNumber = document.createElement('span');
-trackNumber.className = 'track-number';
-trackNumber.textContent = (index + 1) + '.';
-item.appendChild(trackNumber);
+            trackNumber.className = 'track-number';
+            trackNumber.textContent = (index + 1) + '.';
+            item.appendChild(trackNumber);
             
             const titleSpan = document.createElement('span');
             titleSpan.className = 'track-title';
@@ -650,18 +673,20 @@ item.appendChild(trackNumber);
             item.appendChild(favButton);
             
             item.addEventListener('click', () => {
-    // Pokud jsou štíty aktivní, ignorujeme kliknutí
-    if (window.audioState.isLoadingTrack) {
-        window.DebugManager?.log('main', "⚠️ SYSTÉM BUSY: Kliknutí na playlist blokováno štítem.");
-        return;
-    }
-    if (originalIndex !== -1) playTrack(originalIndex);
-});
+                if (window.audioState.isLoadingTrack) {
+                    window.DebugManager?.log('main', "⚠️ SYSTÉM BUSY: Kliknutí na playlist blokováno štítem.");
+                    return;
+                }
+                if (originalIndex !== -1) playTrack(originalIndex);
+            });
             
             fragment.appendChild(item);
         });
         
         DOM.playlist.appendChild(fragment);
+        
+        // 🆕 AKTIVACE SCROLL LISTENERU
+        activateStickyHeaderUpdater();
     }
     
     updateActiveTrackVisuals();
@@ -675,6 +700,49 @@ item.appendChild(trackNumber);
         if (DOM.playlist.style.display === 'none') DOM.playlist.style.display = 'block';
     }, 50);
 }
+
+// 🆕 STICKY HEADER UPDATER - Aktualizuje název sekce při scrollování
+function activateStickyHeaderUpdater() {
+    const stickyHeader = document.getElementById('sticky-section-header');
+    if (!stickyHeader || !DOM.playlist) return;
+    
+    // Odstranění starého listeneru (pokud existuje)
+    if (DOM.playlist._stickyScrollListener) {
+        DOM.playlist.removeEventListener('scroll', DOM.playlist._stickyScrollListener);
+    }
+    
+    // Nový scroll listener
+    const scrollListener = () => {
+        const headers = DOM.playlist.querySelectorAll('.playlist-section-header[data-section-name]');
+        let currentSection = '🎧 Načítání...';
+        
+        // Najdi první viditelný header
+        for (let header of headers) {
+            const rect = header.getBoundingClientRect();
+            const playlistRect = DOM.playlist.getBoundingClientRect();
+            
+            // Pokud je header viditelný v playlistu (nebo těsně nad ním)
+            if (rect.top <= playlistRect.top + 60) {
+                currentSection = header.dataset.sectionName;
+            }
+        }
+        
+        // Aktualizuj sticky header
+        if (stickyHeader.textContent !== currentSection) {
+            stickyHeader.textContent = currentSection;
+        }
+    };
+    
+    // Uložíme listener do DOM elementu pro pozdější odstranění
+    DOM.playlist._stickyScrollListener = scrollListener;
+    
+    // Připojíme listener
+    DOM.playlist.addEventListener('scroll', scrollListener, { passive: true });
+    
+    // Inicializace - nastav první sekci
+    scrollListener();
+}
+
 
 // ============================================================================
 // ▶️ playTrack (S INTEGRACÍ STREAM GUARDU)
