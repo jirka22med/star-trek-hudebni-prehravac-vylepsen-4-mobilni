@@ -605,17 +605,17 @@ function populatePlaylist(listToDisplay) {
     position: sticky;
     top: 0;
     z-index: 200;
-    padding: 12px 15px;
+    padding: 8px 12px;
     margin: 0;
-    background: linear-gradient(135deg, rgba(0, 120, 215, 0.4), rgba(0, 212, 255, 0.2));  /* 🆕 STEJNÁ jako normální sekce */
-    color: #00d4ff;                /* 🆕 STEJNÁ barva textu jako normální sekce */
+    background: linear-gradient(135deg, rgba(0, 120, 215, 0.4), rgba(0, 212, 255, 0.2));
+    color: #00d4ff;
     font-weight: bold;
     font-size: 11px;
     text-align: center;
     border-radius: 0;
     border-left: 3px solid #00d4ff;
     cursor: default;
-    box-shadow: none;
+    box-shadow: 0 3px 12px #000000;  /* 🆕 100% černý stín */
 `;
         fragment.appendChild(stickyHeader);
         
@@ -631,11 +631,11 @@ function populatePlaylist(listToDisplay) {
                     header.dataset.sectionName = section.name; // 🆕 Pro detekci
                     header.textContent = section.name;
                     header.style.cssText = `
-                        padding: 12px 15px;
+                        padding: 8px 12px;
                         background: linear-gradient(135deg, rgba(0, 120, 215, 0.4), rgba(0, 212, 255, 0.2));
                         color: #00d4ff;
                         font-weight: bold;
-                        font-size: 12px;
+                        font-size: 10px;
                         text-align: center;
                         margin: 5px 0;
                         border-radius: 8px;
@@ -1370,6 +1370,7 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
      // ⏱️ LOG END
 console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
