@@ -603,18 +603,19 @@ function populatePlaylist(listToDisplay) {
         stickyHeader.textContent = '🎧 Načítání...';
         stickyHeader.style.cssText = `
     position: sticky;
-    top: -2px;                    /* 🆕 Margin top -2px (posun nahoru) */
-    z-index: 100;
-    padding: 10px 15px;           /* 🆕 Snížená tloušťka (bylo 12px) */
-    background: linear-gradient(135deg, rgba(0, 120, 215, 1), rgba(0, 212, 255, 0.95));  /* 🆕 Méně průhlednosti */
-    color: #00d4ff;
+    top: 0;
+    z-index: 200;
+    padding: 8px 12px;
+    margin: 0;                     /* 🆕 Nulová mezera nad i pod */
+    background: linear-gradient(135deg, #0078d7, #00d4ff);
+    color: #ffffff;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 11px;
     text-align: center;
-    border-radius: 8px;
-    border-left: 4px solid #00d4ff;
+    border-radius: 0;              /* 🆕 Bez zakulacení */
+    border-left: 3px solid #00d4ff;
     cursor: default;
-    box-shadow: 0 2px 10px rgba(0, 212, 255, 0.5);  /* 🆕 Silnější stín */
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
 `;
         fragment.appendChild(stickyHeader);
         
@@ -1369,5 +1370,6 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
      // ⏱️ LOG END
 console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
