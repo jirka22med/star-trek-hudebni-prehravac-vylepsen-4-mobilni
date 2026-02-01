@@ -28,7 +28,7 @@ const __SpravaTapet_START = performance.now();
             resolution: '1918x917'
         },
         mobile: {
-            url: 'https://raw.githubusercontent.com/jirka22med/star-trek-hudebni-prehravac-vylepsen-4-mobilni/4832c4c42feee896e5b17eb48f3734f1062f1122/icons/image_1024x1792.jpg',
+            url: 'https://img42.rajce.idnes.cz/d4202/19/19651/19651587_25f4050a3274b2ce2c6af3b5fb5b76b1/images/staensoubor1.jpg?ver=0',
             name: 'Starfleet Command Mobile',
             resolution: '1024x1792'
         }
@@ -499,6 +499,7 @@ const __SpravaTapet_START = performance.now();
     );
 console.log(`%c🚀 [SpravaTapet] Načteno za ${(performance.now() - __SpravaTapet_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
