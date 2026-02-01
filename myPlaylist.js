@@ -78,11 +78,13 @@ window.playlistSections = [
   { name: 'ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY', start: 414, end: 421 },
   { name: 'SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY', start: 422, end: 429 },
   { name: 'MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)', start: 430, end: 439 },
-  { name: 'AUDIO KAPITOLY (1-40)', start: 440, end: 485 },
+  { name: 'AUDIO KAPITOLY (1-40)', start: 440, end: 479 },
+  { name: 'Jardova cesta s prateli', start: 480, end: 485 },
   { name: 'Ocelová křídla Promethea', start: 486, end: 489 },
   { name: 'Velení Promethea', start: 490, end: 493 },
   { name: 'Velení lodi Prometheus', start: 494, end: 495 },
-  { name: 'USS Prometheus', start: 496, end: 497 }
+  { name: 'USS Prometheus', start: 496, end: 497 },
+  { name: 'KONEC PLAYLISTU', start: 498, end: 499 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -914,6 +916,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
