@@ -82,8 +82,7 @@ window.playlistSections = [
   { name: 'Ocelová křídla Promethea', start: 487, end: 490 },
   { name: 'Velení Promethea', start: 491, end: 494 },
   { name: 'Velení lodi Prometheus', start: 495, end: 496 },
-  { name: 'USS Prometheus', start: 497, end: 498 },
-  { name: 'KONEC PLAYLISTU', start: 499, end: 498 }
+  { name: 'USS Prometheus', start: 497, end: 498 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -915,6 +914,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
