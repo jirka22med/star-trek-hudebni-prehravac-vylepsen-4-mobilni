@@ -321,8 +321,10 @@
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
   
- <script>
+ <script>                              
 (function() {
+const __INDEX_HTML_START = performance.now();
+ 
     const WATCHDOG_KEY = 'watchdog_last_check';
     const RELOAD_COOLDOWN = 10000; // 10s ochrana proti loop
     
@@ -377,10 +379,14 @@
         .catch(err => {
             console.log("🐕 [Watchdog] Offline nebo chyba:", err.message);
         });
+
+  // ⏱️ LOG END 
+ console.log(`%c🚀 [INDEX-HTML] Načteno za ${(performance.now() - __INDEX_HTML_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
 </script>
 </body>
 </html>
+
 
 
 
