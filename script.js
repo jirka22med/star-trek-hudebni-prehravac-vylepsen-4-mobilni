@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 // ⏱️ LOG START
-const __CORE_START = performance.now();
+const __SCRIPTJS_START = performance.now();
 // ════════════════════════════════════════════════════════════════════════════════
 // 🛸 STAR TREK AUDIO CORE - ARCHITECT EDITION (V 8.0 - CLOUD STALL FIX)
 // ════════════════════════════════════════════════════════════════════════════════
@@ -1368,8 +1368,9 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
  
  
      // ⏱️ LOG END
-console.log(`%c🚀 [CORE] Načteno za ${(performance.now() - __CORE_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+console.log(`%c🚀 [SCRIPTJS] Načteno za ${(performance.now() - __SCRIPTJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
