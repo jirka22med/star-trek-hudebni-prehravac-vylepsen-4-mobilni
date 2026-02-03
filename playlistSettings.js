@@ -20,19 +20,18 @@ const PlaylistSettings = {
 
     // Aktuální nastavení
     currentSettings: {
-        trackDisplayStyle: 'default', // 'default', 'minimal', 'detailed', 'compact'
+        trackDisplayStyle: 'default',
         showTrackNumbers: true,
         showDuration: false,
         showFavoriteButtons: true,
-        playlistTheme: 'dark', // 'dark', 'light', 'neon', 'classic', 'custom'
+        playlistTheme: 'dark',
         autoScroll: true,
         trackHoverEffect: true,
         animateTransitions: true,
-        fontSize: 'medium', // 'small', 'medium', 'large'
-        trackSpacing: 'normal', // 'compact', 'normal', 'spacious'
-        headerFontSizePx: 24,    // Výchozí velikost pro "STAR TREK..."
-        trackTitleFontSizePx: 20, // Výchozí velikost pro "Vyberte skladbu"
-        // Nová barevná nastavení
+        fontSize: 'medium',
+        trackSpacing: 'normal',
+        headerFontSizePx: 24,
+        trackTitleFontSizePx: 20,
         customColors: {
             backgroundColor: '#1a1a1a',
             backgroundGradientStart: '#1a1a1a',
@@ -47,12 +46,20 @@ const PlaylistSettings = {
             favoriteStarColor: '#ffd700',
             trackNumberColor: '#888888'
         },
-        borderStyle: 'solid', // 'solid', 'dashed', 'dotted', 'double'
+        borderStyle: 'solid',
         borderWidth: 2,
         borderRadius: 8,
-        backgroundType: 'gradient', // 'solid', 'gradient'
+        backgroundType: 'gradient',
         shadowEffect: true,
-        glowEffect: false
+        glowEffect: false,
+        
+        // ═══════════════════════════════════════════════════════════════
+        // 🎯 VÝŠKA PLAYLISTU - 4 SLIDERY (Více admirál Jiřík)
+        // ═══════════════════════════════════════════════════════════════
+        playlistHeightDesktopNormal: 270,      // Desktop - normální režim (px)
+        playlistHeightDesktopFullscreen: 390,  // Desktop - fullscreen (px)
+        playlistHeightMobileNormal: 184,       // Mobil - normální režim (px)
+        playlistHeightMobileFullscreen: 296    // Mobil - fullscreen (px)
     },
 
     // Inicializace modulu
@@ -61,6 +68,20 @@ const PlaylistSettings = {
         this.createElements();
         this.loadSettingsFromStorage();
         this.attachEventListeners();
+       // ═══════════════════════════════════════════════════════════════
+        // 🎯 Sledování fullscreen změn
+        // ═══════════════════════════════════════════════════════════════
+        document.addEventListener('fullscreenchange', () => this.applyPlaylistHeight());
+        document.addEventListener('webkitfullscreenchange', () => this.applyPlaylistHeight());
+        document.addEventListener('mozfullscreenchange', () => this.applyPlaylistHeight());
+        
+        // Sledování změny velikosti okna
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => this.applyPlaylistHeight(), 250);
+        });
+        
         this.log('PlaylistSettings modul inicializován.');
     },
 
@@ -187,6 +208,55 @@ const PlaylistSettings = {
                             <span class="range-value">20px</span>
                         </div>
                     </div>
+                 
+                  <!-- ═══════════════════════════════════════════════════ -->
+                <!-- 🎯 NOVÁ SEKCE: VÝŠKA PLAYLISTU (4 SLIDERY)        -->
+                <!-- Více admirál Jiřík - Funkční slidery               -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <div class="settings-section">
+                    <h3>📏 Výška playlistu</h3>
+                    
+                    <!-- 💻 Desktop Normal -->
+                    <div class="setting-item">
+                        <label for="height-desktop-normal">🖥️ Desktop (Normální režim):</label>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="range" id="height-desktop-normal" class="range-input height-slider" 
+                                   min="100" max="800" value="270" data-mode="desktopNormal">
+                            <span class="range-value">270px</span>
+                        </div>
+                    </div>
+
+                    <!-- 💻 Desktop Fullscreen -->
+                    <div class="setting-item">
+                        <label for="height-desktop-fullscreen">🖥️ Desktop (Fullscreen):</label>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="range" id="height-desktop-fullscreen" class="range-input height-slider" 
+                                   min="100" max="800" value="390" data-mode="desktopFullscreen">
+                            <span class="range-value">390px</span>
+                        </div>
+                    </div>
+
+                    <!-- 📱 Mobil Normal -->
+                    <div class="setting-item">
+                        <label for="height-mobile-normal">📱 Mobil (Normální režim):</label>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="range" id="height-mobile-normal" class="range-input height-slider" 
+                                   min="50" max="600" value="184" data-mode="mobileNormal">
+                            <span class="range-value">184px</span>
+                        </div>
+                    </div>
+
+                    <!-- 📱 Mobil Fullscreen -->
+                    <div class="setting-item">
+                        <label for="height-mobile-fullscreen">📱 Mobil (Fullscreen):</label>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="range" id="height-mobile-fullscreen" class="range-input height-slider" 
+                                   min="50" max="600" value="296" data-mode="mobileFullscreen">
+                            <span class="range-value">296px</span>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="settings-section" id="custom-colors-section">
                     <h3>🌈 Vlastní barvy</h3>
@@ -460,6 +530,40 @@ const PlaylistSettings = {
                 });
             }
         });
+
+        // ═══════════════════════════════════════════════════════════════
+        // 🎯 LIVE PREVIEW PRO SLIDERY VÝŠKY (Okamžitá odezva)
+        // ═══════════════════════════════════════════════════════════════
+        const heightSliders = this.DOM.modal?.querySelectorAll('.height-slider');
+        heightSliders?.forEach(slider => {
+            slider.addEventListener('input', () => {
+                // Aktualizace zobrazené hodnoty
+                this.updateRangeValue(slider);
+                
+                // Okamžitá změna výšky
+                const mode = slider.dataset.mode;
+                const value = parseInt(slider.value);
+                
+                // Dočasná změna nastavení pro preview
+                switch(mode) {
+                    case 'desktopNormal':
+                        this.currentSettings.playlistHeightDesktopNormal = value;
+                        break;
+                    case 'desktopFullscreen':
+                        this.currentSettings.playlistHeightDesktopFullscreen = value;
+                        break;
+                    case 'mobileNormal':
+                        this.currentSettings.playlistHeightMobileNormal = value;
+                        break;
+                    case 'mobileFullscreen':
+                        this.currentSettings.playlistHeightMobileFullscreen = value;
+                        break;
+                }
+                
+                // Aplikuj novou výšku HNED
+                this.applyPlaylistHeight();
+            });
+        });
     },
 
     // Event listenery pro barevná nastavení
@@ -501,6 +605,55 @@ const PlaylistSettings = {
         if (valueSpan) {
             valueSpan.textContent = `${input.value}px`;
         }
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🚀 DETEKCE ZAŘÍZENÍ (Desktop vs Mobil + Fullscreen)
+    // ═══════════════════════════════════════════════════════════════
+    detectDevice() {
+        const screenWidth = window.innerWidth;
+        const userAgent = navigator.userAgent.toLowerCase();
+        
+        const isAndroidMobile = (
+            userAgent.includes('android') && 
+            userAgent.includes('mobile')
+        );
+        
+        const isMobile = (
+            isAndroidMobile || 
+            (screenWidth <= 768 && userAgent.includes('mobile'))
+        );
+        
+        return {
+            isMobile: isMobile,
+            isDesktop: !isMobile,
+            isFullscreen: document.fullscreenElement !== null
+        };
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎯 APLIKACE VÝŠKY PLAYLISTU PODLE ZAŘÍZENÍ A REŽIMU
+    // ═══════════════════════════════════════════════════════════════
+    applyPlaylistHeight() {
+        if (!this.DOM.playlist) return;
+        
+        const device = this.detectDevice();
+        let height;
+        
+        if (device.isDesktop) {
+            height = device.isFullscreen 
+                ? this.currentSettings.playlistHeightDesktopFullscreen 
+                : this.currentSettings.playlistHeightDesktopNormal;
+        } else {
+            height = device.isFullscreen 
+                ? this.currentSettings.playlistHeightMobileFullscreen 
+                : this.currentSettings.playlistHeightMobileNormal;
+        }
+        
+        this.DOM.playlist.style.maxHeight = `${height}px`;
+        
+        // 🔍 Debug log
+        this.log(`📏 Výška playlistu: ${height}px | Desktop: ${device.isDesktop} | Fullscreen: ${device.isFullscreen}`);
     },
 
     // Aktualizace zobrazené hodnoty u color inputů
@@ -792,6 +945,33 @@ const PlaylistSettings = {
             trackTitleFontInput.value = this.currentSettings.trackTitleFontSizePx;
             this.updateRangeValue(trackTitleFontInput);
         }
+       // ═══════════════════════════════════════════════════════════════
+        // 🎯 Načtení výšek playlistu do sliderů
+        // ═══════════════════════════════════════════════════════════════
+        const heightDesktopNormal = this.DOM.modal.querySelector('#height-desktop-normal');
+        if (heightDesktopNormal && this.currentSettings.playlistHeightDesktopNormal) {
+            heightDesktopNormal.value = this.currentSettings.playlistHeightDesktopNormal;
+            this.updateRangeValue(heightDesktopNormal);
+        }
+
+        const heightDesktopFullscreen = this.DOM.modal.querySelector('#height-desktop-fullscreen');
+        if (heightDesktopFullscreen && this.currentSettings.playlistHeightDesktopFullscreen) {
+            heightDesktopFullscreen.value = this.currentSettings.playlistHeightDesktopFullscreen;
+            this.updateRangeValue(heightDesktopFullscreen);
+        }
+
+        const heightMobileNormal = this.DOM.modal.querySelector('#height-mobile-normal');
+        if (heightMobileNormal && this.currentSettings.playlistHeightMobileNormal) {
+            heightMobileNormal.value = this.currentSettings.playlistHeightMobileNormal;
+            this.updateRangeValue(heightMobileNormal);
+        }
+
+        const heightMobileFullscreen = this.DOM.modal.querySelector('#height-mobile-fullscreen');
+        if (heightMobileFullscreen && this.currentSettings.playlistHeightMobileFullscreen) {
+            heightMobileFullscreen.value = this.currentSettings.playlistHeightMobileFullscreen;
+            this.updateRangeValue(heightMobileFullscreen);
+        }
+
         // Zobrazení/skrytí gradient nastavení
         this.toggleGradientSettings();
         this.toggleCustomColorsSection();
@@ -858,6 +1038,22 @@ const PlaylistSettings = {
 
         const trackTitleFontInput = this.DOM.modal.querySelector('#track-title-font-size');
         if (trackTitleFontInput) newSettings.trackTitleFontSizePx = parseInt(trackTitleFontInput.value);
+            
+            
+       // ═══════════════════════════════════════════════════════════════
+        // 🎯 Uložení výšek playlistu ze sliderů
+        // ═══════════════════════════════════════════════════════════════
+        const heightDesktopNormal = this.DOM.modal.querySelector('#height-desktop-normal');
+        if (heightDesktopNormal) newSettings.playlistHeightDesktopNormal = parseInt(heightDesktopNormal.value);
+
+        const heightDesktopFullscreen = this.DOM.modal.querySelector('#height-desktop-fullscreen');
+        if (heightDesktopFullscreen) newSettings.playlistHeightDesktopFullscreen = parseInt(heightDesktopFullscreen.value);
+
+        const heightMobileNormal = this.DOM.modal.querySelector('#height-mobile-normal');
+        if (heightMobileNormal) newSettings.playlistHeightMobileNormal = parseInt(heightMobileNormal.value);
+
+        const heightMobileFullscreen = this.DOM.modal.querySelector('#height-mobile-fullscreen');
+        if (heightMobileFullscreen) newSettings.playlistHeightMobileFullscreen = parseInt(heightMobileFullscreen.value);
             
         return newSettings;
     },
@@ -967,8 +1163,14 @@ const PlaylistSettings = {
         // Aplikování custom CSS pro specifické funkce
         this.applyCustomStyles();
         
-        this.log('Nastavení aplikováno na playlist.');
+       // ═══════════════════════════════════════════════════════════════
+        // 🎯 Aplikace výšky playlistu
+        // ═══════════════════════════════════════════════════════════════
+        this.applyPlaylistHeight();
+        
+        this.log('Všechna nastavení aplikována.');
     },
+
 
     // Aplikování custom CSS stylů
     applyCustomStyles() {
@@ -1794,9 +1996,3 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
-
-
-
-
-
-
