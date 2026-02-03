@@ -2,7 +2,7 @@
  
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.46", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.48", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -38,7 +38,7 @@ const FLEET_CONFIG = {
          './pokrocila-sprava-playlistu.js',
        './buttonVisibilityFirebase.js',
         // --- DEVÁTÝ V POŘADÍ ---
-       // './playlist-height.js',
+       
        // --- DESÁTÝ V POŘADÍ ---
            './myPlaylist.js',
         // --- JEDENÁČTÝ V POŘADÍ ---
