@@ -864,13 +864,13 @@ const PlaylistSettings = {
         // Aplikace na HEADER (#nazev-prehravace nebo .header-title)
         const playlistHeader = document.querySelector('#nazev-prehravace') || document.querySelector('.header-title');
         if (playlistHeader) {
-            playlistHeader.style.fontSize = headerSize + 'px';
+            playlistHeader.style.setProperty('font-size', headerSize + 'px', 'important');
         }
         
         // Aplikace na TRACK TITLE (#trackTitle)
         const trackTitle = document.querySelector('#trackTitle');
         if (trackTitle) {
-            trackTitle.style.fontSize = trackSize + 'px';
+            trackTitle.style.setProperty('font-size', trackSize + 'px', 'important');
         }
         
         const mode = isMobile ? 'Mobil' : 'Desktop';
