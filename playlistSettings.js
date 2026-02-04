@@ -30,8 +30,24 @@ const PlaylistSettings = {
         animateTransitions: true,
         fontSize: 'medium',
         trackSpacing: 'normal',
-        headerFontSizePx: 24,
-        trackTitleFontSizePx: 20,
+        
+        // ═══════════════════════════════════════════════════════════════
+        // 🎯 FONT SIZE - 8 SLIDERŮ (Header + Track Title)
+        // Více admirál Jiřík - Stejný pattern jako výška playlistu
+        // ═══════════════════════════════════════════════════════════════
+        
+        // HEADER FONT SIZE (4 slidery)
+        headerFontSizeDesktopNormal: 24,        // Desktop - normální režim (px)
+        headerFontSizeDesktopFullscreen: 28,    // Desktop - fullscreen (px)
+        headerFontSizeMobileNormal: 18,         // Mobil - normální režim (px)
+        headerFontSizeMobileFullscreen: 22,     // Mobil - fullscreen (px)
+        
+        // TRACK TITLE FONT SIZE (4 slidery)
+        trackTitleFontSizeDesktopNormal: 16,    // Desktop - normální režim (px)
+        trackTitleFontSizeDesktopFullscreen: 18, // Desktop - fullscreen (px)
+        trackTitleFontSizeMobileNormal: 14,     // Mobil - normální režim (px)
+        trackTitleFontSizeMobileFullscreen: 16, // Mobil - fullscreen (px)
+        
         customColors: {
             backgroundColor: '#1a1a1a',
             backgroundGradientStart: '#1a1a1a',
@@ -71,16 +87,31 @@ const PlaylistSettings = {
        // ═══════════════════════════════════════════════════════════════
         // 🎯 Sledování fullscreen změn
         // ═══════════════════════════════════════════════════════════════
-        document.addEventListener('fullscreenchange', () => this.applyPlaylistHeight());
-        document.addEventListener('webkitfullscreenchange', () => this.applyPlaylistHeight());
-        document.addEventListener('mozfullscreenchange', () => this.applyPlaylistHeight());
+        document.addEventListener('fullscreenchange', () => {
+            this.applyPlaylistHeight();
+            this.applyFontSizes();
+        });
+        document.addEventListener('webkitfullscreenchange', () => {
+            this.applyPlaylistHeight();
+            this.applyFontSizes();
+        });
+        document.addEventListener('mozfullscreenchange', () => {
+            this.applyPlaylistHeight();
+            this.applyFontSizes();
+        });
         
         // Sledování změny velikosti okna
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => this.applyPlaylistHeight(), 250);
+            resizeTimeout = setTimeout(() => {
+                this.applyPlaylistHeight();
+                this.applyFontSizes();
+            }, 250);
         });
+        
+        // Aplikace font sizes při startu
+        this.applyFontSizes();
         
         this.log('PlaylistSettings modul inicializován.');
     },
@@ -193,21 +224,97 @@ const PlaylistSettings = {
                     
                 
 
-                    <div class="setting-item">
-                        <label for="header-font-size">Velikost nadpisu (Header):</label>
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <input type="range" id="header-font-size" class="range-input" min="1" max="40" value="24">
-                            <span class="range-value">24px</span>
-                        </div>
-                    </div>
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 🎯 FONT SIZE - 8 SLIDERŮ (Více admirál Jiřík)                  -->
+<!-- Pattern stejný jako u výšky playlistu                           -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="settings-section">
+    <h3>🔤 Font Size - Header</h3>
+    
+    <!-- 🖥️ Desktop Normal - Header -->
+    <div class="setting-item">
+        <label for="header-font-desktop-normal">🖥️ Desktop (Normální režim - Header):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="header-font-desktop-normal" class="range-input font-slider" 
+                   min="10" max="50" value="24" data-type="header" data-mode="desktopNormal">
+            <span class="range-value">24px</span>
+        </div>
+    </div>
 
-                    <div class="setting-item">
-                        <label for="track-title-font-size">Velikost názvu skladby:</label>
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <input type="range" id="track-title-font-size" class="range-input" min="1" max="40" value="20">
-                            <span class="range-value">20px</span>
-                        </div>
-                    </div>
+    <!-- 🖥️ Desktop Fullscreen - Header -->
+    <div class="setting-item">
+        <label for="header-font-desktop-fullscreen">🖥️ Desktop (Fullscreen - Header):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="header-font-desktop-fullscreen" class="range-input font-slider" 
+                   min="10" max="50" value="28" data-type="header" data-mode="desktopFullscreen">
+            <span class="range-value">28px</span>
+        </div>
+    </div>
+
+    <!-- 📱 Mobil Normal - Header -->
+    <div class="setting-item">
+        <label for="header-font-mobile-normal">📱 Mobil (Normální režim - Header):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="header-font-mobile-normal" class="range-input font-slider" 
+                   min="8" max="40" value="18" data-type="header" data-mode="mobileNormal">
+            <span class="range-value">18px</span>
+        </div>
+    </div>
+
+    <!-- 📱 Mobil Fullscreen - Header -->
+    <div class="setting-item">
+        <label for="header-font-mobile-fullscreen">📱 Mobil (Fullscreen - Header):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="header-font-mobile-fullscreen" class="range-input font-slider" 
+                   min="8" max="40" value="22" data-type="header" data-mode="mobileFullscreen">
+            <span class="range-value">22px</span>
+        </div>
+    </div>
+</div>
+
+<div class="settings-section">
+    <h3>🎵 Font Size - Track Title</h3>
+    
+    <!-- 🖥️ Desktop Normal - Track Title -->
+    <div class="setting-item">
+        <label for="track-font-desktop-normal">🖥️ Desktop (Normální režim - Track):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="track-font-desktop-normal" class="range-input font-slider" 
+                   min="8" max="40" value="16" data-type="track" data-mode="desktopNormal">
+            <span class="range-value">16px</span>
+        </div>
+    </div>
+
+    <!-- 🖥️ Desktop Fullscreen - Track Title -->
+    <div class="setting-item">
+        <label for="track-font-desktop-fullscreen">🖥️ Desktop (Fullscreen - Track):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="track-font-desktop-fullscreen" class="range-input font-slider" 
+                   min="8" max="40" value="18" data-type="track" data-mode="desktopFullscreen">
+            <span class="range-value">18px</span>
+        </div>
+    </div>
+
+    <!-- 📱 Mobil Normal - Track Title -->
+    <div class="setting-item">
+        <label for="track-font-mobile-normal">📱 Mobil (Normální režim - Track):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="track-font-mobile-normal" class="range-input font-slider" 
+                   min="6" max="30" value="14" data-type="track" data-mode="mobileNormal">
+            <span class="range-value">14px</span>
+        </div>
+    </div>
+
+    <!-- 📱 Mobil Fullscreen - Track Title -->
+    <div class="setting-item">
+        <label for="track-font-mobile-fullscreen">📱 Mobil (Fullscreen - Track):</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="range" id="track-font-mobile-fullscreen" class="range-input font-slider" 
+                   min="6" max="30" value="16" data-type="track" data-mode="mobileFullscreen">
+            <span class="range-value">16px</span>
+        </div>
+    </div>
+</div>
                  
                   <!-- ═══════════════════════════════════════════════════ -->
                 <!-- 🎯 NOVÁ SEKCE: VÝŠKA PLAYLISTU (4 SLIDERY)        -->
@@ -492,6 +599,9 @@ const PlaylistSettings = {
 
         // Event listenery pro barevná nastavení
         this.attachColorListeners();
+        
+        // Event listenery pro font size slidery
+        this.attachFontSizeListeners();
 
         this.log('Event listenery připojeny.');
     },
@@ -562,6 +672,61 @@ const PlaylistSettings = {
                 
                 // Aplikuj novou výšku HNED
                 this.applyPlaylistHeight();
+            });
+        });
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎯 FONT SIZE SLIDERY - Event Listeners (8 sliderů)
+    // Více admirál Jiřík - Pattern stejný jako u výšky playlistu
+    // ═══════════════════════════════════════════════════════════════
+    attachFontSizeListeners() {
+        const fontSliders = this.DOM.modal?.querySelectorAll('.font-slider');
+        
+        fontSliders?.forEach(slider => {
+            slider.addEventListener('input', () => {
+                const value = parseInt(slider.value);
+                const type = slider.dataset.type;   // 'header' nebo 'track'
+                const mode = slider.dataset.mode;   // 'desktopNormal', 'desktopFullscreen', atd.
+                
+                // Aktualizace zobrazené hodnoty
+                this.updateRangeValue(slider);
+                
+                // Dočasná změna nastavení pro preview
+                if (type === 'header') {
+                    switch(mode) {
+                        case 'desktopNormal':
+                            this.currentSettings.headerFontSizeDesktopNormal = value;
+                            break;
+                        case 'desktopFullscreen':
+                            this.currentSettings.headerFontSizeDesktopFullscreen = value;
+                            break;
+                        case 'mobileNormal':
+                            this.currentSettings.headerFontSizeMobileNormal = value;
+                            break;
+                        case 'mobileFullscreen':
+                            this.currentSettings.headerFontSizeMobileFullscreen = value;
+                            break;
+                    }
+                } else if (type === 'track') {
+                    switch(mode) {
+                        case 'desktopNormal':
+                            this.currentSettings.trackTitleFontSizeDesktopNormal = value;
+                            break;
+                        case 'desktopFullscreen':
+                            this.currentSettings.trackTitleFontSizeDesktopFullscreen = value;
+                            break;
+                        case 'mobileNormal':
+                            this.currentSettings.trackTitleFontSizeMobileNormal = value;
+                            break;
+                        case 'mobileFullscreen':
+                            this.currentSettings.trackTitleFontSizeMobileFullscreen = value;
+                            break;
+                    }
+                }
+                
+                // Aplikuj novou velikost písma HNED
+                this.applyFontSizes();
             });
         });
     },
@@ -654,6 +819,64 @@ const PlaylistSettings = {
         
         // 🔍 Debug log
         this.log(`📏 Výška playlistu: ${height}px | Desktop: ${device.isDesktop} | Fullscreen: ${device.isFullscreen}`);
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎯 APLIKACE FONT SIZES PODLE ZAŘÍZENÍ A REŽIMU
+    // Více admirál Jiřík - Stejný pattern jako applyPlaylistHeight
+    // ═══════════════════════════════════════════════════════════════
+    applyFontSizes() {
+        if (!this.DOM.playlist) {
+            this.log('Playlist element nenalezen pro aplikaci font sizes!', null, 'warn');
+            return;
+        }
+        
+        // Detekce zařízení a režimu
+        const isMobile = window.innerWidth <= 768;
+        const isFullscreen = document.fullscreenElement || 
+                            document.webkitFullscreenElement || 
+                            document.mozFullScreenElement;
+        
+        // Výběr správné hodnoty pro HEADER
+        let headerSize;
+        if (isMobile) {
+            headerSize = isFullscreen 
+                ? this.currentSettings.headerFontSizeMobileFullscreen 
+                : this.currentSettings.headerFontSizeMobileNormal;
+        } else {
+            headerSize = isFullscreen 
+                ? this.currentSettings.headerFontSizeDesktopFullscreen 
+                : this.currentSettings.headerFontSizeDesktopNormal;
+        }
+        
+        // Výběr správné hodnoty pro TRACK TITLE
+        let trackSize;
+        if (isMobile) {
+            trackSize = isFullscreen 
+                ? this.currentSettings.trackTitleFontSizeMobileFullscreen 
+                : this.currentSettings.trackTitleFontSizeMobileNormal;
+        } else {
+            trackSize = isFullscreen 
+                ? this.currentSettings.trackTitleFontSizeDesktopFullscreen 
+                : this.currentSettings.trackTitleFontSizeDesktopNormal;
+        }
+        
+        // Aplikace na HEADER (#nazev-prehravace nebo .header-title)
+        const playlistHeader = document.querySelector('#nazev-prehravace') || document.querySelector('.header-title');
+        if (playlistHeader) {
+            playlistHeader.style.fontSize = headerSize + 'px';
+        }
+        
+        // Aplikace na TRACK TITLE (#trackTitle)
+        const trackTitle = document.querySelector('#trackTitle');
+        if (trackTitle) {
+            trackTitle.style.fontSize = trackSize + 'px';
+        }
+        
+        const mode = isMobile ? 'Mobil' : 'Desktop';
+        const screen = isFullscreen ? 'Fullscreen' : 'Normal';
+        
+        this.log(`✅ Font sizes aplikovány [${mode} ${screen}]: Header=${headerSize}px, Track=${trackSize}px`);
     },
 
     // Aktualizace zobrazené hodnoty u color inputů
@@ -933,18 +1156,60 @@ const PlaylistSettings = {
             const valueSpan = borderRadiusInput.parentElement?.querySelector('.range-value');
             if (valueSpan) valueSpan.textContent = `${borderRadiusInput.value}px`;
         }
-        /* 🆕 Načtení velikosti písma do posuvníků */
-        const headerFontInput = this.DOM.modal.querySelector('#header-font-size');
-        if (headerFontInput && this.currentSettings.headerFontSizePx) {
-            headerFontInput.value = this.currentSettings.headerFontSizePx;
-            this.updateRangeValue(headerFontInput);
+        
+        // ═══════════════════════════════════════════════════════════════
+        // 🎯 Načtení FONT SIZES do 8 sliderů
+        // ═══════════════════════════════════════════════════════════════
+        // Header Font Sizes
+        const headerDesktopNormal = this.DOM.modal.querySelector('#header-font-desktop-normal');
+        if (headerDesktopNormal && this.currentSettings.headerFontSizeDesktopNormal) {
+            headerDesktopNormal.value = this.currentSettings.headerFontSizeDesktopNormal;
+            this.updateRangeValue(headerDesktopNormal);
         }
 
-        const trackTitleFontInput = this.DOM.modal.querySelector('#track-title-font-size');
-        if (trackTitleFontInput && this.currentSettings.trackTitleFontSizePx) {
-            trackTitleFontInput.value = this.currentSettings.trackTitleFontSizePx;
-            this.updateRangeValue(trackTitleFontInput);
+        const headerDesktopFullscreen = this.DOM.modal.querySelector('#header-font-desktop-fullscreen');
+        if (headerDesktopFullscreen && this.currentSettings.headerFontSizeDesktopFullscreen) {
+            headerDesktopFullscreen.value = this.currentSettings.headerFontSizeDesktopFullscreen;
+            this.updateRangeValue(headerDesktopFullscreen);
         }
+
+        const headerMobileNormal = this.DOM.modal.querySelector('#header-font-mobile-normal');
+        if (headerMobileNormal && this.currentSettings.headerFontSizeMobileNormal) {
+            headerMobileNormal.value = this.currentSettings.headerFontSizeMobileNormal;
+            this.updateRangeValue(headerMobileNormal);
+        }
+
+        const headerMobileFullscreen = this.DOM.modal.querySelector('#header-font-mobile-fullscreen');
+        if (headerMobileFullscreen && this.currentSettings.headerFontSizeMobileFullscreen) {
+            headerMobileFullscreen.value = this.currentSettings.headerFontSizeMobileFullscreen;
+            this.updateRangeValue(headerMobileFullscreen);
+        }
+
+        // Track Title Font Sizes
+        const trackDesktopNormal = this.DOM.modal.querySelector('#track-font-desktop-normal');
+        if (trackDesktopNormal && this.currentSettings.trackTitleFontSizeDesktopNormal) {
+            trackDesktopNormal.value = this.currentSettings.trackTitleFontSizeDesktopNormal;
+            this.updateRangeValue(trackDesktopNormal);
+        }
+
+        const trackDesktopFullscreen = this.DOM.modal.querySelector('#track-font-desktop-fullscreen');
+        if (trackDesktopFullscreen && this.currentSettings.trackTitleFontSizeDesktopFullscreen) {
+            trackDesktopFullscreen.value = this.currentSettings.trackTitleFontSizeDesktopFullscreen;
+            this.updateRangeValue(trackDesktopFullscreen);
+        }
+
+        const trackMobileNormal = this.DOM.modal.querySelector('#track-font-mobile-normal');
+        if (trackMobileNormal && this.currentSettings.trackTitleFontSizeMobileNormal) {
+            trackMobileNormal.value = this.currentSettings.trackTitleFontSizeMobileNormal;
+            this.updateRangeValue(trackMobileNormal);
+        }
+
+        const trackMobileFullscreen = this.DOM.modal.querySelector('#track-font-mobile-fullscreen');
+        if (trackMobileFullscreen && this.currentSettings.trackTitleFontSizeMobileFullscreen) {
+            trackMobileFullscreen.value = this.currentSettings.trackTitleFontSizeMobileFullscreen;
+            this.updateRangeValue(trackMobileFullscreen);
+        }
+        
        // ═══════════════════════════════════════════════════════════════
         // 🎯 Načtení výšek playlistu do sliderů
         // ═══════════════════════════════════════════════════════════════
@@ -1032,12 +1297,35 @@ const PlaylistSettings = {
 
         const borderRadiusInput = this.DOM.modal.querySelector('#border-radius');
         if (borderRadiusInput) newSettings.borderRadius = parseInt(borderRadiusInput.value);
-         /* 🆕 Uložení velikosti písma z posuvníků */
-        const headerFontInput = this.DOM.modal.querySelector('#header-font-size');
-        if (headerFontInput) newSettings.headerFontSizePx = parseInt(headerFontInput.value);
+        
+        // ═══════════════════════════════════════════════════════════════
+        // 🎯 Uložení FONT SIZES z 8 sliderů
+        // ═══════════════════════════════════════════════════════════════
+        // Header Font Sizes
+        const headerDesktopNormal = this.DOM.modal.querySelector('#header-font-desktop-normal');
+        if (headerDesktopNormal) newSettings.headerFontSizeDesktopNormal = parseInt(headerDesktopNormal.value);
 
-        const trackTitleFontInput = this.DOM.modal.querySelector('#track-title-font-size');
-        if (trackTitleFontInput) newSettings.trackTitleFontSizePx = parseInt(trackTitleFontInput.value);
+        const headerDesktopFullscreen = this.DOM.modal.querySelector('#header-font-desktop-fullscreen');
+        if (headerDesktopFullscreen) newSettings.headerFontSizeDesktopFullscreen = parseInt(headerDesktopFullscreen.value);
+
+        const headerMobileNormal = this.DOM.modal.querySelector('#header-font-mobile-normal');
+        if (headerMobileNormal) newSettings.headerFontSizeMobileNormal = parseInt(headerMobileNormal.value);
+
+        const headerMobileFullscreen = this.DOM.modal.querySelector('#header-font-mobile-fullscreen');
+        if (headerMobileFullscreen) newSettings.headerFontSizeMobileFullscreen = parseInt(headerMobileFullscreen.value);
+
+        // Track Title Font Sizes
+        const trackDesktopNormal = this.DOM.modal.querySelector('#track-font-desktop-normal');
+        if (trackDesktopNormal) newSettings.trackTitleFontSizeDesktopNormal = parseInt(trackDesktopNormal.value);
+
+        const trackDesktopFullscreen = this.DOM.modal.querySelector('#track-font-desktop-fullscreen');
+        if (trackDesktopFullscreen) newSettings.trackTitleFontSizeDesktopFullscreen = parseInt(trackDesktopFullscreen.value);
+
+        const trackMobileNormal = this.DOM.modal.querySelector('#track-font-mobile-normal');
+        if (trackMobileNormal) newSettings.trackTitleFontSizeMobileNormal = parseInt(trackMobileNormal.value);
+
+        const trackMobileFullscreen = this.DOM.modal.querySelector('#track-font-mobile-fullscreen');
+        if (trackMobileFullscreen) newSettings.trackTitleFontSizeMobileFullscreen = parseInt(trackMobileFullscreen.value);
             
             
        // ═══════════════════════════════════════════════════════════════
