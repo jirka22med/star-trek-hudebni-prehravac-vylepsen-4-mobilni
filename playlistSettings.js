@@ -261,7 +261,7 @@ const PlaylistSettings = {
                         <label for="height-mobile-normal">📱 Mobil (Normální režim):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-mobile-normal" class="range-input height-slider" 
-                                   min="50" max="600" value="184" data-mode="mobileNormal">
+                                   min="50" max="250" value="184" data-mode="mobileNormal">
                             <span class="range-value">184px</span>
                         </div>
                     </div>
@@ -271,7 +271,7 @@ const PlaylistSettings = {
                         <label for="height-mobile-fullscreen">📱 Mobil (Fullscreen):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-mobile-fullscreen" class="range-input height-slider" 
-                                   min="50" max="600" value="296" data-mode="mobileFullscreen">
+                                   min="50" max="292" value="296" data-mode="mobileFullscreen">
                             <span class="range-value">296px</span>
                         </div>
                     </div>
@@ -1555,4 +1555,5 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
