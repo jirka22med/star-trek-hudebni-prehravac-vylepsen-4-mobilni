@@ -194,7 +194,7 @@ const PlaylistSettings = {
                 </div>
                     
                 
-                    <!-- řádek 195 brackets řádkování začátek      -->
+                   <!-- řádek 195 brackets řádkování začátek      -->
                     <div class="setting-item">
                         <label for="header-font-size">💻 Velikost nadpisu (Header):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
@@ -216,16 +216,16 @@ const PlaylistSettings = {
 <div class="setting-item">
     <label for="mobile-header-font-size">📱 Mobil - Velikost nadpisu (Header):</label>
     <div style="display:flex; align-items:center; gap:10px;">
-        <input type="range" id="mobile-header-font-size" class="range-input" min="12" max="15" value="18">
-        <span class="range-value" id="mobile-header-value">18px</span>
+        <input type="range" id="mobile-header-font-size" class="range-input" min="12" max="15" value="15">
+        <span class="range-value" id="mobile-header-value">15px</span>
     </div>
 </div>
 
 <div class="setting-item">
     <label for="mobile-track-title-font-size">📱 Mobil - Velikost názvu skladby:</label>
     <div style="display:flex; align-items:center; gap:10px;">
-        <input type="range" id="mobile-track-title-font-size" class="range-input" min="10" max="18" value="16">
-        <span class="range-value" id="mobile-track-value">16px</span>
+        <input type="range" id="mobile-track-title-font-size" class="range-input" min="10" max="18" value="18">
+        <span class="range-value" id="mobile-track-value">18px</span>
     </div>
 </div>           
 
@@ -241,8 +241,8 @@ const PlaylistSettings = {
                         <label for="height-desktop-normal">🖥️ Desktop (Normální režim):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-desktop-normal" class="range-input height-slider" 
-                                   min="100" max="180" value="270" data-mode="desktopNormal">
-                            <span class="range-value">270px</span>
+                                   min="100" max="180" value="180" data-mode="desktopNormal">
+                            <span class="range-value">180px</span>
                         </div>
                     </div>
 
@@ -251,8 +251,8 @@ const PlaylistSettings = {
                         <label for="height-desktop-fullscreen">🖥️ Desktop (Fullscreen):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-desktop-fullscreen" class="range-input height-slider" 
-                                   min="100" max="312" value="372" data-mode="desktopFullscreen">
-                            <span class="range-value">390px</span>
+                                   min="100" max="312" value="312" data-mode="desktopFullscreen">
+                            <span class="range-value">312px</span>
                         </div>
                     </div>
 
@@ -261,8 +261,8 @@ const PlaylistSettings = {
                         <label for="height-mobile-normal">📱 Mobil (Normální režim):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-mobile-normal" class="range-input height-slider" 
-                                   min="50" max="209" value="184" data-mode="mobileNormal">
-                            <span class="range-value">184px</span>
+                                   min="50" max="209" value="209" data-mode="mobileNormal">
+                            <span class="range-value">209px</span>
                         </div>
                     </div>
 
@@ -271,12 +271,11 @@ const PlaylistSettings = {
                         <label for="height-mobile-fullscreen">📱 Mobil (Fullscreen):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-mobile-fullscreen" class="range-input height-slider" 
-                                   min="50" max="292" value="296" data-mode="mobileFullscreen">
-                            <span class="range-value">296px</span>
+                                   min="50" max="292" value="292" data-mode="mobileFullscreen">
+                            <span class="range-value">292px</span>
                         </div>
                     </div>
                 </div>
-
 
                 <div class="settings-section" id="custom-colors-section">
                     <h3>🌈 Vlastní barvy</h3>
@@ -1555,6 +1554,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
