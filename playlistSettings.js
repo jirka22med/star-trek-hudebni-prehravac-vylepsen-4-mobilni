@@ -221,7 +221,7 @@ const PlaylistSettings = {
                         <label for="height-desktop-normal">🖥️ Desktop (Normální režim):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-desktop-normal" class="range-input height-slider" 
-                                   min="100" max="800" value="270" data-mode="desktopNormal">
+                                   min="100" max="340" value="270" data-mode="desktopNormal">
                             <span class="range-value">270px</span>
                         </div>
                     </div>
@@ -231,7 +231,7 @@ const PlaylistSettings = {
                         <label for="height-desktop-fullscreen">🖥️ Desktop (Fullscreen):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-desktop-fullscreen" class="range-input height-slider" 
-                                   min="100" max="800" value="390" data-mode="desktopFullscreen">
+                                   min="100" max="494" value="390" data-mode="desktopFullscreen">
                             <span class="range-value">390px</span>
                         </div>
                     </div>
@@ -1996,3 +1996,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
