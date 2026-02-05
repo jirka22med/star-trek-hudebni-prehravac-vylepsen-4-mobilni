@@ -216,7 +216,7 @@ const PlaylistSettings = {
 <div class="setting-item">
     <label for="mobile-header-font-size">📱 Mobil - Velikost nadpisu (Header):</label>
     <div style="display:flex; align-items:center; gap:10px;">
-        <input type="range" id="mobile-header-font-size" class="range-input" min="12" max="28" value="18">
+        <input type="range" id="mobile-header-font-size" class="range-input" min="12" max="15" value="18">
         <span class="range-value" id="mobile-header-value">18px</span>
     </div>
 </div>
@@ -224,7 +224,7 @@ const PlaylistSettings = {
 <div class="setting-item">
     <label for="mobile-track-title-font-size">📱 Mobil - Velikost názvu skladby:</label>
     <div style="display:flex; align-items:center; gap:10px;">
-        <input type="range" id="mobile-track-title-font-size" class="range-input" min="10" max="28" value="16">
+        <input type="range" id="mobile-track-title-font-size" class="range-input" min="10" max="18" value="16">
         <span class="range-value" id="mobile-track-value">16px</span>
     </div>
 </div>           
@@ -1555,3 +1555,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
