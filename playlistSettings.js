@@ -32,6 +32,8 @@ const PlaylistSettings = {
         trackSpacing: 'normal',
         headerFontSizePx: 24,
         trackTitleFontSizePx: 20,
+        mobileHeaderFontSizePx: 18,        // 📱 NOVÉ
+        mobileTrackTitleFontSizePx: 16,    // 📱 NOVÉ
         customColors: {
             backgroundColor: '#1a1a1a',
             backgroundGradientStart: '#1a1a1a',
@@ -192,9 +194,9 @@ const PlaylistSettings = {
                 </div>
                     
                 
-
+                    <!-- řádek 195 brackets řádkování začátek      -->
                     <div class="setting-item">
-                        <label for="header-font-size">Velikost nadpisu (Header):</label>
+                        <label for="header-font-size">💻 Velikost nadpisu (Header):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="header-font-size" class="range-input" min="1" max="30" value="24">
                             <span class="range-value">24px</span>
@@ -202,13 +204,31 @@ const PlaylistSettings = {
                     </div>
 
                     <div class="setting-item">
-                        <label for="track-title-font-size">Velikost názvu skladby:</label>
+                        <label for="track-title-font-size">💻 Velikost názvu skladby:</label>
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <input type="range" id="track-title-font-size" class="range-input" min="1" max="36" value="20">
+                            <input type="range" id="track-title-font-size" class="range-input" min="1" max="30" value="20">
                             <span class="range-value">20px</span>
                         </div>
                     </div>
-                 
+                        <!-- řádek 211 brackets řádkování konec      -->
+                    
+                    <!-- 📱 MOBILE FONT SIZE SLIDERY - Více admirál Jiřík -->
+<div class="setting-item">
+    <label for="mobile-header-font-size">📱 Mobil - Velikost nadpisu (Header):</label>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <input type="range" id="mobile-header-font-size" class="range-input" min="12" max="28" value="18">
+        <span class="range-value" id="mobile-header-value">18px</span>
+    </div>
+</div>
+
+<div class="setting-item">
+    <label for="mobile-track-title-font-size">📱 Mobil - Velikost názvu skladby:</label>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <input type="range" id="mobile-track-title-font-size" class="range-input" min="10" max="28" value="16">
+        <span class="range-value" id="mobile-track-value">16px</span>
+    </div>
+</div>           
+
                   <!-- ═══════════════════════════════════════════════════ -->
                 <!-- 🎯 NOVÁ SEKCE: VÝŠKA PLAYLISTU (4 SLIDERY)        -->
                 <!-- Více admirál Jiřík - Funkční slidery               -->
@@ -531,6 +551,7 @@ const PlaylistSettings = {
             }
         });
 
+        
         // ═══════════════════════════════════════════════════════════════
         // 🎯 LIVE PREVIEW PRO SLIDERY VÝŠKY (Okamžitá odezva)
         // ═══════════════════════════════════════════════════════════════
@@ -933,6 +954,8 @@ const PlaylistSettings = {
             const valueSpan = borderRadiusInput.parentElement?.querySelector('.range-value');
             if (valueSpan) valueSpan.textContent = `${borderRadiusInput.value}px`;
         }
+
+             //<!-- řádek 939 brackets řádkování začátek      -->
         /* 🆕 Načtení velikosti písma do posuvníků */
         const headerFontInput = this.DOM.modal.querySelector('#header-font-size');
         if (headerFontInput && this.currentSettings.headerFontSizePx) {
@@ -945,6 +968,20 @@ const PlaylistSettings = {
             trackTitleFontInput.value = this.currentSettings.trackTitleFontSizePx;
             this.updateRangeValue(trackTitleFontInput);
         }
+          //<!-- řádek 952 brackets řádkování konec      -->
+         // 📱 NOVÉ - Mobile font sizes
+const mobileHeaderFontInput = this.DOM.modal.querySelector('#mobile-header-font-size');
+if (mobileHeaderFontInput && this.currentSettings.mobileHeaderFontSizePx) {
+    mobileHeaderFontInput.value = this.currentSettings.mobileHeaderFontSizePx;
+    this.updateRangeValue(mobileHeaderFontInput);
+}
+
+const mobileTrackTitleFontInput = this.DOM.modal.querySelector('#mobile-track-title-font-size');
+if (mobileTrackTitleFontInput && this.currentSettings.mobileTrackTitleFontSizePx) {
+    mobileTrackTitleFontInput.value = this.currentSettings.mobileTrackTitleFontSizePx;
+    this.updateRangeValue(mobileTrackTitleFontInput);
+}
+
        // ═══════════════════════════════════════════════════════════════
         // 🎯 Načtení výšek playlistu do sliderů
         // ═══════════════════════════════════════════════════════════════
@@ -1032,13 +1069,25 @@ const PlaylistSettings = {
 
         const borderRadiusInput = this.DOM.modal.querySelector('#border-radius');
         if (borderRadiusInput) newSettings.borderRadius = parseInt(borderRadiusInput.value);
-         /* 🆕 Uložení velikosti písma z posuvníků */
+        
+              // <!-- řádek 1042 brackets řádkování začátek      -->            
+       // 📱 NOVÉ - Mobile font sizes
+const mobileHeaderFontInput = this.DOM.modal.querySelector('#mobile-header-font-size');
+if (mobileHeaderFontInput) newSettings.mobileHeaderFontSizePx = parseInt(mobileHeaderFontInput.value);
+
+const mobileTrackTitleFontInput = this.DOM.modal.querySelector('#mobile-track-title-font-size');
+if (mobileTrackTitleFontInput) newSettings.mobileTrackTitleFontSizePx = parseInt(mobileTrackTitleFontInput.value);
+     
+            
+            
+            
+            /* 🆕 Uložení velikosti písma z posuvníků */
         const headerFontInput = this.DOM.modal.querySelector('#header-font-size');
         if (headerFontInput) newSettings.headerFontSizePx = parseInt(headerFontInput.value);
 
         const trackTitleFontInput = this.DOM.modal.querySelector('#track-title-font-size');
         if (trackTitleFontInput) newSettings.trackTitleFontSizePx = parseInt(trackTitleFontInput.value);
-            
+            //<!-- řádek 1049 brackets řádkování konec      -->
             
        // ═══════════════════════════════════════════════════════════════
         // 🎯 Uložení výšek playlistu ze sliderů
@@ -1177,10 +1226,12 @@ const PlaylistSettings = {
         let customCSS = '';
         const settings = this.currentSettings;
         const colors = settings.customColors;
+        
+        /*<!-- řádek 1189 brackets řádkování začátek      -->*/
         /* 🆕 APLIKACE VELIKOSTI PÍSMA HLAVIČKY */
         const h1Size = settings.headerFontSizePx || 24; 
         const h2Size = settings.trackTitleFontSizePx || 20;
-
+ 
         customCSS += `
             /* Přebijeme inline styly v index.html pomocí !important */
             h1#nazev-prehravace {
@@ -1190,6 +1241,25 @@ const PlaylistSettings = {
                 font-size: ${h2Size}px !important;
             }
         `;
+        //<!-- řádek 1203 brackets řádkování konec      -->
+        
+        // 📱 NOVÉ - Mobile responsive font sizes
+const mobileH1Size = settings.mobileHeaderFontSizePx || 18;
+const mobileH2Size = settings.mobileTrackTitleFontSizePx || 16;
+
+customCSS += `
+    @media (max-width: 768px) {
+        h1#nazev-prehravace {
+            font-size: ${mobileH1Size}px !important;
+        }
+        h2#trackTitle {
+            font-size: ${mobileH2Size}px !important;
+        }
+    }
+`;
+        
+        
+        
         // Skrytí/zobrazení čísel skladeb
         if (!settings.showTrackNumbers) {
             customCSS += '.playlist .track-number { display: none !important; }';
@@ -1458,6 +1528,8 @@ const PlaylistSettings = {
         this.log('PlaylistSettings modul zničen.');
     }
 };
+
+ 
 
 // Automatická inicializace při načtení DOM
 document.addEventListener('DOMContentLoaded', () => {
