@@ -198,7 +198,7 @@ const PlaylistSettings = {
                     <div class="setting-item">
                         <label for="header-font-size">💻 Velikost nadpisu (Header):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <input type="range" id="header-font-size" class="range-input" min="1" max="27" value="24">
+                            <input type="range" id="header-font-size" class="range-input" min="1" max="24" value="24">
                             <span class="range-value">24px</span>
                         </div>
                     </div>
@@ -206,7 +206,7 @@ const PlaylistSettings = {
                     <div class="setting-item">
                         <label for="track-title-font-size">💻 Velikost názvu skladby:</label>
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <input type="range" id="track-title-font-size" class="range-input" min="1" max="27" value="20">
+                            <input type="range" id="track-title-font-size" class="range-input" min="1" max="24" value="20">
                             <span class="range-value">20px</span>
                         </div>
                     </div>
@@ -241,7 +241,7 @@ const PlaylistSettings = {
                         <label for="height-desktop-normal">🖥️ Desktop (Normální režim):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-desktop-normal" class="range-input height-slider" 
-                                   min="100" max="340" value="270" data-mode="desktopNormal">
+                                   min="100" max="180" value="270" data-mode="desktopNormal">
                             <span class="range-value">270px</span>
                         </div>
                     </div>
@@ -251,7 +251,7 @@ const PlaylistSettings = {
                         <label for="height-desktop-fullscreen">🖥️ Desktop (Fullscreen):</label>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <input type="range" id="height-desktop-fullscreen" class="range-input height-slider" 
-                                   min="100" max="494" value="372" data-mode="desktopFullscreen">
+                                   min="100" max="312" value="372" data-mode="desktopFullscreen">
                             <span class="range-value">390px</span>
                         </div>
                     </div>
@@ -1555,6 +1555,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log(`%c🚀 [playlistSettingsJS] Načteno za ${(performance.now() - __playlistSettingsJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
