@@ -83,7 +83,7 @@ window.playlistSections = [
   { name: '🎧 Ocelová křídla Promethea', start: 486, end: 489 },
   { name: '🎧 Velení Promethea', start: 490, end: 493 },
   { name: '🎧 Velení lodi Prometheus', start: 494, end: 495 },
-  { name: '🎧 USS Prometheus', start: 496, end: 497 }
+  { name: '🎧 USS Prometheus', start: 496, end: 497 },
   { name: '🎧 Wo-rur-HoS-Sila-jako-imperium', start: 499, end: 500 },
   { name: '🎧 tlhIngan-MaH-Jsme-Klingoni-Extended', start: 501, end: 502 },
   { name: '🎧 Ocel-a-Hnev', start: 503, end: 504 },
