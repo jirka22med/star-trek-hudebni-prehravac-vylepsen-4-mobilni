@@ -266,22 +266,19 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/064aefbc041suj0c8oua2/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-V.3.mp3?rlkey=vl8m9jou6jr1a5r1hl9318k8i&st=5v0q3chj&dl=1 ", title: "Více Admirál Jiřík & Claude.AI v.1", manuallyEdited: false, lastEditedAt: null }, //109           
 { src: "https://dl.dropboxusercontent.com/scl/fi/xp0eg4pq6q5unhcxerkie/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-V.7.mp3?rlkey=pcasoogvq9f27gjgfc6ia4wts&st=223pm0qf&dl=1", title: "Více Admirál Jiřík & Claude.AI v.2", manuallyEdited: false, lastEditedAt: null }, //110   
 { src: "https://dl.dropboxusercontent.com/scl/fi/lse1g527r86witpb8cpc5/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-V.8.mp3?rlkey=g47dep5cojuorgtqgqchx3fax&st=l8xon1z8&dl=1", title: "Více Admirál Jiřík & Claude.AI v.3", manuallyEdited: false, lastEditedAt: null }, //111 
-    
 { src: "https://dl.dropboxusercontent.com/scl/fi/urhkvb4afdoxbg9uan2ok/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.1.mp3?rlkey=r9l35hqj8dvdjvlkjg7rbacq2&st=2g4el6vg&dl=1", title: "Více Admirál Jiřík & Claude.AI v.4", manuallyEdited: false, lastEditedAt: null }, //112
 { src: "https://dl.dropboxusercontent.com/scl/fi/84tlmmxh64iolx01ofmar/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.2.mp3?rlkey=7u578p0v5s4agnjay038em6cb&st=qgo4ulrh&dl=1", title: "Více Admirál Jiřík & Claude.AI v.5", manuallyEdited: false, lastEditedAt: null }, //113
 { src: "https://dl.dropboxusercontent.com/scl/fi/edbjjt81i88k86lia9j30/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.3.mp3?rlkey=t5dk6eycz1ssjmv616932wmup&st=dqtzjo4h&dl=1", title: "Více Admirál Jiřík & Claude.AI v.6", manuallyEdited: false, lastEditedAt: null }, //114
 { src: "https://dl.dropboxusercontent.com/scl/fi/38kj9ots81lhn4ch60xrx/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.4.mp3?rlkey=djwohayh7hx84qfro81n5nmiv&st=mlhfn4pu&dl=1", title: "Více Admirál Jiřík & Claude.AI v.7", manuallyEdited: false, lastEditedAt: null }, //115
-{ src: "https://dl.dropboxusercontent.com/scl/fi/4o201yvml13ia1dn7qcli/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V-1-2-3.mp3?rlkey=shfno8g9db24i686a6il771kk&st=c7sv9qex&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-0 v.8", manuallyEdited: false, lastEditedAt: null }, //116
-//{ src: "https://dl.dropboxusercontent.com/scl/fi/htvb306qxwg7rjzhp10vc/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.6.mp3?rlkey=b52shzqsf5180xcmcibzk6fl6&st=biqawas8&dl=1", title: "Více Admirál Jiřík & Claude.AI v.9", manuallyEdited: false, lastEditedAt: null }, //117    
-{ src: "https://dl.dropboxusercontent.com/scl/fi/36pqt85qncua07mvj93vj/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI.mp3?rlkey=qcl0b9318a673ix4wh1v26314&st=0y3abjy5&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-1", manuallyEdited: false, lastEditedAt: null }, //117-8     
+{ src: "https://dl.dropboxusercontent.com/scl/fi/4o201yvml13ia1dn7qcli/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V-1-2-3.mp3?rlkey=shfno8g9db24i686a6il771kk&st=c7sv9qex&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-0 v.8", manuallyEdited: false, lastEditedAt: null }, //11   
+{ src: "https://dl.dropboxusercontent.com/scl/fi/36pqt85qncua07mvj93vj/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI.mp3?rlkey=qcl0b9318a673ix4wh1v26314&st=0y3abjy5&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-1", manuallyEdited: false, lastEditedAt: null }, //117-8   
 // ═══════════════════════════════════════════════════════════
 // 🎧 Více Admirál Jiřík & Chatbot
 // ═══════════════════════════════════════════════════════════
-  { src: "https://dl.dropboxusercontent.com/scl/fi/upigtgzher2bvmr5394j1/vice-admiral-ji-k-a-admiral-chatbot.V.1.mp3?rlkey=moiadh4qqse2a7i7b22tjb14n&st=ile4lup8&dl=1", title: "Více Admirál Jiřík & Chatbot v.1", manuallyEdited: false, lastEditedAt: null }, //148              
-{ src: "https://dl.dropboxusercontent.com/scl/fi/z4r2ugvvnmyzd8nbyf0na/vice-admiral-ji-k-a-admiral-chatbot.V.2.mp3?rlkey=4g180cun5yt1lnl7zudwzx4ih&st=60crzwco&dl=1", title: "Více Admirál Jiřík & Chatbot v.2", manuallyEdited: false, lastEditedAt: null }, //149              
-{ src: "https://dl.dropboxusercontent.com/scl/fi/o91w5hsnozau6oad1g4j3/vice-admiral-ji-k-a-admiral-chatbot.V.3.mp3?rlkey=5wdibr1lhe9v92eaxa1ktsow2&st=q1mcelob&dl=1", title: "Více Admirál Jiřík & Chatbot v.3", manuallyEdited: false, lastEditedAt: null }, //150              
+  { src: "https://dl.dropboxusercontent.com/scl/fi/upigtgzher2bvmr5394j1/vice-admiral-ji-k-a-admiral-chatbot.V.1.mp3?rlkey=moiadh4qqse2a7i7b22tjb14n&st=ile4lup8&dl=1", title: "Více Admirál Jiřík & Chatbot v.1", manuallyEdited: false, lastEditedAt: null }, //148       
+{ src: "https://dl.dropboxusercontent.com/scl/fi/z4r2ugvvnmyzd8nbyf0na/vice-admiral-ji-k-a-admiral-chatbot.V.2.mp3?rlkey=4g180cun5yt1lnl7zudwzx4ih&st=60crzwco&dl=1", title: "Více Admirál Jiřík & Chatbot v.2", manuallyEdited: false, lastEditedAt: null }, //149         
+{ src: "https://dl.dropboxusercontent.com/scl/fi/o91w5hsnozau6oad1g4j3/vice-admiral-ji-k-a-admiral-chatbot.V.3.mp3?rlkey=5wdibr1lhe9v92eaxa1ktsow2&st=q1mcelob&dl=1", title: "Více Admirál Jiřík & Chatbot v.3", manuallyEdited: false, lastEditedAt: null }, //150         
 { src: "https://dl.dropboxusercontent.com/scl/fi/a8o0195oj0ao72bkku0f2/vice-admiral-ji-k-a-admiral-chatbot.V.4.mp3?rlkey=0kamkho6hr6gr0dqr42hjp5kj&st=75pji7yy&dl=1", title: "Více Admirál Jiřík & Chatbot v.4", manuallyEdited: false, lastEditedAt: null },  
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 Více Admirál & Claude.AI
 // ═══════════════════════════════════════════════════════════ 
@@ -291,7 +288,6 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/7u8x3wyyxkqjqjxkh89ec/V-ce-admir-l-Ji-k-a-Claude.AI-v.4.mp3?rlkey=z5layi8shi3t2qhyzk6fjwvzu&st=kmq0g5dp&dl=1', title: 'Více admirál Jiřík & Claude.AI v.4', manuallyEdited: false, lastEditedAt: null }, //190             
 { src: 'https://dl.dropboxusercontent.com/scl/fi/1sr61tw6bozlnv6qyu6ks/V-ce-admir-l-Ji-k-a-Claude.AI-v.5.mp3?rlkey=ws2o7kvv0h24rbkt5f5mki4kj&st=0gz5gnn9&dl=1', title: 'Více admirál Jiřík & Claude.AI v.5', manuallyEdited: false, lastEditedAt: null }, //191             
 { src: 'https://dl.dropboxusercontent.com/scl/fi/odfjak89mwzwwu0yhkzde/V-ce-admir-l-Ji-k-a-Claude.AI-v.6.mp3?rlkey=0fibl9ubon3aqbbcttbhnuofp&st=ef3wdvgv&dl=1', title: 'Více admirál Jiřík & Claude.AI v.6', manuallyEdited: false, lastEditedAt: null }, //192  
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 VÁNOČNÍ HVĚZDNÁ FLOTILA
 // ═══════════════════════════════════════════════════════════
@@ -306,7 +302,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/zt3h0319iz7j5svk3htjg/V-no-n-hv-zdn-flotila-v.9.mp3?rlkey=6tl8kumc3el6sq2kvr5tljumh&st=7s8t86ia&dl=1 ", title: "🎄 Vánoční Hvězdná Flotila v.9", manuallyEdited: false, lastEditedAt: null }, //126   
 { src: "https://dl.dropboxusercontent.com/scl/fi/mhr1dx2eet4ekxjrdpril/V-no-n-hv-zdn-flotila-v.10.mp3?rlkey=e1x78ofhqqhvvc293j49kvnox&st=vn45a3nt&dl=1 ", title: "🎄 Vánoční Hvězdná Flotila v.10", manuallyEdited: false, lastEditedAt: null }, //127               
 { src: "https://dl.dropboxusercontent.com/scl/fi/f8korjpx5vygudobe751y/V-no-n-hv-zdn-flotila-aj-v.11.mp3?rlkey=75p2937zsn13jyts9ytoi8jel&st=2lk6byjx&dl=1 ", title: "🎄 Vánoční Hvězdná Flotila v.11", manuallyEdited: false, lastEditedAt: null }, //128    
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK - DO NEZNÁMA (SÉRIE)
 // ═══════════════════════════════════════════════════════════
@@ -318,8 +313,8 @@ window.tracks = [
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK - DO NEZNÁMA Remake
 // ═══════════════════════════════════════════════════════════ 
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/4834qpbtwv1sl8cynyp9x/star-trek-do-neznama-remake-v1.mp3?rlkey=q312iwodtdvk2ya8w7e3gw2cv&st=gq4l0w9r&dl=1', title: 'Star Trek Do Neznáma Remake v.1', manuallyEdited: false, lastEditedAt: null }, //134            
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/ptmeoxhjn1zhrjvu5b26t/star-trek-do-neznama-remake-v2.mp3?rlkey=lay48irwtcvm6shfvzsljc9vd&st=fvsh9y32&dl=1', title: 'Star Trek Do Neznáma Remake v.2', manuallyEdited: false, lastEditedAt: null }, //135            
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/4834qpbtwv1sl8cynyp9x/star-trek-do-neznama-remake-v1.mp3?rlkey=q312iwodtdvk2ya8w7e3gw2cv&st=gq4l0w9r&dl=1', title: 'Star Trek Do Neznáma Remake v.1', manuallyEdited: false, lastEditedAt: null }, //134           
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/ptmeoxhjn1zhrjvu5b26t/star-trek-do-neznama-remake-v2.mp3?rlkey=lay48irwtcvm6shfvzsljc9vd&st=fvsh9y32&dl=1', title: 'Star Trek Do Neznáma Remake v.2', manuallyEdited: false, lastEditedAt: null }, //135           
 { src: 'https://dl.dropboxusercontent.com/scl/fi/i1ag5qh4qlihjgwweocfo/star-trek-do-neznama-v.4-verze-1.mp3?rlkey=y3tsncupaxphx70e9icr6s6po&st=y7n2nzrp&dl=1', title: 'Star Trek Do Neznáma Remake v.3', manuallyEdited: false, lastEditedAt: null }, //136        
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK - DO NEZNÁMA Starší verze
@@ -335,14 +330,12 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/aqeyjlqxod8zuj1dyh4t8/star-trek-do-neznama-nova-v.3.mp3?rlkey=g0b45jn4j5uv0e3bi0bla133b&st=16kku0hc&dl=1', title: 'Star Trek Do Neznáma Nová v.3', manuallyEdited: false, lastEditedAt: null }, //142
 { src: 'https://dl.dropboxusercontent.com/scl/fi/tml7gxkh8ylwrsod5qxvu/star-trek-do-neznama-nova-v.4.mp3?rlkey=s7tmwv0vhkyoie5anvkzwv3vx&st=jzswn54m&dl=1', title: 'Star Trek Do Neznáma Nová v.4', manuallyEdited: false, lastEditedAt: null }, //143
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ap2ou00a0lv1y5rm2ntsd/star-trek-do-neznama-nova-v.5.mp3?rlkey=63iasinq8xzqkh2h8ri7clj5k&st=xtq9hrpw&dl=1', title: 'Star Trek Do Neznáma Nová v.5', manuallyEdited: false, lastEditedAt: null }, //144    
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 MIX & SPECIÁLNÍ PROJEKTY
 // ═══════════════════════════════════════════════════════════
 { src: "https://dl.dropboxusercontent.com/scl/fi/4onalygztdm0pfes6vyip/Klingon-opera-star-trek.mp3?rlkey=zvokfh2gx4i1whieqbdam40kz&st=k3i7y619&dl=1", title: "Klingonská Opera Star Trek", manuallyEdited: false, lastEditedAt: null }, //145
 { src: "https://dl.dropboxusercontent.com/scl/fi/hvdpjs006hx6643hj38rk/Beyond-the-Stars-v.1.mp3?rlkey=rtgxbbtcs5zosj215hf4odmn6&st=7jiixej0&dl=1", title: "Beyond the Stars v.1", manuallyEdited: false, lastEditedAt: null }, //146              
-{ src: "https://dl.dropboxusercontent.com/scl/fi/8bmnb3u2qclfqfhrf9r6x/Beyond-the-Stars-v.2.mp3?rlkey=ezaamgdpdyg3dvg2ngadxh7am&st=3msfough&dl=1", title: "Beyond the Stars v.2", manuallyEdited: false, lastEditedAt: null }, //147              
- //151              
+{ src: "https://dl.dropboxusercontent.com/scl/fi/8bmnb3u2qclfqfhrf9r6x/Beyond-the-Stars-v.2.mp3?rlkey=ezaamgdpdyg3dvg2ngadxh7am&st=3msfough&dl=1", title: "Beyond the Stars v.2", manuallyEdited: false, lastEditedAt: null }, //147                         
 // ═══════════════════════════════════════════════════════════
 // 🎧 Týmová Práce
 // ═══════════════════════════════════════════════════════════ 
@@ -350,7 +343,7 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/uanba9tela1n6e2ngyepg/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-T-mov-Pr-ce-V.2.mp3?rlkey=p9l11x06k2ov3zahbaxenbw54&st=7dtpse8o&dl=1", title: "Týmová Práce na NCC-1701-D v.2", manuallyEdited: false, lastEditedAt: null }, //153
 { src: "https://dl.dropboxusercontent.com/scl/fi/r4r37go18hsqgzov93nei/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-T-mov-Pr-ce-V.3.mp3?rlkey=hdcpadkhldumy5srgiextmt6r&st=e1bhhgpk&dl=1", title: "Týmová Práce na NCC-1701-D v.3", manuallyEdited: false, lastEditedAt: null }, //154
 { src: "https://dl.dropboxusercontent.com/scl/fi/vfawutdd3hbl78d3tc5rt/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-T-mov-Pr-ce-V.4.mp3?rlkey=lr03uqet3ef74wnid1nsgnmm5&st=nq65i35h&dl=1", title: "Týmová Práce na NCC-1701-D v.4", manuallyEdited: false, lastEditedAt: null }, //155
-{ src: "https://dl.dropboxusercontent.com/scl/fi/04m7zzgm2cechke0kybw8/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-T-mov-Pr-ce-V.5-top-1.mp3?rlkey=7t92lk9f2ckt2ff45t4rhjvwt&st=2wjswbca&dl=1", title: "Týmová Práce na NCC-1701-D v.5", manuallyEdited: false, lastEditedAt: null }, //156                         
+{ src: "https://dl.dropboxusercontent.com/scl/fi/04m7zzgm2cechke0kybw8/V-ce-admir-l-Ji-k-Admir-l-chatbot-Claude.AI-T-mov-Pr-ce-V.5-top-1.mp3?rlkey=7t92lk9f2ckt2ff45t4rhjvwt&st=2wjswbca&dl=1", title: "Týmová Práce na NCC-1701-D v.5", manuallyEdited: false, lastEditedAt: null }, //156           
 // ═══════════════════════════════════════════════════════════
 // 🎧 Admirálský Deník
 // ═══════════════════════════════════════════════════════════ 
@@ -374,8 +367,7 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/3q9f6dknc5ltrtv1zf71u/P-se-_-Admir-lsk-den-k-Admir-la-Chatbota-V.3-Remastered-V.3.mp3?rlkey=wujypwk13somkmyxdvsc17nnx&st=je445r9k&dl=1", title: "Admirálský Deník (Rema) v.1", manuallyEdited: false, lastEditedAt: null }, //168            
 { src: "https://dl.dropboxusercontent.com/scl/fi/hypr1ni1tf88nbe600gff/P-se-_-Admir-lsk-den-k-Admir-la-Chatbota-V.3-Remastered-V.4.mp3?rlkey=nrpjftz0howr1xrr19dqn4jx6&st=ewc4jjyz&dl=1", title: "Admirálský Deník (Rema) v.2", manuallyEdited: false, lastEditedAt: null }, //169     
 { src:"https://dl.dropboxusercontent.com/scl/fi/lh2oq4ssjccjngnbgjwpn/Hv-zdn-Pos-dka-Remastered-V.9.mp3?rlkey=unrvafu72fe6oildlrb7zhik5&st=ul0depqa&dl=1", title: "Hvězdná Posádka (Rema) v.9", manuallyEdited: false, lastEditedAt: null }, //170  
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/qdsz9ggqnkqgw51pj7k06/Stanice-Hlubok-Vesm-r-9-Remastered.mp3?rlkey=m6jhmtfsaw8xigu9p27g9ync1&st=9jv8h1jf&dl=1', title: 'Stanice Hluboký Vesmír 9 (Remastered)', manuallyEdited: false, lastEditedAt: null }, //171        
-
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/qdsz9ggqnkqgw51pj7k06/Stanice-Hlubok-Vesm-r-9-Remastered.mp3?rlkey=m6jhmtfsaw8xigu9p27g9ync1&st=9jv8h1jf&dl=1', title: 'Stanice Hluboký Vesmír 9 (Remastered)', manuallyEdited: false, lastEditedAt: null }, //171     
 // ═══════════════════════════════════════════════════════════
 // 🎧 VESMÍRNÁ ODYSEA (KOMPLET)
 // ═══════════════════════════════════════════════════════════
@@ -389,7 +381,6 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/m4qcr8y36ishmv9kcp5p0/Vesm-rn-Odysea-V.8.mp3?rlkey=h8ke7ml7pklp4qbxakq2fmq6f&st=ohngbwxu&dl=1', title: 'Vesmírná Odysea v.8', manuallyEdited: false, lastEditedAt: null }, //179            
 { src: 'https://dl.dropboxusercontent.com/scl/fi/v0nbtgqwuii1o1ss43azz/Vesm-rn-Odysea-V.9.mp3?rlkey=mc1bygy5fh75coot42c3t8dkr&st=a7w81b0y&dl=1', title: 'Vesmírná Odysea v.9', manuallyEdited: false, lastEditedAt: null }, //180            
 { src: 'https://dl.dropboxusercontent.com/scl/fi/xmc7t8vts8m7k72hm6bc3/Vesm-rn-Odysea-V.10.mp3?rlkey=mmbcuw0wygs62uyuktsl22yoa&st=voob4jv4&dl=1', title: 'Vesmírná Odysea v.10', manuallyEdited: false, lastEditedAt: null }, //181            
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 DALŠÍ PROJEKTY & BONUSY
 // ═══════════════════════════════════════════════════════════
@@ -398,9 +389,6 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/wl5i599mnidodxc8gixyi/Posledn-den-k-NCC-1701-v-11.mp3?rlkey=hlg24huv9ggjmt344gjuiul2p&st=btvxv4b7&dl=1', title: 'Poslední Deník NCC-1701 v.1', manuallyEdited: false, lastEditedAt: null }, //184            
 { src: 'https://dl.dropboxusercontent.com/scl/fi/0f3iih97yk57gkq7veymi/Posledn-den-k-NCC-1701-v-11.mp3?rlkey=nqa1hi1wbnnjlacio1z17u49e&st=6js7or6q&dl=1', title: 'Poslední Deník NCC-1701 v.2', manuallyEdited: false, lastEditedAt: null }, //185  
 { src: 'https://dl.dropboxusercontent.com/scl/fi/24l3k0p4zday6f0ohd0to/Posledn-den-k-NCC-1701-v-17.mp3?rlkey=futpak2zji1s0cksitcsragyd&st=j2xku61z&dl=1', title: 'Poslední Deník NCC-1701 v.3', manuallyEdited: false, lastEditedAt: null }, //186 
-
-            
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 Na Cestě k Věčnosti
 // ═══════════════════════════════════════════════════════════  
@@ -412,25 +400,22 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/aehzbo7km5t7y47jqz7vm/na-ceste-k-vecnosti-v.6.mp3?rlkey=t9gtnzo9x8a3prd6f1fyzmlb8&st=dlytnlj9&dl=1', title: 'Na Cestě k Věčnosti v.6', manuallyEdited: false, lastEditedAt: null }, //198       
 { src: 'https://dl.dropboxusercontent.com/scl/fi/k6wi5e2qh45152obzhct8/na-ceste-k-vecnosti-v.7.mp3?rlkey=6tg4gisattbvlexk7ap8mndl5&st=vd7xnbjw&dl=1', title: 'Na Cestě k Věčnosti v.7', manuallyEdited: false, lastEditedAt: null }, //199
 { src: 'https://dl.dropboxusercontent.com/scl/fi/o9u5v9cc317g7mqm2kiy0/Na-cest-k-v-cnosti-v.2.0-nova-verze.mp3?rlkey=9fukslcoxmau62r974njjuayw&st=zeh00idx&dl=1', title: 'Na Cestě k Věčnosti v.2.0 (Nová Verze)', manuallyEdited: false, lastEditedAt: null }, //200
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 Srdce mezi Hvězdami
 // ═══════════════════════════════════════════════════════════   
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/qazvjqxkbre0sbnem67gx/Srdce-mezi-hv-zdami-Star-Trek-v2.1.mp3?rlkey=db7evo8tygn65arynew329ahs&st=0or2a8v9&dl=1', title: 'Srdce mezi hvězdami Star Trek v.2.1 ', manuallyEdited: false, lastEditedAt: null }, //201      
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/qazvjqxkbre0sbnem67gx/Srdce-mezi-hv-zdami-Star-Trek-v2.1.mp3?rlkey=db7evo8tygn65arynew329ahs&st=0or2a8v9&dl=1', title: 'Srdce mezi hvězdami Star Trek v.2.1 ', manuallyEdited: false, lastEditedAt: null }, //201     
 { src: 'https://dl.dropboxusercontent.com/scl/fi/3eo01y34rlssox0f1vgj0/Srdce-mezi-hv-zdami-Star-Trek-v2.0.mp3?rlkey=yhvqqwwzf70a91bi0t7iz7gz5&st=bd0eyw5y&dl=1', title: 'Srdce mezi hvězdami Star Trek v.2.2', manuallyEdited: false, lastEditedAt: null }, //202    
 { src: 'https://dl.dropboxusercontent.com/scl/fi/7jygh1xw8puztqy6pdmcd/Srdce-mezi-hv-zdami-Star-Trek-v2.0.mp3?rlkey=67khxsi9ond3inf2g43pa3z8e&st=f8ytrufm&dl=1 ', title: 'Srdce mezi hvězdami Star Trek v.3.0', manuallyEdited: false, lastEditedAt: null }, //203
 { src: 'https://dl.dropboxusercontent.com/scl/fi/8ijrdrk9m1jpw4w34bxii/srdce-mezi-hv-zdami-v.1.mp3?rlkey=jep42frzecpnl3gxzjh6p3rvu&st=59mahimb&dl=1', title: 'Srdce mezi hvězdami v.1 ', manuallyEdited: false, lastEditedAt: null }, //204
 { src: 'https://dl.dropboxusercontent.com/scl/fi/017u9rj5ngfbw3hnny4ju/srdce-mezi-hv-zdami-v.2.mp3?rlkey=hofnwvvedxso6o3ee5tr0097s&st=9o6x7f5l&dl=1', title: 'Srdce mezi hvězdami v.2 ', manuallyEdited: false, lastEditedAt: null }, //205
 { src: 'https://dl.dropboxusercontent.com/scl/fi/bcqoq0vpsi66dzipmq2b2/srdce-mezi-hv-zdami-v.3.mp3?rlkey=yb9utkodamem3ejfe9rsjq3je&st=gm3jupi5&dl=1', title: 'Srdce mezi hvězdami v.3 ', manuallyEdited: false, lastEditedAt: null }, //206
 { src: 'https://dl.dropboxusercontent.com/scl/fi/tkfs4r9nsj1v6dp1xur3a/srdce-mezi-hv-zdami-v.4.mp3?rlkey=6383jaokp2wxusc0nognghsqf&st=8v6x0o2d&dl=1', title: 'Srdce mezi hvězdami v.4 ', manuallyEdited: false, lastEditedAt: null }, //207  
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 Srdce na Dlani
 // ═══════════════════════════════════════════════════════════   
 { src: ' https://dl.dropboxusercontent.com/scl/fi/m8v17v8uc182qbjgo4s6c/Srdce-na-Dlani.mp3?rlkey=k6zuatqhqwcpkc8bfax7oc4um&st=bpa3l6mm&dl=1', title: 'Srdce na Dlani (Originál)', manuallyEdited: false, lastEditedAt: null }, //208
 { src: 'https://dl.dropboxusercontent.com/scl/fi/434ebjux6ux5z31omf5m8/Srdce-na-Dlani-Remastered-v.1.mp3?rlkey=mjsoxwnqjwv0q8ij84g5w8d7i&st=amfa4ru0&dl=1', title: 'Srdce na Dlani (Rema) v.1', manuallyEdited: false, lastEditedAt: null }, //209
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ai32yrxw5rxvpebdnqhzi/Srdce-na-Dlani-Remastered-v.2.mp3?rlkey=2w3xl750y9dgr8n7yad5r931r&st=p0e3wdxl&dl=1', title: 'Srdce na Dlani (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //210   
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 Ostatní Remastered
 // ═══════════════════════════════════════════════════════════  
@@ -439,7 +424,6 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/wuvum436syk2cdbhcmf0x/Star-Trek-Enterprise-Tribute-Remastered-v.2.mp3?rlkey=xueg9thzmlpdollomqfdh8q22&st=vfyrbvto&dl=1', title: 'Star Trek Enterprise Tribute (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //213
 { src: 'https://dl.dropboxusercontent.com/scl/fi/72qzvodhbmpu1b3wxjfqu/star-trek-p-sni-ka-o-pos-dk-ch-Remastered-v.1.mp3?rlkey=2x27co9jw7fvaz2udrv12fuvv&st=7yo7ciqq&dl=1', title: 'Star Trek Písnička o Posádkách (Rema) v.1', manuallyEdited: false, lastEditedAt: null }, //214
 { src: 'https://dl.dropboxusercontent.com/scl/fi/qsqqowxnjft0rgdobp0a2/star-trek-p-sni-ka-o-pos-dk-ch-Remastered-v.2.mp3?rlkey=2qqv6jc6jvpzxtq3ykfo0qk0g&st=17fwhkyw&dl=1', title: 'Star Trek Písnička o Posádkách (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //215
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STANICE HLUBOKÝ VESMÍR 9 (SÉRIE)
 // ═══════════════════════════════════════════════════════════
@@ -454,9 +438,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/gt8lcls71trqsxi2fch40/Stanice-Hlubok-Vesm-r-9.2.mp3?rlkey=ao55ik01svoqx6kr737einpv6&st=ab33d1bx&dl=1 ", title: "Stacion Deep Space Nine (Bonus)", manuallyEdited: false, lastEditedAt: null }, //224    
 { src: 'https://dl.dropboxusercontent.com/scl/fi/w6jjzo8avh3rnd70gyva6/Stanice-Hlubok-Vesm-r-9.mp3?rlkey=sy23k7qogrbott7gmj5q7db2v&st=lcr4ygmh&dl=1', title: 'Stanice Hluboký Vesmír 9 (Alt 1)', manuallyEdited: false, lastEditedAt: null }, //225
 { src: "https://dl.dropboxusercontent.com/scl/fi/9xxqrcosag1w38qlwamft/Stanice-Hlubok-Vesm-r-9-2.mp3?rlkey=yvrxshbsg1fw4ulfgc9awyaqn&st=sussqmc2&dl=1", title: "Stanice Hluboký Vesmír 9 (Alt 2)", manuallyEdited: false, lastEditedAt: null }, //226
-    
-    
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 HVEZDNA-FLOTILA-NAVZDY
 // ═══════════════════════════════════════════════════════════ 
@@ -468,9 +449,7 @@ window.tracks = [
  { src: 'https://dl.dropboxusercontent.com/scl/fi/bpu2y05x7k3jqpiqqsmkt/HVEZDNA-FLOTILA-NAVZDY-v.6.mp3?rlkey=brs8oimqbxe0qkyzpinw7m2k0&st=nmav3zi8&dl=1 ', title: 'HVĚZDNÁ FLOTILA NAVŽDY v.6', manuallyEdited: false, lastEditedAt: null }, //232
  { src: 'https://dl.dropboxusercontent.com/scl/fi/kx7zn7u8aboiz83i1wmtv/HVEZDNA-FLOTILA-NAVZDY-v.7.mp3?rlkey=kn9h5p6ws2o53a7jhfnvrbxz2&st=nowc96cq&dl=1 ', title: 'HVĚZDNÁ FLOTILA NAVŽDY v.7', manuallyEdited: false, lastEditedAt: null }, //233          
  { src: 'https://dl.dropboxusercontent.com/scl/fi/7bngpfjtk9wmn6212n06r/HVEZDNA-FLOTILA-NAVZDY-v.8.mp3?rlkey=sq1da27fx83ef4dv9mcuslolt&st=oto5ihq7&dl=1 ', title: 'HVĚZDNÁ FLOTILA NAVŽDY v.8', manuallyEdited: false, lastEditedAt: null }, //234    
-    
-    
- // ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 // 🎧 Děti hvězd
 // ═══════════════════════════════════════════════════════════  
   { src: 'https://dl.dropboxusercontent.com/scl/fi/rsq897k3k4syn5e9a207u/nova-pisnicka-1.mp3?rlkey=irtnu8vj5g8lvwti3hb5q5rtx&st=gwe4nd0j&dl=1', title: 'Děti hvězd v.1', manuallyEdited: false, lastEditedAt: null }, //235
@@ -483,9 +462,7 @@ window.tracks = [
  { src: 'https://dl.dropboxusercontent.com/scl/fi/esam8fputnvyu97z5zaxg/nova-pisnicka-8.mp3?rlkey=vqsv73as36t5mhxw1gfypcewg&st=j67nact4&dl=1', title: 'Děti hvězd v.8', manuallyEdited: false, lastEditedAt: null }, //242
  { src: 'https://dl.dropboxusercontent.com/scl/fi/x2g34bc4ytby31s41kv2f/nova-pisnicka-9.mp3?rlkey=zo3h814apvj2xc91rw3t5wedm&st=5nhvjwmw&dl=1', title: 'Děti hvězd v.9', manuallyEdited: false, lastEditedAt: null }, //243
  { src: 'https://dl.dropboxusercontent.com/scl/fi/70hd4e5zeugeo9hnnd1yy/nova-pisnicka-10.mp3?rlkey=ldceoekkji1r9qvky8psvdcn0&st=3l9x5s4g&dl=1', title: 'Děti hvězd v.10', manuallyEdited: false, lastEditedAt: null }, //244  
-    
- 
- // ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 // 🎧 Louisiana sobotní noc 1 až 9
 // ═══════════════════════════════════════════════════════════    
  { src: 'https://dl.dropboxusercontent.com/scl/fi/8iyu23gtnh1i3npqfvi6l/Louisiana-sobotni-noc-v.1.mp3?rlkey=a0pirp6pb2mppckyf3t7ceep8&st=ejl11phh&dl=1', title: 'Louisiana sobotní noc v.01', manuallyEdited: false, lastEditedAt: null }, //245  
@@ -497,13 +474,9 @@ window.tracks = [
  { src: 'https://dl.dropboxusercontent.com/scl/fi/0p5751ypas7c9mfuk3o92/Louisiana-sobotni-noc-v.7.mp3?rlkey=26d70avekrpir3nt3h69h0h1w&st=7njolyyf&dl=1', title: 'Louisiana sobotní noc v.07', manuallyEdited: false, lastEditedAt: null }, //251
  { src: 'https://dl.dropboxusercontent.com/scl/fi/1relupal07hd5ghixpbgs/Louisiana-sobotni-noc-v.8.mp3?rlkey=tity8gk9847dzj7usznzn16kw&st=04whidfi&dl=1', title: 'Louisiana sobotní noc v.08', manuallyEdited: false, lastEditedAt: null }, //252
  { src: 'https://dl.dropboxusercontent.com/scl/fi/g1vxmp59d0wlktikrlvqc/Louisiana-sobotni-noc-v.9.mp3?rlkey=vb93d18aztmpzf5rf2qzeicb4&st=mp58sh85&dl=1', title: 'Louisiana sobotní noc v.09', manuallyEdited: false, lastEditedAt: null }, //253 
- 
-  
-    
- // ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 // 🎧 Louisiana-sobotni-noc 10 až 19
 // ═══════════════════════════════════════════════════════════
-    
  { src: 'https://dl.dropboxusercontent.com/scl/fi/gsk0nlbcx53cmj6q238cl/Louisiana-sobotni-noc-v.10-top.1.mp3?rlkey=8vzmypdg7exorp63xdr2p3p8g&st=khzck1hz&dl=1', title: 'Louisiana sobotní noc v.10-top.01', manuallyEdited: false, lastEditedAt: null }, //254
  { src: 'https://dl.dropboxusercontent.com/scl/fi/k7b5ai9du4kg7j1pcy4ui/Louisiana-sobotni-noc-v.11-top.2.mp3?rlkey=f7pc0ll4zm7aupuuw8zexnqwz&st=d8zpgxp1&dl=1', title: 'Louisiana sobotní noc v.11-top.02', manuallyEdited: false, lastEditedAt: null }, //255
  { src: 'https://dl.dropboxusercontent.com/scl/fi/4tj3rkxj9jekd2a8674cl/Louisiana-sobotni-noc-v.12-top.3.mp3?rlkey=icuhgqj48t0hy7s7rei0l0ywk&st=in2xw72t&dl=1', title: 'Louisiana sobotní noc v.12-top.03', manuallyEdited: false, lastEditedAt: null }, //256 
@@ -514,7 +487,6 @@ window.tracks = [
  { src: 'https://dl.dropboxusercontent.com/scl/fi/jcyh9dn08290fzejj7kgt/Louisiana-sobotni-noc-v.17-top.8.mp3?rlkey=eudwnjsdzuqfamzjr93nhw7id&st=1dw36j3a&dl=1', title: 'Louisiana sobotní noc v.17-top.08', manuallyEdited: false, lastEditedAt: null }, //261
  { src: 'https://dl.dropboxusercontent.com/scl/fi/x8714w1z6wl9c7hronp4h/Louisiana-sobotni-noc-v.18-top.9.mp3?rlkey=z358m1btvtz7ldsk1wb5v5qdd&st=njjinnxf&dl=1', title: 'Louisiana sobotní noc v.18-top.09', manuallyEdited: false, lastEditedAt: null }, //262
  { src: 'https://dl.dropboxusercontent.com/scl/fi/p2tgixfevp4mw6zkvrlbs/Louisiana-sobotni-noc-v.19-top.10.mp3?rlkey=ekemn7rowhy0xtgx7xvohc1v8&st=zk1d2ztj&dl=1', title: 'Louisiana sobotní noc v.19-top.10', manuallyEdited: false, lastEditedAt: null }, //263 
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 PÍSNIČKY O JIRKOVI Klasická Série 1
 // ═══════════════════════════════════════════════════════════
@@ -616,7 +588,6 @@ window.tracks = [
   { src: ' https://dl.dropboxusercontent.com/scl/fi/ravwza7pm2b0f2dgi0oyo/Kr-ma-v-D-tenic-ch.mp3?rlkey=kikl7nr5k6zw41x9xm6ufg2dt&st=6nj05mib&dl=1', title: 'Krčma v Dětenicích v.2', manuallyEdited: false, lastEditedAt: null }, //314
  { src: 'https://dl.dropboxusercontent.com/scl/fi/qc2jn8xiumgzvczu4avtr/Kr-ma-U-D-tenic-Remastered-v.1.mp3?rlkey=oomzckedks3ho52y5h7esela9&st=a2gkjedr&dl=1', title: 'Krčma U Dětenic (Rema) v.1', manuallyEdited: false, lastEditedAt: null }, //315
   { src: 'https://dl.dropboxusercontent.com/scl/fi/rzfywlojfprb3vpc8l3z9/Kr-ma-U-D-tenic-Remastered-v.2.mp3?rlkey=jpwn5cuo8logiiv2tfccy3ivy&st=3z1rjc16&dl=1', title: 'Krčma U Dětenic (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //316    
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 cesta krystof
 // ═══════════════════════════════════════════════════════════ 
@@ -625,7 +596,6 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ydc898bua4j48zy6wk325/cesta-krystof-v.2.mp3?rlkey=xu8iyjtfk1teyj8ysc88v0sdt&st=5egj170w&dl=1', title: 'cesta krystof v.2', manuallyEdited: false, lastEditedAt: null }, //319
 { src: 'https://dl.dropboxusercontent.com/scl/fi/sqqelqtnhftgso1uom006/cesta-krystof-v.1.mp3?rlkey=001ter3px0i4qvp7hshkp9p55&st=4kt1nbi8&dl=1', title: 'cesta krystof v.3', manuallyEdited: false, lastEditedAt: null }, //320
 { src: 'https://dl.dropboxusercontent.com/scl/fi/861dszcdntg90w20zk53x/cesta-krystof-v.2.mp3?rlkey=iec51e0l6twgldmz17avozn3y&st=dendmxbn&dl=1', title: 'cesta krystof v.4', manuallyEdited: false, lastEditedAt: null }, //321    
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 instrumentální disko
 // ═══════════════════════════════════════════════════════════     
@@ -639,16 +609,12 @@ window.tracks = [
   { src: 'https://dl.dropboxusercontent.com/scl/fi/e2ayrw4afeag8d0714i5z/disko-instrument-ln-8.mp3?rlkey=f4kdo9km5elqivhey34n52yen&st=oti4430o&dl=1', title: ' instrumentální disko8', manuallyEdited: false, lastEditedAt: null }, //329
   { src: 'https://dl.dropboxusercontent.com/scl/fi/gxrzzkowi1jf8mr8xqn3s/disko-instrument-ln-9.mp3?rlkey=7pwrvdt7432pu3020pwew10qv&st=ti3qhed9&dl=1', title: 'instrumentální disko 9', manuallyEdited: false, lastEditedAt: null }, //330
   { src: 'https://dl.dropboxusercontent.com/scl/fi/hy1u6hakkstqbk2f33xto/disko-instrument-ln-10.mp3?rlkey=wzqsyv4aveuo26n9xknjkyjwo&st=qjdk4773&dl=1', title: 'instrumentální disko 10', manuallyEdited: false, lastEditedAt: null }, //331    
-    
- 
-    
- // ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 // 🎧 ÚTAH A JEHO BRATR
 // ═══════════════════════════════════════════════════════════
 { src: "https://dl.dropboxusercontent.com/scl/fi/73u5c3whfsb46bhli2kvk/utah-a-jeho-bratr-1.mp3?rlkey=433d0f5su6h9azh937khz5qn7&st=36pslteq&dl=1", title: "Útah a jeho bratr v.1", manuallyEdited: false, lastEditedAt: null }, //332
 { src: "https://dl.dropboxusercontent.com/scl/fi/ch85m3ruuk483n0av2alt/utah-a-jeho-bratr2-2.mp3?rlkey=lin5be4rgrc7zzq3j30h2n2r7&st=g54jel4m&dl=1", title: "Útah a jeho bratr v.2", manuallyEdited: false, lastEditedAt: null }, //333
 { src: "https://dl.dropboxusercontent.com/scl/fi/pibbsiihpyo1v2sv1127l/utah-a-jeho-bratr2-5.mp3?rlkey=5wqi21ex128gd3gzrbgv6pmd8&st=36wb7tm4&dl=1", title: "Útah a jeho bratr v.2-5", manuallyEdited: false, lastEditedAt: null }, //334
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 NOČNÍ STÍNY & BOD ZLOMU
 // ═══════════════════════════════════════════════════════════
@@ -657,36 +623,28 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/rr1j0huzew4w71su1t0vt/No-n-St-ny-4.mp3?rlkey=k7vwqwyt10a7fyqk85et8hiwv&st=k1oygg30&dl=1", title: "Noční Stíny v.4", manuallyEdited: false, lastEditedAt: null }, //337
 { src: "https://dl.dropboxusercontent.com/scl/fi/cvynixepb9sr5p8od1c6k/No-n-St-ny-2.mp3?rlkey=wbg54xwvsvcpgwnqw71wq70of&st=ygualcbn&dl=1", title: "Noční Stíny v.5", manuallyEdited: false, lastEditedAt: null }, //338
 { src: "https://dl.dropboxusercontent.com/scl/fi/rr1j0huzew4w71su1t0vt/No-n-St-ny-4.mp3?rlkey=k7vwqwyt10a7fyqk85et8hiwv&st=k1oygg30&dl=1", title: "Bod Zlomu v.3", manuallyEdited: false, lastEditedAt: null }, //339
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STÍNY Z UTAHY (REMASTERED)
 // ═══════════════════════════════════════════════════════════
 { src:"https://dl.dropboxusercontent.com/scl/fi/o2i2tod1da3an0qg3hxmf/St-ny-z-Utah-Remastered-V.7.mp3?rlkey=bitm1exyei3krwu7jkj14icu8&st=fznwkhnk&dl=1", title: "Stíny z Utahy (Rema) v.1", manuallyEdited: false, lastEditedAt: null }, //340
 { src:"https://dl.dropboxusercontent.com/scl/fi/if6lddn4ocl8g91h311nc/St-ny-z-Utah-Remastered-V.8.mp3?rlkey=tpd1kit3d75mjujwnm64chex8&st=dmzxiy47&dl=1", title: "Stíny z Utahy (Rema) v.2", manuallyEdited: false, lastEditedAt: null }, //341   
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 Jirka a ondra
 // ═══════════════════════════════════════════════════════════    
 { src: "https://dl.dropboxusercontent.com/scl/fi/v6me6mzartct01ndzi722/jirka-a-ondra-jsou-nejlep-br-chov-Vysok-kvalita.mp3?rlkey=urg0junbwcdc6paqtutmttmpl&st=07wnlf6f&dl=1", title: "Jirka a ondra jsou nejlepší bráchové org", 
-duration: '03:37', manuallyEdited: false, lastEditedAt: null }, //342
-            
-{ src: "https://dl.dropboxusercontent.com/scl/fi/cj69d5dhy6v7f9lavu8qw/Jirka-a-Ondra-jsou-nejlep-brachov-V.1.mp3?rlkey=vkjfy9gxpo38f383zlqdf2yo7&st=lsycsnot&dl=1",title: "Jirka a Ondra jsou nejlepší bráchové dico verze V.01", duration: '03:14', manuallyEdited: false, lastEditedAt: null }, //343              
-              
-{ src: "https://dl.dropboxusercontent.com/scl/fi/jcmqbtfvldndzcopr5ugy/Jirka-a-Ondra-jsou-nejlep-brachov-V.4.mp3?rlkey=egz3d4c243b5vlmui3awtg03w&st=op1toyux&dl=1",title: "Jirka a Ondra jsou nejlepší bráchové dico verze V.02", duration: '04:00', manuallyEdited: false, lastEditedAt: null }, //344
-            
+duration: '03:37', manuallyEdited: false, lastEditedAt: null }, //342    
+{ src: "https://dl.dropboxusercontent.com/scl/fi/cj69d5dhy6v7f9lavu8qw/Jirka-a-Ondra-jsou-nejlep-brachov-V.1.mp3?rlkey=vkjfy9gxpo38f383zlqdf2yo7&st=lsycsnot&dl=1",title: "Jirka a Ondra jsou nejlepší bráchové dico verze V.01", duration: '03:14', manuallyEdited: false, lastEditedAt: null }, //343                
+{ src: "https://dl.dropboxusercontent.com/scl/fi/jcmqbtfvldndzcopr5ugy/Jirka-a-Ondra-jsou-nejlep-brachov-V.4.mp3?rlkey=egz3d4c243b5vlmui3awtg03w&st=op1toyux&dl=1",title: "Jirka a Ondra jsou nejlepší bráchové dico verze V.02", duration: '04:00', manuallyEdited: false, lastEditedAt: null }, //344      
 { src: "https://dl.dropboxusercontent.com/scl/fi/oo8fjj7jte1et8turk8hv/v-let-v-Praze-Ondra-a-Jirka-v.5.mp3?rlkey=ueuy8n3xwc1doc142bl5kqtdd&st=6mlikti6&dl=1", title: "Výlet Do Prahy Ondra A Jirka v.3", 
-duration: '03:43', manuallyEdited: false, lastEditedAt: null }, //345            
-            
-              
- { src: 'https://dl.dropboxusercontent.com/scl/fi/7n6shcvyrg74pznu3xg25/_p-sn-o-bratrsk-m-p-telstv-v.1.mp3?rlkey=ihnpara0plr4t67kc1hlbfem5&st=46zrxeg3&dl=1', title: 'písně o bratrském přátelství v.1', manuallyEdited: false, lastEditedAt: null }, //346
+duration: '03:43', manuallyEdited: false, lastEditedAt: null }, //345                   
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/7n6shcvyrg74pznu3xg25/_p-sn-o-bratrsk-m-p-telstv-v.1.mp3?rlkey=ihnpara0plr4t67kc1hlbfem5&st=46zrxeg3&dl=1', title: 'písně o bratrském přátelství v.1', manuallyEdited: false, lastEditedAt: null }, //346
 { src: 'https://dl.dropboxusercontent.com/scl/fi/mq082nf1r9zy0zdhz1ppn/_p-sn-o-bratrsk-m-p-telstv-v.2.mp3?rlkey=msck9y0wobdipuqoo8a39y228&st=kbr50r3x&dl=1', title: 'písně o bratrském přátelství v.2', manuallyEdited: false, lastEditedAt: null }, //347    
 { src: "https://dl.dropboxusercontent.com/scl/fi/j1ua4fykiw6ozka8t7iv4/p-sn-o-bratrsk-m-p-telstv-4-opr.mp3?rlkey=xuyk9u3ir8fe8zq7g259ea377&st=udj6qujw&dl=1", title: "písně o bratrském přátelství v.3 Top-1/2", 
 duration: '03:54', manuallyEdited: false, lastEditedAt: null }, //348
 { src: "https://dl.dropboxusercontent.com/scl/fi/9s00fkxs53tzp9kv60n3r/pisen-o-prateskem-pratelstvi-v.5-Top-4.wav?rlkey=403d3o7kj3041x3qcv3x7znqu&st=gexyhmn6&dl=1", title: "písně o bratrském přátelství v.5-Top-4", //tuto sem přidal
 duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349     
 { src: 'https://dl.dropboxusercontent.com/scl/fi/mwc2ikve37981adfj2sot/Ondra-p-ijel-do-ejova-Remastered-v.1.mp3?rlkey=apdsayt3xnwufp8r4nrkm5tn1&st=krf55lii&dl=1', title: 'Ondra přijel do Čejova, (Rema) v.1', manuallyEdited: false, lastEditedAt: null }, //350
-  { src: 'https://dl.dropboxusercontent.com/scl/fi/ke36lt3ibr9qzwjg0zo4u/Ondra-p-ijel-do-ejova-Remastered-v.2.mp3?rlkey=w6we3yklzax8fyjwq0t7zzyp8&st=cg075i9m&dl=1', title: 'Ondra přijel do Čejova, (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //351    
-    
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/ke36lt3ibr9qzwjg0zo4u/Ondra-p-ijel-do-ejova-Remastered-v.2.mp3?rlkey=w6we3yklzax8fyjwq0t7zzyp8&st=cg075i9m&dl=1', title: 'Ondra přijel do Čejova, (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //351    
 // ═══════════════════════════════════════════════════════════
 // 🎧 Mohambi
 // ═══════════════════════════════════════════════════════════
@@ -698,14 +656,11 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: "https://dl.dropboxusercontent.com/scl/fi/xc8xizr9qyjbns4jbkkbv/mohambi-v.6.mp3?rlkey=d3bs0knmmz8m4wnyyz3mzzem3&st=6pzfehir&dl=1 ", title: "mohambi v.6 ", manuallyEdited: false, lastEditedAt: null }, //357
 { src: "https://dl.dropboxusercontent.com/scl/fi/uemvzfu49av2ibv2czypl/mohambi-v.7.mp3?rlkey=m7u6reo3sw804z89s8egli01w&st=cf2lhsv1&dl=1 ", title: "mohambi v.7 ", manuallyEdited: false, lastEditedAt: null }, //358
 { src: "https://dl.dropboxusercontent.com/scl/fi/jsplu6hyq94deiswqp28z/mohambi-v.8.mp3?rlkey=8vlw6p91t74e64hbdcp3s5r1c&st=dyssttv0&dl=1 ", title: "mohambi v.8 ", manuallyEdited: false, lastEditedAt: null }, //359
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 Mohombi Remastered
 // ═══════════════════════════════════════════════════════════    
-    
 { src:"https://dl.dropboxusercontent.com/scl/fi/1aw2iovwp9k03v8564owl/mohambi-v.3-Remastered-V.5.mp3?rlkey=jdhakwcvca11uu5kvygwtydza&st=qb7edfsq&dl=1", title: "Mohombi Remastered V.1", manuallyEdited: false, lastEditedAt: null }, //360            
 { src:"https://dl.dropboxusercontent.com/scl/fi/hk3hde8ms0zwn5y02ufpf/mohambi-v.3-Remastered-V.6.mp3?rlkey=zyki8gpglge8dyxuy6i9f7k1u&st=8273b87j&dl=1", title: "Mohombi Remastered V.2", manuallyEdited: false, lastEditedAt: null }, //361    
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 Bumpy Rider Mohombi
 // ═══════════════════════════════════════════════════════════    
@@ -714,9 +669,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: "https://dl.dropboxusercontent.com/scl/fi/53yo6zu8rnownjni4q2kn/mohambi-1.mp3?rlkey=1d7x1yar74nggirof8uqcpkr3&st=0rqyr2se&dl=1",title: "Bumpy Rider Mohombi V.3 TOP 1", manuallyEdited: false, lastEditedAt: null }, //364
 { src: "https://dl.dropboxusercontent.com/scl/fi/ltij7sipmqhv9aifbjbse/Mohombi-v.15-v.3.mp3?rlkey=ddzjopdssb4sct3uvnf7ulcl6&st=dzcxt5mu&dl=1",title: "Bumpy Rider Mohombi V.4", manuallyEdited: false, lastEditedAt: null }, //365
 { src: "https://dl.dropboxusercontent.com/scl/fi/7txrsffgevqw4f403hpjt/mohambi-2.mp3?rlkey=jfc8sphdqwiat851gqks8kcod&st=c3gna1lz&dl=1",title: "Bumpy Rider Mohombi V.5", manuallyEdited: false, lastEditedAt: null }, //366    
- 
- 
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 kohout / mix-kohout
 // ═══════════════════════════════════════════════════════════    
@@ -735,7 +687,7 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 // ═══════════════════════════════════════════════════════════
 // 🎧 Hora Matterhorn
 // ═══════════════════════════════════════════════════════════   
- { src: 'https://dl.dropboxusercontent.com/scl/fi/yifc12ogr968c402noz9q/Matterhorn-v.1.mp3?rlkey=4hiirddy63t7h6p4cfj0sdkko&st=t47jom0x&dl=1', title: 'Hora Matterhorn V.01', manuallyEdited: false, lastEditedAt: null }, //379
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/yifc12ogr968c402noz9q/Matterhorn-v.1.mp3?rlkey=4hiirddy63t7h6p4cfj0sdkko&st=t47jom0x&dl=1', title: 'Hora Matterhorn V.01', manuallyEdited: false, lastEditedAt: null }, //379
 { src: 'https://dl.dropboxusercontent.com/scl/fi/4pone6lz1v69ud9p54je9/Matterhorn-v.2.mp3?rlkey=wifirr8ltryxckesresc8mpf8&st=0zuyyli1&dl=1', title: 'Hora Matterhorn V.02', manuallyEdited: false, lastEditedAt: null }, //380
 { src: 'https://dl.dropboxusercontent.com/scl/fi/tzp1ayk64yaqxkc4ykfsg/Matterhorn-v.3.mp3?rlkey=bjczth72wvwu33mgftl4boihf&st=zivgx8jk&dl=1', title: 'Hora Matterhorn V.03', manuallyEdited: false, lastEditedAt: null }, //381
 { src: 'https://dl.dropboxusercontent.com/scl/fi/zw9s5l809j63px20732c0/Matterhorn-v.4.mp3?rlkey=hc9orcsudx7mkxblng9lmbqyi&st=8775n8k8&dl=1', title: 'Hora Matterhorn V.04', manuallyEdited: false, lastEditedAt: null }, //382
@@ -744,7 +696,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/oz0r85rjy5qpq10fevgni/Matterhorn-v.7.mp3?rlkey=lu5ialgoyst9rcrohuscpb25l&st=vqhdfjfe&dl=1', title: 'Hora Matterhorn V.07', manuallyEdited: false, lastEditedAt: null }, //385
 { src: 'https://dl.dropboxusercontent.com/scl/fi/bdcos3qqna6m9jmpqjvyv/Matterhorn-v.8.mp3?rlkey=4jo77smgmemfl46k7b59cq4d6&st=7eipxp13&dl=1', title: 'Hora Matterhorn V.08', manuallyEdited: false, lastEditedAt: null }, //386
 { src: 'https://dl.dropboxusercontent.com/scl/fi/06117xzx2uxntef8gvwx7/Matterhorn-v.9.mp3?rlkey=jrjjj3ajy9v1r06bjpamcq34u&st=in90rus4&dl=1', title: 'Hora Matterhorn V.09', manuallyEdited: false, lastEditedAt: null }, //387   
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 Nebude to ľahké
 // ═══════════════════════════════════════════════════════════    
@@ -760,7 +711,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/0ys4aun4k5ohoor27fl7a/Nebude-to-ahk-v.10.mp3?rlkey=rhgetwm5mgkyae6p5mrnqfx9y&st=eyeiqkth&dl=1', title: 'Nebude to ľahké v.10', manuallyEdited: false, lastEditedAt: null }, //397
 { src: 'https://dl.dropboxusercontent.com/scl/fi/oh2e9k5yniq1843d52v2y/Nebude-to-ahk-v.11.mp3?rlkey=fsgpfvv2qwm4hfes82s1qlu4j&st=96qpdmw3&dl=1', 
  title: 'Nebude to ľahké v.11', manuallyEdited: false, lastEditedAt: null }, //398    
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 RŮZNÉ HITY & SINGLY
 // ═══════════════════════════════════════════════════════════
@@ -768,25 +718,20 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: "https://dl.dropboxusercontent.com/scl/fi/8u2jqzqt7yhtzksc5qi6j/Bolivia-con-Amor.mp3?rlkey=rurkepmch68nrckh502js2g5q&st=daidw0mp&dl=1 ", title: "56--Bolivia con Amor ", manuallyEdited: false, lastEditedAt: null }, //400
 { src: "https://dl.dropboxusercontent.com/scl/fi/d0usu2bwz053yl2lc3ago/Kr-l-Agraelus.mp3?rlkey=kl55dxlrmh8n91cselr6rbo8k&st=m9btx6wq&dl=1 ", title: "Král Agraelus ", manuallyEdited: false, lastEditedAt: null }, //401
 { src: "https://dl.dropboxusercontent.com/scl/fi/4vglklzizcxu8lgjbop0c/ern-havran-Czech-1.mp3?rlkey=4hp1nlsqaz1adji751ziccn2u&st=v8gq8n9s&dl=1", title: "Černý Havran", manuallyEdited: false, lastEditedAt: null }, //402
-
 { src: 'https://dl.dropboxusercontent.com/scl/fi/2znr74akdskdujwgvw6gc/Diana-Fuentes-Gente-de-Zona-La-Vida-Me-Cambi-V.1.mp3?rlkey=qhf5rrc7nws7qvgyx9vc42ors&st=eto383yf&dl=1', title: 'Diana Fuentes, Gente de Zona - La Vida Me Cambió V.1', manuallyEdited: false, lastEditedAt: null }, //403
 { src: 'https://dl.dropboxusercontent.com/scl/fi/tp8mo3nt4ylkxlo0kiasy/Diana-Fuentes-Gente-de-Zona-La-Vida-Me-Cambi-V.2.mp3?rlkey=v5164nd80stuqwk9lmxx4c7ll&st=ow6cisfr&dl=1', title: 'Diana Fuentes, Gente de Zona - La Vida Me Cambió V.2', manuallyEdited: false, lastEditedAt: null }, //404
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 SÉRIE: NA OKOŘ JE CESTA (VŠECHNY VERZE)
 // ═══════════════════════════════════════════════════════════
- 
 { src: "https://dl.dropboxusercontent.com/scl/fi/lx31v7stuwwngiyu1gh73/na-oko-je-cesta-V.5.mp3?rlkey=unzilsmm49gmleo9qq2sk7180&st=w4ciths2&dl=1 ", title: "Na okož je cesta V.1 ", manuallyEdited: false, lastEditedAt: null }, //405
 { src: "https://dl.dropboxusercontent.com/scl/fi/22usijk3mfq5a24hou01l/na-oko-je-cesta-V.9.mp3?rlkey=ruuxm0hweyu98g5gl1zm1a1wn&st=o0haf1zx&dl=1 ", title: "Na okož je cesta V.2", manuallyEdited: false, lastEditedAt: null }, //406
 { src: "https://dl.dropboxusercontent.com/scl/fi/a9hbcr02vejmgodexj4du/na-oko-je-cesta-V.13.mp3?rlkey=fvebjye6qp2c7jkey4t21rffy&st=vbviz1n6&dl=1", title: "Na okož je cesta V.3 ", manuallyEdited: false, lastEditedAt: null }, //407
 { src: "https://dl.dropboxusercontent.com/scl/fi/17estx6ahgrj72wj5fzoz/na-oko-je-cesta-V.14.mp3?rlkey=kk24z8vzes99od62f7ep3j81q&st=afsawdqs&dl=1", title: "Na okož je cesta V.4 ", manuallyEdited: false, lastEditedAt: null }, //408
- 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/c6o1x8tt1c14hslncyvwj/na-Oko-je-cesta-v.1.mp3?rlkey=657gb6a8ajkikafh44v5ais8h&st=r7gbf1nd&dl=1', title: 'na Okoř je cesta v.5', manuallyEdited: false, lastEditedAt: null }, //409
 { src: 'https://dl.dropboxusercontent.com/scl/fi/83jxjjtu7wiigyrvqr2e2/na-Oko-je-cesta-v.2.mp3?rlkey=vg0ppeifz4xxndw0akqfy9kgr&st=e6izxli9&dl=1', title: 'na Okoř je cesta v.6', manuallyEdited: false, lastEditedAt: null }, //410
 { src: 'https://dl.dropboxusercontent.com/scl/fi/l4htguc8qrla7rpae456c/na-Oko-je-cesta-v.3.mp3?rlkey=t2i95zahn7bs7c8kcyonuxkuk&st=e1mu3l8t&dl=1', title: 'na Okoř je cesta v.7', manuallyEdited: false, lastEditedAt: null }, //411
 { src: 'https://dl.dropboxusercontent.com/scl/fi/b6mfpkmdfja6nqrbnr1oq/na-Oko-je-cesta-v.4.mp3?rlkey=in5lvxhct45lqp9dzm76dg0p1&st=s4b5ug97&dl=1', title: 'na Okoř je cesta v.8', manuallyEdited: false, lastEditedAt: null }, //412
 { src: 'https://dl.dropboxusercontent.com/scl/fi/4x8z3ztl80v3l8md7qptf/na-Oko-je-cesta-v.5.mp3?rlkey=2o4cn1svrjxbn1fc5rzxcy96y&st=xmnlv3g4&dl=1', title: 'na Okoř je cesta v.9', manuallyEdited: false, lastEditedAt: null }, //413
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY
 // ═══════════════════════════════════════════════════════════
@@ -798,7 +743,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/idzxn6pttqo5wd06inxn6/sprost-pisni-ka-Remastered-v.2.mp3?rlkey=4azn3p37xhmg9x1asplnxwck4&st=os61s2ut&dl=1', title: 'sprostá pisniška (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //419
 { src: 'https://dl.dropboxusercontent.com/scl/fi/kc874ru80o269o2i4e941/U-nejsem-tv-hra-ka-Remastered-v.1.mp3?rlkey=t1gxhizzv566wvc0hoajt3ad0&st=v0hr287t&dl=1', title: 'Už nejsem tvá hračka (Rema) v.1', manuallyEdited: false, lastEditedAt: null }, //420
 { src: 'https://dl.dropboxusercontent.com/scl/fi/8an781xkw0u16q93xtloi/U-nejsem-tv-hra-ka-Remastered-v.2.mp3?rlkey=j8csjilyc34dui3xewuvbqwcg&st=kbrnxsh2&dl=1', title: 'Už nejsem tvá hračka (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //421
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY
 // ═══════════════════════════════════════════════════════════
@@ -810,8 +754,7 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/38m57vc46iffq691tfe2h/Reckon-That-s-th-Wron-Order-v.3-Remastered-v.2.mp3?rlkey=d3p698a8vsxt1rpzbo69sex0z&st=7hlh8buu&dl=1', title: 'Reckon That s thWron Order (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //427
 { src: 'https://dl.dropboxusercontent.com/scl/fi/p54l2pqbkavk1tz44js9y/chrismas-pisen-v.1.wav?rlkey=3w09tngmuudrk0gld15vcv7df&st=6wj6ork0&dl=1', title: 'Chrismas piseň V.1', manuallyEdited: false, lastEditedAt: null }, //428
 { src: 'https://dl.dropboxusercontent.com/scl/fi/aza5f1ue1r3qsvdwu0ce7/chrismas-pisen-v.2.wav?rlkey=3pkw7sto0smlp1uf54079lxhr&st=gf1f3ppn&dl=1', title: 'Chrismas piseň V.2', manuallyEdited: false, lastEditedAt: null }, //429
-
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 // 🎧 MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)
 // ═══════════════════════════════════════════════════════════
 { src: 'https://dl.dropboxusercontent.com/scl/fi/umjyrkl3cxfm6majipbsl/mix-p-sni-ek-v.1.mp3?rlkey=zysejafc9fxbokz0pn8pep93w&st=s0pp6qup&dl=1', title: 'mix písniček v.1', manuallyEdited: false, lastEditedAt: null }, //430
@@ -824,7 +767,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/fqvao7naonsv3q7z4vhv6/mix-p-sni-ek-v.8.mp3?rlkey=0o5bnw1tppgfqmtwh60a7nrhs&st=61cz4rlk&dl=1', title: 'mix písniček v.8', manuallyEdited: false, lastEditedAt: null }, //437
 { src: 'https://dl.dropboxusercontent.com/scl/fi/mbi16rerzufv9rg2gqcbd/mix-p-sni-ek-v.9.mp3?rlkey=h2sigdbmealjjiii1ak540a7k&st=0k8rmizq&dl=1', title: 'mix písniček v.9', manuallyEdited: false, lastEditedAt: null }, //438
 { src: 'https://dl.dropboxusercontent.com/scl/fi/6oj3b0snsrdol0oqq5838/mix-p-sni-ek-v.10.mp3?rlkey=1bukogfm3vkt5dx964falth8k&st=287lbbr0&dl=1', title: 'mix písniček v.10', manuallyEdited: false, lastEditedAt: null }, //439
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 AUDIO KAPITOLY (1-40)
 // ═══════════════════════════════════════════════════════════
@@ -868,7 +810,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/p0tzlrzqj6er1j56b7prt/kapitola-38.wav?rlkey=lnbu8a9qpvu7h3okcuh4lrvd5&st=3qclta85&dl=1', title: 'kapitola 38', manuallyEdited: false, lastEditedAt: null }, //477
 { src: 'https://dl.dropboxusercontent.com/scl/fi/brgz7nh2es7ck9ubt08yg/kapitola-39.wav?rlkey=d2svq670defuk8feoesusedip&st=1pqxlnbk&dl=1', title: 'kapitola 39', manuallyEdited: false, lastEditedAt: null }, //478
 { src: 'https://dl.dropboxusercontent.com/scl/fi/jnatm6xldsffkvgbyscd9/kapitola-40.wav?rlkey=5ewmyq66dz5jkn1a6tkbj1nae&st=i7iu6cc0&dl=1', title: 'kapitola 40', manuallyEdited: false, lastEditedAt: null }, //479 
-    
 // ═══════════════════════════════════════════════════════════
 //  🎧 Jardova-cesta-s-prateli
 // ═══════════════════════════════════════════════════════════    
@@ -878,7 +819,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
   { src: 'https://dl.dropboxusercontent.com/scl/fi/5mb4ypu4zdcolj2p28vz2/Jardova-cesta-s-prateli-v.4.mp3?rlkey=wwklrfryzzuc4xcs4vs2n7lgg&st=7h4ukj4b&dl=1', title: 'Jardova-cesta-s-prateli-v.4', manuallyEdited: false, lastEditedAt: null }, //483
   { src: 'https://dl.dropboxusercontent.com/scl/fi/217u0otcntjh44dnkka00/Jardova-cesta-s-prateli-v.5-Top-1.mp3?rlkey=8ba618idnur6vulc462kpohw0&st=dkrdrn6d&dl=1', title: 'Jardova-cesta-s-prateli-v.5-Top-1', manuallyEdited: false, lastEditedAt: null }, //484
   { src: 'https://dl.dropboxusercontent.com/scl/fi/ufegyq7l4ctmighojm7cd/Jardova-cesta-s-prateli-v.5-Top-1-audacity.wav?rlkey=8aux1ne0feoq99m7xzunmt2x9&st=ljmwvfzn&dl=1', title: 'Jardova-cesta-s-prateli-v.6-Top-2', manuallyEdited: false, lastEditedAt: null }, //485   
-  
 // ═══════════════════════════════════════════════════════════
 // 🎧 Ocelová křídla Promethea
 // ═══════════════════════════════════════════════════════════     
@@ -886,7 +826,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/7k8asrn4ln5v56llrgnke/Ocelova-kridla-Promethea-v-2.mp3?rlkey=xcm6vhe9vjv42ldl8qjgabbck&st=an5pg089&dl=1', title: 'Ocelová křídla Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //487
 { src: 'https://dl.dropboxusercontent.com/scl/fi/91udp50svpx6ynhnqy3w5/Ocelova-kridla-Promethea-v-3.mp3?rlkey=431rxxpankxgtt5jv9uyrw9gl&st=nuxgvezz&dl=1', title: 'Ocelová křídla Promethea v.3', manuallyEdited: false, lastEditedAt: null }, //488 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/v2igjbe1vpp9hyyejwva6/Ocelova-kridla-Promethea-v-4.mp3?rlkey=4c0dnzh9ybgflwgg6o50xu5km&st=h8n4tg2y&dl=1', title: 'Ocelová křídla Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //489 
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 Velení Promethea
 // ═══════════════════════════════════════════════════════════     
@@ -894,19 +833,16 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ffxdbsndbxiz9jnvm91vs/Veleni-Promethea-v-2.mp3?rlkey=pwwowp088czo2u3av80aqv7bv&st=w67bpq2q&dl=1', title: 'Velení Promethea v.2', manuallyEdited: false, lastEditedAt: null }, //491 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ztm1cyexfoq5y75yd2ii0/Veleni-Promethea-v-3.mp3?rlkey=yvjixhwmre5wejt2djodmlm9v&st=75eljqea&dl=1', title: 'Velení Promethea v.3', manuallyEdited: false, lastEditedAt: null }, //492 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/wma7udlkh8guwgx13h2xf/Veleni-Promethea-v-4.mp3?rlkey=o3yslu4qipue7dfr8ydvz3u9q&st=tzx2dz69&dl=1', title: 'Velení Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //493 
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 Velení lodi Prometheus
 // ═══════════════════════════════════════════════════════════    
 { src: 'https://dl.dropboxusercontent.com/scl/fi/kjlcxk3bp5st3tiqg57w0/Veleni-lodi-Prometheus-v-1.mp3?rlkey=s1r6kthw2lwxc138q77cmqmyq&st=yfjdli77&dl=1', title: 'Velení lodi Prometheus v.1', manuallyEdited: false, lastEditedAt: null }, //494 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/plpkq9l1vob81ld2dxcxu/Veleni-lodi-Prometheus-v-2.mp3?rlkey=lt05rxiim8emvmrp4yrgg50nq&st=793zpy9w&dl=1', title: 'Velení lodi Prometheus v.2', manuallyEdited: false, lastEditedAt: null }, //495 
-    
 // ═══════════════════════════════════════════════════════════
 // 🎧 USS Prometheus
 // ═══════════════════════════════════════════════════════════    
 { src: 'https://dl.dropboxusercontent.com/scl/fi/tkeyvchctrzykdqdefkwo/uss-prometheus-v-1.mp3?rlkey=fejzupr64vpv6m8pzgvppucpx&st=lvrkit2a&dl=1', title: 'uss-prometheus-v-1', manuallyEdited: false, lastEditedAt: null }, //496 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/o0c7avusak8dt8x5jk9bx/uss-prometheus-v-2.mp3?rlkey=8cwz1hy10u28otf3ory9hvud5&st=o15f7n1b&dl=1', title: 'uss-prometheus-v-2', manuallyEdited: false, lastEditedAt: null }, //497     
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 Wo-rur-HoS-Sila-jako-imperium
 // ═══════════════════════════════════════════════════════════     
