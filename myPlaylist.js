@@ -84,6 +84,10 @@ window.playlistSections = [
   { name: '🎧 Velení Promethea', start: 490, end: 493 },
   { name: '🎧 Velení lodi Prometheus', start: 494, end: 495 },
   { name: '🎧 USS Prometheus', start: 496, end: 497 }
+  { name: '🎧 Wo-rur-HoS-Sila-jako-imperium', start: 499, end: 500 },
+  { name: '🎧 tlhIngan-MaH-Jsme-Klingoni-Extended', start: 501, end: 502 },
+  { name: '🎧 Ocel-a-Hnev', start: 503, end: 504 },
+  { name: '🎧 Cesta-do-Sto-vo-koru-Full-Version', start: 505, end: 506 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -904,8 +908,25 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/o0c7avusak8dt8x5jk9bx/uss-prometheus-v-2.mp3?rlkey=8cwz1hy10u28otf3ory9hvud5&st=o15f7n1b&dl=1', title: 'uss-prometheus-v-2', manuallyEdited: false, lastEditedAt: null }, //497     
 
 // ═══════════════════════════════════════════════════════════
-// 🎧 KONEC PLAYLISTU
+// 🎧 Wo-rur-HoS-Sila-jako-imperium
 // ═══════════════════════════════════════════════════════════     
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/p3fgrcc6x3z5hxj2f74yc/Wo-rur-HoS-Sila-jako-imperium-v-1.mp3?rlkey=18v69kdk35691b2dw8p8mujyn&st=pn693862&dl=1', title: 'Wo-rur-HoS-Sila-jako-imperium-v-1', manuallyEdited: false, lastEditedAt: null },
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/tjsunz71hdquvw0ea3c9e/Wo-rur-HoS-Sila-jako-imperium-v-2.mp3?rlkey=pxob8i1v9r9fpqv4mvn9o9w7j&st=z80zyt57&dl=1', title: 'Wo-rur-HoS-Sila-jako-imperium-v-2', manuallyEdited: false, lastEditedAt: null },
+// ═══════════════════════════════════════════════════════════
+// 🎧 tlhIngan-MaH-Jsme-Klingoni-Extended
+// ═══════════════════════════════════════════════════════════  
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/u5nw95t39l4fg3rmil0ak/tlhIngan-MaH-Jsme-Klingoni-Extended-v-3.mp3?rlkey=nzr2b3bmhv68zmx5p42qtnug9&st=tsn3y1jt&dl=1', title: 'tlhIngan-MaH-Jsme-Klingoni-Extended-v-1', manuallyEdited: false, lastEditedAt: null },
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/5qgnwnnxzelzkquc1srsj/tlhIngan-MaH-Jsme-Klingoni-Extended-v-4.mp3?rlkey=otp0g3w0lpzu29t8q5skqycei&st=9nfv2whm&dl=1', title: 'tlhIngan-MaH-Jsme-Klingoni-Extended-v-2', manuallyEdited: false, lastEditedAt: null },
+// ═══════════════════════════════════════════════════════════
+// 🎧 Ocel-a-Hnev
+// ═══════════════════════════════════════════════════════════  
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/8klw9ko6b4mnahckcqyrk/Ocel-a-Hnev-v-5.mp3?rlkey=4tvms9m4cvywja7kyt15128ir&st=44yf0uo1&dl=1', title: 'Ocel-a-Hnev-v-1', manuallyEdited: false, lastEditedAt: null },
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/9mfcwperj7l5mkr4s923n/Ocel-a-Hnev-v-6.mp3?rlkey=msuwswelhi8qw4808aui12yrt&st=wza3ko7v&dl=1', title: 'Ocel-a-Hnev-v-2', manuallyEdited: false, lastEditedAt: null },
+// ═══════════════════════════════════════════════════════════
+// 🎧 Cesta-do-Sto-vo-koru-Full-Version
+// ═══════════════════════════════════════════════════════════ 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/uswjmacn94ygy0rlgz7nt/Cesta-do-Sto-vo-koru-Full-Version-v-7.mp3?rlkey=0u0ytvqex4vjtcrt3apmmq0lv&st=e07o9h3l&dl=1', title: 'Cesta-do-Sto-vo-koru-Full-Version-v-1', manuallyEdited: false, lastEditedAt: null },
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/w7zi23qh84wcfs1b9yp4g/Cesta-do-Sto-vo-koru-Full-Version-v-8.mp3?rlkey=luoeakfhha6lc5vwi61cg2t0y&st=34te4etr&dl=1', title: 'Cesta-do-Sto-vo-koru-Full-Version-v-2', manuallyEdited: false, lastEditedAt: null },
 ];   
 
  
@@ -915,7 +936,6 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
-
 
 
 
