@@ -1,0 +1,388 @@
+/* jirikovo-barveni-ui-tlacitek.css */
+/* 🖖 JIŘÍKOVO BARVENÍ UI TLAČÍTEK - sladěno s buttonVisibilityManager UI */
+/* Verze: 1.1.0 | Více admirál Jiřík & Admirál Claude.AI */
+/* Paleta: Header #E8822A | Tělo #1a2a3a | Pozadí panelů #0f1e2d */
+
+/* ═══════════════════════════════════════════════════════════
+   📦 OVERLAY
+   ═══════════════════════════════════════════════════════════ */
+#jirik-barveni-moldar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.80);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+#jirik-barveni-moldar.jirik-barveni-show {
+    display: flex;
+    animation: jirik-barveni-fadein 0.2s ease;
+}
+
+@keyframes jirik-barveni-fadein {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   📦 OBSAH OKNA
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-moldar-obsah {
+    background: #1a2a3a;
+    border: none;
+    border-radius: 12px;
+    width: 90vw;
+    max-width: 1000px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   🔼 HEADER - oranžový jako vzor
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: #E8822A;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    flex-shrink: 0;
+}
+
+.jirik-barveni-header-title {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.jirik-barveni-lcars-indikator {
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: jirik-barveni-pulse 2s infinite;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+@keyframes jirik-barveni-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.jirik-barveni-verze {
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.jirik-barveni-close-btn {
+    background: rgba(0,0,0,0.25);
+    border: none;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.jirik-barveni-close-btn:hover {
+    background: rgba(0,0,0,0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   📦 TĚLO - dvoupanelové
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background: #1a2a3a;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   📋 LEVÝ PANEL
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-levy-panel {
+    width: 280px;
+    min-width: 200px;
+    flex-shrink: 0;
+    border-right: 1px solid #0f1e2d;
+    display: flex;
+    flex-direction: column;
+    background: #162030;
+}
+
+.jirik-barveni-panel-titulek {
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #E8822A;
+    border-bottom: 1px solid #0f1e2d;
+    text-transform: uppercase;
+    background: #0f1e2d;
+    flex-shrink: 0;
+}
+
+.jirik-barveni-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 14px;
+    background: #1a2a3a;
+    border: none;
+    border-bottom: 1px solid #0f1e2d;
+    color: #ffffff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    outline: none;
+    flex-shrink: 0;
+}
+
+.jirik-barveni-search::placeholder { color: #4a6a8a; }
+.jirik-barveni-search:focus {
+    background: #1f3045;
+    border-bottom-color: #E8822A;
+}
+
+.jirik-barveni-seznam {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.jirik-barveni-seznam::-webkit-scrollbar { width: 5px; }
+.jirik-barveni-seznam::-webkit-scrollbar-track { background: #162030; }
+.jirik-barveni-seznam::-webkit-scrollbar-thumb { background: #2a4a6a; border-radius: 3px; }
+.jirik-barveni-seznam::-webkit-scrollbar-thumb:hover { background: #E8822A; }
+
+.jirik-barveni-kategorie-header {
+    padding: 8px 14px 4px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #E8822A;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-top: 1px solid #0f1e2d;
+    margin-top: 4px;
+}
+
+.jirik-barveni-seznam-item {
+    padding: 7px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s;
+    border-radius: 4px;
+    margin: 1px 6px;
+}
+
+.jirik-barveni-seznam-item:hover { background: #1f3550; }
+.jirik-barveni-seznam-item.vybrane {
+    background: #1f3550;
+    border-left: 3px solid #E8822A;
+    padding-left: 11px;
+}
+
+.jirik-barveni-item-indikator { font-size: 10px; color: #2a4a6a; flex-shrink: 0; transition: color 0.2s; }
+.jirik-barveni-item-indikator.aktivni { color: #E8822A; text-shadow: 0 0 6px rgba(232,130,42,0.6); }
+.jirik-barveni-item-nazev { font-size: 13px; color: #cce0f0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jirik-barveni-item-id { font-size: 9px; color: #3a5a7a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; }
+
+/* ═══════════════════════════════════════════════════════════
+   🎨 PRAVÝ PANEL
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-pravy-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: #1a2a3a;
+}
+
+.jirik-barveni-pravy-panel .jirik-barveni-panel-titulek { border-bottom: 1px solid #0f1e2d; }
+
+.jirik-barveni-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3a5a7a;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 40px;
+    text-align: center;
+}
+
+.jirik-barveni-editor {
+    flex: 1;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.jirik-barveni-vybrany-nazev {
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 10px 14px;
+    background: #0f1e2d;
+    border: 1px solid #2a4a6a;
+    border-radius: 6px;
+}
+
+.jirik-barveni-toggle-label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.jirik-barveni-toggle-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: #E8822A; cursor: pointer; }
+.jirik-barveni-toggle-text { font-size: 13px; color: #cce0f0; }
+
+/* ═══════════════════════════════════════════════════════════
+   🎨 BARVY GRID
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-barvy-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.jirik-barveni-barva-radek {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #0f1e2d;
+    padding: 9px 14px;
+    border-radius: 6px;
+    border: 1px solid #1f3550;
+}
+
+.jirik-barveni-barva-radek label { font-size: 12px; color: #8aaacc; min-width: 90px; flex-shrink: 0; }
+.jirik-barveni-barva-radek input[type="color"] { width: 36px; height: 30px; border: 1px solid #2a4a6a; border-radius: 4px; cursor: pointer; background: none; padding: 2px; flex-shrink: 0; }
+.jirik-barveni-barva-radek input[type="text"] { flex: 1; background: #1a2a3a; border: 1px solid #2a4a6a; color: #cce0f0; padding: 6px 10px; font-family: 'Courier New', monospace; font-size: 12px; border-radius: 4px; outline: none; min-width: 0; }
+.jirik-barveni-barva-radek input[type="text"]:focus { border-color: #E8822A; }
+
+.jirik-barveni-reset-btn {
+    background: transparent;
+    border: 1px solid #2a4a6a;
+    color: #4a6a8a;
+    width: 26px; height: 26px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+}
+.jirik-barveni-reset-btn:hover { border-color: #E8822A; color: #E8822A; background: #1f3550; }
+
+/* ═══════════════════════════════════════════════════════════
+   👁️ NÁHLED
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-nahled-label { font-size: 10px; color: #E8822A; letter-spacing: 1.5px; text-transform: uppercase; }
+
+.jirik-barveni-nahled-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    background: #0f1e2d;
+    border: 1px dashed #2a4a6a;
+    border-radius: 8px;
+}
+
+.jirik-barveni-nahled-btn {
+    padding: 9px 24px;
+    border: 2px solid #2a4a6a;
+    border-radius: 6px;
+    cursor: default;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+    background: #1a2a3a;
+    color: #cce0f0;
+}
+
+.jirik-barveni-akce { display: flex; gap: 10px; }
+
+/* ═══════════════════════════════════════════════════════════
+   🔽 FOOTER
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 18px;
+    background: #0f1e2d;
+    border-top: 1px solid #0a1520;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    border-radius: 0 0 12px 12px;
+}
+
+.jirik-barveni-footer-leva { display: flex; gap: 8px; flex-wrap: wrap; }
+.jirik-barveni-footer-prava { display: flex; gap: 8px; }
+
+/* ═══════════════════════════════════════════════════════════
+   🔘 TLAČÍTKA - zelená / červená / modrá / oranžová
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-weight: bold;
+    color: #fff;
+}
+
+.jirik-barveni-btn-uloz  { background: #28a745; }
+.jirik-barveni-btn-uloz:hover  { background: #218838; transform: translateY(-1px); }
+
+.jirik-barveni-btn-reset { background: #dc3545; }
+.jirik-barveni-btn-reset:hover { background: #c82333; transform: translateY(-1px); }
+
+.jirik-barveni-btn-cloud { background: #1a6fc4; }
+.jirik-barveni-btn-cloud:hover { background: #155da0; transform: translateY(-1px); }
+
+.jirik-barveni-btn-cancel { background: #E8822A; }
+.jirik-barveni-btn-cancel:hover { background: #d06a18; transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════════════════════════
+   ✨ MARKER AKTIVNÍHO BARVENÍ
+   ═══════════════════════════════════════════════════════════ */
+.jirik-barveni-aktivni {
+    outline: 2px solid rgba(232, 130, 42, 0.5) !important;
+    outline-offset: 2px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   📱 RESPONZIVITA
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 700px) {
+    .jirik-barveni-body { flex-direction: column; }
+    .jirik-barveni-levy-panel { width: 100%; max-height: 220px; border-right: none; border-bottom: 1px solid #0f1e2d; }
+    .jirik-barveni-moldar-obsah { max-height: 95vh; width: 98vw; }
+    .jirik-barveni-barva-radek label { min-width: 60px; }
+}
