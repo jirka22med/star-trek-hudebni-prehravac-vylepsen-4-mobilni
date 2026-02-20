@@ -424,6 +424,64 @@ const __audioFirebaseFunctions_START = performance.now();
 
     
     // ═══════════════════════════════════════════════════════════════════════════
+    // ⭐ OBLÍBENÉ SKLADBY - SAVE / LOAD
+    // ═══════════════════════════════════════════════════════════════════════════
+    window.saveFavoritesToFirestore = async function(favorites) {
+        apiLog("💾 Ukládám oblíbené skladby...");
+        
+        if (!favorites || !Array.isArray(favorites)) {
+            log("SAVE Favorites", "Žádná data k uložení (favorites není pole).", favorites, 'error');
+            return false;
+        }
+
+        if (!await waitForDatabaseConnection()) {
+            log("SAVE Favorites", "Databáze nedostupná!", null, 'error');
+            return false;
+        }
+
+        try {
+            await getFirestoreDB().collection('audioPlayerSettings').doc('favorites')
+                .set({
+                    favorites: favorites,
+                    totalFavorites: favorites.length,
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+            log("SAVE Favorites", `✅ Uloženo ${favorites.length} oblíbených skladeb.`, null, 'success');
+            return true;
+        } catch (e) {
+            log("SAVE Favorites", "Chyba při ukládání oblíbených!", e, 'error');
+            return false;
+        }
+    };
+
+    window.loadFavoritesFromFirestore = async function() {
+        apiLog("📥 Načítám oblíbené skladby...");
+
+        if (!await waitForDatabaseConnection()) {
+            log("LOAD Favorites", "Databáze nedostupná - vracím null.", null, 'error');
+            return null;
+        }
+
+        try {
+            const doc = await getFirestoreDB().collection('audioPlayerSettings').doc('favorites').get();
+
+            if (doc.exists) {
+                const data = doc.data();
+                const loaded = data.favorites || [];
+                log("LOAD Favorites", `✅ Načteno ${loaded.length} oblíbených skladeb.`, loaded, 'success');
+                return loaded;
+            } else {
+                log("LOAD Favorites", "ℹ️ Dokument 'favorites' neexistuje (první spuštění?).", null, 'info');
+                return null;
+            }
+        } catch (e) {
+            log("LOAD Favorites", "Chyba při načítání oblíbených!", e, 'error');
+            return null;
+        }
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // 🧹 ÚDRŽBA - FUNKČNÍ ATOMOVKA
     // ═══════════════════════════════════════════════════════════════════════════
     window.clearAllAudioFirestoreData = async function() {
@@ -550,8 +608,3 @@ const __audioFirebaseFunctions_START = performance.now();
 // ⏱️ LOG END
 console.log(`%c🔥 [audioFirebaseFunctions] Načteno za ${(performance.now() - __audioFirebaseFunctions_START).toFixed(2)} ms`, 'color: #ff9900; font-weight: bold;');
 })();
-
-
-
-
-
