@@ -115,6 +115,15 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'Otevře nastavení vzhledu a chování playlistu'
     },
+
+   'jirikovo-barveni-ui-tlacitek-otevrevi-moldar-okna': {
+        name: '🎨 Barvení Ui tlačítek',
+        category: 'Pokročilé',
+        essential: false,
+        description: 'Otevře moldar okno bravení ui tlačítek'
+    },
+
+    
     'auto-fade-button': {
         name: '🔄 Auto-fade',
         category: 'Pokročilé',
@@ -342,6 +351,7 @@ const DEFAULT_VISIBILITY = {
     'favorites-button': false,
     'playlist-manager-button': false,
     'playlist-settings-button': false,
+    'jirikovo-barveni-ui-tlacitek-otevrevi-moldar-okna': false,
     'auto-fade-button': false,
     'timer-start': false,
     'timer-stop': false,
@@ -1584,6 +1594,7 @@ if (typeof window !== 'undefined') {
  */
 
 console.log(`%c🚀 [UItlacitka] Načteno za ${(performance.now() - __UItlacitka_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
