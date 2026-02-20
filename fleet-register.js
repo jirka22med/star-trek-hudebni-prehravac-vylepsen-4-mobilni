@@ -2,7 +2,7 @@
  
 // fleet-registry.js - VELITELSKÝ MOST (Jediný soubor, který upravuješ)
 const FLEET_CONFIG = {
-    version: "0.0.0.0.0.50", // ← Zvýšil jsem o 1 (nový modul přidán)
+    version: "0.0.0.0.0.51", // ← Zvýšil jsem o 1 (nový modul přidán)
     codename: "Prometheus-Class",
     
     // SEZNAM VŠECH MODULŮ (Tady spravuješ odkazy)
@@ -23,6 +23,8 @@ const FLEET_CONFIG = {
         './christmas.css',
         // ---HLAVNÍ CSS NOVÍ PANEL HLASITOST ZE SPRÁVCE ROZHRANÍ .JS
         './zobrazit-panel-hlasitosti.css',
+        
+        './jirikovo-barveni-ui-tlacitek.css',
 
          // --- NULTÉ POŘADÍ V POŘADÍ ---
         './fleet-register.js',
@@ -37,6 +39,7 @@ const FLEET_CONFIG = {
       './playlistSync.js',
          './pokrocila-sprava-playlistu.js',
        './buttonVisibilityFirebase.js',
+        './jirikovo-barveni-ui-tlacitek-firebase.js',
         // --- DEVÁTÝ V POŘADÍ ---
        
        // --- DESÁTÝ V POŘADÍ ---
@@ -69,7 +72,7 @@ const FLEET_CONFIG = {
         //lehká atomovka odpáli vše co jí stojí v cestě i borgy odpalit dokáže?.
                    './lehka-atomovka.js',  
                   './jirkuv-hlidac.js',
-        
+                  './jirikovo-barveni-ui-tlacitek.js',
     ]           
 };
 
