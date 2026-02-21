@@ -87,7 +87,8 @@ window.playlistSections = [
   { name: '🎧 Wo-rur-HoS-Sila-jako-imperium', start: 498, end: 499 },
   { name: '🎧 tlhIngan-MaH-Jsme-Klingoni-Extended', start: 500, end: 501 },
   { name: '🎧 Ocel-a-Hnev', start: 502, end: 503 },
-  { name: '🎧 Cesta-do-Sto-vo-koru-Full-Version', start: 504, end: 505 }
+  { name: '🎧 Cesta-do-Sto-vo-koru-Full-Version', start: 504, end: 505 },
+ { name: '🎧 Jiříkova Bláznivá Písnička a Multe - For You', start: 506, end: 507 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -876,6 +877,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
