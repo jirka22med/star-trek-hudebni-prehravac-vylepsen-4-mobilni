@@ -863,6 +863,10 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 // ═══════════════════════════════════════════════════════════ 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/uswjmacn94ygy0rlgz7nt/Cesta-do-Sto-vo-koru-Full-Version-v-7.mp3?rlkey=0u0ytvqex4vjtcrt3apmmq0lv&st=e07o9h3l&dl=1', title: 'Cesta-do-Sto-vo-koru-Full-Version-v-1', manuallyEdited: false, lastEditedAt: null },
 { src: 'https://dl.dropboxusercontent.com/scl/fi/w7zi23qh84wcfs1b9yp4g/Cesta-do-Sto-vo-koru-Full-Version-v-8.mp3?rlkey=luoeakfhha6lc5vwi61cg2t0y&st=34te4etr&dl=1', title: 'Cesta-do-Sto-vo-koru-Full-Version-v-2', manuallyEdited: false, lastEditedAt: null },
+
+
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/2sgro27a1fy65jf88g1rn/splashtop_recording_5.mp3?rlkey=lvj8twwf0fkble37htvj2bvag&st=98vxfkrg&dl=1', title: 'Jiříkova Bláznivá Písnička', manuallyEdited: false, lastEditedAt: null },
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/l5doruytzo3a8tmnaxydc/Multex-For-You.mp3?rlkey=tfsn9fpgz9figvj515qyl6ic5&st=sdtc1mo4&dl=1', title: 'Multex - For You', manuallyEdited: false, lastEditedAt: null }, 
 ];   
 
  
@@ -872,6 +876,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
