@@ -290,7 +290,34 @@ const BUTTON_CONFIG = {
         essential: true,
         description: 'Zobrazuje aktuální digitální čas a datum'
         },   
+    'browser-status': {
+      name: 'browser-status',
+        category: 'Informace Přehravače',
+        essential: false,
+        description: 'Ukazatel názvu prohlížeče'
+        },
     
+ 'browser-info': {
+      name: 'browser-info',
+        category: 'Informace Přehravače',
+        essential: false,
+        description: 'Info názvu prohlížeče'
+        },
+    
+    'perfMode': {
+      name: 'perfMode',
+        category: 'Informace Přehravače',
+        essential: false,
+        description: 'FPS Monitor Výkonu'
+        },
+    
+    'mainFooter': {
+      name: 'mainFooter',
+        category: 'Informace Přehravače',
+        essential: false,
+        description: 'Patička Star Trek Hudebního Přehravače'
+        },
+ 
    'debug-manager-button': {
     name: 'Diagnostika',
         category: 'Debug',
@@ -318,12 +345,14 @@ const BUTTON_CONFIG = {
         essential: false,
         description: 'pokročilí moldar systém pro přebarvení UI track title'
         },    
+    
 'install-app-button': {
     name: 'Instalace',
         category: 'Systém',
         essential: false,
         description: 'Instalování PWA aplikace'
         },   
+    
 'lehka-atomovka': {
     name: '☢️ Lehká Atomovka',
     category: 'Systém',
@@ -393,6 +422,11 @@ const DEFAULT_VISIBILITY = {
     'bluetooth-monitor-toggle': false,
     
     'uprava-barev-moldar-system': false,
+    
+    'browser-status': true,
+    'browser-info': true,
+    'perfMode': true,
+    'mainFooter': true,
     
     'zobrazit-panel-hlasitosti': false,
 
@@ -1601,6 +1635,7 @@ if (typeof window !== 'undefined') {
  */
 
 console.log(`%c🚀 [UItlacitka] Načteno za ${(performance.now() - __UItlacitka_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
