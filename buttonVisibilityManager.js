@@ -1,5 +1,5 @@
 const __UItlacitka_START = performance.now();
-const VERSION_BVIS = "121.101.114"; // Verze správy tlačítek
+const VERSION_BVIS = "121.101.115"; // Verze správy tlačítek
 
 /**  
  * 🖖 SPRÁVA VIDITELNOSTI TLAČÍTEK - OPRAVENÁ VERZE 
@@ -325,11 +325,18 @@ const BUTTON_CONFIG = {
         description: 'Instalování PWA aplikace'
         },   
 'lehka-atomovka': {
-    name: '☢️ lehka-atomovka',
-        category: 'Systém',
-        essential: false,
-        description: 'Čistí-localstorage caha windows'
-        }, 
+    name: '☢️ Lehká Atomovka',
+    category: 'Systém',
+    essential: false,
+    description: 'Vymaže localStorage, sessionStorage, IndexedDB, cookies, Service Workers a Cache API. Před smazáním automaticky vytvoří zálohu jako JSON soubor. Obsahuje whitelist chráněných položek. Po dokončení restartuje přehravač.'
+},
+
+'lehka-atomovka-prohlizec-zalohy': {
+    name: '☢️ Lehká Atomovka Prohlížeč Zálohy',
+    category: 'Systém',
+    essential: false,
+    description: 'Otevře Backup Viewer pro zálohy vytvořené Lehkou Atomovkou. Umožňuje prohlížet obsah localStorage, sessionStorage a cookies ze zálohy. Podporuje drag & drop JSON souboru, vyhledávání a detail každé položky.'
+},
    
 };
 
@@ -391,7 +398,7 @@ const DEFAULT_VISIBILITY = {
 
     'install-app-button': false,
     'lehka-atomovka': false,
-    
+    'lehka-atomovka-prohlizec-zalohy': false,
     'The-Constructor': false,
     'indexator': false,
     'sekce': false,
@@ -1594,6 +1601,7 @@ if (typeof window !== 'undefined') {
  */
 
 console.log(`%c🚀 [UItlacitka] Načteno za ${(performance.now() - __UItlacitka_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
