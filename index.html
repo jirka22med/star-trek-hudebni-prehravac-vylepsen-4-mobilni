@@ -336,7 +336,7 @@
 <!-- Více admirál Jiřík & Admirál Claude.AI -->
 <!-- ============================================ -->
   
- <script>                              
+<script>                              
 (function() {
 const __INDEX_HTML_START = performance.now();
  
@@ -361,15 +361,21 @@ const __INDEX_HTML_START = performance.now();
     fetch('fleet-register.js?v=' + Date.now())
         .then(r => r.text())
         .then(text => {
-            const match = text.match(/version:\s*"([^"]+)"/);
-            if (!match) return;
+            // 🆕 NOVÝ REGEX – čte dynamické verzování formátu YYYY.M.D.BUILD
+            const match = text.match(/version:\s*`\$\{[^}]+\}\.\$\{[^}]+\}\.\$\{[^}]+\}\.\$\{[^}]+\}`/);
             
-            const serverVer = match[1];
+            // Místo porovnání stringu čteme buildNumber z localStorage
+            const serverBuild = (() => {
+                const buildMatch = text.match(/localStorage\.getItem\(key\)\s*\|\|\s*'(\d+)'/);
+                return buildMatch ? parseInt(buildMatch[1]) : null;
+            })();
+            
             const browserVer = window.FLEET_CONFIG?.version || "0.0.0";
+            const browserBuild = window.FLEET_CONFIG?.buildNumber || 0;
             
-            console.log(`🐕 [Watchdog] Server: ${serverVer} | Browser: ${browserVer}`);
+            console.log(`🐕 [Watchdog] Browser verze: ${browserVer} | Build: ${browserBuild}`);
             
-            if (serverVer !== browserVer) {
+            if (serverBuild && browserBuild < serverBuild) {
                 console.warn("⚠️ [Watchdog] Zastaralá verze! Restart za 2s...");
                 
                 // 🛡️ POJISTKA #2: Timestamp před reload
@@ -395,11 +401,12 @@ const __INDEX_HTML_START = performance.now();
             console.log("🐕 [Watchdog] Offline nebo chyba:", err.message);
         });
 
-  // ⏱️ LOG END 
- console.log(`%c🚀 [INDEX-HTML] Načteno za ${(performance.now() - __INDEX_HTML_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+    // ⏱️ LOG END 
+    console.log(`%c🚀 [INDEX-HTML] Načteno za ${(performance.now() - __INDEX_HTML_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
-</script>
+</script>    
 </body>
 </html>
+
 
 
