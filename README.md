@@ -10,7 +10,7 @@
 
 *– Více admirál Jiřík*
 
-[![🚀 SPUSTIT APLIKACI](https://img.shields.io/badge/🚀_SPUSTIT_APLIKACI-red?style=for-the-badge)](https://jirka22med.github.io/star-trek-hudebni-prehravac-vylepsen/)
+[![🚀 SPUSTIT APLIKACI](https://img.shields.io/badge/🚀_SPUSTIT_APLIKACI-red?style=for-the-badge)](https://jirka22med.github.io/star-trek-hudebni-prehravac-vylepsen-4-mobilni/)
 
 </div>
 
@@ -544,7 +544,7 @@ Speciální poděkování:
 [![🔄 Fork](https://img.shields.io/github/forks/jirka22med/star-trek-hudebni-prehravac-vylepsen?style=social)](https://github.com/jirka22med/star-trek-hudebni-prehravac-vylepsen/fork)
 [![👁️ Watch](https://img.shields.io/github/watchers/jirka22med/star-trek-hudebni-prehravac-vylepsen?style=social)](https://github.com/jirka22med/star-trek-hudebni-prehravac-vylepsen)
 
-**[🚀 SPUSTIT APLIKACI](https://jirka22med.github.io/star-trek-hudebni-prehravac-vylepsen/)**
+**[🚀 SPUSTIT APLIKACI](https://jirka22med.github.io/star-trek-hudebni-prehravac-vylepsen-4-mobilni/)**
 
 </div>
 ```
