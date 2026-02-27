@@ -875,7 +875,7 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 // ═══════════════════════════════════════════════════════════ 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/u8ck3ieorazj2upiyqxpr/jirkuv-digitalni-sen-Top-1.mp3?rlkey=kb6dwuib7k2x5cy5oqe589k4z&st=c8i9r5lo&dl=1', title: 'Jiříkův digitální sen Top-1', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/tra79b1jas70itqi086sd/Muj-digitalni-pribeh-Top-2.mp3?rlkey=9z9sx9mzkr7yb2zysey9u2hi2&st=r7r3jpjg&dl=1', title: 'Můj digitální příběh Top-2', manuallyEdited: false, lastEditedAt: null }, 
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/qufclsz4uo5kphr3rmaku/Sen-ukryty-v-digitalnim-snu-Top-3.mp3?rlkey=uhry5xdqqjptjoq9oid9cdgnd&st=aue7aaco&dl=1', title: 'Sen ukrytý v digitálním snu', manuallyEdited: false, lastEditedAt: null },  
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/qufclsz4uo5kphr3rmaku/Sen-ukryty-v-digitalnim-snu-Top-3.mp3?rlkey=uhry5xdqqjptjoq9oid9cdgnd&st=aue7aaco&dl=1', title: 'Sen ukrytý v digitálním snu Top-3', manuallyEdited: false, lastEditedAt: null },  
 { src: 'https://dl.dropboxusercontent.com/scl/fi/he0c3skx27lswzhf2tig6/vice-admiraluv-jirikuv-sen-bit-lepsim-clovekem-Top-4.mp3?rlkey=hvet1mik4e4gl0ozxqgyu1e3y&st=750ykdg1&dl=1', title: 'Více Admirálův Jiříkův sen bít lepším člověkem Top-4', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/rjnwklaa4eo6xc3j50imj/vice-admiraluv-jirikuv-sen-bit-lepsim-clovekem-Top-5.mp3?rlkey=y7ymya1qm2kz38fiwvugqxcbn&st=i8isutkb&dl=1', title: 'Více Admirálův Jiříkův sen bít lepším člověkem Top-5', manuallyEdited: false, lastEditedAt: null }, 
 ];   
@@ -887,6 +887,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
