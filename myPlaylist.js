@@ -89,7 +89,7 @@ window.playlistSections = [
   { name: '🎧 Ocel-a-Hnev', start: 502, end: 503 },
   { name: '🎧 Cesta-do-Sto-vo-koru-Full-Version', start: 504, end: 505 },
  { name: '🎧 Jiříkova Bláznivá Písnička a Multe - For You', start: 506, end: 507 },
- { name: '🎧 Jiříkův Digitální Sen', start: 508, end: 5013 }
+ { name: '🎧 Jiříkův Digitální Sen', start: 508, end: 5012 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -887,6 +887,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
