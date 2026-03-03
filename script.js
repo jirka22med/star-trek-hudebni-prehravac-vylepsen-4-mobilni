@@ -1007,7 +1007,7 @@ DOM.loopButton?.addEventListener('click', async () => {
 
     document.addEventListener('fullscreenchange', () => {
         DOM.fullscreenToggle?.classList.toggle('active', !!document.fullscreenElement);
-        adjustPlaylistHeight(!!document.fullscreenElement);
+       // adjustPlaylistHeight(!!document.fullscreenElement);
     });
 
     DOM.toggleInfo?.addEventListener('click', () => {
@@ -1370,6 +1370,7 @@ window.updateActiveTrackVisuals = updateActiveTrackVisuals;
      // ⏱️ LOG END
 console.log(`%c🚀 [SCRIPTJS] Načteno za ${(performance.now() - __SCRIPTJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
 })();
+
 
 
 
