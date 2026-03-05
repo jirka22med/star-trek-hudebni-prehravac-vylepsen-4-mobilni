@@ -826,7 +826,7 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 // 🎧 Ocelová křídla Promethea
 // ═══════════════════════════════════════════════════════════     
 { src: 'https://dl.dropboxusercontent.com/scl/fi/8lbny7bdce7jjtnjksy4a/Ocelova-kridla-Promethea-v-1.mp3?rlkey=9nfn05k77enm80s5i8o1n7pz5&st=dkm5yn4w&dl=1', title: 'Ocelová křídla Promethea v.1', manuallyEdited: false, lastEditedAt: null }, //486 
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/7k8asrn4ln5v56llrgnke/Ocelova-kridla-Promethea-v-2.mp3?rlkey=xcm6vhe9vjv42ldl8qjgabbck&st=an5pg089&dl=1', title: 'Ocelová křídla Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //487
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/7k8asrn4ln5v56llrgnke/Ocelova-kridla-Promethea-v-2.mp3?rlkey=xcm6vhe9vjv42ldl8qjgabbck&st=an5pg089&dl=1', title: 'Ocelová křídla Promethea v.2', manuallyEdited: false, lastEditedAt: null }, //487
 { src: 'https://dl.dropboxusercontent.com/scl/fi/91udp50svpx6ynhnqy3w5/Ocelova-kridla-Promethea-v-3.mp3?rlkey=431rxxpankxgtt5jv9uyrw9gl&st=nuxgvezz&dl=1', title: 'Ocelová křídla Promethea v.3', manuallyEdited: false, lastEditedAt: null }, //488 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/v2igjbe1vpp9hyyejwva6/Ocelova-kridla-Promethea-v-4.mp3?rlkey=4c0dnzh9ybgflwgg6o50xu5km&st=h8n4tg2y&dl=1', title: 'Ocelová křídla Promethea v.4', manuallyEdited: false, lastEditedAt: null }, //489 
 // ═══════════════════════════════════════════════════════════
@@ -887,6 +887,7 @@ window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks
 
  
  console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
+
 
 
 
