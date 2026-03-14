@@ -89,7 +89,11 @@ window.playlistSections = [
   { name: '🎧 Ocel-a-Hnev', start: 502, end: 503 },
   { name: '🎧 Cesta-do-Sto-vo-koru-Full-Version', start: 504, end: 505 },
  { name: '🎧 Jiříkova Bláznivá Písnička a Multe - For You', start: 506, end: 507 },
- { name: '🎧 Jiříkův Digitální Sen', start: 508, end: 5012 }
+ { name: '🎧 Jiříkův Digitální Sen', start: 508, end: 5012 },
+{ name: '🎧 Čistič Odpadů Pavel Pacova', start: 513, end: 5017 },
+{ name: '🎧 Muzikanti-Čenich-CZ-Remix', start: 518, end: 5019 }
+
+ 
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -878,6 +882,22 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/qufclsz4uo5kphr3rmaku/Sen-ukryty-v-digitalnim-snu-Top-3.mp3?rlkey=uhry5xdqqjptjoq9oid9cdgnd&st=aue7aaco&dl=1', title: 'Sen ukrytý v digitálním snu Top-3', manuallyEdited: false, lastEditedAt: null },  
 { src: 'https://dl.dropboxusercontent.com/scl/fi/he0c3skx27lswzhf2tig6/vice-admiraluv-jirikuv-sen-bit-lepsim-clovekem-Top-4.mp3?rlkey=hvet1mik4e4gl0ozxqgyu1e3y&st=750ykdg1&dl=1', title: 'Více Admirálův Jiříkův sen bít lepším člověkem Top-4', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/rjnwklaa4eo6xc3j50imj/vice-admiraluv-jirikuv-sen-bit-lepsim-clovekem-Top-5.mp3?rlkey=y7ymya1qm2kz38fiwvugqxcbn&st=i8isutkb&dl=1', title: 'Více Admirálův Jiříkův sen bít lepším člověkem Top-5', manuallyEdited: false, lastEditedAt: null }, 
+// ═══════════════════════════════════════════════════════════
+// 🎧 Original-pisen-AI-cistic-odpadu-Pavel-Pacova
+// ═══════════════════════════════════════════════════════════
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/qro8c5dhjw8zg1qz6gctx/Original-pisen-AI-cistic-odpadu-v-1.mp3?rlkey=3h8i1b1qolpsb17cxo4msvvgu&st=ks6g3885&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-1', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/j393bfwetgcbwqzj9prkp/Original-pisen-AI-cistic-odpadu-v-2.mp3?rlkey=2ldsxbjgbynicg8xnctsk7w2q&st=ebukobcz&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-2', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/kr7ssr7scu21swrahsmpi/Original-pisen-AI-cistic-odpadu-v-3.mp3?rlkey=tqjp9dkxqiaqj2luvmidz2ebi&st=71sckq24&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-3', manuallyEdited: false, lastEditedAt: null },  
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/ipkk6ggy2i7pjnaq24tdm/Original-pisen-AI-cistic-odpadu-v-4-top-1.mp3?rlkey=o00qaev7fzj7c52frorrezbe4&st=p6ffpvun&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-4-top-1', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/vd5epsakk4huwcigmcj9p/Original-pisen-AI-cistic-odpadu-v-5-top-2.mp3?rlkey=tfvyznd9aeravjy8jqnymb687&st=hk0q7lkd&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-5-top-2', manuallyEdited: false, lastEditedAt: null }, 
+// ═══════════════════════════════════════════════════════════
+// 🎧 Original-pisen-AI-cistic-odpadu-Pavel-Pacova
+// ═══════════════════════════════════════════════════════════
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/e7ghavx8pcqyhlgsk2p50/Muzikanti-Cenich-CZ-Remix-v-1.mp3?rlkey=t1c8a9k2pbxwbzh8if1hdqysy&st=uehtdrou&dl=1', title: 'Muzikanti-Cenich-CZ-Remix-v-1', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/ppbxfp3lkfolnr9q9rhm5/Muzikanti-Cenich-CZ-Remix-v-2.mp3?rlkey=e2300vtg33p4zkykwnb8czb6e&st=x6ekak1g&dl=1', title: 'Muzikanti-Cenich-CZ-Remix-v-2', manuallyEdited: false, lastEditedAt: null },     
+
+
+
 ];   
 
  
