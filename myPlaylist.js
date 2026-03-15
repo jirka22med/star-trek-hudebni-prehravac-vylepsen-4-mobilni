@@ -90,8 +90,8 @@ window.playlistSections = [
   { name: '🎧 Cesta-do-Sto-vo-koru-Full-Version', start: 504, end: 505 },
  { name: '🎧 Jiříkova Bláznivá Písnička a Multe - For You', start: 506, end: 507 },
  { name: '🎧 Jiříkův Digitální Sen', start: 508, end: 5012 },
-{ name: '🎧 Čistič Odpadů Pavel Pacova', start: 513, end: 5017 },
-{ name: '🎧 Muzikanti-Čenich-CZ-Remix', start: 518, end: 5019 }
+{ name: '🎧 Čistič Odpadů Pavel Pacova', start: 513, end: 5018 },
+{ name: '🎧 Muzikanti-Čenich-CZ-Remix', start: 519, end: 5020 }
 
  
 ];
@@ -890,8 +890,9 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/kr7ssr7scu21swrahsmpi/Original-pisen-AI-cistic-odpadu-v-3.mp3?rlkey=tqjp9dkxqiaqj2luvmidz2ebi&st=71sckq24&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-3', manuallyEdited: false, lastEditedAt: null },  
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ipkk6ggy2i7pjnaq24tdm/Original-pisen-AI-cistic-odpadu-v-4-top-1.mp3?rlkey=o00qaev7fzj7c52frorrezbe4&st=p6ffpvun&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-4-top-1', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/vd5epsakk4huwcigmcj9p/Original-pisen-AI-cistic-odpadu-v-5-top-2.mp3?rlkey=tfvyznd9aeravjy8jqnymb687&st=hk0q7lkd&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-5-top-2', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/41w6ihkpiraqg11r2wixf/Original-pisen-AI-cistic-odpadu-v-6-Top-3.mp3?rlkey=tk9d2rzv8cmlr306u4ilyw61e&st=xx1pwis8&dl=1', title: 'Original-pisen-AI-cistic-odpadu-v-6-top-3', manuallyEdited: false, lastEditedAt: null }, 
 // ═══════════════════════════════════════════════════════════
-// 🎧 Original-pisen-AI-cistic-odpadu-Pavel-Pacova
+// 🎧 Muzikanti-Cenich-CZ-Remix
 // ═══════════════════════════════════════════════════════════
 { src: 'https://dl.dropboxusercontent.com/scl/fi/e7ghavx8pcqyhlgsk2p50/Muzikanti-Cenich-CZ-Remix-v-1.mp3?rlkey=t1c8a9k2pbxwbzh8if1hdqysy&st=uehtdrou&dl=1', title: 'Muzikanti-Cenich-CZ-Remix-v-1', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ppbxfp3lkfolnr9q9rhm5/Muzikanti-Cenich-CZ-Remix-v-2.mp3?rlkey=e2300vtg33p4zkykwnb8czb6e&st=x6ekak1g&dl=1', title: 'Muzikanti-Cenich-CZ-Remix-v-2', manuallyEdited: false, lastEditedAt: null },     
