@@ -91,7 +91,8 @@ window.playlistSections = [
  { name: '🎧 Jiříkova Bláznivá Písnička a Multe - For You', start: 506, end: 507 },
  { name: '🎧 Jiříkův Digitální Sen', start: 508, end: 5012 },
 { name: '🎧 Čistič Odpadů Pavel Pacova', start: 513, end: 5018 },
-{ name: '🎧 Muzikanti-Čenich-CZ-Remix', start: 519, end: 5020 }
+{ name: '🎧 Muzikanti-Čenich-CZ-Remix', start: 519, end: 5020 },
+{ name: '🎧 Nové Písničky mix', start: 521, end: 5026 }
 
  
 ];
@@ -896,9 +897,21 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 // ═══════════════════════════════════════════════════════════
 { src: 'https://dl.dropboxusercontent.com/scl/fi/e7ghavx8pcqyhlgsk2p50/Muzikanti-Cenich-CZ-Remix-v-1.mp3?rlkey=t1c8a9k2pbxwbzh8if1hdqysy&st=uehtdrou&dl=1', title: 'Muzikanti-Cenich-CZ-Remix-v-1', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/ppbxfp3lkfolnr9q9rhm5/Muzikanti-Cenich-CZ-Remix-v-2.mp3?rlkey=e2300vtg33p4zkykwnb8czb6e&st=x6ekak1g&dl=1', title: 'Muzikanti-Cenich-CZ-Remix-v-2', manuallyEdited: false, lastEditedAt: null },     
+// ═══════════════════════════════════════════════════════════
+// 🎧 Nové Písničky mix
+// ═══════════════════════════════════════════════════════════
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/2xbqiqhnbru3vozrw5fe5/Glass-Horizon-v-1.mp3?rlkey=tag9ijbd3o74r2mjcxn3pcpxu&st=14tccrsu&dl=1', title: 'Glass Horizon v.1', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/pdjclnxd1y0dnlicqzh6w/Glass-Horizon-v-2.mp3?rlkey=g1cnov3hk1u2m9s9zliv7c878&st=o4chuugn&dl=1', title: 'Glass Horizon v.2', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/k79dhl8vz1905trh3lce9/HV-ZDN-FLOTILA-NAV-DY.mp3?rlkey=9scd10iuwuyps9fzw7jajl3ij&st=kpoz74sf&dl=1', title: 'HVĚZDNÁ FLOTILA NAVŽDY', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/0mqfgpycyw9ks3u6zx5oi/posledni-denik-na-enterprise-ncc-1701-D-v-1.mp3?rlkey=finfebryboheyztdq86vhglpy&st=n1vjevc5&dl=1', title: 'Poslední deník na Enterprise NCC 1701-D v.1', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/i36d5tj1ce34plfkm2nrr/posledni-denik-na-enterprise-ncc-1701-D-v-2.mp3?rlkey=di3pnp8qm4vw8cwfv1i7zjtc6&st=7xj5r1ge&dl=1', title: 'Poslední deník na Enterprise NCC 1701-D v.2', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/6lm86bt773xtck864xtja/Star-Trek-Epicke-Outro-1.mp3?rlkey=qm8r5ors4sn60w33yr99loe1z&st=lfiwcrbn&dl=1', title: 'Star Trek Epické Outro v.1', manuallyEdited: false, lastEditedAt: null }, 
+{ src: 'https://dl.dropboxusercontent.com/scl/fi/agcscmox4jzeb2fwtdzju/Star-Trek-Epicke-Outro-2.mp3?rlkey=kfbsvx0iaygfh1a55zr4p10ls&st=e8zsewi7&dl=1', title: 'Star Trek Epické Outro v.2', manuallyEdited: false, lastEditedAt: null }, 
 
 
 
+
+ 
 ];   
 
  
