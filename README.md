@@ -33,15 +33,7 @@ Tento projekt není jen hudební přehrávač – je to **Komunikační stanice 
 
 ### 🎤 **Interakce a Ovládání**
 
-#### 🗣️ Hlasové Příkazy "Počítači, Engage!"
-```javascript
-// Podporované příkazy:
-"Počítači, další"      → Další skladba
-"Počítači, předchozí"  → Předchozí skladba
-"Počítači, pauza"      → Pozastavení
-"Počítači, play"       → Přehrávání
-"Počítači, hlasitost 50" → Nastavení hlasitosti
-```
+
 
 #### 📱 Media Session API
 - ✅ Ovládání z notifikací (Android)
