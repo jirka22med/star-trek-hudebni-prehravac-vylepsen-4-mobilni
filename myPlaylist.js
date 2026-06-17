@@ -7,94 +7,89 @@ window.PLAYLIST_VERSION = new Date().toISOString();
 
 // 🎯 DEFINICE SEKCÍ (Aktualizováno na 480 skladeb, indexy 0-479)
 window.playlistSections = [
-  { name: '🎧 STAR TREK - HLAVNÍ TÉMATA & POSÁDKY', start: 0, end: 12 },
-  { name: '🎧 STAR TREK - INTRA & ZNĚLKY', start: 13, end: 17 },
-  { name: '🎧 STAR TREK - EPICKÉ OUTRO (SÉRIE)', start: 18, end: 24 },
-  { name: '🎧 STAR TREK - PÍSNIČKA POSÁDEK (ORIGINÁL & KLINGONI)', start: 25, end: 38 },
-  { name: '🎧 HVĚZDNÉ PLAMENY & HVĚZDY A PLAMENY', start: 39, end: 44 },
-  { name: '🎧 HVĚZDNÉ PLAMENY Disco Verze', start: 45, end: 51 },
-  { name: '🎧 HVĚZDNÉ PLAMENY Remastered', start: 52, end: 55 },
-  { name: '🎧 HVĚZDNÉ PLAMENY Star Trek Verze', start: 56, end: 57 },
-  { name: '🎧 HVĚZDNÉ PLAMENY Nová Série', start: 58, end: 65 },
-  { name: '🎧 VELKÉ OSLAVY DS9', start: 66, end: 73 },
-  { name: '🎧 SPECIÁL: ČERNÝ HAVRAN & ENTERPRISE', start: 74, end: 78 },
-  { name: '🎧 STAR TREK PÍSNIČKA POSÁDEK (DISCO VERZE)', start: 79, end: 88 },
-  { name: '🎧 STAR TREK SOUTĚŽ (ENTERPRISE & DS9)', start: 89, end: 94 },
-  { name: '🎧 STAR TREK SOUTĚŽ Na Deep Space Nine', start: 95, end: 108 },
-  { name: '🎧 VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CHATBOT CLAUDE.AI', start: 109, end: 117 },
-  { name: '🎧 Více Admirál Jiřík & Chatbot', start: 118, end: 121 },
-  { name: '🎧 Více Admirál & Claude.AI', start: 122, end: 127 },
-  { name: '🎧 VÁNOČNÍ HVĚZDNÁ FLOTILA', start: 128, end: 138 },
-  { name: '🎧 STAR TREK - DO NEZNÁMA (SÉRIE)', start: 139, end: 143 },
-  { name: '🎧 STAR TREK - DO NEZNÁMA Remake', start: 144, end: 146 },
-  { name: '🎧 STAR TREK - DO NEZNÁMA Starší verze', start: 147, end: 149 },
-  { name: '🎧 STAR TREK - DO NEZNÁMA Nová Série', start: 150, end: 154 },
-  { name: '🎧 MIX & SPECIÁLNÍ PROJEKTY', start: 155, end: 157 },
-  { name: '🎧 Týmová Práce', start: 158, end: 162 },
-  { name: '🎧 Admirálský Deník', start: 163, end: 168 },
-  { name: '🎧 Vánoční Hudba na palubě', start: 169, end: 173 },
-  { name: '🎧 Remastered Bonusy', start: 174, end: 177 },
-  { name: '🎧 VESMÍRNÁ ODYSEA (KOMPLET)', start: 178, end: 187 },
-  { name: '🎧 DALŠÍ PROJEKTY & BONUSY', start: 188, end: 192 },
-  { name: '🎧 Na Cestě k Věčnosti', start: 193, end: 200 },
-  { name: '🎧 Srdce mezi Hvězdami', start: 201, end: 207 },
-  { name: '🎧 Srdce na Dlani', start: 208, end: 210 },
-  { name: '🎧 Ostatní Remastered', start: 211, end: 215 },
-  { name: '🎧 STANICE HLUBOKÝ VESMÍR 9 (SÉRIE)', start: 216, end: 226 },
-  { name: '🎧 HVEZDNA-FLOTILA-NAVZDY', start: 227, end: 234 },
-  { name: '🎧 Děti hvězd', start: 235, end: 244 },
-  { name: '🎧 Louisiana sobotní noc 1 až 9', start: 245, end: 253 },
-  { name: '🎧 Louisiana-sobotni-noc 10 až 19', start: 254, end: 263 },
-  { name: '🎧 PÍSNIČKY O JIRKOVI Klasická Série 1', start: 264, end: 267 },
-  { name: '🎧 PÍSNIČKY O JIRKOVI Klasická Série 2', start: 268, end: 271 },
-  { name: '🎧 PÍSNIČKY O JIRKOVI Remastered Verze 1', start: 272, end: 275 },
-  { name: '🎧 PÍSNIČKY O JIRKOVI Remastered Verze 2', start: 276, end: 280 },
-  { name: '🎧 Jirkův Futuristický Kvíz', start: 281, end: 285 },
-  { name: '🎧 Jirkův dodatek', start: 286, end: 286 },
-  { name: '🎧 Journey Through Žižkov Originální verze', start: 287, end: 288 },
-  { name: '🎧 Journey Through Žižkov Jirka Remake', start: 289, end: 291 },
-  { name: '🎧 Journey Through Žižkov Remastered (Rema)', start: 292, end: 295 },
-  { name: '🎧 FEDERÁLNÍ ÚSTAV Remastered Verze', start: 296, end: 297 },
-  { name: '🎧 FEDERÁLNÍ ÚSTAV Originální Série', start: 298, end: 300 },
-  { name: '🎧 FEDERÁLNÍ ÚSTAV Remake Série', start: 301, end: 304 },
-  { name: '🎧 FEDERÁLNÍ ÚSTAV Série 2', start: 305, end: 306 },
-  { name: '🎧 FEDERÁLNÍ ÚSTAV Série 3', start: 307, end: 310 },
-  { name: '🎧 FEDERÁLNÍ ÚSTAV Série 4', start: 311, end: 312 },
-  { name: '🎧 Krčma v Dětenicích', start: 313, end: 316 },
-  { name: '🎧 cesta krystof', start: 317, end: 321 },
-  { name: '🎧 instrumentální disko', start: 322, end: 331 },
-  { name: '🎧 ÚTAH A JEHO BRATR', start: 332, end: 334 },
-  { name: '🎧 NOČNÍ STÍNY & BOD ZLOMU', start: 335, end: 339 },
-  { name: '🎧 STÍNY Z UTAHY (REMASTERED)', start: 340, end: 341 },
-  { name: '🎧 Jirka a ondra', start: 342, end: 351 },
-  { name: '🎧 Mohambi', start: 352, end: 359 },
-  { name: '🎧 Mohombi Remastered', start: 360, end: 361 },
-  { name: '🎧 Bumpy Rider Mohombi', start: 362, end: 366 },
-  { name: '🎧 kohout / mix-kohout', start: 367, end: 378 },
-  { name: '🎧 Hora Matterhorn', start: 379, end: 387 },
-  { name: '🎧 Nebude to ľahké', start: 388, end: 398 },
-  { name: '🎧 RŮZNÉ HITY & SINGLY', start: 399, end: 404 },
-  { name: '🎧 SÉRIE: NA OKOŘ JE CESTA (VŠECHNY VERZE)', start: 405, end: 413 },
-  { name: '🎧 ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY', start: 414, end: 421 },
-  { name: '🎧 SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY', start: 422, end: 429 },
-  { name: '🎧 MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)', start: 430, end: 439 },
-  { name: '🎧 AUDIO KAPITOLY (1-40)', start: 440, end: 479 },
-  { name: '🎧 Jardova cesta s prateli', start: 480, end: 485 },
-  { name: '🎧 Ocelová křídla Promethea', start: 486, end: 489 },
-  { name: '🎧 Velení Promethea', start: 490, end: 493 },
-  { name: '🎧 Velení lodi Prometheus', start: 494, end: 495 },
-  { name: '🎧 USS Prometheus', start: 496, end: 497 },
-  { name: '🎧 Wo-rur-HoS-Sila-jako-imperium', start: 498, end: 499 },
-  { name: '🎧 tlhIngan-MaH-Jsme-Klingoni-Extended', start: 500, end: 501 },
-  { name: '🎧 Ocel-a-Hnev', start: 502, end: 503 },
-  { name: '🎧 Cesta-do-Sto-vo-koru-Full-Version', start: 504, end: 505 },
- { name: '🎧 Jiříkova Bláznivá Písnička a Multe - For You', start: 506, end: 507 },
- { name: '🎧 Jiříkův Digitální Sen', start: 508, end: 5012 },
-{ name: '🎧 Čistič Odpadů Pavel Pacova', start: 513, end: 5018 },
-{ name: '🎧 Muzikanti-Čenich-CZ-Remix', start: 519, end: 5020 },
-{ name: '🎧 Nové Písničky mix', start: 521, end: 5026 }
-
- 
+  { name: 'STAR TREK - HLAVNÍ TÉMATA & POSÁDKY', start: 0, end: 12 },
+  { name: 'STAR TREK - INTRA & ZNĚLKY', start: 13, end: 17 },
+  { name: 'STAR TREK - EPICKÉ OUTRO (SÉRIE)', start: 18, end: 24 },
+  { name: 'STAR TREK - PÍSNIČKA POSÁDEK (ORIGINÁL & KLINGONI)', start: 25, end: 38 },
+  { name: 'HVĚZDNÉ PLAMENY & HVĚZDY A PLAMENY', start: 39, end: 44 },
+  { name: 'HVĚZDNÉ PLAMENY Disco Verze', start: 45, end: 51 },
+  { name: 'HVĚZDNÉ PLAMENY Remastered', start: 52, end: 55 },
+  { name: 'HVĚZDNÉ PLAMENY Star Trek Verze', start: 56, end: 57 },
+  { name: 'HVĚZDNÉ PLAMENY Nová Série', start: 58, end: 65 },
+  { name: 'VELKÉ OSLAVY DS9', start: 66, end: 73 },
+  { name: 'SPECIÁL: ČERNÝ HAVRAN & ENTERPRISE', start: 74, end: 78 },
+  { name: 'STAR TREK PÍSNIČKA POSÁDEK (DISCO VERZE)', start: 79, end: 88 },
+  { name: 'STAR TREK SOUTĚŽ (ENTERPRISE & DS9)', start: 89, end: 94 },
+  { name: 'STAR TREK SOUTĚŽ Na Deep Space Nine', start: 95, end: 108 },
+  { name: 'VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CHATBOT CLAUDE.AI', start: 109, end: 117 },
+  { name: 'Více Admirál Jiřík & Chatbot', start: 118, end: 121 },
+  { name: 'Více Admirál & Claude.AI', start: 122, end: 127 },
+  { name: 'VÁNOČNÍ HVĚZDNÁ FLOTILA', start: 128, end: 138 },
+  { name: 'STAR TREK - DO NEZNÁMA (SÉRIE)', start: 139, end: 143 },
+  { name: 'STAR TREK - DO NEZNÁMA Remake', start: 144, end: 146 },
+  { name: 'STAR TREK - DO NEZNÁMA Starší verze', start: 147, end: 149 },
+  { name: 'STAR TREK - DO NEZNÁMA Nová Série', start: 150, end: 154 },
+  { name: 'MIX & SPECIÁLNÍ PROJEKTY', start: 155, end: 157 },
+  { name: 'Týmová Práce', start: 158, end: 162 },
+  { name: 'Admirálský Deník', start: 163, end: 168 },
+  { name: 'Vánoční Hudba na palubě', start: 169, end: 173 },
+  { name: 'Remastered Bonusy', start: 174, end: 177 },
+  { name: 'VESMÍRNÁ ODYSEA (KOMPLET)', start: 178, end: 187 },
+  { name: 'DALŠÍ PROJEKTY & BONUSY', start: 188, end: 192 },
+  { name: 'Na Cestě k Věčnosti', start: 193, end: 200 },
+  { name: 'Srdce mezi Hvězdami', start: 201, end: 207 },
+  { name: 'Srdce na Dlani', start: 208, end: 210 },
+  { name: 'Ostatní Remastered', start: 211, end: 215 },
+  { name: 'STANICE HLUBOKÝ VESMÍR 9 (SÉRIE)', start: 216, end: 226 },
+  { name: 'HVEZDNA-FLOTILA-NAVZDY', start: 227, end: 234 },
+  { name: 'Děti hvězd', start: 235, end: 244 },
+  { name: 'Louisiana sobotní noc 1 až 9', start: 245, end: 253 },
+  { name: 'Louisiana-sobotni-noc 10 až 19', start: 254, end: 263 },
+  { name: 'PÍSNIČKY O JIRKOVI Klasická Série 1', start: 264, end: 267 },
+  { name: 'PÍSNIČKY O JIRKOVI Klasická Série 2', start: 268, end: 271 },
+  { name: 'PÍSNIČKY O JIRKOVI Remastered Verze 1', start: 272, end: 275 },
+  { name: 'PÍSNIČKY O JIRKOVI Remastered Verze 2', start: 276, end: 280 },
+  { name: 'Jirkův Futuristický Kvíz', start: 281, end: 285 },
+  { name: 'Jirkův dodatek', start: 286, end: 286 },
+  { name: 'Journey Through Žižkov Originální verze', start: 287, end: 288 },
+  { name: 'Journey Through Žižkov Jirka Remake', start: 289, end: 291 },
+  { name: 'Journey Through Žižkov Remastered (Rema)', start: 292, end: 295 },
+  { name: 'FEDERÁLNÍ ÚSTAV Remastered Verze', start: 296, end: 297 },
+  { name: 'FEDERÁLNÍ ÚSTAV Originální Série', start: 298, end: 300 },
+  { name: 'FEDERÁLNÍ ÚSTAV Remake Série', start: 301, end: 304 },
+  { name: 'FEDERÁLNÍ ÚSTAV Série 2', start: 305, end: 306 },
+  { name: 'FEDERÁLNÍ ÚSTAV Série 3', start: 307, end: 310 },
+  { name: 'FEDERÁLNÍ ÚSTAV Série 4', start: 311, end: 312 },
+  { name: 'Krčma v Dětenicích', start: 313, end: 316 },
+  { name: 'cesta krystof', start: 317, end: 321 },
+  { name: 'instrumentální disko', start: 322, end: 331 },
+  { name: 'ÚTAH A JEHO BRATR', start: 332, end: 334 },
+  { name: 'NOČNÍ STÍNY & BOD ZLOMU', start: 335, end: 339 },
+  { name: 'STÍNY Z UTAHY (REMASTERED)', start: 340, end: 341 },
+  { name: 'Mohambi', start: 342, end: 349 },
+  { name: 'Mohombi Remastered', start: 350, end: 351 },
+  { name: 'Bumpy Rider Mohombi', start: 352, end: 356 },
+  { name: 'kohout / mix-kohout', start: 357, end: 368 },
+  { name: 'Hora Matterhorn', start: 369, end: 377 },
+  { name: 'Nebude to ľahké', start: 378, end: 388 },
+  { name: 'RŮZNÉ HITY & SINGLY', start: 389, end: 394 },
+  { name: 'SÉRIE: NA OKOŘ JE CESTA (VŠECHNY VERZE)', start: 395, end: 403 },
+  { name: 'ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY', start: 404, end: 411 },
+  { name: 'SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY', start: 412, end: 419 },
+  { name: 'MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)', start: 420, end: 429 },
+  { name: 'AUDIO KAPITOLY (1-40)', start: 430, end: 475 },
+  { name: 'Ocelová křídla Promethea', start: 476, end: 479 },
+  { name: 'Velení Promethea', start: 480, end: 483 },
+  { name: 'Velení lodi Prometheus', start: 484, end: 485 },
+  { name: 'USS Prometheus', start: 486, end: 487 },
+  { name: 'Wo-rur-HoS-Sila-jako-imperium', start: 488, end: 489 },
+  { name: 'tlhIngan-MaH-Jsme-Klingoni-Extended', start: 490, end: 491 },
+  { name: 'Ocel-a-Hnev', start: 492, end: 493 },
+  { name: 'Cesta-do-Sto-vo-koru-Full-Version', start: 494, end: 497 },
+  { name: 'Jiříkův Digitální Sen', start: 498, end: 502 },
+  { name: 'Original-pisen-AI-cistic-odpadu-Pavel-Pacova', start: 503, end: 508 },
+  { name: 'Muzikanti-Cenich-CZ-Remix', start: 509, end: 510 },
+  { name: 'Nové Písničky mix', start: 511, end: 517 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -635,24 +630,7 @@ window.tracks = [
 // 🎧 STÍNY Z UTAHY (REMASTERED)
 // ═══════════════════════════════════════════════════════════
 { src:"https://dl.dropboxusercontent.com/scl/fi/o2i2tod1da3an0qg3hxmf/St-ny-z-Utah-Remastered-V.7.mp3?rlkey=bitm1exyei3krwu7jkj14icu8&st=fznwkhnk&dl=1", title: "Stíny z Utahy (Rema) v.1", manuallyEdited: false, lastEditedAt: null }, //340
-{ src:"https://dl.dropboxusercontent.com/scl/fi/if6lddn4ocl8g91h311nc/St-ny-z-Utah-Remastered-V.8.mp3?rlkey=tpd1kit3d75mjujwnm64chex8&st=dmzxiy47&dl=1", title: "Stíny z Utahy (Rema) v.2", manuallyEdited: false, lastEditedAt: null }, //341   
-// ═══════════════════════════════════════════════════════════
-// 🎧 Jirka a ondra
-// ═══════════════════════════════════════════════════════════    
-{ src: "https://dl.dropboxusercontent.com/scl/fi/v6me6mzartct01ndzi722/jirka-a-ondra-jsou-nejlep-br-chov-Vysok-kvalita.mp3?rlkey=urg0junbwcdc6paqtutmttmpl&st=07wnlf6f&dl=1", title: "Jirka a ondra jsou nejlepší bráchové org", 
-duration: '03:37', manuallyEdited: false, lastEditedAt: null }, //342    
-{ src: "https://dl.dropboxusercontent.com/scl/fi/cj69d5dhy6v7f9lavu8qw/Jirka-a-Ondra-jsou-nejlep-brachov-V.1.mp3?rlkey=vkjfy9gxpo38f383zlqdf2yo7&st=lsycsnot&dl=1",title: "Jirka a Ondra jsou nejlepší bráchové dico verze V.01", duration: '03:14', manuallyEdited: false, lastEditedAt: null }, //343                
-{ src: "https://dl.dropboxusercontent.com/scl/fi/jcmqbtfvldndzcopr5ugy/Jirka-a-Ondra-jsou-nejlep-brachov-V.4.mp3?rlkey=egz3d4c243b5vlmui3awtg03w&st=op1toyux&dl=1",title: "Jirka a Ondra jsou nejlepší bráchové dico verze V.02", duration: '04:00', manuallyEdited: false, lastEditedAt: null }, //344      
-{ src: "https://dl.dropboxusercontent.com/scl/fi/oo8fjj7jte1et8turk8hv/v-let-v-Praze-Ondra-a-Jirka-v.5.mp3?rlkey=ueuy8n3xwc1doc142bl5kqtdd&st=6mlikti6&dl=1", title: "Výlet Do Prahy Ondra A Jirka v.3", 
-duration: '03:43', manuallyEdited: false, lastEditedAt: null }, //345                   
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/7n6shcvyrg74pznu3xg25/_p-sn-o-bratrsk-m-p-telstv-v.1.mp3?rlkey=ihnpara0plr4t67kc1hlbfem5&st=46zrxeg3&dl=1', title: 'písně o bratrském přátelství v.1', manuallyEdited: false, lastEditedAt: null }, //346
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/mq082nf1r9zy0zdhz1ppn/_p-sn-o-bratrsk-m-p-telstv-v.2.mp3?rlkey=msck9y0wobdipuqoo8a39y228&st=kbr50r3x&dl=1', title: 'písně o bratrském přátelství v.2', manuallyEdited: false, lastEditedAt: null }, //347    
-{ src: "https://dl.dropboxusercontent.com/scl/fi/j1ua4fykiw6ozka8t7iv4/p-sn-o-bratrsk-m-p-telstv-4-opr.mp3?rlkey=xuyk9u3ir8fe8zq7g259ea377&st=udj6qujw&dl=1", title: "písně o bratrském přátelství v.3 Top-1/2", 
-duration: '03:54', manuallyEdited: false, lastEditedAt: null }, //348
-{ src: "https://dl.dropboxusercontent.com/scl/fi/9s00fkxs53tzp9kv60n3r/pisen-o-prateskem-pratelstvi-v.5-Top-4.wav?rlkey=403d3o7kj3041x3qcv3x7znqu&st=gexyhmn6&dl=1", title: "písně o bratrském přátelství v.5-Top-4", //tuto sem přidal
-duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349     
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/mwc2ikve37981adfj2sot/Ondra-p-ijel-do-ejova-Remastered-v.1.mp3?rlkey=apdsayt3xnwufp8r4nrkm5tn1&st=krf55lii&dl=1', title: 'Ondra přijel do Čejova, (Rema) v.1', manuallyEdited: false, lastEditedAt: null }, //350
-{ src: 'https://dl.dropboxusercontent.com/scl/fi/ke36lt3ibr9qzwjg0zo4u/Ondra-p-ijel-do-ejova-Remastered-v.2.mp3?rlkey=w6we3yklzax8fyjwq0t7zzyp8&st=cg075i9m&dl=1', title: 'Ondra přijel do Čejova, (Rema) v.2', manuallyEdited: false, lastEditedAt: null }, //351    
+{ src:"https://dl.dropboxusercontent.com/scl/fi/if6lddn4ocl8g91h311nc/St-ny-z-Utah-Remastered-V.8.mp3?rlkey=tpd1kit3d75mjujwnm64chex8&st=dmzxiy47&dl=1", title: "Stíny z Utahy (Rema) v.2", manuallyEdited: false, lastEditedAt: null }, //341
 // ═══════════════════════════════════════════════════════════
 // 🎧 Mohambi
 // ═══════════════════════════════════════════════════════════
@@ -907,32 +885,6 @@ duration: '08:57', manuallyEdited: false, lastEditedAt: null }, //349
 { src: 'https://dl.dropboxusercontent.com/scl/fi/i36d5tj1ce34plfkm2nrr/posledni-denik-na-enterprise-ncc-1701-D-v-2.mp3?rlkey=di3pnp8qm4vw8cwfv1i7zjtc6&st=7xj5r1ge&dl=1', title: 'Poslední deník na Enterprise NCC 1701-D v.2', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/6lm86bt773xtck864xtja/Star-Trek-Epicke-Outro-1.mp3?rlkey=qm8r5ors4sn60w33yr99loe1z&st=lfiwcrbn&dl=1', title: 'Star Trek Epické Outro v.1', manuallyEdited: false, lastEditedAt: null }, 
 { src: 'https://dl.dropboxusercontent.com/scl/fi/agcscmox4jzeb2fwtdzju/Star-Trek-Epicke-Outro-2.mp3?rlkey=kfbsvx0iaygfh1a55zr4p10ls&st=e8zsewi7&dl=1', title: 'Star Trek Epické Outro v.2', manuallyEdited: false, lastEditedAt: null }, 
-
-
-
-
- 
 ];   
-
- 
-
- 
 window.DebugManager?.log('playlist', `🚀 myPlaylist.js READY! (${window.tracks.length} skladeb)`);
-
- 
- console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+console.log(`%c🚀 [myPlaylistJS] Načteno za ${(performance.now() - __myPlaylistJS_START).toFixed(2)} ms`, 'background: #000; color: #00ff00; font-weight: bold; padding: 2px;');
