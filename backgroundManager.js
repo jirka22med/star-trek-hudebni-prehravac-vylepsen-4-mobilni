@@ -23,7 +23,7 @@ const __SpravaTapet_START = performance.now();
     // ═══════════════════════════════════════════════════════════════════════
     const BACKGROUNDS = {
         desktop: {
-            url: 'https://img41.rajce.idnes.cz/d4102/19/19244/19244630_db82ad174937335b1a151341387b7af2/images/image_1918x917.jpg?ver=0',
+            url: 'https://img47.rajce.idnes.cz/d4702/20/20052/20052423_dec22755f24d0b39f3a56f2f17729df2/images/IMG_20260724_144128.jpg?ver=0',
             name: 'Starfleet Command Desktop',
             resolution: '1918x917'
         },
