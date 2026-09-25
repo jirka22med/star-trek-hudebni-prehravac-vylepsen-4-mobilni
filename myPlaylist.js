@@ -77,20 +77,19 @@ window.playlistSections = [
   { name: 'ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY', start: 404, end: 411 },
   { name: 'SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY', start: 412, end: 419 },
   { name: 'MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)', start: 420, end: 429 },
-  { name: 'AUDIO KAPITOLY (1-40)', start: 430, end: 469 },
-  { name: 'JARDOVA CESTA S PŘÁTELY', start: 470, end: 475 },
-  { name: 'Ocelová křídla Promethea', start: 476, end: 479 },
-  { name: 'Velení Promethea', start: 480, end: 483 },
-  { name: 'Velení lodi Prometheus', start: 484, end: 485 },
-  { name: 'USS Prometheus', start: 486, end: 487 },
-  { name: 'Wo-rur-HoS-Sila-jako-imperium', start: 488, end: 489 },
-  { name: 'tlhIngan-MaH-Jsme-Klingoni-Extended', start: 490, end: 491 },
-  { name: 'Ocel-a-Hnev', start: 492, end: 493 },
-  { name: 'Cesta-do-Sto-vo-koru-Full-Version', start: 494, end: 497 },
-  { name: 'Jiříkův Digitální Sen', start: 498, end: 502 },
-  { name: 'Original-pisen-AI-cistic-odpadu-Pavel-Pacova', start: 503, end: 508 },
-  { name: 'Muzikanti-Cenich-CZ-Remix', start: 509, end: 510 },
-  { name: 'Nové Písničky mix', start: 511, end: 517 }
+  { name: 'AUDIO KAPITOLY (1-40)', start: 430, end: 477 },
+  { name: 'Ocelová křídla Promethea', start: 478, end: 481 },
+  { name: 'Velení Promethea', start: 482, end: 485 },
+  { name: 'Velení lodi Prometheus', start: 486, end: 487 },
+  { name: 'USS Prometheus', start: 488, end: 489 },
+  { name: 'Wo-rur-HoS-Sila-jako-imperium', start: 490, end: 491 },
+  { name: 'tlhIngan-MaH-Jsme-Klingoni-Extended', start: 492, end: 493 },
+  { name: 'Ocel-a-Hnev', start: 494, end: 495 },
+  { name: 'Cesta-do-Sto-vo-koru-Full-Version', start: 496, end: 499 },
+  { name: 'Jiříkův Digitální Sen', start: 500, end: 504 },
+  { name: 'Original-pisen-AI-cistic-odpadu-Pavel-Pacova', start: 505, end: 510 },
+  { name: 'Muzikanti-Cenich-CZ-Remix', start: 511, end: 512 },
+  { name: 'Nové Písničky mix', start: 513, end: 519 }
 ];
 // ═══════════════════════════════════════════════════════════
 
@@ -806,6 +805,8 @@ window.tracks = [
   { src: 'https://dl.dropboxusercontent.com/scl/fi/5mb4ypu4zdcolj2p28vz2/Jardova-cesta-s-prateli-v.4.mp3?rlkey=wwklrfryzzuc4xcs4vs2n7lgg&st=7h4ukj4b&dl=1', title: 'Jardova-cesta-s-prateli-v.4', manuallyEdited: false, lastEditedAt: null }, //483
   { src: 'https://dl.dropboxusercontent.com/scl/fi/217u0otcntjh44dnkka00/Jardova-cesta-s-prateli-v.5-Top-1.mp3?rlkey=8ba618idnur6vulc462kpohw0&st=dkrdrn6d&dl=1', title: 'Jardova-cesta-s-prateli-v.5-Top-1', manuallyEdited: false, lastEditedAt: null }, //484
   { src: 'https://dl.dropboxusercontent.com/scl/fi/ufegyq7l4ctmighojm7cd/Jardova-cesta-s-prateli-v.5-Top-1-audacity.wav?rlkey=8aux1ne0feoq99m7xzunmt2x9&st=ljmwvfzn&dl=1', title: 'Jardova-cesta-s-prateli-v.6-Top-2', manuallyEdited: false, lastEditedAt: null }, //485   
+  { src: 'https://dl.dropboxusercontent.com/scl/fi/3u1cqup2nfsv5fwdiuqhv/Jardova-cesta-s-prateli-v.7-TOP-3-ANGLICKA-VERZE.mp3?rlkey=bo1m6n5xkf0uq6p4tqkjaqmrc&st=ffwgemo0&dl=1', title: 'Jardova-cesta-s-prateli-v.7-TOP-3-ANGLICKA-VERZE', manuallyEdited: false, lastEditedAt: null },
+  { src: 'https://dl.dropboxusercontent.com/scl/fi/prw7jh0sdzecmarrc2bq9/Jardova-cesta-s-prateli-v.8-TOP-4.mp3?rlkey=pujfbn8gwcpqyq3vh5wokv8zi&st=8mi3qr3y&dl=1', title: 'Jardova-cesta-s-prateli-v.8-TOP-4', manuallyEdited: false, lastEditedAt: null },
 // ═══════════════════════════════════════════════════════════
 // 🎧 Ocelová křídla Promethea
 // ═══════════════════════════════════════════════════════════     
