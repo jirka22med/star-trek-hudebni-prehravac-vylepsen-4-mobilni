@@ -77,7 +77,8 @@ window.playlistSections = [
   { name: 'ZÁBAVNÉ & PRACOVNÍ PÍSNIČKY', start: 404, end: 411 },
   { name: 'SPECIÁLNÍ & INSTRUMENTÁLNÍ SETY', start: 412, end: 419 },
   { name: 'MIX PÍSNIČEK (KOMPLETNÍ SÉRIE)', start: 420, end: 429 },
-  { name: 'AUDIO KAPITOLY (1-40)', start: 430, end: 477 },
+  { name: 'AUDIO KAPITOLY (1-40)', start: 430, end: 469 },
+  { name: 'Jardova nová cesta s přátely', start: 470, end: 477 },
   { name: 'Ocelová křídla Promethea', start: 478, end: 481 },
   { name: 'Velení Promethea', start: 482, end: 485 },
   { name: 'Velení lodi Prometheus', start: 486, end: 487 },
@@ -118,7 +119,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/ccckqqvzifs8b1ysruiq1/Odv-n-Pos-dka.mp3?rlkey=bnfy7ym2m0rao2374mw0g4xhc&st=22fenwvk&dl=1", title: "Odvážná posádka", duration: '02:12', manuallyEdited: false, lastEditedAt: null }, //10
 { src: "https://dl.dropboxusercontent.com/scl/fi/x0z9ddkz3zfqrvcnb6nr8/Odysea-Kapit-na-Ar-era-1.mp3?rlkey=mlav41qi6qe5ukss3q4qdd8f6&st=ymr1hpfw&dl=1", title: "Odysea Kapitána Arčra v.2", duration: '02:12', manuallyEdited: false, lastEditedAt: null }, //11
 { src: "https://dl.dropboxusercontent.com/scl/fi/27zunc86ujirpxj1hvhxc/Pos-dka-Enterprise-D.mp3?rlkey=ge98t19y7y1nqtec0jlq9w0kr&st=qozanohm&dl=1", title: "Posádka Enterprise-D", duration: '02:06', manuallyEdited: false, lastEditedAt: null }, //12
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK - INTRA & ZNĚLKY
 // ═══════════════════════════════════════════════════════════
@@ -127,7 +127,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/beossqqw6rquqfzghfvbf/Star-Trek_-Discovery-Main-Theme.mp3?rlkey=oba8a483o61glsm3b62lasy2p&st=59uxhh2u&dl=1", title: "Star Trek Discovery Intro", duration: '01:39', manuallyEdited: false, lastEditedAt: null }, //15
 { src: "https://dl.dropboxusercontent.com/scl/fi/yi1w5b9mwuwwl4gsrg01l/Star-Trek_-The-Next-Generation-Theme-EPIC-VERSION.mp3?rlkey=7wsegbwm0f2zqrdv4lstx3hbg&st=j5z0t7db&dl=1", title: "Star Trek Nová Generace Intro", duration: '02:21', manuallyEdited: false, lastEditedAt: null }, //16
 { src: "https://dl.dropboxusercontent.com/scl/fi/61uxo0jemsb84iyg6yxw3/Star-Trek_-Deep-Space-Nine-4K-HD-Intro-NeonVisual.mp3?rlkey=ltd4xwfosro3xcu08go2aeiza&st=tatj06i2&dl=1", title: "Star Trek Deep Space Nine Intro", duration: '02:04', manuallyEdited: false, lastEditedAt: null }, //17
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK - EPICKÉ OUTRO (SÉRIE)
 // ═══════════════════════════════════════════════════════════
@@ -138,7 +137,6 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/whpm9u9zz3mxrsyvdx1r7/EPICK-OUTRO-STAR-TREK-STYLE-Remastered-v.2.mp3?rlkey=vi2s8jn295atak9sgjct5lmaj&st=k483e3bv&dl=1', title: 'Epické Outro Star Trek Style v.5', manuallyEdited: false, lastEditedAt: null }, //22
 { src: 'https://dl.dropboxusercontent.com/scl/fi/3q07ev0b9o8zbrn47hut1/EPICK-OUTRO-STAR-TREK-STYLE-Remastered-v.3.mp3?rlkey=aecy8rpziy15axfncgknx8fyw&st=slfk0c23&dl=1', title: 'Epické Outro Star Trek Style v.6', manuallyEdited: false, lastEditedAt: null }, //23
 { src: 'https://dl.dropboxusercontent.com/scl/fi/r3jwu1wqmnmeupx40o2t6/EPICK-OUTRO-STAR-TREK-STYLE-Remastered-v.4.mp3?rlkey=x6k9adkd0hkei5mg5r6kedkxg&st=9o5qzuga&dl=1', title: 'Epické Outro Star Trek Style v.7', manuallyEdited: false, lastEditedAt: null }, //24    
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK - PÍSNIČKA POSÁDEK (ORIGINÁL & KLINGONI)
 // ═══════════════════════════════════════════════════════════
@@ -156,7 +154,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/dswgdwr4ha5zwobzpi65o/Star-trek-Klingoni-2.mp3?rlkey=y3bknrocic66fysdbyg6rypc9&st=dkgis1hg&dl=1", title: "Star Trek Klingoni v.2", duration: '02:06', manuallyEdited: false, lastEditedAt: null }, //36
 { src: "https://dl.dropboxusercontent.com/scl/fi/eexwqik55aafcdbzfx3kz/Klingonsk-opera-star-trek-1.mp3?rlkey=yfkld3uizzvrcdeeexc2p04xh&st=tmo3n2so&dl=1", title: "Klingonská Opera v.1", duration: '02:40', manuallyEdited: false, lastEditedAt: null }, //37
 { src: "https://dl.dropboxusercontent.com/scl/fi/iddvpiwebeqmhee688jeb/Klingonsk-opera-star-trek-2.mp3?rlkey=wf7hratdanpryqydwdr5htwjv&st=xdu1p96r&dl=1", title: "Klingonská Opera v.2", duration: '03:59', manuallyEdited: false, lastEditedAt: null }, //38
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 HVĚZDNÉ PLAMENY & HVĚZDY A PLAMENY
 // ═══════════════════════════════════════════════════════════
@@ -199,7 +196,6 @@ window.tracks = [
 { src: 'https://dl.dropboxusercontent.com/scl/fi/e3hgwkdb1dxwz4d6za0eo/hvezdy-a-plameny-nova-v.6.mp3?rlkey=r0zh6p473auyio9oay66ynb5h&st=w9kur44p&dl=1', title: 'Hvězdy a Plameny Nová v.6', manuallyEdited: false, lastEditedAt: null }, //63
 { src: 'https://dl.dropboxusercontent.com/scl/fi/6k4pyq4v85fpwbh8trkwq/hvezdy-a-plameny-nova-v.7-top-1.mp3?rlkey=ragwnjydgn1mkzz9flxeawjz9&st=cb1hntsg&dl=1', title: 'Hvězdy a Plameny Nová v.7', manuallyEdited: false, lastEditedAt: null }, //64
 { src: 'https://dl.dropboxusercontent.com/scl/fi/kr23h0f6v0s1s71x0vx0w/hvezdy-a-plameny-nova-v.8-top-2.mp3?rlkey=mfv934b4emw7u35xdqzb34bzt&st=twemxwpr&dl=1', title: 'Hvězdy a Plameny Nová v.8', manuallyEdited: false, lastEditedAt: null }, //65   
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 VELKÉ OSLAVY DS9
 // ═══════════════════════════════════════════════════════════
@@ -211,7 +207,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/yko0z073uve2oi28pw974/velk-oslavy-ds9-V.6.mp3?rlkey=nu542dsonhslq2d1uqwl6r1wc&st=5ed5kzua&dl=1",title: "Velké Oslaby DS9 v.6", manuallyEdited: false, lastEditedAt: null }, //71
 { src: "https://dl.dropboxusercontent.com/scl/fi/rwkuusern1cgtrg3uf2ym/velk-oslavy-ds9-V.7.mp3?rlkey=c4cxcsthye40ntif7gk0xgt1g&st=rockkqvo&dl=1",title: "Velké Oslaby DS9 v.7", manuallyEdited: false, lastEditedAt: null }, //72
 { src: "https://dl.dropboxusercontent.com/scl/fi/varh31wjuldj9vhz7ys01/velk-oslavy-ds9-v.8-Top1.mp3?rlkey=t4nfn8tis6ilacz13vm7pjtul&st=1sflpjs3&dl=1",title: "Velké Oslaby DS9 v.8", manuallyEdited: false, lastEditedAt: null }, //73
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 SPECIÁL: ČERNÝ HAVRAN & ENTERPRISE
 // ═══════════════════════════════════════════════════════════
@@ -220,7 +215,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/09v1mudjybqkpx7bos7fz/P-sni-ka-o-Enterprise-a-NCC-1701-D-v.7-v-2.mp3?rlkey=ult84zjchfj0sljrmfqslkdd3&st=v7plml0q&dl=1",title: "Písnička o Enterprise a NCC 1701 D v.2", manuallyEdited: false, lastEditedAt: null }, //76   
 { src: "https://dl.dropboxusercontent.com/scl/fi/wv8gurlh0dyyqgvczn0i2/P-sni-ka-o-Enterprise-a-NCC-1701-D.mp3?rlkey=xysxuormyjteveympe4hgipz1&st=m3h8ghu9&dl=1",title: "Písnička o Enterprise a NCC 1701 D v.3", manuallyEdited: false, lastEditedAt: null }, //77   
 { src: "https://dl.dropboxusercontent.com/scl/fi/f4o0a1zge4sigiz3k7959/P-sni-ka-o-Enterprise-a-NCC-1701-D-v.5.mp3?rlkey=rpcd68ysaa8uwwqc427wzlq90&st=wzy7bnu4&dl=1",title: "Písnička o Enterprise a NCC 1701 D v.4", manuallyEdited: false, lastEditedAt: null }, //78  
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK PÍSNIČKA POSÁDEK (DISCO VERZE)
 // ═══════════════════════════════════════════════════════════
@@ -234,7 +228,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/mpv5x7ctx47g5annnrrwx/star-trek-p-sni-ka-o-pos-dk-ch-v.8.mp3?rlkey=lyy7poxwdmznhm9pjbbkm2p2w&st=98ypi5dz&dl=1",title: "Star Trek Písnička Posádek Disco v.8", manuallyEdited: false, lastEditedAt: null }, //86          
 { src: "https://dl.dropboxusercontent.com/scl/fi/jy5lnm3gvr8wonk9hevit/star-trek-p-sni-ka-o-pos-dk-ch-v.9.mp3?rlkey=pnlafws9na7327fwhltttdtnj&st=8fijh4se&dl=1",title: "Star Trek Písnička Posádek Disco v.9", manuallyEdited: false, lastEditedAt: null }, //87          
 { src: "https://dl.dropboxusercontent.com/scl/fi/13wqn6cb90uzoxboumva6/star-trek-p-sni-ka-o-pos-dk-ch-v.10.mp3?rlkey=pxqz1ob71w0oe2imo2zsr9wiw&st=3oc5sm5s&dl=1",title: "Star Trek Písnička Posádek Disco v.10", manuallyEdited: false, lastEditedAt: null }, //88        
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 STAR TREK SOUTĚŽ (ENTERPRISE & DS9)
 // ═══════════════════════════════════════════════════════════
@@ -261,7 +254,6 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/ih11tzjn4qbi8macdqes6/star-trek-sout-na-deep-space-nine-12.mp3?rlkey=4vwkx3m3rae9lvqk7oqmvntww&st=zhb6ytr8&dl=1", title: "Star Trek Soutěž na DS9 v.12", manuallyEdited: false, lastEditedAt: null }, //106
 { src: "https://dl.dropboxusercontent.com/scl/fi/4m6ypnmrsqlypadyfuw3j/star-trek-sout-na-deep-space-nine-13.mp3?rlkey=a7vj3jqvzcfj1ya54ol6fpir1&st=xfw0xzyo&dl=1", title: "Star Trek Soutěž na DS9 v.13", manuallyEdited: false, lastEditedAt: null }, //107
 { src: "https://dl.dropboxusercontent.com/scl/fi/u85upit3ivjxbwxezqfci/star-trek-sout-na-deep-space-nine-14.mp3?rlkey=rdta91qj8bck97wq5f4i07b8y&st=b5alg5ya&dl=1", title: "Star Trek Soutěž na DS9 v.14", manuallyEdited: false, lastEditedAt: null }, //108        
-
 // ═══════════════════════════════════════════════════════════
 // 🎧 VÍCE ADMIRÁL JIŘÍK & ADMIRÁL CHATBOT CLAUDE.AI
 // ═══════════════════════════════════════════════════════════
@@ -271,7 +263,7 @@ window.tracks = [
 { src: "https://dl.dropboxusercontent.com/scl/fi/urhkvb4afdoxbg9uan2ok/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.1.mp3?rlkey=r9l35hqj8dvdjvlkjg7rbacq2&st=2g4el6vg&dl=1", title: "Více Admirál Jiřík & Claude.AI v.4", manuallyEdited: false, lastEditedAt: null }, //112
 { src: "https://dl.dropboxusercontent.com/scl/fi/84tlmmxh64iolx01ofmar/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.2.mp3?rlkey=7u578p0v5s4agnjay038em6cb&st=qgo4ulrh&dl=1", title: "Více Admirál Jiřík & Claude.AI v.5", manuallyEdited: false, lastEditedAt: null }, //113
 { src: "https://dl.dropboxusercontent.com/scl/fi/edbjjt81i88k86lia9j30/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V.3.mp3?rlkey=t5dk6eycz1ssjmv616932wmup&st=dqtzjo4h&dl=1", title: "Více Admirál Jiřík & Claude.AI v.6", manuallyEdited: false, lastEditedAt: null }, //114
- //115
+ //11
 { src: "https://dl.dropboxusercontent.com/scl/fi/4o201yvml13ia1dn7qcli/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI-V-1-2-3.mp3?rlkey=shfno8g9db24i686a6il771kk&st=c7sv9qex&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-0 v.8", manuallyEdited: false, lastEditedAt: null }, //11   
 { src: "https://dl.dropboxusercontent.com/scl/fi/36pqt85qncua07mvj93vj/V-ce-admiral-Jirik-Admiral-chatbot-Admiral-Claude.AI.mp3?rlkey=qcl0b9318a673ix4wh1v26314&st=0y3abjy5&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-1", manuallyEdited: false, lastEditedAt: null }, //117-8 
  { src: "https://dl.dropboxusercontent.com/scl/fi/8zp6z2s1fnkx1qn9h94xo/V-ce-Admir-l-Ji-k-Claude.AI-TOP-2.mp3?rlkey=67mglbyfyplvmxcwixk4jrivt&st=pf4xruvp&dl=1", title: "Více Admirál Jiřík & Claude.AI TOP-2", manuallyEdited: false, lastEditedAt: null },
